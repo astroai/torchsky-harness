@@ -66,4 +66,4 @@ being removed or described as torchsky performance.
 
 ## Local handoff
 
-The local repository is on codex/extract-scientific-evaluation. Torchsky migration edits remain uncommitted to preserve the pre-existing development changes. Verification wheels and logs are preserved under the ignored dist/verification directory. No remote repository or PR was created: automatic approval review rejected publishing the internal code and historical campaign payload without explicit payload authorization.
+The local repository is on codex/extract-scientific-evaluation. Torchsky migration edits remain uncommitted to preserve the pre-existing development changes. Verification wheels and logs are preserved under the ignored dist/verification directory. The user explicitly approved publishing the code and all 194 historical campaign specifications/reports to the private astroai/torchsky-harness repository and opening a draft PR. That approval resolves the earlier automatic-review publication block.
