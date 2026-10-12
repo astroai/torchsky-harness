@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import subprocess
 import sys
 import uuid
+from pathlib import Path
 
 from torchsky_harness.registry import domain, evaluations
 from torchsky_harness.runner import run
@@ -14,16 +14,37 @@ from torchsky_harness.subject import identify_subject, sha256
 
 
 def main(argv: list[str] | None = None) -> int:
+    raw = list(sys.argv[1:] if argv is None else argv)
+    if raw and raw[0] in {"calibration-manifest", "calibration-extract"}:
+        # Calibration commands are the only harness CLI surface that imports
+        # the installed subject. Keep list/subject/run usable without it.
+        from torchsky_harness.calibration_command import (
+            register_calibration_parser,
+        )
+
+        parser = argparse.ArgumentParser(prog="torchsky-harness")
+        commands = parser.add_subparsers(dest="command", required=True)
+        register_calibration_parser(commands)
+        args = parser.parse_args(raw)
+        return args.handler(args)
+
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     listing = commands.add_parser("list")
     listing.add_argument("--domain", choices=["wcs", "sphere", "map", "catalogs", "cross_domain"])
     commands.add_parser("subject")
+    commands.add_parser(
+        "calibration-manifest",
+        help="Build a split-safe JWST/NIRCam calibration-evidence manifest.",
+    )
+    commands.add_parser(
+        "calibration-extract",
+        help="Extract PSF/background targets from JWST/NIRCam detector files.",
+    )
     running = commands.add_parser("run")
     running.add_argument("evaluation")
     running.add_argument("--run-dir", type=Path)
     running.add_argument("--subject-wheel", type=Path)
-    raw = list(sys.argv[1:] if argv is None else argv)
     split = raw.index("--") if "--" in raw else len(raw)
     args = parser.parse_args(raw[:split])
     child_args = raw[split + 1:] if split < len(raw) else []

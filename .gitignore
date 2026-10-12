@@ -13,3 +13,4 @@ runs/
 *.log
 data/
 .DS_Store
+.local-artifacts/

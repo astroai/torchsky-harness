@@ -18,10 +18,10 @@ import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E
 from torchsky import WCS  # noqa: E402
 from torchsky.map import (
     MapProductResult,
-    evaluate_map_product,
     plan_map_product,
     stack_map_product,
 )  # noqa: E402
+from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 
 def _hann2d(height: int, width: int, *, device: torch.device) -> torch.Tensor:

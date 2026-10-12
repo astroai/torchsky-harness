@@ -1,0 +1,475 @@
+{
+  "core_revision_before": "e46496597227137b82ff8b96d5685e389536910e",
+  "core_working_tree": "Pre-existing library changes are preserved; this is not a clean-commit subject.",
+  "function_placements_checked": 28,
+  "functions": [
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "_as_cube",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "c4759d81539a51820f98555bdf1f0220c81102f4091133bf5d5f64951f821308"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "_mean_pool_cube",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "911a04aee0425ce4ebba9f1738a9ac3c9115e90082ee914071e73592513a5f14"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "_row_duration_ms",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "53498a0aec4401cb41ca6efb85b7662efb52410ac245549d37a077583804081b"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "_row_label",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "5026a87f785807fa23deeda9177cd4c08031be81e22ff10dd0e1ac05eca97f47"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "build_map_benchmark_markdown",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "37b1e7bce5edb4fa32365069cbdddae42c42c5a06b1cf43b44e3559f7bc5cd18"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "check_map_benchmark_regressions",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "0d74ba97294d85d73c967e10c96de7e6cf5ce6df7d3ef3a1df350d4caa6cf251"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "evaluate_map_frontier_regions",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "dd50a21c8f8107be548484864208ac2c389bf23a83c76df0f58fe72fd3ab5077"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "evaluate_map_product",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "883af2a1a15b9f903f41af896fc04452b0ac89417dc6cfa26955cb0e7cc07856"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "evaluate_map_uncertainty",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "60bcb8a235b0d0b63f7b9fa66248a615ef73edef5381c5dc2af02ab1fd5fcb79"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "map_benchmark_row_key",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "1ece7b2190a4fd61d828ca98d6a293e5ffd8f1b4d891974d2425d89fde352cd9"
+    },
+    {
+      "source": "src/torchsky/map/product.py",
+      "function": "write_map_benchmark_artifacts",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "e4dc17e3a3ed571b3178aeb74d1551e130de1748363c67082b4aae9094ac20af"
+    },
+    {
+      "source": "src/torchsky/map/field/quality.py",
+      "function": "_observation_quality_group_key",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "1d1b12f0d10936a207197c36dfadf2873d865b338816991646f1f34e01d964b4"
+    },
+    {
+      "source": "src/torchsky/map/field/quality.py",
+      "function": "field_quality_acceptance_report",
+      "destination": "src/torchsky_harness/metrics.py",
+      "ast_sha256": "7fd56cb036ec418de01166bc96e262236706bc896f4cd040837256929ae53f73"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_background_target",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "1305237ef3e5a0198e9fef2a765c3535e263bbc065ddf928b821294c6d97249b"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_convolve2d",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "57526ec9a49e9a6b8c1a82e54335b38bac71f2ca13128c6372c98c25ef880ad6"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_file_sha256",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "704456ad06c89dd70df0df26b879ba6174753e8dd6cdda659fec674b685968ab"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_file_sha256",
+      "destination": "torchsky/src/torchsky/calibration_evidence.py",
+      "ast_sha256": "704456ad06c89dd70df0df26b879ba6174753e8dd6cdda659fec674b685968ab"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_finite_float",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "83b3e08f7a23e1f11d16a996aaac4e234e2a2112508ce23b8562d1d17a58ba4e"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_gaussian_template",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "a0b47d096b00be187ffcc467b82464eac29a4ac7e3b2a8a4cd123e23790964aa"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_matched_filter_significance",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "14b63b80b5cd51bac7b1d5c6fb1d54a88b3f95457e957fafbc78022a726dabc4"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_psf_target",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "8a548d8877b4c467c1d7b10b7579209fb4d1b26f1fdd1404a12bc3c75758829d"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "_registered_arrays",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "00ec658c1944f11aa7c9d2dd86be5bd4b820738e618ba448e5c6c8be4c5050ea"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "calibration_exposure_id",
+      "destination": "torchsky/src/torchsky/calibration_evidence.py",
+      "ast_sha256": "1233bb78b4f383a61c816b1e490196d75646f4a0791bb794f30645f4609f76d8"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "discover_detector_calibration_positions",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "a2b387871d892455ce8fd900a06034946b3534409c88d92a0e2e6d5ce8e59292"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "extract_calibration_evidence",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "0df5b3806e1abc880a089f5c85a4e25bbfe6097047c024c1fdecc808ecc65b76"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "extract_reviewed_calibration_evidence",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "1a6639266a5ef4bba2f6f6a37ca24fc8859c3b05b793025571a123c00995e254"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "load_operator_calibration_split",
+      "destination": "torchsky/src/torchsky/calibration_evidence.py",
+      "ast_sha256": "86f773d1e160953c535eccd057929cb11999dac8332797c3f37f749dc1132ae3"
+    },
+    {
+      "source": "src/torchsky/calibration_evidence.py",
+      "function": "read_reviewed_sky_catalog",
+      "destination": "src/torchsky_harness/calibration_evidence.py",
+      "ast_sha256": "de3dceb8a9f3b42e16dd035f02c95669de80f30fa0c69926f5ac768b17ae4bc6"
+    }
+  ],
+  "deduplicated_existing_files": [
+    "docs/projects/smacs_inr_autonomous_bakeoff.md"
+  ],
+  "second_pass_core_changes": [
+    {
+      "path": "src/torchsky/calibration_evidence.py",
+      "before_sha256": "d24e073e301b862018cc3eaac431958d7aef752f8a1897e256ae0d9090ccf2bb",
+      "after_sha256": "d03e77ebfb23dce58777e941834e7fdbf06fbd64269bb4184ec93bad1dc3dc81"
+    },
+    {
+      "path": "src/torchsky/wcs/core.py",
+      "before_sha256": "50ba779e4547b8985a0123b8ed8bd39110aea186162647e79c59f9d91803219f",
+      "after_sha256": "05f162751923dcb8bb48ab090fb7aaed0aab8c36f04a9819bed4aaf38d3bedf4"
+    },
+    {
+      "path": "src/torchsky/cli/__init__.py",
+      "before_sha256": "b320313ec3881be8a65a6f89885fac5c5cd900fdd0b85ad7663ab2f253da756e",
+      "after_sha256": "b1f4bc05ba407190895c5255ad05ce0c2abb4e0aecfd5d6d0dc3e95ad18ac4a0"
+    },
+    {
+      "path": "src/torchsky/cli/calibration_command.py",
+      "before_sha256": "b4cc10a2dfa987d0d89ad13bd3594310c094e91792c6fe1b0617236b264a300f",
+      "after_sha256": null
+    },
+    {
+      "path": "src/torchsky/map/__init__.py",
+      "before_sha256": "6c453565ff35bdb57e28d3c9cb62f09b091fc52341a75bd6fadc517460e2927f",
+      "after_sha256": "113c48e085f5d2ec222e6f301279815802ac79a02e253bdf851ab7da9585eecd"
+    },
+    {
+      "path": "src/torchsky/map/product.py",
+      "before_sha256": "a9da989ab21ab6b2d685f779d7a65a187afe8f648604ce60488ac383d3df9b74",
+      "after_sha256": "97e9986c634e22d59ed2654e30e580e93df9ecc600dc44653715d6cf2824cae2"
+    },
+    {
+      "path": "src/torchsky/map/field/__init__.py",
+      "before_sha256": "84ab73b11186dd919afb0819a90bcb0a4cac5f651cbc150e2eb2bba73a9980e7",
+      "after_sha256": "3306b11497d3f0b70f2e8e7cf079d332f9d6d7e4155757d5d608488a8a41b1fe"
+    },
+    {
+      "path": "src/torchsky/map/field/quality.py",
+      "before_sha256": "9008c0ddef608b864f37668be0cce9abe71d84d30cd881f9aaa6908078595296",
+      "after_sha256": "2a14a674a746495e1237236880c5e44c48b8d299484a44613be60b4cf1e9fda9"
+    },
+    {
+      "path": "tests/test_perf_gate.py",
+      "before_sha256": "021e8cc9d3eb565d10ddf589de0a5248e6e55f5a01d8118da319fe7703f413d8",
+      "after_sha256": "21b513a7119b0925cb353328ee55b94c67ecc38248a693888be277e428e2c801"
+    },
+    {
+      "path": "tests/test_map_product.py",
+      "before_sha256": "890d828fe0940ee783d7d6aee0282f0014c572dbdfb4bd7cca63fbd9e8d5a1d9",
+      "after_sha256": "a79c2b0e7b5a9cd35464c5f7e1858818f2ff3396bff1074c498d71dd9eaf0cb5"
+    },
+    {
+      "path": "tests/test_field_diagnostics.py",
+      "before_sha256": "de98ed4a6a3201830fa3c424eb34d3cb3028025c237e3809ddddf528ceef6895",
+      "after_sha256": "538642ce61a8288f83b5f4be985640797bf5084fb7dbe8109a7453aa0f8b8f82"
+    },
+    {
+      "path": "tests/test_torchfits_public_boundary.py",
+      "before_sha256": "508c97da01dc6bd4c933048f22f12c86c1821ec3462ffbefd834e679d91fb2af",
+      "after_sha256": "bd82075a5fc8090a34cbd7d30d8aa24d8c959903601af707deb7fbf30b891b5f"
+    },
+    {
+      "path": "tests/test_map_image_plane.py",
+      "before_sha256": "ee7e25fde58ab3c1f1dbd42e8d423dc8e7abfbc857346ee981f37144624377c1",
+      "after_sha256": "e00e8cd86f533a2724b9cf21b06c65b96bbfb187cfc763373bc8f5837c1d876a"
+    },
+    {
+      "path": "tests/test_tweakreg_wrapper.py",
+      "before_sha256": "51a065b0c556c842c462f879ce6e86aa867da37602b1363887e5ee1f0c0eed98",
+      "after_sha256": null
+    },
+    {
+      "path": "tests/test_cli_calibration_manifest.py",
+      "before_sha256": "f17d27a9db39d8897a8d6bf96b388bc2ceae34ce70c29d255dfa28d0a92a5b33",
+      "after_sha256": null
+    },
+    {
+      "path": "tests/test_api.py",
+      "before_sha256": "bf35df784a6a27da8741c0e1c848c3c7adb745c6fd7ccb4da444d2a6f2057bb5",
+      "after_sha256": "89b1aa398cce4820d3d0d40c2420955b797a251a1043870e655ab94f14254c15"
+    },
+    {
+      "path": "docs/examples.md",
+      "before_sha256": "14095cbf46be1b1160347084ffff2b67ff407ff3c6e33e31c032d3c74a677401",
+      "after_sha256": "b5983bd734ac8bb8588887520454e00db21360b5404ae472ad108b0cc43abb1b"
+    },
+    {
+      "path": "docs/map.md",
+      "before_sha256": "e14ec8168308a47818a0630ff784a168fdbff9202dcbdef78c330828d85d66e9",
+      "after_sha256": "e10976d7d2f86a335cf1c3bce68ed40781acb4a0c02a9687116d6120933012e5"
+    },
+    {
+      "path": "docs/cli.md",
+      "before_sha256": "b60a64640552b600b99b3340eed007e60b5aaea8aea7629167c59ccea7b302df",
+      "after_sha256": "dec1a2149a764532f9ba48fa2af89c025dd0607deecf9065f3f8f1799f4d84ff"
+    },
+    {
+      "path": "docs/changelog.md",
+      "before_sha256": "8b263c9c55afbc9a8c61dfaea105ad69d8bc0d4b99e3b6d8aed1efb82ba8424d",
+      "after_sha256": "7aa3b7900430119204d0973b78731ace153521706632dbb915b0d16ba7705c5b"
+    },
+    {
+      "path": "docs/wcs.md",
+      "before_sha256": "c97568b00307a37a94e176ea2311c2551307546274b99da18aade4acc56b4356",
+      "after_sha256": "7992d80d554cad0579365f7a47d09f58ad7bffce4749382b61038c4cc87a885f"
+    },
+    {
+      "path": "docs/audit_report_2026-06-26.md",
+      "before_sha256": "4b74d8359b5180a2cb8d87b3261cb718252b47f6f99c42f6ec3c39d4eb0b8936",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/sphere.md",
+      "before_sha256": "34664c51fbf2395be5a98856e8f39a5e5cdb64d721deba2d4ae946ced8f4e4b0",
+      "after_sha256": "7ebb403c960bb6491ddf598bbc64c86c151b0d982fdeda23bfd13adad6069c23"
+    },
+    {
+      "path": "docs/benchmarks.md",
+      "before_sha256": "cfb6a392ff9c97c7a91b3c580fb49f886c0cce493e297cf943f14181db403429",
+      "after_sha256": "0c39e66785517ba8dc8c2384fc66de92d08840516d030b82927327b395b815e8"
+    },
+    {
+      "path": "docs/README.md",
+      "before_sha256": "b07085de90a51e7f0a3810d09943f09e3a2e6fa4ab75b79a3221b3f07c5810c8",
+      "after_sha256": "9140b8d4c993a81916104b1c71edeeb3ba9dd691dcab791732264af70cb9b0fb"
+    },
+    {
+      "path": "docs/release.md",
+      "before_sha256": "b85f2446d3783137d8393f4ccbbec0f130c81fa15e8803201e96943b9ea7c0f9",
+      "after_sha256": "c7ec731782f4e34686069754594f601acd975731f7b21f0d2383ebe50a589f55"
+    },
+    {
+      "path": "docs/contributing.md",
+      "before_sha256": "9aefc5dc4f32f9970c22395eee959be477e3cb2c3401121b1fc718bdab4e14ad",
+      "after_sha256": "a66be453fa68b4d54ebea661f747346f5233ee735f22a6857916538b560b2cc9"
+    },
+    {
+      "path": "docs/field.md",
+      "before_sha256": "e79e214c48d44f0a51ef9ae11871641e37f4541b866fc28822c61facc5d7dc37",
+      "after_sha256": "33c6078363f915196c50de23123538584441d5d3c442014e08af96bed49c4937"
+    },
+    {
+      "path": "docs/compatibility.md",
+      "before_sha256": "000bfbfe678db6700e5cc5fe37175a4af6e1f5ca4ee01735bed418d8a98a96c7",
+      "after_sha256": "20529dd4bbfbf606f9bf733b529e61b826cdf0b9ca54087ac0fb8a7a410dc99c"
+    },
+    {
+      "path": "docs/encoders.md",
+      "before_sha256": "dae6231ce1b49d790f23efb1ffdd467678cda605ef6189094522f5152ce29807",
+      "after_sha256": "1192fc303cf86615e5e6c30f059e3ae3fe7808b231be29b5e06a0fb83c6396f8"
+    },
+    {
+      "path": "docs/catalogs.md",
+      "before_sha256": "89bd871c80a08c3ea50179fc65f6796ff0502a4af4e508c500efbfddb20b829d",
+      "after_sha256": "92ce7d88e4ee63ea399e9ad8537d836f4ec6074f7a91170a68238033d31732a6"
+    },
+    {
+      "path": "docs/archive/development-handoff.md",
+      "before_sha256": "310e643bbeb2abbfac6b6bf3b537a81982aa16a2e4a3bf98a26955bae79c99a9",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/archive/benchmark-history.md",
+      "before_sha256": "a2d543e8abfb5ef54009db2fb5612b5c2300fa5de0c9a11f82934c63898de330",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/plans/torchsky-harness.md",
+      "before_sha256": "e41ad20a379ebe9a26f6c824a0265d28986f7f53dd5a4fe518f474f1003e920e",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/roadmap/ecosystem_parity_and_uv_ir_plan.md",
+      "before_sha256": "c87b700f50beee03865a50063f58a0b2cd6e9bb71fce799748adc50b29c0578f",
+      "after_sha256": "55928be82d77c6ba2fe1c117c2a7deabf91c0e73a1d6c0c0fc9e36fa8b6a5fb1"
+    },
+    {
+      "path": "docs/roadmap/active.md",
+      "before_sha256": "67ea357906ecca8f36bd413b79227d462ff489e04315b111947a6aa7585f5770",
+      "after_sha256": "e2dd6a4429541ae36102b75dd32c8de24767775e7ee21b1fdf3e30fc4578509e"
+    },
+    {
+      "path": "docs/roadmap/next.md",
+      "before_sha256": "1726c962649f3d7c200b805683d818f9b31ccba0bccfa4361517489144a9003c",
+      "after_sha256": "ae7afe6b75da3f6996253e9d10f1f3696603519e9b9e299c8c84de948c200c68"
+    },
+    {
+      "path": "docs/roadmap/history.md",
+      "before_sha256": "54783deead4d037a1fef6e5721480b5653c596fab694b26e282813cd403117bc",
+      "after_sha256": "3239af50a18434b82e41675c272f8e6c0a35fef28c939d9819f6fac9ce43c059"
+    },
+    {
+      "path": "docs/roadmap/status.md",
+      "before_sha256": "9c2091d5124c66535889085dc8a1c166872d0cc48e2cda8706e05668517c3af6",
+      "after_sha256": "b90dc6011c722d502314df35cfbda3c83e59834f71e931b3a2af5cbf5ce163dd"
+    },
+    {
+      "path": "docs/roadmap/reconstruction_execution_plan.md",
+      "before_sha256": "abacc0b624334438bc5585683c15e1cd6a3f2d5dc5874e7715541cd9e1b6f7cf",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/hyperspectral-fusion.md",
+      "before_sha256": "51e2dedee630f883786ca817cea828d27e609f249bf6909e02196301d8f80f0b",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/wcs-small-n-investigation.md",
+      "before_sha256": "cc4ba140dd80cf3a43be1974310c418342c3b290ccdfd5a477c30809131f7dcd",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/wcs-aware-smacs0723-pipeline.md",
+      "before_sha256": "06334f9e9a9bd76972e3183f9a5d853bac2f98b1e15333da5c75cd66a5954638",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/smacs_inr_autonomous_bakeoff.md",
+      "before_sha256": "c2d5b233f986b35b70fbee5f8272fd7efd6f758ece344c0a0496895967487944",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/adass_updec_depth_week.md",
+      "before_sha256": "488a98f219397577da7ed33f2d6394e4d7dbc9232f4fe43b74a9ff3290c04d37",
+      "after_sha256": null
+    },
+    {
+      "path": "docs/projects/inr_foam_problem_formulation.md",
+      "before_sha256": "6f510434eb827fb6f66a76aaa882c5634a89b12f5f9238496413857fa053fbbd",
+      "after_sha256": "2cee436a62ca960b02ee0abb5d2974c4e1118e60ee874b7db1706bd5fbb680b3"
+    },
+    {
+      "path": "examples/example_image_mef.py",
+      "before_sha256": "d4f21982e2613222f2275c5912c38d2619dd76e8aabacfa4e278f8ca739994cc",
+      "after_sha256": "93c05b4629df13bbd82eea99c7f70b364313ca4fb4dfffbc53720e7e92e1029c"
+    },
+    {
+      "path": "examples/example_image.py",
+      "before_sha256": "79f1788f9fa6c0af2d0a1062a14be71e8af828cd6c3dc461746878fa423e6abd",
+      "after_sha256": "8b25098e8980c61f66750d541f346bb7aec760e61a5c6c03f815aa9fc576185a"
+    },
+    {
+      "path": "examples/example_table_interop.py",
+      "before_sha256": "76efd282bcf537b383ead022e1d8de8d13ae39e4af46474074bcd5230b8b909c",
+      "after_sha256": "d5bdd9fab96d66a8a8ba47995037f40e1a206f9de3b929513265f1b79f9bf5e9"
+    },
+    {
+      "path": "examples/example_map_field_survey_split.py",
+      "before_sha256": "8e2b8f53cf77e58cb7a28861aa42185a5f2f0b39184a0015af9866df8544df5c",
+      "after_sha256": "ac7b4d141044d221e867a9f7d91fff94da7b471fc51ae20b7f5c8cd987f0f25e"
+    },
+    {
+      "path": "examples/notebooks/02_multiband_hyperspectral_synthetic.ipynb",
+      "before_sha256": "5581c9ae8e9c0b7a4d54eef67e061f1f09ba024a25b7d9ae685584cef0830fe0",
+      "after_sha256": null
+    },
+    {
+      "path": "examples/notebooks/03_smacs0723_real_minicutout.ipynb",
+      "before_sha256": "9316bc1cb856d75f1ecf1280c3bbfbb8e82aa1e8036b0e294eb2b4e36c40f86f",
+      "after_sha256": null
+    },
+    {
+      "path": "examples/notebooks/01_field_fit_synthetic.ipynb",
+      "before_sha256": "02e0eb79a0c463e8eff7fa37c1159907b3b58980261126ea2bb281ac3c0a0234",
+      "after_sha256": null
+    },
+    {
+      "path": "scripts/astrometric_calibrate.py",
+      "before_sha256": "cd277b3400f6e1f12f52b42ffc4a7871f3d734a2fd94578585122ad58f81c02b",
+      "after_sha256": "1e7adec4ac31f664e44f281c7bdb10f241e812ae2152574e2f36cb99f860e17f"
+    },
+    {
+      "path": "scripts/apply_wcs_to_mef.py",
+      "before_sha256": "fb07b8afde5296528c5a04a72c5084afc243fc948757444b262bc5230c9dc893",
+      "after_sha256": "d02c95598146193fd178c25a457bd5142aa366fffd4ae288e322b2ec18d9a6f2"
+    },
+    {
+      "path": "scripts/tweakreg_align_exposures.py",
+      "before_sha256": "987f235a3bf36e8e5535171c71dc8029c8fcc05ed95a61802c1bb98f9bb139cd",
+      "after_sha256": null
+    }
+  ],
+  "unchanged_source_files": 170,
+  "subject_wheel": {
+    "filename": "torchsky-0.4.0.dev0-cp313-cp313-macosx_11_0_arm64.whl",
+    "sha256": "8557f0b964d446aa9b7002b6e6278cb8f189b7f6ce087241ee8f4a938f96f54a"
+  },
+  "harness_wheel": {
+    "filename": "torchsky_harness-0.1.0.dev0-py3-none-any.whl",
+    "sha256": "00b042a4d0d672a301bdf9c55aedfbea7632622076a28186bd781d813a573d4a"
+  },
+  "local_artifact_archive": ".local-artifacts/torchsky-before-cleanup-20261012",
+  "preserved_local_bytes": 4473814387,
+  "remaining_materialized_core_environments": [
+    "default",
+    "test"
+  ]
+}

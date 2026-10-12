@@ -20,7 +20,7 @@ package-dir = { torchsky_harness = "src/torchsky_harness", "torchsky_harness.ben
 include-package-data = true
 
 [tool.setuptools.package-data]
-torchsky_harness = ["fixtures/upstream_astropy_catalogs/*.xml", "fixtures/upstream_astropy_catalogs/*.md"]
+torchsky_harness = ["fixtures/upstream_astropy_catalogs/*.xml", "fixtures/upstream_astropy_catalogs/*.md", "fixtures/*.fits"]
 "torchsky_harness.benchmarks" = ["baselines/*.json", "baselines/*.md", "scorecards/*.json", "scorecards/*.md", "*.md"]
 "torchsky_harness.benchmarks.replays" = ["*.json"]
 "torchsky_harness.benchmarks.updc" = ["*.md"]
@@ -30,6 +30,9 @@ torchsky_harness = ["fixtures/upstream_astropy_catalogs/*.xml", "fixtures/upstre
 testpaths = ["tests"]
 markers = ["performance: scaling or performance evaluations", "integration: cross-domain evaluations", "slow: expensive scientific evaluations", "benchmark: opt-in scale or throughput evaluations"]
 filterwarnings = ["ignore::DeprecationWarning:torch.jit._script"]
+
+[tool.ruff]
+extend-exclude = ["build", "dist", "*.egg-info", ".local-artifacts"]
 
 [tool.ruff.lint.per-file-ignores]
 "benchmarks/**/*.py" = ["E402"]

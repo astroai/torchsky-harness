@@ -35,13 +35,9 @@ from torchsky.map import (  # noqa: E402
     SpectralBasisField,
     estimate_map_inverse_variance,
     estimate_field_domain,
-    evaluate_map_frontier_regions,
-    evaluate_map_uncertainty,
-    evaluate_map_product,
     field_image_quality_metrics,
     fit_field_model,
     make_field_model,
-    check_map_benchmark_regressions,
     render_field_cube,
     render_field_observation,
     render_field_observation_distribution,
@@ -51,6 +47,12 @@ from torchsky.map import (  # noqa: E402
     stack_map_product,
     suggest_num_spectral_samples,
     suggest_spectral_model_capacity,
+)
+from torchsky_harness.metrics import (
+    check_map_benchmark_regressions,
+    evaluate_map_frontier_regions,
+    evaluate_map_product,
+    evaluate_map_uncertainty,
     write_map_benchmark_artifacts,
 )
 from torchsky.map.field import (  # noqa: E402

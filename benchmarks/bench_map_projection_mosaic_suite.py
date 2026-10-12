@@ -27,7 +27,6 @@ from torchsky.map import (  # noqa: E402
     FieldObservation,
     ImageObservation,
     estimate_field_domain,
-    evaluate_map_product,
     fit_field_model,
     make_field_model,
     plan_map_product,
@@ -35,6 +34,7 @@ from torchsky.map import (  # noqa: E402
     render_field_product,
     stack_map_product,
 )
+from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 
 DEFAULT_TRUTH_METHODS = (

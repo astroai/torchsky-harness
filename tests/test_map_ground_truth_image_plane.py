@@ -8,7 +8,8 @@ import torch
 
 pytest.importorskip("torchsky.cpp")
 
-from torchsky.map import coadd_image_plane, evaluate_map_product
+from torchsky.map import coadd_image_plane
+from torchsky_harness.metrics import evaluate_map_product
 from torchsky_harness.benchmarks.bench_map_ground_truth import make_case
 
 

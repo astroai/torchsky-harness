@@ -22,12 +22,12 @@ from torchsky.map import (  # noqa: E402
     SkyEncoderMLPField,
     SpectralBasisField,
     estimate_field_domain,
-    evaluate_map_product,
     fit_field_model,
     plan_map_product,
     render_field_product,
     stack_map_product,
 )
+from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E402
 

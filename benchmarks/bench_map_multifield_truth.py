@@ -29,13 +29,15 @@ from torchsky.map import (  # noqa: E402
     ImageObservation,
     MapBandpassSpec,
     MapProductSpec,
-    check_map_benchmark_regressions,
     estimate_field_domain,
-    evaluate_map_product,
     fit_field_model,
     make_field_model,
     plan_map_product,
     stack_map_product,
+)
+from torchsky_harness.metrics import (  # noqa: E402
+    check_map_benchmark_regressions,
+    evaluate_map_product,
     write_map_benchmark_artifacts,
 )
 from torchsky.map.product import render_scene_product  # noqa: E402

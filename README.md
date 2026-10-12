@@ -37,4 +37,13 @@ existing durable locations. Historical reports retain their original cohort,
 software and calibration conventions; extraction does not rerun experiments.
 
 See `docs/` for migration ownership, verification and existing evaluation
-methodology. No CANFAR jobs are launched by installation or verification.
+methodology. Reusable map scoring and benchmark-row helpers live in
+[`torchsky_harness.metrics`](docs/map-metrics.md); they are harness APIs and do
+not load through `torchsky.map`. No CANFAR jobs are launched by installation or
+verification.
+
+Calibration evidence commands are `torchsky-harness calibration-manifest` and
+`torchsky-harness calibration-extract`; see [the evidence guide](docs/calibration-evidence.md).
+Experiment notebooks live in [`notebooks/`](notebooks/). The
+[second-pass extraction record](docs/second-pass-extraction.md) documents the
+remaining code moves, verification, and preserved local artifacts.
