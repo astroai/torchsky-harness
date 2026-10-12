@@ -1,0 +1,98 @@
+[
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F090Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F090Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F150Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F150Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F200Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F200Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F277Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F277Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F356Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F356Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F444Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/torchsky-data/updec_webb/F444Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "exists"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F090Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F090Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F150Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F150Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F200Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F200Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F277Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F277Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F356Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F356Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F444Wb_UPDC-v2_iter0_i2d.fits.fz",
+    "status": "404"
+  },
+  {
+    "node": "/projects/ots/jwst_smacs0723/data/updec_webb/F444Wb_UPDC-v2_iter10_i2d.fits.fz",
+    "status": "404"
+  }
+]

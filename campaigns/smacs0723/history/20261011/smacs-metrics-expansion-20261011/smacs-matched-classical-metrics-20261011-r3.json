@@ -1,0 +1,24 @@
+{
+  "run_id": "smacs-matched-classical-metrics-20261011-r3",
+  "hypothesis": "Score all eleven matched classical methods and the native coadd control on a shared support against SWarp Lanczos3, without waiting for neural fits",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "paired real-detector injections; validation only",
+  "cpu": 8,
+  "memory": 64,
+  "gpu": 0,
+  "pixi_environment": "smacs",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 10800,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,math,pathlib,runpy,sys\\nsource=pathlib.Path(sys.argv[1]);output=pathlib.Path(sys.argv[2]);methods=json.loads(sys.argv[3])\\narc=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010\")\\nprevious=arc/\"smacs-matched-metrics-recovery-20261011-r2\"\\ninputs=arc/\"smacs-native-inputs-response128-20261011-r3\"\\nprovenance_path=arc/\"smacs-matched-classical-metrics-20261011-r1\"/\"provenance.json\"\\nprovenance=json.loads(provenance_path.read_text())\\nassert provenance[\"methods\"]==methods,provenance[\"methods\"]\\nassert len(provenance[\"products\"])==240,len(provenance[\"products\"])\\nfor row in provenance[\"products\"]:assert pathlib.Path(row[\"path\"]).is_file(),row\\nfor batch,digest in provenance[\"source_progress\"][\"manifest_sha256\"].items():\\n assert hashlib.sha256((inputs/\"manifests\"/batch/\"manifest.json\").read_bytes()).hexdigest()==digest,batch\\ndef finite_json(value,path=\"$\",missing=None):\\n if missing is None:missing=[]\\n if isinstance(value,float) and not math.isfinite(value):\\n  missing.append({\"path\":path,\"original_value\":repr(value)})\\n  return None\\n if isinstance(value,dict):return {k:finite_json(v,path+\".\"+str(k),missing) for k,v in value.items()}\\n if isinstance(value,(list,tuple)):return [finite_json(v,path+\"[\"+str(i)+\"]\",missing) for i,v in enumerate(value)]\\n return value\\n\\nclass OutputJSON:\\n def __getattr__(self,name):return getattr(json,name)\\n def dumps(self,value,*args,**kwargs):\\n  if isinstance(value,dict) and \"per_method\" in value and \"selection_rule\" in value:\\n   missing=[];value=finite_json(value,missing=missing)\\n   value[\"serialization_audit\"]={\"policy\":\"Non-finite numerical outputs are unavailable and serialized as null; original gates and winner selection are unchanged.\",\"nonfinite_fields\":missing}\\n   (output/\"nonfinite-fields.json\").write_text(json.dumps(missing,indent=2,allow_nan=False)+\"\\\\n\")\\n  return json.dumps(value,*args,**kwargs)\\n\\nmissing=[]\\nassert finite_json({\"x\":[1.25,float(\"nan\"),float(\"inf\"),-float(\"inf\")]},missing=missing)=={\"x\":[1.25,None,None,None]}\\nassert [item[\"path\"] for item in missing]==[\"$.x[1]\",\"$.x[2]\",\"$.x[3]\"]\\nadapter=OutputJSON()\\nassert json.loads(adapter.dumps({\"per_method\":[],\"selection_rule\":\"test\",\"unavailable\":float(\"nan\")},allow_nan=False))[\"unavailable\"] is None\\nmetadata={\"previous_staging_provenance\":str(provenance_path),\"previous_staging_provenance_sha256\":hashlib.sha256(provenance_path.read_bytes()).hexdigest(),\"original_source_products_unchanged\":True,\"change\":\"Output serialization only; no numerical algorithm or selection gate changes\", \"depth_claim\":False}\\n(output/\"recovery-provenance.json\").write_text(json.dumps(metadata,indent=2)+\"\\\\n\")\\nsys.path.insert(0,str(source/\"benchmarks\"))\\nentry=runpy.run_path(str(source/\"benchmarks/score_field_models.py\"))\\nentry[\"main\"].__globals__[\"json\"]=adapter\\nsys.argv=[str(source/\"benchmarks/score_field_models.py\"),\"--input-root\",str(previous/\"merged\"),\\n \"--module\",\"b\",\"--bands\",\"F150W,F277W\",\\n \"--methods\",\",\".join(\"fitted_gaussian/\"+method for method in methods),\\n \"--validation-root\",str(inputs/\"manifests\"),\\n \"--measure-effective-psfs\",\"--resolution-reference-method\",\"fitted_gaussian/swarp_lanczos3\",\\n \"--out-dir\",str(output/\"scoring\")]\\nassert entry[\"main\"]()==0\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}",
+      "[\"coadd_bilinear\", \"torchsky_bilinear\", \"torchsky_lanczos3\", \"torchsky_conservative_polygon\", \"swarp_lanczos3\", \"torchsky_drizzle_pf0p600\", \"torchsky_drizzle_pf0p800\", \"torchsky_drizzle_pf1p000\", \"official_drizzle_pf0p600\", \"official_drizzle_pf0p800\", \"official_drizzle_pf1p000\", \"montagepy_mproject\"]"
+    ]
+  ],
+  "retry_reason": "Strict JSON serialization rejected undefined metrics after numerical scoring. Apply the tested summary serializer with nulls and explicit nonfinite-field audit; retain all original gates, data, and algorithms."
+}

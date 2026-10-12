@@ -1,0 +1,11 @@
+{
+  "impulse_stamp_flux_jy": [
+    9.328908471618189e-08,
+    0.0,
+    -9.328908471618189e-08
+  ],
+  "analytic_positive_flux_jy": 9.328908480967949e-08,
+  "zero_and_negative_flux_preserved": true,
+  "border_median_subtraction_verified": true,
+  "measurement": "point-source response; uniform diffuse flux removed by border-median subtraction"
+}

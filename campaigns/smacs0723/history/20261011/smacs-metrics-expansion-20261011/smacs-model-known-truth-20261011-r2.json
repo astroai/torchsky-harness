@@ -1,0 +1,39 @@
+{
+  "run_id": "smacs-model-known-truth-20261011-r2",
+  "hypothesis": "Known-truth SNR, reconstruction, per-band flux and artifact metrics for the fitted model families on multicolor and PSF-mismatch simulations with one detector observation held out",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "synthetic known truth",
+  "cpu": 8,
+  "memory": 64,
+  "gpu": 0,
+  "pixi_environment": "smacs",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 21600,
+  "commands": [
+    [
+      "python",
+      "{source}/scripts/run_local_sphere_bench.py",
+      "{source}/benchmarks/bench_map_field_fit.py",
+      "--cases",
+      "tan_sip_field_fit_multicolor,tan_field_fit_psf_mismatch",
+      "--models",
+      "coadd_bilinear,sine_implicit,sasnet,spectral_power_foam,gaussian_basis,explicit_spectral_grid_field,sky_lambda_feature_field",
+      "--size",
+      "64",
+      "--steps",
+      "120",
+      "--runs",
+      "1",
+      "--seed",
+      "101",
+      "--holdout-observations",
+      "1",
+      "--json-out",
+      "{output}/truth.json",
+      "--markdown-out",
+      "{output}/truth.md"
+    ]
+  ],
+  "retry_reason": "The existing synthetic benchmark mixes CPU truth tensors with CUDA tensors; evaluate its supported CPU path without changing science source"
+}

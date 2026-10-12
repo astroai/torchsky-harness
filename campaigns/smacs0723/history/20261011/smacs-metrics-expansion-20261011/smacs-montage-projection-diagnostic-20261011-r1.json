@@ -1,0 +1,27 @@
+{
+  "run_id": "smacs-montage-projection-diagnostic-20261011-r1",
+  "hypothesis": "Diagnose empty Montage failure messages by recording command exit signals, linked libraries and staged projection inputs on synthetic and real calibrated data",
+  "scientific_evidence": false,
+  "depth_claim": false,
+  "source_kind": "operational diagnostic",
+  "cpu": 8,
+  "memory": 32,
+  "gpu": 0,
+  "pixi_environment": "map-compat-cuda",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "commands": [
+    [
+      "python",
+      "-c",
+      "\nimport os,pathlib,subprocess,sys\nenv=dict(os.environ)\nenv[\"CFLAGS\"]=env.get(\"CFLAGS\",\"\")+\" -std=gnu17\"\nprint(\"Montage CFITSIO compatibility: CFLAGS adds -std=gnu17\",flush=True)\nsubprocess.check_call([sys.executable,str(pathlib.Path(sys.argv[1])/\"scripts/bootstrap_map_compat_tools.py\"),\"--tool\",\"montage\",\"--jobs\",\"8\"],env=env)\n",
+      "{source}"
+    ],
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,pathlib,runpy,shutil,subprocess,sys\\nsource=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2])\\nprint(\"fresh experiment interpreter\",sys.executable,flush=True)\\nsys.path.insert(0,str(source/\"benchmarks\"))\\nimport bench_map_compat as compat\\nfrom bench_map_ground_truth import make_case\\nfrom torchsky.map import ImageObservation\\nrecords=[]\\ndef project(binary,input_path,output_path,template_path):\\n folder=output/f\"command-{len(records):03d}\"; folder.mkdir()\\n for path in (input_path,template_path): shutil.copy2(path,folder/path.name)\\n result=subprocess.run([str(binary),str(input_path),str(output_path),str(template_path)],cwd=source,env=compat._external_tool_env(),capture_output=True,text=True,timeout=300)\\n row={\"binary\":str(binary),\"binary_sha256\":hashlib.sha256(binary.read_bytes()).hexdigest(),\"returncode\":result.returncode,\"stdout\":result.stdout,\"stderr\":result.stderr,\"input_copy\":str(folder/input_path.name),\"template_copy\":str(folder/template_path.name)}\\n records.append(row)\\n (output/\"commands.json\").write_text(json.dumps(records,indent=2)+\"\\\\n\")\\n print(\"Montage diagnostic\",json.dumps(row),flush=True)\\n if result.returncode==0: return True\\n if \"No overlap\" in result.stdout: return False\\n raise RuntimeError(json.dumps(row))\\ncompat._project_with_montage=project\\ndetails={}\\nfor name in (\"mProject\",\"mProjectPP\"):\\n path=compat._find_montage_binary(name)\\n details[name]={\"path\":str(path),\"sha256\":hashlib.sha256(path.read_bytes()).hexdigest(),\"ldd\":subprocess.run([\"ldd\",str(path)],capture_output=True,text=True).stdout}\\nif compat.MontageMain is not None:\\n for name in (\"mProject\",\"mProjectPP\"):\\n  fn=getattr(compat.MontageMain,name,None)\\n  details[\"MontagePy_\"+name]={\"doc\":str(getattr(fn,\"__doc__\",None))}\\n(output/\"binary-details.json\").write_text(json.dumps(details,indent=2)+\"\\\\n\")\\ntmp=output/\"synthetic\"; tmp.mkdir()\\nobservations,header,truth=make_case(tmp,case=\"tan_flux_multires\",size=64,seed=101)\\ncases=[(\"synthetic\",[o.observation for o in observations],header)]\\nnative=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-native-inputs-response128-20261011-r3/native-training-view/blank/manifest.json\")\\nmanifest=json.loads(native.read_text())\\nimport torchsky\\n_,header=torchsky.read(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/target-header128.fits\",return_header=True)\\ncases.append((\"real_native\",[ImageObservation(**next(r for r in manifest[\"rows\"] if r[\"band\"]==\"F150W\")[\"image_observation\"])],dict(header)))\\nfor name,observations,header in cases:\\n try:\\n  data,weight,mode,path=compat._coadd_with_montage(observations,target_header=header)\\n  print(name,\"complete\",mode,path,data.shape,int((weight>0).sum()),flush=True)\\n except Exception as error: print(name,type(error).__name__,str(error),flush=True)\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}"
+    ]
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "claim_status": "screening_only_linear_solver_selected_over_adam_and_coadd_on_validation",
+  "common_support_pixels": 237204,
+  "date": "2026-10-07",
+  "decision": "select fitted_gaussian__linear_band_grid_field (cold-start prior_reference='zero', 2x super-resolved 1024x1024 grid, Fisher-sensitivity weighted regularization, batched multi-exposure operator) on validation (m50=29.917 AB [29.750, 30.000], +1.417 mag over Adam grids and +0.417 mag over coadd_bilinear, pooled completeness 86.9% vs 81.0% coadd, flux bias +1.1%/+0.7%, effective FWHM 3.652/3.530 px, and 180x-253x end-to-end runtime speedup to 1.96-2.75 s/batch)",
+  "fixed_factors": {
+    "bands": [
+      "F150W",
+      "F277W"
+    ],
+    "damping": 0.005,
+    "max_cg_iterations": 64,
+    "module": "b",
+    "patt_nums": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8
+    ],
+    "prior_reference": "zero",
+    "product_size_px": 512,
+    "relative_regularization": true,
+    "scene_initialization": "none",
+    "smoothness_weight": 0.02,
+    "sources_per_batch": 28,
+    "spatial_resolution": 1024,
+    "target_purity": 0.95,
+    "validation_batches": 3
+  },
+  "methods": {
+    "fitted_gaussian__coadd_bilinear": {
+      "effective_fwhm_px": {
+        "F150W": 1.4289188385009766,
+        "F277W": 2.1067118644714355
+      },
+      "m50_ab": 29.5,
+      "m50_ci95_ab": [
+        29.33333396911621,
+        29.66666603088379
+      ],
+      "median_fractional_flux_bias": {
+        "F150W": -0.06298648999045853,
+        "F277W": -0.005594617731886409
+      },
+      "negative_lobe_fraction": {
+        "F150W": 0.0,
+        "F277W": 0.0
+      },
+      "pooled_completeness": 0.8095238095238095,
+      "pooled_purity": 1.0,
+      "resolution_gate_pass": true
+    },
+    "fitted_gaussian__linear_band_grid_field": {
+      "cg_iterations": {
+        "F150W": 45,
+        "F277W": 52
+      },
+      "cg_solve_seconds_blank": {
+        "F150W": 1.6530171558260918,
+        "F277W": 0.5490612462162971
+      },
+      "completeness_at_29p5_ab": 0.9166666666666666,
+      "completeness_at_30p0_ab": 0.5,
+      "effective_fwhm_px": {
+        "F150W": 3.652419328689575,
+        "F277W": 3.529930353164673
+      },
+      "fit_time_ms_blank": 2745.340660214424,
+      "fractional_flux_nmad": {
+        "F150W": 0.016260352983048627,
+        "F277W": 0.009597452159630262
+      },
+      "grid_shape": [
+        2,
+        1024,
+        1024
+      ],
+      "heldout_chi2_per_pixel_blank": {
+        "F150W": 2.451492594965098,
+        "F277W": 4.9685243777447745
+      },
+      "heldout_gaussian_nll_per_pixel_blank": {
+        "F150W": -1.8802063004633318,
+        "F277W": -1.7080587143313182
+      },
+      "m50_ab": 29.91666603088379,
+      "m50_ci95_ab": [
+        29.75,
+        30.0
+      ],
+      "mean_cell_arcsec": [
+        0.03185524579335673,
+        0.0318505082317853
+      ],
+      "median_fractional_flux_bias": {
+        "F150W": 0.010820505353429821,
+        "F277W": 0.00742930028812494
+      },
+      "negative_lobe_fraction": {
+        "F150W": 0.6152975559234619,
+        "F277W": 0.5467069745063782
+      },
+      "pooled_completeness": 0.8690476190476191,
+      "pooled_purity": 0.9605263157894737,
+      "resolution_gate_pass": true
+    },
+    "fitted_gaussian__linear_band_grid_field_r1_warmstart_512": {
+      "cg_iterations": {
+        "F150W": 30,
+        "F277W": 30
+      },
+      "cg_solve_seconds_blank": {
+        "F150W": 42.75560662001953,
+        "F277W": 9.485966824984644
+      },
+      "effective_fwhm_px": {
+        "F150W": 3.7985477447509766,
+        "F277W": 4.85353422164917
+      },
+      "fit_time_ms_blank": 494541.0,
+      "grid_shape": [
+        2,
+        512,
+        512
+      ],
+      "heldout_chi2_per_pixel_blank": {
+        "F150W": 3.0630633229622854,
+        "F277W": 8.074986026079586
+      },
+      "m50_ab": 29.75,
+      "m50_ci95_ab": [
+        29.66666603088379,
+        29.83333396911621
+      ],
+      "mean_cell_arcsec": [
+        0.06377283061957717,
+        0.06376334622527664
+      ],
+      "median_fractional_flux_bias": {
+        "F150W": 0.014688457339167904,
+        "F277W": 0.09808547076118179
+      },
+      "negative_lobe_fraction": {
+        "F150W": 0.5641178488731384,
+        "F277W": 0.4982026219367981
+      },
+      "pooled_completeness": 0.8333333333333334,
+      "pooled_purity": 0.9722222222222222,
+      "resolution_gate_pass": true
+    },
+    "footprint_grid_512": {
+      "effective_fwhm_px": {
+        "F150W": 5.041727542877197,
+        "F277W": 4.529369354248047
+      },
+      "grid_shape": [
+        512,
+        512,
+        4
+      ],
+      "heldout_chi2_per_pixel_blank": {
+        "F150W": 6.512257774907755,
+        "F277W": 18.183392647616143
+      },
+      "m50_ab": 28.5,
+      "m50_ci95_ab": [
+        28.25,
+        28.66666603088379
+      ],
+      "mean_cell_arcsec": [
+        0.06377283061957717,
+        0.06376334622527664
+      ],
+      "median_fractional_flux_bias": {
+        "F150W": -0.18875864148495491,
+        "F277W": 0.45008143007134604
+      },
+      "negative_lobe_fraction": {
+        "F150W": 0.7807177305221558,
+        "F277W": 0.3407469093799591
+      },
+      "pooled_completeness": 0.4642857142857143,
+      "pooled_purity": 0.9512195121951219,
+      "resolution_gate_pass": false
+    },
+    "legacy_grid": {
+      "effective_fwhm_px": {
+        "F150W": 4.7902069091796875,
+        "F277W": 4.874851703643799
+      },
+      "grid_shape": [
+        1024,
+        1024,
+        4
+      ],
+      "heldout_chi2_per_pixel_blank": {
+        "F150W": 6.4332100083783495,
+        "F277W": 18.770922316736243
+      },
+      "m50_ab": 28.5,
+      "m50_ci95_ab": [
+        28.25,
+        28.66666603088379
+      ],
+      "mean_cell_arcsec": [
+        0.14185118798016552,
+        0.14187980961799926
+      ],
+      "median_fractional_flux_bias": {
+        "F150W": -0.14324522602809253,
+        "F277W": 0.46163807971359994
+      },
+      "negative_lobe_fraction": {
+        "F150W": 0.6132099628448486,
+        "F277W": 0.25697213411331177
+      },
+      "pooled_completeness": 0.44047619047619047,
+      "pooled_purity": 0.9736842105263158,
+      "resolution_gate_pass": true
+    }
+  },
+  "profile": "smacs-linear-grid-solver-validation-screen",
+  "runs": {
+    "footprint_grid_512": "smacs-grid-val-footprint512-20260929-r1",
+    "legacy_grid": "smacs-grid-val-control-20260924-r3",
+    "linear_grid_pilot_128_r1": "smacs-linear-grid-20261006-r1",
+    "linear_grid_pilot_128_r3": "smacs-linear-stage1-20261007-r3",
+    "linear_grid_validation_512_r1": "smacs-linear-val-footprint512-20261006-r1",
+    "linear_grid_validation_512_r3": "smacs-linear-val-footprint512-20261007-r3",
+    "linear_grid_validation_512_r4": "smacs-linear-val-footprint512-20261007-r4"
+  },
+  "schema_version": 1,
+  "sessions": {
+    "footprint_grid_512": "xjb93a1r",
+    "legacy_grid": "brhmilwt",
+    "linear_grid_pilot_128_r1": "tt6un1ml",
+    "linear_grid_pilot_128_r3": "dd0d8301",
+    "linear_grid_validation_512_r3": "m8o5tf22",
+    "linear_grid_validation_512_r4": "z4pkepde"
+  },
+  "scoring": {
+    "artifact_root": "arc:projects/ots/torchsky-runs/smacs-linear-val-footprint512-20261007-r4/model-selection/",
+    "bootstrap_draws": 10000,
+    "common_support_pixels": 237204,
+    "depth_claim": false,
+    "selected_method": "fitted_gaussian__linear_band_grid_field",
+    "target_purity": 0.95
+  },
+  "stage1_pilot_128": {
+    "f150w": {
+      "bg_hf_ratio_vs_coadd": 0.7503934727269219,
+      "cg_iterations": 35,
+      "cg_relative_residual": 8.69934754456007e-07,
+      "cg_solve_seconds": 0.12210747599601746,
+      "source_contrast_rmse": 0.03524014929707366,
+      "source_contrast_slope": 1.1297199032510046,
+      "source_flux_ratio": 0.9800737254166402,
+      "support_flux_ratio": 0.9884837150061082,
+      "support_rmse": 0.012790332548320293,
+      "total_fit_time_ms": 385.08639112114906,
+      "val_chi2_per_pixel": 1.5129282246747136,
+      "val_gaussian_nll": -2.359169231679372
+    },
+    "f277w": {
+      "bg_hf_ratio_vs_coadd": 0.9681640287343503,
+      "cg_iterations": 45,
+      "cg_relative_residual": 8.556470936140274e-07,
+      "cg_solve_seconds": 0.05442824587225914,
+      "source_contrast_rmse": 0.05626828387820892,
+      "source_contrast_slope": 1.2828945470056703,
+      "source_flux_ratio": 1.0359141669589889,
+      "support_flux_ratio": 1.0009676567678722,
+      "support_rmse": 0.021211927756667137,
+      "total_fit_time_ms": 385.08639112114906,
+      "val_chi2_per_pixel": 1.957490109074794,
+      "val_gaussian_nll": -3.2261820719083047
+    }
+  }
+}

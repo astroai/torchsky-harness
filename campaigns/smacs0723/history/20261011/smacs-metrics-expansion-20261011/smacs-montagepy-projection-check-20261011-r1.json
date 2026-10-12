@@ -1,0 +1,21 @@
+{
+  "run_id": "smacs-montagepy-projection-check-20261011-r1",
+  "hypothesis": "Verify the locked official MontagePy projection implementation on exactly the inputs that crash the source-built Montage CLI before adding this explicitly named comparator",
+  "scientific_evidence": false,
+  "depth_claim": false,
+  "source_kind": "operational diagnostic",
+  "cpu": 8,
+  "memory": 32,
+  "gpu": 0,
+  "pixi_environment": "map-compat-cuda",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "commands": [
+    [
+      "python",
+      "-c",
+      "\nimport hashlib,importlib.metadata,json,pathlib,subprocess,sys\nfrom MontagePy import main\noutput=pathlib.Path(sys.argv[2]); inputs=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-montage-projection-diagnostic-20261011-r1\")\nreport={\"version\":importlib.metadata.version(\"MontagePy\"),\"module\":str(main.__file__),\"module_sha256\":hashlib.sha256(pathlib.Path(main.__file__).read_bytes()).hexdigest(),\"rows\":[]}\nfor index,name in ((0,\"mProjectPP\"),(1,\"mProject\")):\n folder=inputs/f\"command-{index:03d}\"; files=list(folder.glob(\"*in.fits\")); assert len(files)==1\n path=output/f\"{index}-{name}.fits\"\n code=\"import json,sys;from MontagePy import main;result=getattr(main,sys.argv[1])(sys.argv[2],sys.argv[3],sys.argv[4]);print(json.dumps(result))\"\n result=subprocess.run([sys.executable,\"-c\",code,name,str(files[0]),str(path),str(folder/\"target.hdr\")],capture_output=True,text=True,timeout=900)\n report[\"rows\"].append({\"method\":name,\"returncode\":result.returncode,\"stdout\":result.stdout,\"stderr\":result.stderr,\"output_exists\":path.is_file()})\n (output/\"montagepy-check.json\").write_text(json.dumps(report,indent=2)+\"\\n\")\n print(json.dumps(report[\"rows\"][-1]),flush=True)\nif any(row[\"returncode\"]!=0 or not row[\"output_exists\"] for row in report[\"rows\"]): raise RuntimeError(\"MontagePy diagnostic projection failed\")\n",
+      "{source}",
+      "{output}"
+    ]
+  ]
+}

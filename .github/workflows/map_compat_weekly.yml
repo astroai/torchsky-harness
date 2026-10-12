@@ -1,0 +1,112 @@
+name: Map compat manual acceptance
+env:
+  FORCE_COLOR: '1'
+  KMP_DUPLICATE_LIB_OK: 'TRUE'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+jobs:
+  map-mosaic-bench-weekly:
+    name: Map mosaic bench + compat gate (manual)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: astroai/torchsky
+        ref: ${{ inputs.subject_ref }}
+        path: .subject
+        token: ${{ secrets.SUBJECT_READ_TOKEN }}
+    - name: Install system dependencies (Ubuntu)
+      run: 'sudo apt-get update
+
+        sudo apt-get install -y build-essential
+
+        '
+    - uses: prefix-dev/setup-pixi@v0.8.0
+      with:
+        pixi-version: latest
+    - name: Install sphere-bench environment
+      run: pixi install --frozen -e sphere-bench
+    - name: Build editable torchsky (C++ extension)
+      run: 'pixi run -e sphere-bench -- pip install -e .subject --no-deps --no-build-isolation
+
+        pixi run -e sphere-bench -- pip install -e . --no-deps --no-build-isolation
+
+        '
+    - name: Run map evaluation tests
+      run: pixi run -e sphere-bench -- pytest tests/test_map_*.py tests/test_smacs_*.py tests/test_multiband_depth_benchmark.py -q --tb=short
+    - name: Map compat gate vs baseline
+      run: "pixi run -e sphere-bench -- python benchmarks/bench_map_compat.py \\\n  --size 32 --n-obs 2 --runs 1 \\\n  --cases synthetic_shifted_wcs \\\n  --torchsky-kernels bilinear \\\n  --reproject-kernels bilinear \\\n  --drizzle-kernels point \\\n  --swarp-kernels bilinear \\\n  --json-out benchmark_results/map_compat_weekly.json \\\n  --baseline-json benchmarks/baselines/map_compat_ci_gate.json\n"
+  official-workflow-comparators:
+    name: Official Drizzle, SWarp, and Montage comparators
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: astroai/torchsky
+        ref: ${{ inputs.subject_ref }}
+        path: .subject
+        token: ${{ secrets.SUBJECT_READ_TOKEN }}
+    - name: Install source-build dependencies
+      run: 'sudo apt-get update
+
+        sudo apt-get install -y build-essential autoconf automake libtool pkg-config
+
+        '
+    - uses: prefix-dev/setup-pixi@v0.8.0
+      with:
+        pixi-version: latest
+    - name: Install map-compat environment
+      run: pixi install --frozen -e map-compat
+    - name: Build editable torchsky
+      run: 'pixi run -e map-compat -- pip install -e .subject --no-deps --no-build-isolation
+
+        pixi run -e map-compat -- pip install -e . --no-deps --no-build-isolation
+
+        '
+    - name: Build pinned official SWarp and Montage sources
+      run: 'pixi run -e map-compat -- python scripts/bootstrap_map_compat_tools.py --tool swarp --force-source
+
+        pixi run -e map-compat -- python scripts/bootstrap_map_compat_tools.py --tool montage --force-source
+
+        '
+    - name: Require official workflow comparator rows
+      run: 'pixi run bench-map-drizzle-required
+
+        pixi run bench-map-swarp-required
+
+        pixi run bench-map-swarp-clipped-required
+
+        pixi run bench-map-montage-required
+
+        '
+    - uses: actions/upload-artifact@v4
+      with:
+        name: official-map-workflow-comparators
+        path: 'benchmark_results/map_drizzle_required.json
+
+          benchmark_results/map_drizzle_required.md
+
+          benchmark_results/map_swarp_required.json
+
+          benchmark_results/map_swarp_required.md
+
+          benchmark_results/map_swarp_clipped_required.json
+
+          benchmark_results/map_swarp_clipped_required.md
+
+          benchmark_results/map_montage_required.json
+
+          benchmark_results/map_montage_required.md
+
+          '
+'on':
+  workflow_dispatch:
+    inputs:
+      subject_ref:
+        description: Exact torchsky commit to evaluate
+        required: true
+        type: string

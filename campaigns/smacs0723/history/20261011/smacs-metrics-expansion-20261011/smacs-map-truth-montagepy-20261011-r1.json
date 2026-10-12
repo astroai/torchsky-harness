@@ -1,0 +1,21 @@
+{
+  "run_id": "smacs-map-truth-montagepy-20261011-r1",
+  "hypothesis": "Known-truth reconstruction and flux parity with the verified official MontagePy implementation on the previously failing non-aligned simulation",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "synthetic known truth",
+  "cpu": 8,
+  "memory": 32,
+  "gpu": 0,
+  "pixi_environment": "map-compat-cuda",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,pathlib,runpy,sys\\nsource=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2])\\nprint(\"fresh experiment interpreter\",sys.executable,flush=True)\\nsys.path.insert(0,str(source/\"benchmarks\"))\\n\\nimport importlib.metadata\\nimport bench_map_compat as montage_compat\\nfrom MontagePy import main as MontageMain\\nmontage_module=pathlib.Path(MontageMain.__file__)\\nmontage_compat._find_montage_binary=lambda name: montage_module if name==\"mProject\" else None\\ndef montagepy_project(unused_binary,input_path,output_path,template_path):\\n result=MontageMain.mProject(str(input_path),str(output_path),str(template_path),energyMode=False)\\n if str(result.get(\"status\"))==\"0\": return True\\n if \"No overlap\" in str(result.get(\"msg\",\"\")): return False\\n raise RuntimeError(\"MontagePy mProject: \"+json.dumps(result))\\nmontage_compat._project_with_montage=montagepy_project\\nmontage_implementation={\"backend\":\"official MontagePy mProject\", \"version\":importlib.metadata.version(\"MontagePy\"),\"module\":str(montage_module),\"sha256\":hashlib.sha256(montage_module.read_bytes()).hexdigest(),\"energyMode\":False,\"source_built_cli_status\":\"SIGSEGV; explicitly separate implementation\"}\\n\\nscript=source/\"benchmarks/bench_map_ground_truth.py\"\\nsys.argv=[str(script),\"--cases\",\"tan_aligned_high_noise,tan_multires_noise,tan_flux_multires\",\"--torchsky-kernels\",\"bilinear,lanczos3,conservative_polygon\",\"--include-external\",\"--size\",\"128\",\"--runs\",\"3\",\"--seed\",\"101\",\"--json-out\",str(output/\"truth.json\"),\"--markdown-out\",str(output/\"truth.md\")]\\ntry: runpy.run_path(str(script),run_name=\"__main__\")\\nexcept SystemExit as error:\\n if error.code not in (None,0): raise\\npath=output/\"truth.json\"; rows=json.loads(path.read_text())\\nfor row in rows:\\n if row.get(\"library\")==\"montage\":\\n  row[\"variant\"]=\"montagepy_mproject\"; row[\"implementation\"]=montage_implementation\\n  row[\"projection_executed\"]=row[\"case\"]!=\"tan_aligned_high_noise\"\\n  if row[\"value_semantics\"]==\"flux\": row[\"semantic_limit\"]=\"Legacy Montage comparator assumes surface brightness; this per-pixel flux case is an unconverted stress diagnostic, not a parity ranking\"\\npath.write_text(json.dumps(rows,indent=2)+\"\\\\n\")\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}"
+    ]
+  ]
+}
