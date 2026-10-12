@@ -1,0 +1,9 @@
+{
+  "claim": "A 20% flux reduction remains 20% after converting MJy/sr to Jy",
+  "pixel_area_sr": 9.328908480967945e-14,
+  "truth_flux_jy": 3.7315633981231666e-07,
+  "output_flux_jy": 2.985250718498534e-07,
+  "unit_aware_relative_error": 0.19999999999999984,
+  "map_evaluator_clamped_relative_error": 7.4631275310821366e-06,
+  "conclusion": "Use unit-aware direct ratios; the evaluator floor masks this error"
+}

@@ -1,0 +1,1596 @@
+[
+  {
+    "source": "tests/test_bootstrap_map_compat_tools.py",
+    "destination": "tests/test_bootstrap_map_compat_tools.py",
+    "mode": "whole",
+    "original_sha256": "46e7b4fd34155e7748d32cb1726d421e50107a443367e8f584b8a59a25074905",
+    "migrated_test_functions": [
+      "test_bootstrap_reuses_environment_swarp",
+      "test_failed_configure_preserves_diagnostic_and_original_error",
+      "test_successful_configure_does_not_publish_stale_log",
+      "test_swarp_build_env_exposes_conda_shared_dependencies"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_build_smacs0723_minicutout.py",
+    "destination": "tests/test_build_smacs0723_minicutout.py",
+    "mode": "whole",
+    "original_sha256": "437b29d210f7d95e10ad8d6ae2b2ab0f46b912a180890475c7f2df6e7f1da484",
+    "migrated_test_functions": [
+      "test_cutout_builder_records_crop_metadata",
+      "test_cutout_builder_validates_crop_size",
+      "test_manifest_path_allows_external_data_root",
+      "test_manifest_path_is_relative_inside_repo",
+      "test_minicutout_and_stack_baseline_end_to_end",
+      "test_stack_baseline_missing_manifest_error",
+      "test_stack_baseline_observations_from_manifest",
+      "test_stack_baseline_resolves_manifest_paths"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_build_updc_manifest_flexible.py",
+    "destination": "tests/test_build_updc_manifest_flexible.py",
+    "mode": "whole",
+    "original_sha256": "bc8bd562b113629dbc0411104d9313fab22597d7be8acc38a9e1ae93a2a65283",
+    "migrated_test_functions": [
+      "test_manifest_pairing_rejects_ambiguous_inputs_and_preserves_output"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_canfar_wcs_sphere_runner.py",
+    "destination": "tests/test_canfar_wcs_sphere_runner.py",
+    "mode": "whole",
+    "original_sha256": "0420c6afd580b0e78222d43e060cd73531dfe0cff90187f7d38a312475b89e0a",
+    "migrated_test_functions": [
+      "test_canfar_wcs_sphere_launcher_payload_has_no_shell_vars",
+      "test_canfar_wcs_sphere_runner_contract",
+      "test_catalog_compat_fits_tables_write_numeric_columns"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_catalog_compat.py",
+    "destination": "tests/test_catalog_compat.py",
+    "mode": "split",
+    "original_sha256": "57d00d6b853d589f00d10647b38883872a3475621a40dc8617ff2b3868afdae7",
+    "migrated_test_functions": [
+      "test_crossmatch_sky_end_to_end_matches_astropy_after_fits_read_on_real_catalogs",
+      "test_crossmatch_sky_matches_astropy_on_real_votable_catalogs",
+      "test_crossmatch_sky_matches_astropy_on_wrap_and_pole_cases",
+      "test_crossmatch_sky_matches_astropy_skycoord_on_random_catalogs"
+    ],
+    "retained_test_functions": [
+      "test_crossmatch_sky_matches_cpu_results_on_cuda",
+      "test_crossmatch_sky_per_row_radius"
+    ]
+  },
+  {
+    "source": "tests/test_compare_catalogs_qa.py",
+    "destination": "tests/test_compare_catalogs_qa.py",
+    "mode": "whole",
+    "original_sha256": "dde61e84b23c568680da7196382c8e96560e12da5ee956949f1dad50ed62db83",
+    "migrated_test_functions": [
+      "test_association_is_one_to_one_when_candidates_share_a_reference",
+      "test_boundary_radius_discriminates",
+      "test_counts_and_statistics_on_synthetic_pairs",
+      "test_main_writes_json_report",
+      "test_snr_bins_reported_when_reference_snr_given"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_compare_smacs_grid_mapping.py",
+    "destination": "tests/test_compare_smacs_grid_mapping.py",
+    "mode": "whole",
+    "original_sha256": "968a416d596910233b007179dfe85e3016e597e6b46555df949590b708569dde",
+    "migrated_test_functions": [
+      "test_cli_option_records_allowed_spatial_resolution_change",
+      "test_compare_runs_allows_only_opted_in_spatial_resolution_change",
+      "test_compare_runs_rejects_non_mapping_experiment_changes",
+      "test_compare_runs_rejects_reversed_mapping_roles",
+      "test_compare_runs_reports_matched_screening_deltas"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_download_jwst_smacs0723_mast.py",
+    "destination": "tests/test_download_jwst_smacs0723_mast.py",
+    "mode": "whole",
+    "original_sha256": "3b93050a9ed6140f68b13a0783cd1458ebec74b78bd31c3e46c3c5a77f8978fd",
+    "migrated_test_functions": [
+      "test_detector_module_tokens_support_short_and_long_bands",
+      "test_download_product_rejects_truncated_download",
+      "test_download_product_renames_complete_part_file",
+      "test_select_products_can_filter_by_filename",
+      "test_select_products_collects_all_observations_and_deduplicates",
+      "test_select_products_matches_prefixed_subgroup"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_download_smacs0723_multiband_public.py",
+    "destination": "tests/test_download_smacs0723_multiband_public.py",
+    "mode": "whole",
+    "original_sha256": "fa3b718e8f846e5baa9aaa631fb9b76138eb02112b81df51de888dcfe7ea5828",
+    "migrated_test_functions": [
+      "test_default_public_exposure_caps_match_short_and_long_bands"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_download_updec_webb.py",
+    "destination": "tests/test_download_updec_webb.py",
+    "mode": "whole",
+    "original_sha256": "2a3c9a6a313ca5273d560023a35e447e09d5f12d4724fc11ea6fa5e8f85eb426",
+    "migrated_test_functions": [
+      "test_download_spec_raises_after_final_retry",
+      "test_download_spec_retries_transient_urlerror"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_healpix_parity.py",
+    "destination": "tests/test_healpix_parity.py",
+    "mode": "split",
+    "original_sha256": "881c72d91e7724a5764f96c7be09d337d0f590f87e8d2be540c86348188f4d37",
+    "migrated_test_functions": [
+      "test_ang2pix_nested_matches_healpy",
+      "test_ang2pix_ring_matches_healpy",
+      "test_boundaries_matches_healpy",
+      "test_center_roundtrip_for_all_pixels",
+      "test_get_all_neighbours_matches_healpy",
+      "test_get_interp_val_matches_healpy",
+      "test_get_interp_weights_matches_healpy",
+      "test_interp_edge_cases_match_healpy",
+      "test_pix2ang_nested_matches_healpy",
+      "test_pix2ang_ring_matches_healpy",
+      "test_pix2vec_matches_healpy",
+      "test_query_disc_matches_healpy",
+      "test_query_polygon_matches_healpy",
+      "test_query_polygon_random_convex_matches_healpy",
+      "test_query_strip_matches_healpy",
+      "test_reorder_matches_healpy",
+      "test_ring2nest_equatorial_band_matches_healpy",
+      "test_ring_nest_conversions_match_healpy",
+      "test_scalar_validators_and_order_match_healpy",
+      "test_ud_grade_badmask_and_pess_matches_healpy",
+      "test_ud_grade_matches_healpy",
+      "test_ud_grade_multimap_matches_healpy",
+      "test_vec2pix_matches_healpy",
+      "test_vector_angle_wrappers_match_healpy"
+    ],
+    "retained_test_functions": [
+      "test_cuda_matches_cpu_small_sample",
+      "test_mps_matches_cpu_small_sample",
+      "test_ud_grade_custom_badval_is_respected"
+    ]
+  },
+  {
+    "source": "tests/test_healsparse_upstream.py",
+    "destination": "tests/test_healsparse_upstream.py",
+    "mode": "whole",
+    "original_sha256": "06e62f156aceda19ea48a5e0cd55c8212f0243355b3fe72c71e797842b4ab8b7",
+    "migrated_test_functions": [
+      "test_healsparse_bool_degrade_matches_upstream_dense_behavior",
+      "test_healsparse_coverage_mask_matches_upstream",
+      "test_healsparse_degrade_matches_upstream_mean_semantics",
+      "test_healsparse_geom_circle_coverage_matches_upstream_sparse_mask",
+      "test_healsparse_get_values_matches_upstream",
+      "test_healsparse_quickstart_make_empty_update_and_valid_pixels_match",
+      "test_healsparse_reads_upstream_written_fits",
+      "test_healsparse_sum_union_and_intersection_match_upstream",
+      "test_healsparse_ud_grade_coverage_resolution_matches_upstream",
+      "test_healsparse_write_read_partial_and_header_roundtrip"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_inr_pcg.py",
+    "destination": "tests/test_inr_pcg.py",
+    "mode": "split",
+    "original_sha256": "31eaa9fc438a34d760ca38b1aa292da33f139624cfb667e1feba8f02b76e673e",
+    "migrated_test_functions": [
+      "test_native_training_view_preserves_detector_background_weight_and_mask",
+      "test_neural_pcg_cli_rejects_a_grid_only_request",
+      "test_neural_pcg_refines_native_detector_likelihood"
+    ],
+    "retained_test_functions": [
+      "test_neural_pcg_backtracks_a_nonlinear_step",
+      "test_neural_pcg_matches_dense_linear_normal_equations",
+      "test_neural_pcg_sums_blocks_and_rejects_nonfinite_input"
+    ]
+  },
+  {
+    "source": "tests/test_inr_perf.py",
+    "destination": "tests/test_inr_perf.py",
+    "mode": "whole",
+    "original_sha256": "9b7183a633c49e48f363378d79353d13e34361734a285b9ca925a75df1147e2a",
+    "migrated_test_functions": [
+      "test_default_perf_cases_cover_recommended_models",
+      "test_inr_perf_exports_public_api",
+      "test_inr_render_and_coadd_quality",
+      "test_inr_render_quality_cuda",
+      "test_inr_render_quality_mps",
+      "test_inr_swarp_parity",
+      "test_inr_throughput_device_independent",
+      "test_inr_training_reduces_loss",
+      "test_inr_training_throughput_cuda",
+      "test_inr_training_throughput_mps",
+      "test_perf_specs_are_well_formed"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_compat_bench.py",
+    "destination": "tests/test_map_compat_bench.py",
+    "mode": "whole",
+    "original_sha256": "39de32f9da8a662a374ee749f2fc5d6604800710e20c358a8eccf25c300bc358",
+    "migrated_test_functions": [
+      "test_acceptance_contracts_enforce_presence_identity_and_bounds",
+      "test_align_array_to_target_falls_back_to_torchsky_when_reproject_missing",
+      "test_build_compat_markdown_includes_geometry_family_columns",
+      "test_check_time_regressions_flags_slow_rows",
+      "test_comparator_reference_variant_matches_semantics",
+      "test_compat_default_torchsky_kernels_include_conservative_overlap",
+      "test_competitive_runner_uses_rectangular_extent_for_case_size",
+      "test_conservative_overlap_parity_row_compares_support_masks",
+      "test_dfreproject_validation_allows_plain_tan_headers",
+      "test_dfreproject_validation_skips_pv_distorted_source_headers",
+      "test_diff_summary_can_limit_weight_metrics_to_common_support",
+      "test_diff_summary_reports_common_support_metrics_for_coverage_masks",
+      "test_erode_support_requires_a_complete_kernel_footprint",
+      "test_known_large_union_boundary_hotspot_reproduces_against_swarp",
+      "test_montage_header_template_includes_core_fits_cards",
+      "test_plan_image_plane_target_matches_montage_style_template",
+      "test_plan_image_plane_target_matches_montage_template_cdelta_only",
+      "test_projection_mosaic_suite_annotates_stack_vs_inr_against_best_direct",
+      "test_projection_mosaic_suite_full_profile_expands_to_all_families",
+      "test_projection_mosaic_suite_markdown_includes_inr_common_psf_columns",
+      "test_projection_mosaic_suite_parse_name_list_requires_values",
+      "test_projection_mosaic_suite_parses_inr_model_specs",
+      "test_projection_mosaic_suite_parses_projection_cases",
+      "test_projection_mosaic_suite_parses_stack_vs_inr_cases",
+      "test_projection_mosaic_suite_projection_header_sets_expected_cards",
+      "test_projection_mosaic_suite_quick_profile_covers_projection_breadth",
+      "test_projection_mosaic_suite_support_region_masks_split_positive_weights",
+      "test_required_comparator_gate_rejects_skips_and_missing_rows",
+      "test_swarp_source_header_translates_sip_to_equivalent_tpv",
+      "test_swarp_weighted_coadd_uses_direct_sum_on_aligned_inputs",
+      "test_tan_rect_weighted_masked_tan_case_stays_pure_tan",
+      "test_tan_sip_suite_full_profile_defaults_include_graduation_extent",
+      "test_tan_sip_suite_parses_diversity_case_specs",
+      "test_tan_sip_suite_parses_extent_specs",
+      "test_tan_sip_suite_parses_method_specs",
+      "test_tan_sip_suite_quick_profile_defaults_are_routine_sized",
+      "test_write_swarp_config_includes_requested_fscalastro_type",
+      "test_write_swarp_config_records_clipping_controls",
+      "test_write_swarp_config_rejects_unknown_fscalastro_type"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_conservative_external_parity.py",
+    "destination": "tests/test_map_conservative_external_parity.py",
+    "mode": "whole",
+    "original_sha256": "e4a152ce27831949e9939fc2c52d574b2da8219ac767cbb83d84896812079de8",
+    "migrated_test_functions": [
+      "test_conservative_polygon_parity_matches_reproject_exact_data_and_support",
+      "test_conservative_polygon_parity_respects_weight_and_mask_maps"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_dfreproject_parity.py",
+    "destination": "tests/test_map_dfreproject_parity.py",
+    "mode": "whole",
+    "original_sha256": "5dfa465e559d20aaf8ce972137c2ca0a348ad87fd3c21b11e7f4441e9ab288ab",
+    "migrated_test_functions": [
+      "test_torchsky_bilinear_close_to_dfreproject_on_shifted_grid"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_drizzle_external_parity.py",
+    "destination": "tests/test_map_drizzle_external_parity.py",
+    "mode": "whole",
+    "original_sha256": "f27f8790ca0898c1d814488cad459822d8b84fae79c34f8bfa59c8fce9caac74",
+    "migrated_test_functions": [
+      "test_external_drizzle_parity_across_affine_cases",
+      "test_external_drizzle_parity_respects_weight_and_mask_maps",
+      "test_external_drizzle_parity_square_support_matches_weighted_uniform_field"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_external_tools_smoke.py",
+    "destination": "tests/test_map_external_tools_smoke.py",
+    "mode": "whole",
+    "original_sha256": "0f0332d569b5594fda793aa3aea27ab7418f5456e67018880c2f58c86a49ab63",
+    "migrated_test_functions": [
+      "test_montage_binary_probe_returns_none_or_existing_path",
+      "test_montage_binary_probe_uses_installed_image_tools",
+      "test_swarp_binary_probe_returns_none_or_existing_path"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_field_fit.py",
+    "destination": "tests/test_map_field_fit.py",
+    "mode": "whole",
+    "original_sha256": "e74e89cfd9420c7eed046207785f76c68b19b2258563c790e58c0b541bdd9aca",
+    "migrated_test_functions": [
+      "test_field_fit_benchmark_builds_physically_capped_experimental_fields",
+      "test_field_fit_benchmark_can_construct_every_registered_candidate",
+      "test_field_fit_benchmark_chunked_product_render_matches_full_render",
+      "test_field_fit_benchmark_emits_recommendations",
+      "test_field_fit_benchmark_evaluates_sparse_large_mosaic_cases",
+      "test_field_fit_benchmark_improves_loss",
+      "test_field_fit_benchmark_markdown_surfaces_support_metrics",
+      "test_field_fit_benchmark_named_candidate_sets_are_complete",
+      "test_field_fit_benchmark_reports_uncertainty_for_coadd_and_field",
+      "test_field_fit_benchmark_reserves_complete_heldout_observations",
+      "test_field_fit_benchmark_reserves_psf_guarded_sky_quadrant",
+      "test_field_fit_benchmark_step_profile_overrides_sparse_frontier_cases",
+      "test_field_fit_benchmark_supports_analytic_truth_and_coadd_baseline",
+      "test_field_fit_benchmark_supports_explicit_spectral_grid_field",
+      "test_field_fit_benchmark_supports_low_overlap_depth_case",
+      "test_field_fit_benchmark_supports_operator_constrained_feature_field",
+      "test_field_fit_benchmark_supports_psf_mismatch_case",
+      "test_field_fit_benchmark_supports_sky_lambda_kplanes_field",
+      "test_field_fit_benchmark_supports_sparse_large_mosaic_cases",
+      "test_field_fit_benchmark_supports_tan_sip_deep_multiband_broad_case",
+      "test_field_fit_benchmark_supports_tan_sip_multicolor_case",
+      "test_field_fit_benchmark_supports_tpv_deep_multiband_broad_case",
+      "test_field_fit_benchmark_supports_tpv_deep_multiband_exact_case",
+      "test_field_fit_benchmark_uses_tuned_sky_encoder_configs_for_exact_cases",
+      "test_field_fit_benchmark_uses_tuned_sky_encoder_resmlp_config_for_tpv_exact_case",
+      "test_field_fit_benchmark_uses_tuned_sky_encoder_resmlp_configs_for_broad_cases",
+      "test_field_fit_benchmark_uses_tuned_spectral_basis_configs_for_exact_cases",
+      "test_field_fit_benchmark_uses_tuned_structured_broad_defaults",
+      "test_tan_exact_transmission_case_populates_all_target_bands_in_coadd_baseline"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_ground_truth.py",
+    "destination": "tests/test_map_ground_truth.py",
+    "mode": "whole",
+    "original_sha256": "c369c4c9648e6494c49931aa45c3462593627fbefb3538614f446e7d8c9fd47b",
+    "migrated_test_functions": [
+      "test_distorted_quadrature_batches_world_to_pixel_calls",
+      "test_distorted_sources_enable_target_pixel_quadrature",
+      "test_map_ground_truth_cases_stay_bounded",
+      "test_map_ground_truth_conservative_polygon_reports_conservative_geometry",
+      "test_map_ground_truth_emits_kernel_recommendations",
+      "test_map_ground_truth_field_fit_row_is_finite_and_optimized",
+      "test_map_ground_truth_flux_cases_stay_flux_conservative",
+      "test_map_ground_truth_high_noise_degrades_against_low_noise",
+      "test_map_ground_truth_joint_teb_inverse_row_is_finite_and_improves_fit",
+      "test_map_ground_truth_random10_large_union_metadata",
+      "test_map_ground_truth_random10_rect_weighted_masked_metadata",
+      "test_map_ground_truth_scene_render_rows_share_product_metrics",
+      "test_map_ground_truth_spherical_rows_are_finite",
+      "test_prepare_target_caches_quadrature_world_grids",
+      "test_prepare_target_skips_quadrature_world_grids_by_default",
+      "test_random10_rect_tpv_headers_are_locally_invertible",
+      "test_tpv_roundtrip_validity_gate_not_enabled_by_default",
+      "test_tpv_roundtrip_validity_mask_bypasses_filtering_for_tpv"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_megapipe_scale.py",
+    "destination": "tests/test_map_megapipe_scale.py",
+    "mode": "whole",
+    "original_sha256": "fc3287344e5610f160c7b051be4c97067472436426356fa72a727f4454463ad3",
+    "migrated_test_functions": [
+      "test_megapipe_scale_torchsky_beats_swarp_on_speed",
+      "test_megapipe_scale_torchsky_no_oom"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_multifield_truth.py",
+    "destination": "tests/test_map_multifield_truth.py",
+    "mode": "whole",
+    "original_sha256": "098c4574278ec3ebb829753d8209b37442f91e39f3e8a6e340737c8842220dc4",
+    "migrated_test_functions": [
+      "test_multifield_random10_case_has_large_mixed_resolutions",
+      "test_multifield_truth_cases_stay_bounded",
+      "test_multifield_truth_conservative_polygon_reports_conservative_geometry",
+      "test_multifield_truth_emits_recommendations",
+      "test_multifield_truth_field_fit_row_is_finite_and_optimized",
+      "test_multifield_truth_joint_spherical_inverse_row_is_finite_and_improves_fit",
+      "test_multifield_truth_spherical_rows_are_finite",
+      "test_multifield_truth_supports_rectangular_variable_input_sizes"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_reducer_scorecard.py",
+    "destination": "tests/test_map_reducer_scorecard.py",
+    "mode": "whole",
+    "original_sha256": "8b66b65d846a4bd1a213686a6d914221a5e9bbc2e7de5bb746e762b875188930",
+    "migrated_test_functions": [
+      "test_reducer_scorecard_worker_reports_bounded_exact_scratch"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_reproject_fft_parity.py",
+    "destination": "tests/test_map_reproject_fft_parity.py",
+    "mode": "whole",
+    "original_sha256": "e072ceadd9b30727ea5574452f430f065148f94b13a57e5261338f1b229af006",
+    "migrated_test_functions": [
+      "test_reproject_adaptive_runs_and_is_finite_on_shifted_tan_grid",
+      "test_reproject_healpix_roundtrip_large_field",
+      "test_reproject_healpix_roundtrip_skipped_when_no_coverage",
+      "test_torchsky_bicubic_reasonably_close_to_reproject_interp_on_shifted_grid",
+      "test_torchsky_bilinear_matches_reproject_interp_on_shifted_grid"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_field_fit.py",
+    "destination": "tests/test_map_smacs0723_field_fit.py",
+    "mode": "whole",
+    "original_sha256": "c9791862e986c636acb1f7c61dff6fdf9756be8714d5c403cac265367867563d",
+    "migrated_test_functions": [
+      "test_crop_header_preserves_detector_subarray_origin",
+      "test_field_observation_kwargs_for_band_can_disable_bandpass",
+      "test_field_observation_kwargs_for_band_define_non_degenerate_bandpass",
+      "test_field_target_gaussian_psf_is_declared_optical_only",
+      "test_per_exposure_scalar_bias_uses_forward_context_index",
+      "test_real_fit_kwargs_use_pixel_sampling_for_exact_wavelength_debug_mode",
+      "test_robust_intensity_scale_uses_weighted_rms",
+      "test_scaled_field_observation_preserves_bandpass_metadata",
+      "test_summarize_row_markdown_lists_models"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_field_fit_band_sweep.py",
+    "destination": "tests/test_map_smacs0723_field_fit_band_sweep.py",
+    "mode": "whole",
+    "original_sha256": "2273f5951ac7377e912ee22b7580092836114895d5d1ad3ac070bb146a60fec6",
+    "migrated_test_functions": [
+      "test_band_sweep_markdown_lists_band_and_model",
+      "test_band_sweep_source_mentions_best_overlap_strategy"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_field_fit_joint.py",
+    "destination": "tests/test_map_smacs0723_field_fit_joint.py",
+    "mode": "whole",
+    "original_sha256": "3ab0646d2deb691d1b3ce4d206adf7dbcb86d02a4075665cd0e334e75ebc4308",
+    "migrated_test_functions": [
+      "test_background_subtracted_source_stats_remove_pedestal",
+      "test_calibrated_bundles_select_frozen_models_by_detector",
+      "test_calibration_sample_exclusions_use_full_detector_coordinates",
+      "test_common_scene_initializer_allows_wire",
+      "test_comparison_constructor_override_reaches_model_and_report",
+      "test_comparison_constructor_override_rejects_nonmapping",
+      "test_comparison_gaussian_splat_uses_product_initialization",
+      "test_comparison_optimizer_override_rejects_invalid",
+      "test_comparison_optimizer_override_survives_model_caps",
+      "test_cross_fitted_predictions_exclude_exactly_the_held_out_exposure",
+      "test_detector_crop_scores_only_target_footprint",
+      "test_exposure_calibration_is_shared_across_overlapping_cutouts",
+      "test_fixed_foam_freezes_only_geometry",
+      "test_foam_initialization_entries_use_common_wcs_and_product_band_order",
+      "test_foam_target_footprint_bounds_use_only_wcs_geometry",
+      "test_frozen_calibrated_background_follows_scene_intensity_scale",
+      "test_full_observation_comparison_uses_all_pixels_and_bounded_tiles",
+      "test_grid_target_footprint_bounds_add_gaussian_psf_halo",
+      "test_grid_target_footprint_bounds_reject_invalid_psf",
+      "test_grid_target_sampling_diagnostics_reports_target_intervals",
+      "test_joint_architecture_comparison_uses_matching_patch_objective",
+      "test_joint_benchmark_import_does_not_require_astropy",
+      "test_joint_field_fit_markdown_lists_summary_and_band_rows",
+      "test_joint_field_fit_markdown_summarizes_exact_refinement",
+      "test_joint_field_fit_summary_averages_rows_by_model",
+      "test_joint_fitted_psf_uses_frozen_band_contract_and_local_pixel_scale",
+      "test_joint_foam_coadd_initializer_covers_cells_and_spectral_bands",
+      "test_joint_foam_coadd_initializer_handles_empty_support",
+      "test_joint_foam_coadd_initializer_populates_affine_gradients",
+      "test_joint_foam_exact_observation_refinement_recovers_native_pixels",
+      "test_joint_real_fit_kwargs_preserve_psf_with_streamed_tiles",
+      "test_joint_real_foam_fit_bounds_psf_training_and_diagnostics",
+      "test_joint_real_foam_fit_scales_tiles_with_grid_capacity",
+      "test_joint_sasnet_uses_real_training_pixel_scale",
+      "test_joint_scene_export_integrates_a_quadratic_pixel",
+      "test_joint_scene_initialization_handles_foam_and_hybrid_without_double_seed",
+      "test_joint_scene_initialization_none_policy_leaves_model_unchanged",
+      "test_joint_scene_initialization_sets_positive_inr_constant",
+      "test_joint_scene_initialization_supports_default_model_arms",
+      "test_latent_scene_initialization_improves_prediction_through_active_psf",
+      "test_latent_scene_initialization_is_order_invariant",
+      "test_latent_scene_initialization_stays_finite_for_bright_data",
+      "test_linear_band_grid_scene_fits_validates_renders_and_saves_artifact",
+      "test_linear_band_grid_scene_fits_with_stationary_calibrated_bundles_and_scores_validation",
+      "test_nominal_learned_psf_arm_declares_optical_only_response",
+      "test_positive_inr_initialization_handles_mean_below_floor",
+      "test_preview_uint8_returns_byte_image",
+      "test_regular_foam_final_temperature_localizes_cell_values",
+      "test_regular_foam_footprint_extent_covers_normalized_domain",
+      "test_regular_foam_initialization_can_fill_rectangular_target_bounds",
+      "test_regular_foam_initialization_is_deterministic_and_pixel_independent",
+      "test_regular_foam_temperature_is_scale_invariant_in_cell_units",
+      "test_sasnet_common_initialization_preserves_upstream_gradient_flow",
+      "test_scene_initialization_product_is_persisted_with_hashes",
+      "test_source_metric_mask_prefers_bright_reference_structure",
+      "test_structured_noise_bundles_are_frozen_and_exposure_aligned",
+      "test_structured_noise_diagnostics_report_calibrated_coverage",
+      "test_structured_scene_kwargs_disable_invalid_sampling_approximations",
+      "test_surface_brightness_noise_diagnostics_cancel_affine_plane_and_calibrate_rms",
+      "test_training_mean_background_reference_uses_only_calibration_training_samples",
+      "test_training_scene_initialization_aligns_observations_on_target_wcs",
+      "test_training_scene_initialization_is_order_invariant",
+      "test_training_scene_initialization_preserves_tabulated_response",
+      "test_training_scene_initialization_propagates_zero_weight_support",
+      "test_training_scene_initialization_rejects_held_out_or_mixed_units",
+      "test_training_scene_initialization_subtracts_background_and_orders_bands",
+      "test_write_export_products_writes_fits_and_png"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_real.py",
+    "destination": "tests/test_map_smacs0723_real.py",
+    "mode": "whole",
+    "original_sha256": "6c0a1b227c2459e2d6462fb133522fead9d5905be94817378c29e3a3fed484f5",
+    "migrated_test_functions": [
+      "test_approx_overlap_grid_counts_projected_headers",
+      "test_band_helpers_resolve_reference_and_wavelength",
+      "test_band_spec_uses_versioned_nircam_metadata",
+      "test_best_overlap_cutout_matches_brute_force",
+      "test_best_overlap_cutout_prefers_supported_window",
+      "test_cutout_header_shifts_crpix_and_shape",
+      "test_discover_exposure_paths_can_filter_by_band_and_module",
+      "test_discover_exposure_paths_can_filter_by_filename",
+      "test_discover_exposure_paths_can_force_cal_or_crf",
+      "test_discover_exposure_paths_can_select_aligned_products",
+      "test_discover_exposure_paths_prefers_crf_with_per_exposure_cal_fallback",
+      "test_jwst_jump_dq_is_soft_but_saturation_is_hard",
+      "test_linearize_sip_header_drops_sip_terms",
+      "test_metric_mask_excludes_non_finite_reference",
+      "test_sci_header_restores_compressed_image_dimensions",
+      "test_smacs_mef_io_and_aux_files_use_torchfits_boundary"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_reproduce.py",
+    "destination": "tests/test_map_smacs0723_reproduce.py",
+    "mode": "whole",
+    "original_sha256": "bf754c6d0ab6d45ed8ba3b47d901a9b2b4e7ecd857729c6bc9aafddbb18d7096",
+    "migrated_test_functions": [
+      "test_variant_specs_can_add_drizzle_rows",
+      "test_variant_specs_can_run_drizzle_only",
+      "test_variant_specs_prefers_torchsky_only_by_default"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_stackers.py",
+    "destination": "tests/test_map_smacs0723_stackers.py",
+    "mode": "whole",
+    "original_sha256": "a82ca9b7ee6e4a27e2c7668410bb4d897b881c6673bdf723dbbd3d9704332c7a",
+    "migrated_test_functions": [
+      "test_as_fits_header_sanitizes_multiline_non_ascii_strings",
+      "test_build_method_specs_includes_linearized_legacy_targets",
+      "test_compute_region_metrics_reports_affine_and_local_terms",
+      "test_empty_injection_manifest_restores_coordinate_rank",
+      "test_expected_exposure_count_fails_closed",
+      "test_explicit_target_header_is_copied_and_shape_checked",
+      "test_fixed_cutout_uses_registered_origin",
+      "test_format_markdown_includes_geometry_family_column",
+      "test_full_mosaic_parity_specs_pair_strongest_common_grid_kernels",
+      "test_injection_manifest_sign_is_explicit_and_consistent",
+      "test_non_native_products_keep_method_grid_while_metrics_are_aligned",
+      "test_pairwise_parity_metrics_are_scale_invariant_and_report_support",
+      "test_pattern_filter_uses_complete_filename_token",
+      "test_product_only_persists_supported_product_without_reference_metrics",
+      "test_score_product_parity_pairs_compares_persisted_common_grid",
+      "test_torchsky_stacker_receives_selected_spatial_tile",
+      "test_upstream_drizzle_receives_selected_pixfrac",
+      "test_validation_specs_freeze_drizzle_and_swarp_grid",
+      "test_wcs_overlap_probe_compares_torchsky_and_astropy"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_smacs0723_stackers_band_sweep.py",
+    "destination": "tests/test_map_smacs0723_stackers_band_sweep.py",
+    "mode": "whole",
+    "original_sha256": "f2e7577d14ecd094923ba66c8cb5d501192f9f1e427041e41ec80eba7ef47ee2",
+    "migrated_test_functions": [
+      "test_multiband_stacker_markdown_lists_band_and_variant",
+      "test_recommended_filename_contains_matches_long_band_module_b"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_swarp_optional_parity.py",
+    "destination": "tests/test_map_swarp_optional_parity.py",
+    "mode": "whole",
+    "original_sha256": "793c797f769be00bcc84a486dc9a5d09bdc5d628e88b4dc04779819f9acfc75e",
+    "migrated_test_functions": [
+      "test_swarp_bilinear_stack_near_torchsky_on_tiny_shifted_pair"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_multiband_depth_benchmark.py",
+    "destination": "tests/test_multiband_depth_benchmark.py",
+    "mode": "whole",
+    "original_sha256": "d72822cc71b3b99f18a6358af49d519970b9a6f84937ab7b217587a0ffc5cda8",
+    "migrated_test_functions": [
+      "test_angular_nms_and_matching_use_target_pixel_scale",
+      "test_band_response_coordinate_recovers_delta_like_bands",
+      "test_blank_responses_robustly_calibrate_whitened_chi",
+      "test_blank_truth_scene",
+      "test_catalogue_neighborhood_exclusion_is_circular_and_bounded",
+      "test_classical_detection_artifact_uses_mesh_psf_and_blank_whitening",
+      "test_classical_smoke_cli_exposes_joint_foam_comparison",
+      "test_classical_smoke_includes_phase0_foam_row_when_requested",
+      "test_classical_smoke_reports_three_honest_rows",
+      "test_classical_validation_excludes_control_sources_and_calibrates_purity",
+      "test_common_support_can_tolerate_sparse_footprint_holes",
+      "test_common_support_mask_intersects_erodes_and_gates_manifest",
+      "test_common_world_injection_conserves_flux_and_blank_is_unchanged",
+      "test_common_world_manifest_blue_dropout_is_band_limited_and_round_trips",
+      "test_common_world_manifest_controls_are_paired_and_fail_closed",
+      "test_common_world_manifest_is_deterministic_and_quadrant_balanced",
+      "test_common_world_manifest_rejects_invalid_dropout_cutoffs",
+      "test_common_world_manifest_requires_suppressed_and_observed_bands",
+      "test_control_union_deduplicates_and_covers_all_method_peaks",
+      "test_detector_and_matching_cpu_cuda_parity",
+      "test_detector_mjysr_injection_conserves_jy_and_exposes_psf_mismatch",
+      "test_detector_negative_injection_requires_an_explicit_sign",
+      "test_detector_recovers_noiseless_bright_sources_and_null_is_empty",
+      "test_dithered_exposures_and_production_classical_coadds_are_deterministic",
+      "test_effective_psf_artifact_reads_torchsky_products",
+      "test_effective_psf_artifact_reports_null_band_without_flux_bias",
+      "test_effective_psf_stack_registers_fractional_source_phases",
+      "test_foam_grid_side_is_resolution_matched_and_bounded",
+      "test_foam_spectral_basis_uses_physical_band_coordinates",
+      "test_forced_flux_color_and_heldout_likelihood",
+      "test_independent_union_statistic_does_not_combine_subthreshold_bands",
+      "test_input_validation",
+      "test_joint_foam_spectral_basis_preserves_continuum_but_rejects_perturbation",
+      "test_manifest_cli_reads_final_weight_support",
+      "test_manifest_samples_sparse_support_pixels_without_rejection_failure",
+      "test_matching_is_order_invariant_in_cardinality",
+      "test_matching_maximizes_cardinality_for_close_pair_and_counts_duplicate",
+      "test_seed_catalog_render_and_artifact_are_deterministic",
+      "test_split_is_disjoint_complete_and_deterministic",
+      "test_target_response_gate_flags_attenuation_and_passes_preserved",
+      "test_target_response_gate_preserves_band_pairing_with_nonfinite_values",
+      "test_truth_catalog_has_required_strata_and_conserves_flux",
+      "test_validation_purity_threshold_uses_lowest_accepted_score",
+      "test_weighted_chi_detection_combines_positive_band_significance",
+      "test_weighted_matched_filter_uses_spatial_inverse_variance"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_prepare_updc_inputs.py",
+    "destination": "tests/test_prepare_updc_inputs.py",
+    "mode": "whole",
+    "original_sha256": "9770542100c3baf6673ce1c73b92d4d33432f366a1c8fc71f0d6d4d3f390ed7c",
+    "migrated_test_functions": [
+      "test_dq_fix_preserves_other_flags",
+      "test_leave_one_out_statistics_cannot_hide_target_outlier",
+      "test_read_state_valid_masks",
+      "test_seed_determinism",
+      "test_updcmask_marks_exactly_replaced_pixels"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_real_data_validation.py",
+    "destination": "tests/test_real_data_validation.py",
+    "mode": "whole",
+    "original_sha256": "c7c14403090d5f2a0144534314f9da9870f7a3ae8e0b8b0eb13ada18a1cd7279",
+    "migrated_test_functions": [
+      "test_local_sip_wcs_fixture_matches_astropy_world_coordinates"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_run_local_sphere_bench.py",
+    "destination": "tests/test_run_local_sphere_bench.py",
+    "mode": "whole",
+    "original_sha256": "6244efc5014036e06a86794fc6ff242223b855a5492f997a8f72938a02c7b84b",
+    "migrated_test_functions": [
+      "test_missing_native_subject_fails_without_install"
+    ],
+    "retained_test_functions": [],
+    "replacement_reason": "Implicit checkout installation removed; replaced by test_missing_native_subject_fails_without_install."
+  },
+  {
+    "source": "tests/test_score_field_models.py",
+    "destination": "tests/test_score_field_models.py",
+    "mode": "whole",
+    "original_sha256": "3034aef9b9441a7b7471bd7e0466043b842d3776b50b07ccd3a584f30935418b",
+    "migrated_test_functions": [
+      "test_best_cell_products_are_absent_when_no_method_passes",
+      "test_best_cell_products_copy_only_the_gated_winner",
+      "test_external_resolution_metadata_needs_explicit_complete_reference",
+      "test_m50_uses_the_faintward_completeness_crossing",
+      "test_measure_effective_psfs_uses_each_staged_cell",
+      "test_selection_rejects_a_deeper_method_with_worse_resolution",
+      "test_selection_requires_measured_resolution"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_score_smacs0723_foam.py",
+    "destination": "tests/test_score_smacs0723_foam.py",
+    "mode": "whole",
+    "original_sha256": "34a7b1a039c21303e657c4b628406f13f951a1705402de47c9950ee21f09e789",
+    "migrated_test_functions": [
+      "test_foam_batch_audit_fails_before_product_reads",
+      "test_foam_effective_psf_uses_product_dtype",
+      "test_foam_product_layout_and_full_commit"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_score_smacs0723_native_classical.py",
+    "destination": "tests/test_score_smacs0723_native_classical.py",
+    "mode": "whole",
+    "original_sha256": "850a62cff6b5de36a9fce1dad2f7efa9487351968d9956e5e3aa75b619ff2cc7",
+    "migrated_test_functions": [
+      "test_native_batch_audit_rejects_failed_method_before_fits_read",
+      "test_native_selection_rule_and_root_pattern",
+      "test_native_support_audit_fails_closed"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs0723_full_mosaic_pipeline.py",
+    "destination": "tests/test_smacs0723_full_mosaic_pipeline.py",
+    "mode": "whole",
+    "original_sha256": "393ff03065bdc98cbd8f4c75b8d837b5f5b421fe860506a981a61e3c14c3d86c",
+    "migrated_test_functions": [
+      "test_band_filename_contains_matches_long_wave_only",
+      "test_ensure_local_cpp_installs_when_missing",
+      "test_parser_defaults_are_simple"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_calibration_inspection.py",
+    "destination": "tests/test_smacs_calibration_inspection.py",
+    "mode": "whole",
+    "original_sha256": "2d016e0e6363db89878fad07c1600af4540759a0213c1d5e17ea47b86b299ff3",
+    "migrated_test_functions": [
+      "test_canfar_depth_runner_accepts_authorized_skaha_compute_images",
+      "test_canfar_depth_runner_replaces_stale_pixi",
+      "test_canfar_full_mosaic_parity_is_strict_and_torchfits_only",
+      "test_canfar_inspection_uses_visualization_environment",
+      "test_canfar_multiband_canary_runs_shared_spectral_comparison",
+      "test_canfar_runtime_is_selected_after_each_environment_activation",
+      "test_depth_foam_uses_cuda_build_and_forwards_size_controls",
+      "test_depth_foam_validation_forwards_joint_grid_controls",
+      "test_depth_runner_persists_failure_status",
+      "test_inspection_exposure_rows_use_calibration_split",
+      "test_inspection_rejected_rows_remain_exposure_scoped",
+      "test_inspection_requires_paired_scope_selectors",
+      "test_inspection_selects_exact_fit_scope",
+      "test_inspection_selects_worst_residuals_and_writes_png",
+      "test_map_compat_cuda_environment_uses_cuda_and_official_comparators",
+      "test_psf_validation_diagnostics_match_masked_normalization",
+      "test_stationary_diagnostics_only_does_not_read_exposures"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_foam_flux_recovery.py",
+    "destination": "tests/test_smacs_foam_flux_recovery.py",
+    "mode": "whole",
+    "original_sha256": "7512f88c49557b8f8519324698d8256ea3ed8bd82d3376b316229e0a3cbf3f0d",
+    "migrated_test_functions": [
+      "test_linear_foam_recovers_independent_continuum_source_flux"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_measured_adapter.py",
+    "destination": "tests/test_smacs_measured_adapter.py",
+    "mode": "whole",
+    "original_sha256": "159dc76bba801b0174cc9b18decf938cb31277c1a8cd8f435c072efe18942ae9",
+    "migrated_test_functions": [
+      "test_measured_photon_i_nu_response",
+      "test_normalization_never_uses_held_out_pixels",
+      "test_scale_preserves_metadata_and_noise",
+      "test_sci_header_retains_primary_calibration_provenance"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_operator_calibration_fit.py",
+    "destination": "tests/test_smacs_operator_calibration_fit.py",
+    "mode": "whole",
+    "original_sha256": "bfa01bdd90f8bc13ff5c66fa0a8c8486e5e92a14cf9de5fa86c5b97ab313faa7",
+    "migrated_test_functions": [
+      "test_comparisons_do_not_pool_exposures_or_bands",
+      "test_exposure_selection_preserves_independent_splits_and_provenance",
+      "test_stationary_controls_are_coordinate_invariant_and_compare_held_out",
+      "test_stationary_only_cli_never_constructs_adaptive_models"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_product_visualization.py",
+    "destination": "tests/test_smacs_product_visualization.py",
+    "mode": "whole",
+    "original_sha256": "9877faa9d291aa9f5e65c950f1329def19a147e59d1d09667c624fa7519efa21",
+    "migrated_test_functions": [
+      "test_fits_report_uses_reference_scales_and_preserves_completed_output",
+      "test_joint_report_loads_real_export_layout_and_renders_six_band_rgb",
+      "test_joint_report_rejects_malformed_support_masks",
+      "test_non_square_panel_count_does_not_drop_images",
+      "test_rgb_uses_torchfits_and_intersection_coverage"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_smacs_sampling.py",
+    "destination": "tests/test_smacs_sampling.py",
+    "mode": "whole",
+    "original_sha256": "ce0528be3d2b455f745a8004be1fdbc75a7e6a139ab433c30ddb5454bb042bce",
+    "migrated_test_functions": [
+      "test_compact_foam_render_tiles_preserve_psf_prediction_and_gradient",
+      "test_exact_refinement_rejects_conditioned_operators_before_reading_data",
+      "test_fixed_foam_keeps_training_patch_but_bounds_render_work",
+      "test_joint_artifact_explicitly_skips_per_exposure_wrapper",
+      "test_joint_artifact_replays_fitted_foam_and_records_resume_limits",
+      "test_joint_command_rejects_foam_inr_without_prior_foam",
+      "test_joint_command_rejects_unsupported_common_initializer_arm",
+      "test_joint_command_runs_without_gpu_memory_logging",
+      "test_joint_inr_configuration_runs_with_psf_and_pixel_integration",
+      "test_manifest_training_selection_fails_without_training",
+      "test_manifest_training_selection_preserves_grouped_split",
+      "test_manifest_training_selection_rejects_unknown_split",
+      "test_plain_report_leads_with_validation_and_labels_missing_scores",
+      "test_validation_moves_frozen_operator_without_training_exposure",
+      "test_validation_scores_reject_test_before_rendering",
+      "test_validation_scores_render_real_detector_tiles",
+      "test_validation_scores_use_fixed_prediction_full_mask_and_original_units"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_sphere_compat.py",
+    "destination": "tests/test_sphere_compat.py",
+    "mode": "split",
+    "original_sha256": "8beead10ff6317beb52269827b518dd1d477773f4892782e5efa917cffb61f14",
+    "migrated_test_functions": [
+      "test_compat_ang2pix_matches_astropy_healpix",
+      "test_compat_ang2pix_pix2ang_match_hpgeom",
+      "test_compat_fit_remove_dipole_matches_healpy",
+      "test_compat_fit_remove_monopole_matches_healpy",
+      "test_compat_pixel_range_helpers_match_hpgeom",
+      "test_compat_query_circle_pixel_ranges_match_hpgeom_expansion",
+      "test_compat_upgrade_pixels_match_hpgeom"
+    ],
+    "retained_test_functions": [
+      "test_compat_alm_index_roundtrip_and_resolution_exports",
+      "test_compat_ang2pix_pix2ang_roundtrip_matches_healpix",
+      "test_compat_degrade_pixels_expected_nested_and_ring",
+      "test_compat_fit_remove_dipole",
+      "test_compat_map2alm_lsq_scalar_api",
+      "test_compat_map_fits_roundtrip",
+      "test_compat_neighbors_aliases_identical",
+      "test_compat_neighbors_angle_form_matches_healpix",
+      "test_compat_pixels_to_ranges_roundtrip",
+      "test_compat_pixwin_api",
+      "test_compat_pol_spectral_api_shapes",
+      "test_compat_query_circle_strict_mode_matches_non_strict",
+      "test_compat_query_circle_vec_strict_mode_matches_non_strict",
+      "test_compat_query_ellipse_auto_backend_matches_torch",
+      "test_compat_query_ellipse_calls_geometry_implementation",
+      "test_compat_query_ellipse_inclusive_fact_non_empty_on_hard_case",
+      "test_compat_query_ellipse_inclusive_fact_refines_overlap",
+      "test_compat_query_ellipse_return_ranges_and_theta_phi_units",
+      "test_compat_query_ellipse_strict_mode_matches_non_strict",
+      "test_compat_query_polygon_dispatches_concave_regions",
+      "test_compat_rotator_rotate_alm_and_map_alms",
+      "test_compat_sphtfunc_aliases",
+      "test_compat_syn_and_beam_aliases",
+      "test_compat_vec_queries_match_sphere_healpix_aliases"
+    ]
+  },
+  {
+    "source": "tests/test_sphere_exact_regions.py",
+    "destination": "tests/test_sphere_exact_regions.py",
+    "mode": "split",
+    "original_sha256": "00cf1286a5425571321ccf4a376712cc4a80a2f98b79b3ba35147962f6fe32ea",
+    "migrated_test_functions": [
+      "test_boolean_region_to_exact_conversion",
+      "test_exact_boolean_ops_area_ordering",
+      "test_exact_cap_intersection_contains",
+      "test_exact_region_area_matches_spherical_geometry",
+      "test_exact_region_bulk_contains_matches_numpy_sg_bulk"
+    ],
+    "retained_test_functions": [
+      "test_native_exact_region_basic_area_contains",
+      "test_native_exact_region_boolean_area_ordering"
+    ]
+  },
+  {
+    "source": "tests/test_sphere_geom_exact_contains_gate.py",
+    "destination": "tests/test_sphere_geom_exact_contains_gate.py",
+    "mode": "whole",
+    "original_sha256": "0ccb29f9120bc3b62eb1031e8dd61447c8c7ba85833507abc21c27153414a8bb",
+    "migrated_test_functions": [
+      "test_baseline_check_noop_when_bench_did_not_run_exact_path",
+      "test_baseline_parity_mismatch_errors",
+      "test_baseline_points_s_floor_passes_with_tolerance",
+      "test_baseline_points_s_floor_when_enabled"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_sphere_moc.py",
+    "destination": "tests/test_sphere_moc.py",
+    "mode": "split",
+    "original_sha256": "a01b004c45c0423119b1318b5be406a643eddf6f0d7cfa1901ee1d56e6b4d7cb",
+    "migrated_test_functions": [
+      "test_mocpy_contains_union_area_and_polygon_parity",
+      "test_mocpy_fits_roundtrip_optional"
+    ],
+    "retained_test_functions": [
+      "test_healsparse_from_moc_uses_sparse_nested_pixels",
+      "test_max_order_from_uniq_empty",
+      "test_moc_area_empty",
+      "test_moc_boundary_complex",
+      "test_moc_boundary_empty",
+      "test_moc_contains_empty",
+      "test_moc_contains_pixels_nested_and_ring_inputs",
+      "test_moc_contains_pixels_requires_sufficient_resolution",
+      "test_moc_difference_complex",
+      "test_moc_empty_full_and_dateline_wrap",
+      "test_moc_empty_full_operators_from_lonlat_degrade",
+      "test_moc_from_ascii_empty",
+      "test_moc_from_ascii_expands_pixel_ranges_and_commas",
+      "test_moc_from_ascii_rejects_descending_ranges",
+      "test_moc_from_circle_matches_leaf_construction",
+      "test_moc_from_json_empty",
+      "test_moc_from_json_empty_pixels",
+      "test_moc_from_json_invalid",
+      "test_moc_from_polygon_supports_nonconvex_simple_regions",
+      "test_moc_from_region_converts_ring_pixelized_region_to_nested_uniq",
+      "test_moc_from_region_pixelizes_boolean_region",
+      "test_moc_from_sparse_map_converts_ring_pixels_to_nested_uniq",
+      "test_moc_from_sparse_map_empty",
+      "test_moc_from_threshold",
+      "test_moc_from_threshold_converts_ring_sparse_pixels",
+      "test_moc_from_threshold_empty",
+      "test_moc_from_threshold_uses_sparse_pixel_list_not_coverage_offsets",
+      "test_moc_max_order_empty",
+      "test_moc_read_fits_fallback",
+      "test_moc_to_ascii_compact_ranges_roundtrip",
+      "test_moc_to_ascii_empty",
+      "test_moc_to_json_empty",
+      "test_moc_to_sparse_map_sets_values_and_small_coverage_resolution",
+      "test_moc_union_matches_cat_normalize_and_empty_identity",
+      "test_normalize_moc_empty",
+      "test_ranges_to_uniq_empty",
+      "test_union_ranges_merges_overlap_and_keeps_disjoint",
+      "test_uniq_to_ranges_empty"
+    ]
+  },
+  {
+    "source": "tests/test_sphere_polygons.py",
+    "destination": "tests/test_sphere_polygons.py",
+    "mode": "split",
+    "original_sha256": "7d2038b8c4e554417e49915fe3bf599febeb9219b10abcf4cbe266267ad11e05",
+    "migrated_test_functions": [
+      "test_spherical_polygon_contains_matches_spherical_geometry",
+      "test_spherical_polygon_intersects_matches_upstream_difficult_pairs",
+      "test_upstream_polygon_replay_gate_small"
+    ],
+    "retained_test_functions": [
+      "test_pixelized_region_set_ops_preserve_sorted_unique_contract",
+      "test_query_polygon_general_cuda_or_mps_matches_cpu",
+      "test_query_polygon_general_matches_convex_baseline",
+      "test_spherical_polygon_area_units",
+      "test_spherical_polygon_class_contracts",
+      "test_spherical_polygon_contains_concave_shape",
+      "test_spherical_polygon_contains_cpp_matches_python_fallback",
+      "test_spherical_polygon_contains_cuda_or_mps_matches_cpu",
+      "test_spherical_polygon_inside_reference_flip",
+      "test_spherical_polygon_intersects_method_and_multipolygon",
+      "test_spherical_polygon_pixel_boolean_ops",
+      "test_spherical_polygon_signed_area_orientation",
+      "test_spherical_polygons_intersect_basic_cases",
+      "test_spherical_polygons_intersect_cpp_matches_python_fallback",
+      "test_spherical_polygons_intersect_cuda_or_mps_matches_cpu"
+    ]
+  },
+  {
+    "source": "tests/test_sphere_s2fft.py",
+    "destination": "tests/test_sphere_s2fft.py",
+    "mode": "whole",
+    "original_sha256": "ffed80d080d068092a0d87f0881ae8d50add8693ba016543543359602c1fbdcf",
+    "migrated_test_functions": [
+      "test_packed_s2fft_layout_roundtrip",
+      "test_s2fft_bandlimit_is_lmax_plus_one",
+      "test_s2fft_layout_matches_upstream_helper",
+      "test_s2fft_scalar_roundtrip_vs_torchsky",
+      "test_s2fft_spin_roundtrip_vs_torchsky",
+      "test_s2fft_vs_healpy_residual_is_allowed"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_sphere_spectral.py",
+    "destination": "tests/test_sphere_spectral.py",
+    "mode": "split",
+    "original_sha256": "424aad3cbb093e87ac341ecf76b79a7e497ce6edd8ad8dec13fe4d46f630147c",
+    "migrated_test_functions": [
+      "test_alm2cl_matches_healpy_scalar_and_pol",
+      "test_alm2map_der1_matches_healpy",
+      "test_almxfl_matches_healpy_short_fl",
+      "test_bl2beam_and_beam2bl_close_to_healpy",
+      "test_gaussian_beam_pol_matches_healpy",
+      "test_healpy_reference_alm2map_map2alm_parity_small_case",
+      "test_map2alm_gal_cut_matches_healpy_when_installed",
+      "test_map2alm_lsq_torch_residual_close_to_healpy_on_random_map",
+      "test_pixwin_matches_healpy",
+      "test_rotate_alm_matches_healpy",
+      "test_spin_high_l_parity_spotcheck",
+      "test_spin_map2alm_alm2map_parity",
+      "test_spin_sht_matches_healpy_ishioka_toggle",
+      "test_spin_sht_mmax_lt_lmax_matches_healpy"
+    ],
+    "retained_test_functions": [
+      "test_alm2map_batched_scalar_matches_rowwise",
+      "test_alm2map_der1_matches_spin1_sqrt_ell",
+      "test_alm2map_infer_lmax",
+      "test_alm2map_map2alm_roundtrip_gradcheck",
+      "test_alm2map_ring_torch_gradcheck",
+      "test_alm2map_scalar_cpp_direct_parity",
+      "test_alm2map_scalar_cpp_flag_keeps_autograd",
+      "test_alm2map_scalar_ring_torch_autograd",
+      "test_alm2map_scalar_ring_torch_float32_finite",
+      "test_alm2map_scalar_ring_torch_parity",
+      "test_alm2map_spin_concat_cpp_parity",
+      "test_alm2map_spin_ring_finalize_cpp_parity",
+      "test_alm2map_spin_ring_fourier_cpp_parity",
+      "test_alm2map_spin_ring_torch_autograd",
+      "test_alm2map_spin_ring_torch_parity",
+      "test_alm2map_spin_ring_torch_parity_nested",
+      "test_alm_size_and_index_ordering",
+      "test_anafast_cross_constant_map",
+      "test_anafast_dipole_dominates_l1",
+      "test_anafast_gal_cut_and_weights_run",
+      "test_clear_spectral_caches_resets_lookup_state",
+      "test_compat_spectral_wrappers",
+      "test_compat_spin_and_smoothing",
+      "test_compile_helper_falls_back_after_specialization_failure",
+      "test_gaussian_beam_monotonic",
+      "test_harmonics_alias_matches_spectral_module",
+      "test_ishioka_matches_wigner_spin_sht",
+      "test_ishioka_spin_interpolate_integrate_adjoint",
+      "test_map2alm_alm2map_roundtrip_low_l",
+      "test_map2alm_batched_pol_matches_rowwise",
+      "test_map2alm_batched_scalar_matches_rowwise",
+      "test_map2alm_gal_cut_zeros_equatorial_strip",
+      "test_map2alm_lsq_maxiter_zero_matches_single_pass",
+      "test_map2alm_lsq_pol_shapes",
+      "test_map2alm_lsq_scalar_residual_improves",
+      "test_map2alm_pixel_weight_fits_is_one_plus_correction",
+      "test_map2alm_pixel_weights_preserve_constant_monopole",
+      "test_map2alm_pixel_weights_require_datapath",
+      "test_map2alm_refuses_unsupported_devices",
+      "test_map2alm_rejects_simultaneous_weight_flags",
+      "test_map2alm_ring_torch_gradcheck",
+      "test_map2alm_ring_weights_reduce_p2_leakage",
+      "test_map2alm_scalar_ring_torch_autograd",
+      "test_map2alm_scalar_ring_torch_float32_finite",
+      "test_map2alm_scalar_ring_torch_parity",
+      "test_map2alm_spin_concat_cpp_parity",
+      "test_map2alm_spin_ring_fourier_cpp_parity",
+      "test_map2alm_spin_ring_fused_cpp_parity",
+      "test_map2alm_spin_ring_torch_autograd",
+      "test_map2alm_spin_ring_torch_parity",
+      "test_map2alm_spin_ring_torch_parity_nested",
+      "test_map2alm_stays_on_accelerator",
+      "test_pol_map2alm_alm2map_and_anafast_paths",
+      "test_rotate_alm_and_alm2lonlat_stay_on_accelerator",
+      "test_rotate_alm_identity_and_z_phase",
+      "test_smoothalm_pol_component_beams",
+      "test_smoothalm_reduces_high_l_power",
+      "test_smoothmap_pol_torch_shapes",
+      "test_smoothmap_variance_decreases",
+      "test_spin_autograd_fallback_paths",
+      "test_spin_sht_small_nside_is_finite",
+      "test_spin_torch_roundtrip_without_healpy_backend",
+      "test_synalm_zero_cls_returns_zero",
+      "test_synfast_pol_and_alm_output_shapes",
+      "test_synfast_zero_cls_returns_zero_map",
+      "test_synfast_zero_with_pixwin_is_zero",
+      "test_validated_spin_profile_defaults_match_docs"
+    ]
+  },
+  {
+    "source": "tests/test_stage_smacs0723_canfar.py",
+    "destination": "tests/test_stage_smacs0723_canfar.py",
+    "mode": "whole",
+    "original_sha256": "662c88c688ae7046a636c3142496c12e21bd4fb259043e1c93610d6a231d8027",
+    "migrated_test_functions": [
+      "test_aligned_products_use_separate_canonical_links",
+      "test_crf_link_refuses_to_replace_regular_file",
+      "test_expected_cal_grid_is_complete_and_unique",
+      "test_fits_gate_and_crf_links_are_idempotent"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_svo_passband_bootstrap.py",
+    "destination": "tests/test_svo_passband_bootstrap.py",
+    "mode": "whole",
+    "original_sha256": "e14885e22f66a134fe5669e7b6bf345b56a60c6f9d7651e7348f65d4ebb51021",
+    "migrated_test_functions": [
+      "test_bootstrap_rejects_conflicting_existing_passband",
+      "test_bootstrap_writes_deterministic_smacs_passbands_and_manifest"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_synalm_parity.py",
+    "destination": "tests/test_synalm_parity.py",
+    "mode": "whole",
+    "original_sha256": "ebb57d5b7c4b17d194afd96d89f3e38e8e603c9dbb1264756cd3b0b75cb18105",
+    "migrated_test_functions": [
+      "test_synalm_parity_detailed"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_updec_webb_real.py",
+    "destination": "tests/test_updec_webb_real.py",
+    "mode": "whole",
+    "original_sha256": "d772271bdff69678257f2ca73f0ca4de210a677a02c30662ac0eebeda003bf18",
+    "migrated_test_functions": [
+      "test_module_a_manifest_resolved_from_release",
+      "test_open_sci_uses_torchfits_boundary",
+      "test_resolve_specs_rejects_unknown_module",
+      "test_resolve_specs_supports_public_iter0_iter10_pair",
+      "test_tan_pair_alignment_handles_shape_scale_and_crpix_changes",
+      "test_updec_webb_markdown_renders_expected_columns",
+      "test_updec_webb_public_manifest_contains_expected_sparse_smoke_band"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_upstream_parity_inventory.py",
+    "destination": "tests/test_upstream_parity_inventory.py",
+    "mode": "whole",
+    "original_sha256": "f2a0d02b89a0071cf428b17907a777f08649ea68ce9d02f20f5d8e783f3ca57f",
+    "migrated_test_functions": [
+      "test_upstream_parity_manifest_references_existing_local_paths"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_wcs_allsky.py",
+    "destination": "tests/test_wcs_allsky.py",
+    "mode": "whole",
+    "original_sha256": "95bfc0b676afdda1d43aef09c53155c9403f04f233ce6af72b21bcb0b934b922",
+    "migrated_test_functions": [
+      "test_allsky_forward_matches_astropy",
+      "test_allsky_inverse_matches_astropy_interior"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_wcs_cylindrical.py",
+    "destination": "tests/test_wcs_cylindrical.py",
+    "mode": "split",
+    "original_sha256": "9add434d4b9dfa975f1e80fd877643d5ea126a6e1b1cab523f6641c73da2da2d",
+    "migrated_test_functions": [
+      "test_cylindrical_forward_matches_astropy",
+      "test_cylindrical_inverse_matches_astropy_interior"
+    ],
+    "retained_test_functions": [
+      "test_cylindrical_not_implemented"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_extended_projections.py",
+    "destination": "tests/test_wcs_extended_projections.py",
+    "mode": "split",
+    "original_sha256": "2504e60643273f3960ed8a24d7b5e77c68043334816cfd031c3de051b4b032f5",
+    "migrated_test_functions": [
+      "test_bon_forward_matches_astropy",
+      "test_bon_inverse_matches_astropy",
+      "test_conic_forward_matches_astropy",
+      "test_conic_inverse_matches_astropy",
+      "test_csc_aten_cpu_is_not_the_wcslib_floor",
+      "test_ncp_forward_matches_astropy",
+      "test_ncp_inverse_matches_astropy",
+      "test_par_forward_matches_astropy",
+      "test_par_inverse_matches_astropy",
+      "test_pco_forward_matches_astropy",
+      "test_pco_inverse_matches_astropy",
+      "test_quadcube_forward_matches_astropy",
+      "test_quadcube_inverse_matches_astropy",
+      "test_xph_forward_matches_astropy",
+      "test_xph_inverse_matches_astropy",
+      "test_zenithal_extended_forward_matches_astropy",
+      "test_zenithal_extended_inverse_matches_astropy"
+    ],
+    "retained_test_functions": [
+      "test_csc_python_matches_fused_cpu",
+      "test_paper2_cuda_matches_cpu"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_frames.py",
+    "destination": "tests/test_wcs_frames.py",
+    "mode": "split",
+    "original_sha256": "74ae27f804ae4ef6f2011188dcda36479bef22ccc8cc57ec5a1d9dc8af6f2335",
+    "migrated_test_functions": [
+      "test_convert_celestial_fk4_to_fk5_matches_astropy",
+      "test_convert_celestial_fk5_to_fk4_matches_astropy",
+      "test_convert_celestial_fk5_to_galactic_matches_astropy",
+      "test_fk5_precession_matches_astropy_common_epoch_range",
+      "test_galactocentric_roundtrip_and_astropy",
+      "test_icrs_ecliptic_roundtrip_and_astropy",
+      "test_icrs_galactic_matches_astropy",
+      "test_lsr_radial_velocity_matches_astropy_sign",
+      "test_propagate_space_motion_matches_astropy_for_physical_states",
+      "test_wcs_convert_celestial_fk4_metadata_matches_astropy",
+      "test_wcs_precess_celestial_fk4_matches_astropy"
+    ],
+    "retained_test_functions": [
+      "test_ecliptic_of_date_roundtrip_and_erfa",
+      "test_propagate_proper_motion_broadcasts_and_is_differentiable",
+      "test_propagate_space_motion_broadcasts_and_has_finite_jacobian",
+      "test_propagate_space_motion_matches_erfa_starpm",
+      "test_propagate_space_motion_rejects_incomplete_or_unphysical_states",
+      "test_proper_motion_jacobian_batches_like_scalar_calls",
+      "test_proper_motion_jacobian_is_identity_at_same_epoch",
+      "test_proper_motion_jacobian_matches_central_difference",
+      "test_proper_motion_zero_motion_jacobian_has_exact_time_baseline",
+      "test_space_motion_jacobian_batches_like_scalar_calls",
+      "test_space_motion_jacobian_is_identity_at_same_epoch",
+      "test_space_motion_jacobian_matches_central_difference",
+      "test_wcs_celestial_frame_metadata_and_helpers"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_hpx.py",
+    "destination": "tests/test_wcs_hpx.py",
+    "mode": "split",
+    "original_sha256": "f6f253aab40359c74a8337332aee93f1ce5ed3fe315c5ddfccdd1c28524861b2",
+    "migrated_test_functions": [
+      "test_hpx_forward_matches_astropy_across_equatorial_and_polar_samples",
+      "test_hpx_inverse_matches_astropy"
+    ],
+    "retained_test_functions": [
+      "test_hpx_cpp_project_marks_polar_out_of_facet_points_invalid"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_paper4_and_gls.py",
+    "destination": "tests/test_wcs_paper4_and_gls.py",
+    "mode": "split",
+    "original_sha256": "3afbc91396c82b7fb869c8990ed1a4a8ad8773528c643302d885b9b8cd83fd45",
+    "migrated_test_functions": [
+      "test_paper4_distortion_lookup_table_roundtrip_and_astropy_parity"
+    ],
+    "retained_test_functions": [
+      "test_car_sip_and_sfl_sip_at_equator_apply_sip_inversion",
+      "test_gls_global_sinusoidal_forward_inverse_and_sfl_equivalence",
+      "test_paper4_distortion_lookup_table_roundtrip_native"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_parity.py",
+    "destination": "tests/test_wcs_parity.py",
+    "mode": "split",
+    "original_sha256": "3cb07b83bce66eace0a8f41091f8b83b6fa1366191ff00e04f0694d66d66dcb3",
+    "migrated_test_functions": [
+      "test_lonpole_180_fused_and_stacked_match_astropy",
+      "test_off_equator_cylindrical_forward_matches_astropy",
+      "test_projection_forward_matches_astropy",
+      "test_projection_forward_stack_compiled_matches_astropy",
+      "test_projection_forward_stack_tensor_matches_astropy",
+      "test_projection_inverse_matches_astropy",
+      "test_projection_inverse_stack_compiled_matches_astropy",
+      "test_projection_inverse_stack_tensor_matches_astropy"
+    ],
+    "retained_test_functions": [
+      "test_float32_two_arg_matches_stacked",
+      "test_mps_two_arg_world_to_pixel_stays_float32",
+      "test_off_equator_cea_fused_matches_python_fallback",
+      "test_projection_forward_stack_matches_separate_args"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_sip.py",
+    "destination": "tests/test_wcs_sip.py",
+    "mode": "split",
+    "original_sha256": "803bcd5505f42fa4f43a52d405bbb666326dbbbd956a4203d9c508c99e869c86",
+    "migrated_test_functions": [
+      "test_sip_forward_parity_with_astropy",
+      "test_sip_inverse_roundtrip_parity_with_astropy"
+    ],
+    "retained_test_functions": [
+      "test_high_order_sip_cuda_pixels_without_explicit_wcs_to",
+      "test_sip_wcs_to_cuda_moves_sip_coeffs"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_spectral.py",
+    "destination": "tests/test_wcs_spectral.py",
+    "mode": "split",
+    "original_sha256": "489a070cc3ec33d745c850de9a37a73f9ba5578819fefe35a828808cae8059a8",
+    "migrated_test_functions": [
+      "test_paper3_named_algorithm_chains_match_astropy",
+      "test_spatial_cube_coupled_cd_roundtrip_matches_astropy",
+      "test_spectral_frequency_wavelength_energy_match_astropy_units",
+      "test_spectral_velocity_conventions_match_astropy",
+      "test_spectral_wavenumber_matches_astropy_units",
+      "test_wcs_awav_1d_matches_astropy",
+      "test_wcs_spatial_plus_spectral_3d_matches_astropy",
+      "test_wcs_spectral_1d_matches_astropy",
+      "test_wcs_spectral_compound_reciprocal_axis_matches_astropy",
+      "test_wcs_spectral_grism_axes_match_astropy",
+      "test_wcs_spectral_log_axis_matches_astropy",
+      "test_wcs_spectral_supported_compound_matrix_matches_astropy",
+      "test_wcs_spectral_velocity_compound_axes_match_astropy"
+    ],
+    "retained_test_functions": [
+      "test_convert_spectral_and_legacy_transform_spectral",
+      "test_specsys_is_preserved_not_applied",
+      "test_spectral_air_wavelength_roundtrip_and_conversion",
+      "test_spectral_redshift_and_rest_wavelength_roundtrip",
+      "test_unknown_spectral_algorithm_raises",
+      "test_wcs_spectral_1d_cuda_matches_cpu",
+      "test_wcs_spectral_compound_reciprocal_singular_domain_nan",
+      "test_wcs_spectral_convenience_uses_header_rest_frequency",
+      "test_wcs_spectral_zopt_and_beta_compound_roundtrip"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_sphere_map_extensions.py",
+    "destination": "tests/test_wcs_sphere_map_extensions.py",
+    "mode": "split",
+    "original_sha256": "149faaec2dc3ba6a5647ff1f0099b397b586e5f913821d05c091e5854b169e26",
+    "migrated_test_functions": [
+      "test_wcs_geometry_helpers_and_astropy_parity"
+    ],
+    "retained_test_functions": [
+      "test_bmoc_and_moc_from_wcs_and_randoms",
+      "test_clean_api_aliases_across_wcs_sphere_catalogs_map",
+      "test_coadd_cube_3d_ifu_drizzle_and_emsm",
+      "test_coadd_healpix_and_resample_healpix",
+      "test_coadd_spatial_tiling_matches_untiled",
+      "test_dcr_and_ephemeris_offsets",
+      "test_healsparse_wide_columns_and_from_observations",
+      "test_ifu_slice_wcs_piecewise_disjoint",
+      "test_wcs_geometry_helpers",
+      "test_wcs_to_header_roundtrip_and_sip"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_stress.py",
+    "destination": "tests/test_wcs_stress.py",
+    "mode": "whole",
+    "original_sha256": "45c3bf3b18c0a72a6974298b43f3dc2a9342c694324a32a98e114ea974bc14d2",
+    "migrated_test_functions": [
+      "test_sip_dense_polynomial_handles_image_grid_shapes",
+      "test_sip_high_order_precision",
+      "test_zpn_precision"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_wcs_temporal.py",
+    "destination": "tests/test_wcs_temporal.py",
+    "mode": "split",
+    "original_sha256": "a0263eae271f53a6487bccbaa04bff7dc6d7e4055660c8d01a366157dd27ca48",
+    "migrated_test_functions": [
+      "test_temporal_ephemeris_corrections",
+      "test_temporal_geodetic_observatory_location_matches_astropy_grid",
+      "test_temporal_reference_position_corrections_match_astropy_grid",
+      "test_temporal_scale_conversion_matches_astropy_time",
+      "test_temporal_utc_leap_day_fraction_matches_astropy_time"
+    ],
+    "retained_test_functions": [
+      "test_convert_time_scale_cuda_matches_cpu",
+      "test_paper4_reference_position_fixtures_are_named",
+      "test_temporal_common_subday_units",
+      "test_temporal_date_metadata_parses_mjd_and_iso_dates",
+      "test_temporal_duration_and_midpoint_metadata",
+      "test_temporal_ephemeris_corrections_native",
+      "test_temporal_geocenter_reference_requires_no_ephemeris",
+      "test_temporal_header_scale_helpers",
+      "test_temporal_jd_mjd_conversion_and_iso_output",
+      "test_temporal_mjdrefi_mjdreff_support",
+      "test_temporal_reference_metadata_and_observatory_location",
+      "test_temporal_reference_position_aliases_fail_closed",
+      "test_temporal_seconds_roundtrip",
+      "test_temporal_tai_minus_utc_leap_table_current_offset",
+      "test_temporal_year_and_century_units",
+      "test_trefpos_embarycenter_and_moon_are_geocenter",
+      "test_trefpos_mars_keplerian_delay_differs_from_barycenter",
+      "test_wcs_temporal_axis_metadata_view"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_tpv.py",
+    "destination": "tests/test_wcs_tpv.py",
+    "mode": "split",
+    "original_sha256": "b158876b3a8254fc9c7c31bba6f33441d52f39df4caafa3261ace51a8743c06f",
+    "migrated_test_functions": [
+      "test_tpv_forward_parity_with_astropy",
+      "test_tpv_inverse_parity_with_astropy_on_invertible_broad_field"
+    ],
+    "retained_test_functions": [
+      "test_fused_wcs_can_be_disabled_with_env",
+      "test_fused_wcs_enabled_by_default_for_tpv",
+      "test_tpv_affine_seed_exact_for_affine_only_tpv",
+      "test_tpv_analytic_jacobian_matches_finite_difference",
+      "test_tpv_cpp_invert_handles_2d_inputs_when_fused_disabled",
+      "test_tpv_high_order_terms_change_solution",
+      "test_tpv_identity_pv2_1_mixed_fov_roundtrip",
+      "test_tpv_inverse_trace_records_iterations",
+      "test_tpv_nonlinear_header_is_not_affine_only",
+      "test_tpv_skips_cpp_direct_tan_projection_shortcuts"
+    ]
+  },
+  {
+    "source": "tests/test_wcs_upstream_astropy.py",
+    "destination": "tests/test_wcs_upstream_astropy.py",
+    "mode": "whole",
+    "original_sha256": "2f37cfc82cdd420997a0593d1c77a65e3af6c13a9ebe71f2ffc961fd1db07e6b",
+    "migrated_test_functions": [
+      "test_astropy_fixture_pixel_to_world_matches_torchsky",
+      "test_astropy_fixture_world_to_pixel_matches_torchsky"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_wcs_zpn_ait_intermediate_parity.py",
+    "destination": "tests/test_wcs_zpn_ait_intermediate_parity.py",
+    "mode": "whole",
+    "original_sha256": "6af6922317d0ec5ddb3d80300588f8089eac7d43f65d85477315c9022cd092c9",
+    "migrated_test_functions": [
+      "test_ait_intermediate_grid_matches_astropy",
+      "test_ait_intermediate_inverse_matches_astropy",
+      "test_zpn_intermediate_grid_matches_astropy"
+    ],
+    "retained_test_functions": []
+  },
+  {
+    "source": "tests/test_map_image_plane.py",
+    "destination": "tests/test_map_ground_truth_image_plane.py",
+    "mode": "split",
+    "original_sha256": "c08c0f8c8fed656d0708dc4c3e0481b5bfdb4e01ea8fd010542c198f0fa788fe",
+    "migrated_test_functions": [
+      "test_coadd_image_plane_clamps_negative_resampled_weights_for_high_order_kernels"
+    ],
+    "retained_test_functions": [
+      "test_aperture_uncertainty_matches_spatial_noise_map_basis_oracle",
+      "test_batched_quadrature_variance_squares_mean_coefficients",
+      "test_batched_square_drizzle_areas_match_independent_quads",
+      "test_bilinear_diagonal_variance_matches_monte_carlo",
+      "test_bilinear_local_correlation_factor_predicts_large_aperture_variance",
+      "test_cli_map_coadd_writes_output",
+      "test_coadd_bilinear_partial_overlap_at_frame_edge_is_finite",
+      "test_coadd_bilinear_subpixel_crval_shift_preserves_finite_support",
+      "test_coadd_fft_diagonal_affine_rejects_skewed_cd_matrix",
+      "test_coadd_fft_diagonal_affine_tracks_bilinear_scaled_cdelta_interior",
+      "test_coadd_fft_linear_affine_matches_periodic_linear_affine_scaled_cdelta_interior",
+      "test_coadd_fft_shift_matches_bilinear_for_pure_crpix_offset_interior",
+      "test_coadd_fft_shift_rejects_crval_only_offset",
+      "test_coadd_image_plane_accepts_custom_high_accuracy_kernels",
+      "test_coadd_image_plane_applies_known_photometric_scale_and_background",
+      "test_coadd_image_plane_builds_target_grid_once_per_run",
+      "test_coadd_image_plane_conservative_polygon_preserves_shifted_support_and_finite_output",
+      "test_coadd_image_plane_cube_real_astropy_fixture_to_data_cube",
+      "test_coadd_image_plane_cube_rejects_invalid_transmission_sigma",
+      "test_coadd_image_plane_cube_rejects_order_statistic_stacking",
+      "test_coadd_image_plane_cube_reprojects_gaussian_transmission_filters",
+      "test_coadd_image_plane_cube_reprojects_spectral_intervals",
+      "test_coadd_image_plane_deterministic_accumulation",
+      "test_coadd_image_plane_does_not_reuse_overwritten_input",
+      "test_coadd_image_plane_exact_drizzle_square_preserves_flux_under_shift",
+      "test_coadd_image_plane_flux_semantics_improves_flux_conservation",
+      "test_coadd_image_plane_forward_geometry_kernels_bypass_grid_sample",
+      "test_coadd_image_plane_identical_wcs",
+      "test_coadd_image_plane_ignores_non_finite_pixels",
+      "test_coadd_image_plane_large_sip_target_keeps_roundtrip_world_grid",
+      "test_coadd_image_plane_mean_stacking_averages_observations_equally",
+      "test_coadd_image_plane_median_stacking_uses_observation_median",
+      "test_coadd_image_plane_multiband_accepts_planned_target",
+      "test_coadd_image_plane_multiband_real_astropy_fixture",
+      "test_coadd_image_plane_multiband_requires_wavelength",
+      "test_coadd_image_plane_multiband_stacks_sorted_wavelengths",
+      "test_coadd_image_plane_passes_resampling_kernel_to_grid_sample",
+      "test_coadd_image_plane_real_astropy_sip_fixture_with_complementary_masks",
+      "test_coadd_image_plane_real_shifted_astropy_sip_fixture",
+      "test_coadd_image_plane_rejects_invalid_calibration_metadata",
+      "test_coadd_image_plane_rejects_non_2d_images",
+      "test_coadd_image_plane_rejects_non_positive_drizzle_pixfrac",
+      "test_coadd_image_plane_rejects_unknown_resampling_kernel",
+      "test_coadd_image_plane_rejects_unknown_stacking_method",
+      "test_coadd_image_plane_rejects_unknown_value_semantics",
+      "test_coadd_image_plane_rejects_weight_map_shape_mismatch",
+      "test_coadd_image_plane_rescales_weight_map_with_photometric_scale",
+      "test_coadd_image_plane_respects_target_header_shape",
+      "test_coadd_image_plane_sigma_clipped_rejects_outlier_and_tracks_context",
+      "test_coadd_image_plane_sigma_clipped_rejects_overlap_background",
+      "test_coadd_image_plane_skips_target_grid_for_identical_wcs_without_footprints",
+      "test_coadd_image_plane_spatial_tile_single_canvas_matches_non_tiled",
+      "test_coadd_image_plane_spatial_tiles_are_exposure_major",
+      "test_coadd_image_plane_supports_mef_science_extensions",
+      "test_coadd_image_plane_supports_shifted_mef_science_extensions",
+      "test_coadd_image_plane_supports_tpv_mef_low_overlap",
+      "test_coadd_image_plane_supports_weight_and_mask_maps",
+      "test_coadd_image_plane_tiled_median_uses_and_cleans_scratch",
+      "test_coadd_image_plane_tiled_sigma_clipped_matches_full",
+      "test_coadd_image_plane_weighted_mean_scales_surface_brightness_weights_only_for_coarser_targets",
+      "test_coadd_periodic_linear_affine_matches_bilinear_skewed_cd_interior",
+      "test_coadd_spectral_linear_affine_tracks_bilinear_skewed_cd_interior",
+      "test_coadd_spectral_linear_affine_zero_boundary_does_not_wrap_corner_source",
+      "test_coadd_spectral_nonuniform_fast_tracks_direct_nonuniform_on_subpixel_shift",
+      "test_coadd_spectral_nonuniform_tracks_bilinear_on_subpixel_crval_shift",
+      "test_distorted_flux_quadrature_propagates_tiled_variance",
+      "test_distorted_surface_brightness_area_scaling_is_tile_invariant",
+      "test_drizzle_scanner_does_not_reject_curved_interior_overlap",
+      "test_drizzle_scanner_falls_back_when_detector_corners_are_invalid",
+      "test_exact_square_drizzle_bypasses_corner_scanner_for_sip",
+      "test_exposure_major_tiles_match_shifted_wcs_coadd",
+      "test_finite_aperture_uncertainty_device_parity",
+      "test_finite_aperture_uncertainty_keeps_covariance_across_tiles",
+      "test_finite_aperture_uncertainty_matches_distorted_wcs_basis_oracle",
+      "test_finite_aperture_uncertainty_matches_source_basis_oracle",
+      "test_finite_aperture_uncertainty_rejects_missing_noise_and_global_kernels",
+      "test_finite_aperture_uncertainty_single_pixel_matches_diagonal_plane",
+      "test_flux_aperture_uncertainty_matches_source_basis_oracle",
+      "test_lanczos_sampling_preserves_constant_on_complete_support",
+      "test_plan_image_plane_cube_target_builds_band_metadata",
+      "test_plan_image_plane_cube_target_from_header_uses_spectral_wcs",
+      "test_plan_image_plane_target_uses_reference_observation",
+      "test_plan_union_footprint_accepts_rotated_cd",
+      "test_plan_union_footprint_contains_curved_sip_edges",
+      "test_plan_union_footprint_is_ra_seam_safe",
+      "test_project_observation_large_tan_windowing_matches_full_reprojection",
+      "test_project_observation_window_no_overlap_skips_geometry",
+      "test_realistic_small_pixel_flux_identity_preserves_unit_weight_and_ivar",
+      "test_sample_image_plane_batched_channels_matches_separate_sampling",
+      "test_sample_image_plane_diagonal_variance_matches_basis_oracle",
+      "test_spilled_exact_median_cleans_scratch_after_projection_failure",
+      "test_spilled_exact_median_matches_memory_and_cleans_scratch",
+      "test_spilled_exact_median_rejects_insufficient_scratch_before_projection",
+      "test_spilled_overlap_background_preserves_propagated_inverse_variance",
+      "test_spilled_sigma_clipped_rejects_scratch_shortage_before_projection",
+      "test_spilled_sigma_clipping_uses_explicit_propagated_noise",
+      "test_square_drizzle_tiles_keep_drops_overlapping_outer_canvas",
+      "test_stack_map_product_passes_mean_stacking_to_single_band_coadd",
+      "test_surface_brightness_area_scaling_gate_uses_target_vs_harmonic_source_scale",
+      "test_target_wcs_grids_mps_match_cpu",
+      "test_tiled_overlap_background_rejects_noncompact_estimators",
+      "test_tiled_overlap_background_rejects_scratch_shortage_before_projection",
+      "test_tiled_overlap_background_renders_compact_models",
+      "test_tiled_overlap_background_uses_one_global_chain_graph",
+      "test_tiled_overlap_background_uses_one_read_per_exposure_and_cleans_scratch",
+      "test_tiled_squared_coefficient_variance_matches_full_projection",
+      "test_tpv_source_cap_radius_covers_in_bounds_points"
+    ]
+  }
+]

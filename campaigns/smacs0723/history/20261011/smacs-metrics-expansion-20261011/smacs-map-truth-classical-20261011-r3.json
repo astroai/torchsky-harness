@@ -1,0 +1,42 @@
+{
+  "run_id": "smacs-map-truth-classical-20261011-r3",
+  "hypothesis": "Known-truth reconstruction and flux metrics for native map kernels and available official SWarp, Drizzle and Montage comparators",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "synthetic known truth; not a measurement of SMACS depth",
+  "cpu": 8,
+  "memory": 32,
+  "gpu": 0,
+  "pixi_environment": "map-compat-cuda",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 10800,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "\nimport os,pathlib,subprocess,sys\nenv=dict(os.environ)\nenv[\"CFLAGS\"]=env.get(\"CFLAGS\",\"\")+\" -std=gnu17\"\nprint(\"Montage CFITSIO compatibility: CFLAGS adds -std=gnu17\",flush=True)\nsubprocess.check_call([sys.executable,str(pathlib.Path(sys.argv[1])/\"scripts/bootstrap_map_compat_tools.py\"),\"--tool\",\"montage\",\"--jobs\",\"8\"],env=env)\n",
+      "{source}"
+    ],
+    [
+      "python",
+      "{source}/scripts/run_local_sphere_bench.py",
+      "{source}/benchmarks/bench_map_ground_truth.py",
+      "--cases",
+      "tan_aligned_high_noise,tan_flux_multires",
+      "--torchsky-kernels",
+      "bilinear,lanczos3,conservative_polygon",
+      "--include-external",
+      "--size",
+      "128",
+      "--runs",
+      "3",
+      "--seed",
+      "101",
+      "--json-out",
+      "{output}/truth.json",
+      "--markdown-out",
+      "{output}/truth.md"
+    ]
+  ],
+  "bootstrap_note": "Pinned legacy CFITSIO bundled by Montage requires a pre-C23 C dialect; preserve existing CFLAGS and append GNU17"
+}

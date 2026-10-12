@@ -1,0 +1,2006 @@
+{
+  "destination": "private astroai/torchsky-harness",
+  "historical_artifact_count": 194,
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 744
+    },
+    {
+      "path": ".github/workflows/map_compat_weekly.yml",
+      "bytes": 3903
+    },
+    {
+      "path": ".github/workflows/wcs_sphere_weekly.yml",
+      "bytes": 2252
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 161
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1486
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 11
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1075
+    },
+    {
+      "path": "README.md",
+      "bytes": 2005
+    },
+    {
+      "path": "benchmarks/PHASE0_WCS_SPHERE.md",
+      "bytes": 3863
+    },
+    {
+      "path": "benchmarks/__init__.py",
+      "bytes": 69
+    },
+    {
+      "path": "benchmarks/aggregate_ground_truth_competitive_large_union.py",
+      "bytes": 9638
+    },
+    {
+      "path": "benchmarks/baselines/map_compat_ci_gate.json",
+      "bytes": 396
+    },
+    {
+      "path": "benchmarks/baselines/map_compat_real_smoke.json",
+      "bytes": 48413
+    },
+    {
+      "path": "benchmarks/baselines/map_compat_real_smoke.md",
+      "bytes": 715
+    },
+    {
+      "path": "benchmarks/baselines/map_compat_time_gate_example.json",
+      "bytes": 154
+    },
+    {
+      "path": "benchmarks/baselines/map_drizzle_acceptance.json",
+      "bytes": 827
+    },
+    {
+      "path": "benchmarks/baselines/map_field_fit_rep.json",
+      "bytes": 14580
+    },
+    {
+      "path": "benchmarks/baselines/map_field_fit_rep.md",
+      "bytes": 459
+    },
+    {
+      "path": "benchmarks/baselines/map_field_fit_smoke.json",
+      "bytes": 5058
+    },
+    {
+      "path": "benchmarks/baselines/map_field_fit_smoke.md",
+      "bytes": 301
+    },
+    {
+      "path": "benchmarks/baselines/map_ground_truth_rep.json",
+      "bytes": 7042
+    },
+    {
+      "path": "benchmarks/baselines/map_ground_truth_rep.md",
+      "bytes": 453
+    },
+    {
+      "path": "benchmarks/baselines/map_ground_truth_smoke.json",
+      "bytes": 3545
+    },
+    {
+      "path": "benchmarks/baselines/map_ground_truth_smoke.md",
+      "bytes": 301
+    },
+    {
+      "path": "benchmarks/baselines/map_montage_acceptance.json",
+      "bytes": 453
+    },
+    {
+      "path": "benchmarks/baselines/map_multifield_truth_rep.json",
+      "bytes": 6192
+    },
+    {
+      "path": "benchmarks/baselines/map_multifield_truth_rep.md",
+      "bytes": 450
+    },
+    {
+      "path": "benchmarks/baselines/map_multifield_truth_smoke.json",
+      "bytes": 3131
+    },
+    {
+      "path": "benchmarks/baselines/map_multifield_truth_smoke.md",
+      "bytes": 302
+    },
+    {
+      "path": "benchmarks/baselines/map_radio_tp_smoke.json",
+      "bytes": 723
+    },
+    {
+      "path": "benchmarks/baselines/map_swarp_acceptance.json",
+      "bytes": 1175
+    },
+    {
+      "path": "benchmarks/baselines/map_swarp_clipped_acceptance.json",
+      "bytes": 677
+    },
+    {
+      "path": "benchmarks/baselines/smacs_full_mosaic_parity.json",
+      "bytes": 2023
+    },
+    {
+      "path": "benchmarks/baselines/sphere_geom_exact_contains_gate.json",
+      "bytes": 1124
+    },
+    {
+      "path": "benchmarks/baselines/spin_matrix_extended_baseline.json",
+      "bytes": 609
+    },
+    {
+      "path": "benchmarks/bench_all.py",
+      "bytes": 16439
+    },
+    {
+      "path": "benchmarks/bench_catalog_compat.py",
+      "bytes": 16542
+    },
+    {
+      "path": "benchmarks/bench_catalog_crossmatch.py",
+      "bytes": 14206
+    },
+    {
+      "path": "benchmarks/bench_catalog_crossmatch_arrow.py",
+      "bytes": 12497
+    },
+    {
+      "path": "benchmarks/bench_cold_targets.py",
+      "bytes": 4821
+    },
+    {
+      "path": "benchmarks/bench_competitors.py",
+      "bytes": 9973
+    },
+    {
+      "path": "benchmarks/bench_contract.py",
+      "bytes": 18134
+    },
+    {
+      "path": "benchmarks/bench_cuhpx_sht_spike.py",
+      "bytes": 6327
+    },
+    {
+      "path": "benchmarks/bench_gpu_memory.py",
+      "bytes": 11374
+    },
+    {
+      "path": "benchmarks/bench_healpix.py",
+      "bytes": 20266
+    },
+    {
+      "path": "benchmarks/bench_healpix_advanced.py",
+      "bytes": 11792
+    },
+    {
+      "path": "benchmarks/bench_inr_perf.py",
+      "bytes": 25814
+    },
+    {
+      "path": "benchmarks/bench_map_boundary_support.py",
+      "bytes": 14050
+    },
+    {
+      "path": "benchmarks/bench_map_compat.py",
+      "bytes": 126890
+    },
+    {
+      "path": "benchmarks/bench_map_field_fit.py",
+      "bytes": 152062
+    },
+    {
+      "path": "benchmarks/bench_map_foam_exact_solve.py",
+      "bytes": 4978
+    },
+    {
+      "path": "benchmarks/bench_map_foam_operator.py",
+      "bytes": 8067
+    },
+    {
+      "path": "benchmarks/bench_map_foam_sparse.py",
+      "bytes": 4661
+    },
+    {
+      "path": "benchmarks/bench_map_foam_spectral.py",
+      "bytes": 7073
+    },
+    {
+      "path": "benchmarks/bench_map_foam_tiles.py",
+      "bytes": 6454
+    },
+    {
+      "path": "benchmarks/bench_map_foam_training.py",
+      "bytes": 8974
+    },
+    {
+      "path": "benchmarks/bench_map_ground_truth.py",
+      "bytes": 75365
+    },
+    {
+      "path": "benchmarks/bench_map_image_plane.py",
+      "bytes": 21816
+    },
+    {
+      "path": "benchmarks/bench_map_multifield_truth.py",
+      "bytes": 71073
+    },
+    {
+      "path": "benchmarks/bench_map_overlap_background.py",
+      "bytes": 6283
+    },
+    {
+      "path": "benchmarks/bench_map_projection_mosaic_suite.py",
+      "bytes": 62661
+    },
+    {
+      "path": "benchmarks/bench_map_reducer_streaming.py",
+      "bytes": 9192
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_field_fit.py",
+      "bytes": 25866
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_field_fit_band_sweep.py",
+      "bytes": 16676
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_field_fit_joint.py",
+      "bytes": 273085
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_ladder.py",
+      "bytes": 8677
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_real.py",
+      "bytes": 29408
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_reproduce.py",
+      "bytes": 16602
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_stackers.py",
+      "bytes": 68780
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_stackers_band_sweep.py",
+      "bytes": 7910
+    },
+    {
+      "path": "benchmarks/bench_map_smacs0723_strainer_transfer.py",
+      "bytes": 13506
+    },
+    {
+      "path": "benchmarks/bench_map_tan_sip_suite.py",
+      "bytes": 34906
+    },
+    {
+      "path": "benchmarks/bench_multiband_depth.py",
+      "bytes": 160674
+    },
+    {
+      "path": "benchmarks/bench_observed_place.py",
+      "bytes": 6008
+    },
+    {
+      "path": "benchmarks/bench_operator_chunking.py",
+      "bytes": 5888
+    },
+    {
+      "path": "benchmarks/bench_operator_multiexposure.py",
+      "bytes": 9189
+    },
+    {
+      "path": "benchmarks/bench_pipeline_table_sphere.py",
+      "bytes": 14885
+    },
+    {
+      "path": "benchmarks/bench_sphere_core.py",
+      "bytes": 11123
+    },
+    {
+      "path": "benchmarks/bench_sphere_geom_exact_contains.py",
+      "bytes": 11330
+    },
+    {
+      "path": "benchmarks/bench_sphere_geometry.py",
+      "bytes": 25585
+    },
+    {
+      "path": "benchmarks/bench_sphere_matrix.py",
+      "bytes": 7646
+    },
+    {
+      "path": "benchmarks/bench_sphere_polygons.py",
+      "bytes": 23720
+    },
+    {
+      "path": "benchmarks/bench_sphere_sparse.py",
+      "bytes": 9587
+    },
+    {
+      "path": "benchmarks/bench_sphere_spectral.py",
+      "bytes": 13903
+    },
+    {
+      "path": "benchmarks/bench_sphere_suite.py",
+      "bytes": 51871
+    },
+    {
+      "path": "benchmarks/bench_spin_matrix.py",
+      "bytes": 10514
+    },
+    {
+      "path": "benchmarks/bench_strainer_phase2.py",
+      "bytes": 6925
+    },
+    {
+      "path": "benchmarks/bench_transforms.py",
+      "bytes": 8419
+    },
+    {
+      "path": "benchmarks/bench_updec_webb_real.py",
+      "bytes": 11478
+    },
+    {
+      "path": "benchmarks/bench_wcs.py",
+      "bytes": 29320
+    },
+    {
+      "path": "benchmarks/bench_wcs_legacy_only.py",
+      "bytes": 14620
+    },
+    {
+      "path": "benchmarks/bench_wcs_small_n_paths.py",
+      "bytes": 10577
+    },
+    {
+      "path": "benchmarks/bench_wcs_spectral_temporal.py",
+      "bytes": 10791
+    },
+    {
+      "path": "benchmarks/bench_wcs_suite.py",
+      "bytes": 19802
+    },
+    {
+      "path": "benchmarks/bench_wcs_tabular.py",
+      "bytes": 6111
+    },
+    {
+      "path": "benchmarks/bench_wcs_tpv_inverse.py",
+      "bytes": 10145
+    },
+    {
+      "path": "benchmarks/compare_smacs_grid_mapping.py",
+      "bytes": 11993
+    },
+    {
+      "path": "benchmarks/config.py",
+      "bytes": 785
+    },
+    {
+      "path": "benchmarks/diagnose_field_fit_residuals.py",
+      "bytes": 14862
+    },
+    {
+      "path": "benchmarks/diagnose_field_fit_sparse_frontier.py",
+      "bytes": 4061
+    },
+    {
+      "path": "benchmarks/diagnose_field_fit_stochastic_chunks.py",
+      "bytes": 14045
+    },
+    {
+      "path": "benchmarks/diagnose_field_fit_sweep.py",
+      "bytes": 8982
+    },
+    {
+      "path": "benchmarks/diagnose_map_large_union_accumulation.py",
+      "bytes": 15977
+    },
+    {
+      "path": "benchmarks/diagnose_map_large_union_reprojection.py",
+      "bytes": 17375
+    },
+    {
+      "path": "benchmarks/diagnose_map_large_union_timing.py",
+      "bytes": 18552
+    },
+    {
+      "path": "benchmarks/diagnose_map_projection_tail.py",
+      "bytes": 11727
+    },
+    {
+      "path": "benchmarks/export_smacs0723_calibration_inspection.py",
+      "bytes": 30909
+    },
+    {
+      "path": "benchmarks/fit_smacs0723_operator_calibration.py",
+      "bytes": 35071
+    },
+    {
+      "path": "benchmarks/mpl_config.py",
+      "bytes": 540
+    },
+    {
+      "path": "benchmarks/probe_canfar_cuda.py",
+      "bytes": 2022
+    },
+    {
+      "path": "benchmarks/replays/__init__.py",
+      "bytes": 56
+    },
+    {
+      "path": "benchmarks/replays/replay_upstream_astropy_healpy.py",
+      "bytes": 10494
+    },
+    {
+      "path": "benchmarks/replays/replay_upstream_healpy_interp_edges.py",
+      "bytes": 12475
+    },
+    {
+      "path": "benchmarks/replays/replay_upstream_healpy_spin.py",
+      "bytes": 5960
+    },
+    {
+      "path": "benchmarks/replays/replay_upstream_spherical_geometry_polygons.py",
+      "bytes": 31445
+    },
+    {
+      "path": "benchmarks/replays/replay_upstream_test_functions.py",
+      "bytes": 24373
+    },
+    {
+      "path": "benchmarks/replays/upstream_sources.json",
+      "bytes": 1325
+    },
+    {
+      "path": "benchmarks/run_ground_truth_competitive_large_union.py",
+      "bytes": 10502
+    },
+    {
+      "path": "benchmarks/score_field_models.py",
+      "bytes": 31109
+    },
+    {
+      "path": "benchmarks/score_smacs0723_foam.py",
+      "bytes": 11239
+    },
+    {
+      "path": "benchmarks/score_smacs0723_native_classical.py",
+      "bytes": 14033
+    },
+    {
+      "path": "benchmarks/scorecards/20260612_main_domains.json",
+      "bytes": 3060
+    },
+    {
+      "path": "benchmarks/scorecards/20260612_main_domains.md",
+      "bytes": 1242
+    },
+    {
+      "path": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.json",
+      "bytes": 1679
+    },
+    {
+      "path": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.md",
+      "bytes": 1017
+    },
+    {
+      "path": "benchmarks/scorecards/20260816_world_layer.md",
+      "bytes": 1931
+    },
+    {
+      "path": "benchmarks/scorecards/20260817_world_layer.md",
+      "bytes": 6239
+    },
+    {
+      "path": "benchmarks/scorecards/20260819_sht_polar_fft.md",
+      "bytes": 3415
+    },
+    {
+      "path": "benchmarks/scorecards/20260820_world_layer_pending.md",
+      "bytes": 667
+    },
+    {
+      "path": "benchmarks/scorecards/20260821_catalog_scale.md",
+      "bytes": 1272
+    },
+    {
+      "path": "benchmarks/scorecards/20260821_wcs_sphere_claim_close.md",
+      "bytes": 4832
+    },
+    {
+      "path": "benchmarks/scorecards/20260821_world_layer.md",
+      "bytes": 5902
+    },
+    {
+      "path": "benchmarks/scorecards/20260831_map_overlap_background.json",
+      "bytes": 1819
+    },
+    {
+      "path": "benchmarks/scorecards/20260831_map_overlap_background.md",
+      "bytes": 1565
+    },
+    {
+      "path": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.json",
+      "bytes": 4229
+    },
+    {
+      "path": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.md",
+      "bytes": 2299
+    },
+    {
+      "path": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.json",
+      "bytes": 8570
+    },
+    {
+      "path": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.md",
+      "bytes": 6846
+    },
+    {
+      "path": "benchmarks/scorecards/README.md",
+      "bytes": 1378
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_1e6_dense_best.json",
+      "bytes": 368
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_1e6_sparse_best.json",
+      "bytes": 366
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_1e7_sparse_best.json",
+      "bytes": 374
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_200k_dense.json",
+      "bytes": 382
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_20k.json",
+      "bytes": 381
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_20k_dense.json",
+      "bytes": 379
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_50k.json",
+      "bytes": 379
+    },
+    {
+      "path": "benchmarks/scorecards/catalog_scale_5k.json",
+      "bytes": 234
+    },
+    {
+      "path": "benchmarks/scorecards/index.md",
+      "bytes": 2563
+    },
+    {
+      "path": "benchmarks/scorecards/xmatch_contract_10k.json",
+      "bytes": 3147
+    },
+    {
+      "path": "benchmarks/sht_peer_layout.py",
+      "bytes": 1910
+    },
+    {
+      "path": "benchmarks/stage_smacs0723_canfar.py",
+      "bytes": 6687
+    },
+    {
+      "path": "benchmarks/updc/README.md",
+      "bytes": 4643
+    },
+    {
+      "path": "benchmarks/updc/__init__.py",
+      "bytes": 57
+    },
+    {
+      "path": "benchmarks/updc/compare_catalogs_vs_reference.py",
+      "bytes": 13144
+    },
+    {
+      "path": "benchmarks/updc/prepare_inputs.py",
+      "bytes": 17520
+    },
+    {
+      "path": "campaigns/smacs0723/README.md",
+      "bytes": 1406
+    },
+    {
+      "path": "campaigns/smacs0723/fetch_frozen_artifact.py",
+      "bytes": 1774
+    },
+    {
+      "path": "campaigns/smacs0723/historical-artifacts.json",
+      "bytes": 67081
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/all6-calibration-discovery.json",
+      "bytes": 4298
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/all6-calibration.json",
+      "bytes": 1216
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/attempt-ledger.json",
+      "bytes": 6185
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/container-manifest.json",
+      "bytes": 856
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/matched-native-drizzle.json",
+      "bytes": 8460
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/native-pcg-canary.json",
+      "bytes": 3043
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/native-plane-audit.json",
+      "bytes": 1605
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/next-discovery-screen-plan.json",
+      "bytes": 40983
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/pcg_objective_audit.json",
+      "bytes": 1071
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/pilot-adam.json",
+      "bytes": 3270
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/pilot-pcg.json",
+      "bytes": 3269
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/recovery-adam30.json",
+      "bytes": 3208
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/recovery-all6-calibration.json",
+      "bytes": 1333
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/recovery-pcg30.json",
+      "bytes": 3207
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/runtime.json",
+      "bytes": 412
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-all6-stationary-exposure-calibration-20261010-r1.json",
+      "bytes": 2293
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r1.json",
+      "bytes": 9696
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r1.json",
+      "bytes": 4169
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r2.json",
+      "bytes": 11481
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r3.json",
+      "bytes": 6665
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r4.json",
+      "bytes": 6713
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+      "bytes": 15836
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+      "bytes": 17408
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-foam-response-audit-20261011-r1.json",
+      "bytes": 8267
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r1.json",
+      "bytes": 15839
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r2.json",
+      "bytes": 17397
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r1.json",
+      "bytes": 3821
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r2.json",
+      "bytes": 3911
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r3.json",
+      "bytes": 4009
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r4.json",
+      "bytes": 4009
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r5.json",
+      "bytes": 4077
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r6.json",
+      "bytes": 4310
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r1.json",
+      "bytes": 3819
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r2.json",
+      "bytes": 3909
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r3.json",
+      "bytes": 4007
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r4.json",
+      "bytes": 4007
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r5.json",
+      "bytes": 4075
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r6.json",
+      "bytes": 4308
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r1.json",
+      "bytes": 15738
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r2.json",
+      "bytes": 17304
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r1.json",
+      "bytes": 2076
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r2.json",
+      "bytes": 2451
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r3.json",
+      "bytes": 2635
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-map-truth-montagepy-20261011-r1.json",
+      "bytes": 4224
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r1.json",
+      "bytes": 4450
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r2.json",
+      "bytes": 5959
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r3.json",
+      "bytes": 6007
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r1.json",
+      "bytes": 8050
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r2.json",
+      "bytes": 8094
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r3.json",
+      "bytes": 7815
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r1.json",
+      "bytes": 8044
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r2.json",
+      "bytes": 9662
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r3.json",
+      "bytes": 28373
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-montagepy-response128-20261011-r1.json",
+      "bytes": 8752
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-matched-native-drizzle-c128-20261010-r1.json",
+      "bytes": 9531
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-model-known-truth-20261011-r1.json",
+      "bytes": 2216
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-model-known-truth-20261011-r2.json",
+      "bytes": 2372
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montage-projection-diagnostic-20261011-r1.json",
+      "bytes": 5335
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f090w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f150w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f200w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f277w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f356w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-f444w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-montagepy-projection-check-20261011-r1.json",
+      "bytes": 3069
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r1.json",
+      "bytes": 14948
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r2.json",
+      "bytes": 15142
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r3.json",
+      "bytes": 14747
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-inr-pcg-canary-c128-20261010-r1.json",
+      "bytes": 4113
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-plane-audit-20261010-r1.json",
+      "bytes": 2650
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-native-plane-audit-20261010-r2.json",
+      "bytes": 2650
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-published-static-integrity-20261011-r1.json",
+      "bytes": 6924
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-published-updc-best-stack-20261011-r1.json",
+      "bytes": 5464
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r1.json",
+      "bytes": 4901
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r2.json",
+      "bytes": 5102
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-ready-model-responses-20261011-r1.json",
+      "bytes": 29508
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-recovery-adam30-c128-20261010-r1.json",
+      "bytes": 4272
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-recovery-all6-calibration-20261010-r2.json",
+      "bytes": 2340
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-recovery-pcg30-c128-20261010-r1.json",
+      "bytes": 4270
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sasnet-response128-20261011-r1.json",
+      "bytes": 15275
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sasnet-response128-20261011-r2.json",
+      "bytes": 16825
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r1.json",
+      "bytes": 15656
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r2.json",
+      "bytes": 17213
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+      "bytes": 15509
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+      "bytes": 17077
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+      "bytes": 17261
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r1.json",
+      "bytes": 15444
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r2.json",
+      "bytes": 17007
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/source-26913f98c497c485.json",
+      "bytes": 66006
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/source-a0ed9e15a793ba28.json",
+      "bytes": 66006
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/source.json",
+      "bytes": 854
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-inr-20261010/target-grid-area.json",
+      "bytes": 210
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/COVERAGE.md",
+      "bytes": 21477
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/PRIORITY-STATUS.md",
+      "bytes": 10146
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/RUNS.md",
+      "bytes": 19779
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/canfar-ps-smacs-20261011-2217.json",
+      "bytes": 1850
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/check_flux_units.json",
+      "bytes": 412
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/classical-priority-scorecard.json",
+      "bytes": 128037
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/classical-priority-scorecard.md",
+      "bytes": 10133
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/completed-results.md",
+      "bytes": 21937
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/coverage-existing.json",
+      "bytes": 8004707
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/coverage-existing.md",
+      "bytes": 12873
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/detector-validation.json",
+      "bytes": 7628
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/detector-validation.md",
+      "bytes": 1680
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/foam-response-audit.md",
+      "bytes": 1821
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/jobs-ledger.json",
+      "bytes": 245938
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/latest-status.md",
+      "bytes": 6899
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/live-status.md",
+      "bytes": 9052
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/model-priority-scorecard.json",
+      "bytes": 21825
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/model-priority-scorecard.md",
+      "bytes": 5004
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/published-input-existence.json",
+      "bytes": 2907
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/published-inventory.md",
+      "bytes": 6999
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/signed-flux-check.json",
+      "bytes": 345
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r2.json",
+      "bytes": 10002
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r3.json",
+      "bytes": 10110
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r1.json",
+      "bytes": 3100
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r2.json",
+      "bytes": 10508
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r3.json",
+      "bytes": 5596
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r4.json",
+      "bytes": 5644
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+      "bytes": 14752
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+      "bytes": 16324
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-foam-response-audit-20261011-r1.json",
+      "bytes": 7204
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r1.json",
+      "bytes": 14769
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r2.json",
+      "bytes": 16327
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r1.json",
+      "bytes": 14660
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r2.json",
+      "bytes": 16226
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r1.json",
+      "bytes": 1013
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r3.json",
+      "bytes": 1572
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-montagepy-20261011-r1.json",
+      "bytes": 3161
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r1.json",
+      "bytes": 3381
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r2.json",
+      "bytes": 4890
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r3.json",
+      "bytes": 4938
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r1.json",
+      "bytes": 6977
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r2.json",
+      "bytes": 7021
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r3.json",
+      "bytes": 6742
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r1.json",
+      "bytes": 6976
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r2.json",
+      "bytes": 8594
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r3.json",
+      "bytes": 27305
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-montagepy-response128-20261011-r1.json",
+      "bytes": 7679
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-matched-reproject-response128-20261011-r1.json",
+      "bytes": 20768
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r1.json",
+      "bytes": 1155
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r2.json",
+      "bytes": 1311
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montage-projection-diagnostic-20261011-r1.json",
+      "bytes": 4262
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f090w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f150w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f200w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f277w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f356w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f444w-inj512-20261011-r1.json",
+      "bytes": 19032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-projection-check-20261011-r1.json",
+      "bytes": 1999
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r1.json",
+      "bytes": 13879
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r2.json",
+      "bytes": 14073
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r3.json",
+      "bytes": 13678
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-published-static-integrity-20261011-r1.json",
+      "bytes": 5854
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-best-stack-20261011-r1.json",
+      "bytes": 4395
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r1.json",
+      "bytes": 3831
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r2.json",
+      "bytes": 4032
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-ready-model-responses-20261011-r1.json",
+      "bytes": 28443
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r1.json",
+      "bytes": 14213
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r2.json",
+      "bytes": 15763
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r1.json",
+      "bytes": 14587
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r2.json",
+      "bytes": 16144
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+      "bytes": 14429
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+      "bytes": 15997
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+      "bytes": 16181
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r1.json",
+      "bytes": 14369
+    },
+    {
+      "path": "campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r2.json",
+      "bytes": 15932
+    },
+    {
+      "path": "docs/adass_updec_depth_week.md",
+      "bytes": 59075
+    },
+    {
+      "path": "docs/archive/benchmark-history.md",
+      "bytes": 3489
+    },
+    {
+      "path": "docs/benchmarks.md",
+      "bytes": 91095
+    },
+    {
+      "path": "docs/catalog-migration-verification.md",
+      "bytes": 4751
+    },
+    {
+      "path": "docs/compatibility.md",
+      "bytes": 13350
+    },
+    {
+      "path": "docs/extraction-status.md",
+      "bytes": 4327
+    },
+    {
+      "path": "docs/geometry-migration-verification.md",
+      "bytes": 4736
+    },
+    {
+      "path": "docs/inr_foam_problem_formulation.md",
+      "bytes": 57039
+    },
+    {
+      "path": "docs/map-migration-inventory.md",
+      "bytes": 10054
+    },
+    {
+      "path": "docs/map-migration-verification.md",
+      "bytes": 4185
+    },
+    {
+      "path": "docs/migration-files.json",
+      "bytes": 31332
+    },
+    {
+      "path": "docs/migration-plan.md",
+      "bytes": 17795
+    },
+    {
+      "path": "docs/migration-scripts.json",
+      "bytes": 5983
+    },
+    {
+      "path": "docs/migration-tests.json",
+      "bytes": 77565
+    },
+    {
+      "path": "docs/projects/smacs_inr_autonomous_bakeoff.md",
+      "bytes": 5372
+    },
+    {
+      "path": "docs/publication-proposal.md",
+      "bytes": 1793
+    },
+    {
+      "path": "docs/smacs_inr_autonomous_bakeoff.md",
+      "bytes": 5372
+    },
+    {
+      "path": "docs/source-snapshot.json",
+      "bytes": 305
+    },
+    {
+      "path": "docs/wcs-aware-smacs0723-pipeline.md",
+      "bytes": 2946
+    },
+    {
+      "path": "docs/wiring-audit.md",
+      "bytes": 5359
+    },
+    {
+      "path": "pixi.lock",
+      "bytes": 1554005
+    },
+    {
+      "path": "pixi.toml",
+      "bytes": 31325
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 2556
+    },
+    {
+      "path": "scripts/__init__.py",
+      "bytes": 54
+    },
+    {
+      "path": "scripts/archive_benchmark_scorecard.py",
+      "bytes": 13293
+    },
+    {
+      "path": "scripts/bench_cfht_mef_mosaic.py",
+      "bytes": 11512
+    },
+    {
+      "path": "scripts/bootstrap_map_compat_tools.py",
+      "bytes": 12544
+    },
+    {
+      "path": "scripts/bootstrap_sphere_bench.py",
+      "bytes": 4632
+    },
+    {
+      "path": "scripts/bootstrap_svo_passbands.py",
+      "bytes": 7431
+    },
+    {
+      "path": "scripts/build_smacs0723_minicutout.py",
+      "bytes": 8559
+    },
+    {
+      "path": "scripts/build_smacs0723_stack_baseline.py",
+      "bytes": 6220
+    },
+    {
+      "path": "scripts/build_updc_manifest_flexible.py",
+      "bytes": 4440
+    },
+    {
+      "path": "scripts/download_cfht_megapipe.py",
+      "bytes": 22039
+    },
+    {
+      "path": "scripts/download_jwst_smacs0723_mast.py",
+      "bytes": 8240
+    },
+    {
+      "path": "scripts/download_smacs0723_multiband_public.py",
+      "bytes": 4151
+    },
+    {
+      "path": "scripts/download_updec_webb.py",
+      "bytes": 8385
+    },
+    {
+      "path": "scripts/export_stpsf_kernels.py",
+      "bytes": 5493
+    },
+    {
+      "path": "scripts/fetch_canfar_wcs_sphere_run.sh",
+      "bytes": 1437
+    },
+    {
+      "path": "scripts/fetch_healpix_pixel_weights.sh",
+      "bytes": 595
+    },
+    {
+      "path": "scripts/launch_canfar_wcs_sphere.sh",
+      "bytes": 15198
+    },
+    {
+      "path": "scripts/pretrain_strainer_trunk.py",
+      "bytes": 3534
+    },
+    {
+      "path": "scripts/print_benchmark_comparator_versions.py",
+      "bytes": 2962
+    },
+    {
+      "path": "scripts/run_canfar_adass_depth.sh",
+      "bytes": 38497
+    },
+    {
+      "path": "scripts/run_canfar_cuhpx_sht_spike.sh",
+      "bytes": 2583
+    },
+    {
+      "path": "scripts/run_canfar_wcs_sphere.sh",
+      "bytes": 27358
+    },
+    {
+      "path": "scripts/run_catalog_scale_contract.py",
+      "bytes": 5168
+    },
+    {
+      "path": "scripts/run_catalog_scale_real.py",
+      "bytes": 6060
+    },
+    {
+      "path": "scripts/run_local_sphere_bench.py",
+      "bytes": 817
+    },
+    {
+      "path": "scripts/smacs0723_field_fit_full_reference.py",
+      "bytes": 11986
+    },
+    {
+      "path": "scripts/smacs0723_full_mosaic_pipeline.py",
+      "bytes": 18503
+    },
+    {
+      "path": "scripts/subject_install.sh",
+      "bytes": 1416
+    },
+    {
+      "path": "scripts/sync_upstream_sphere_sources.py",
+      "bytes": 12315
+    },
+    {
+      "path": "scripts/visualize_smacs0723_products.py",
+      "bytes": 43055
+    },
+    {
+      "path": "src/torchsky_harness/__init__.py",
+      "bytes": 100
+    },
+    {
+      "path": "src/torchsky_harness/cli.py",
+      "bytes": 2114
+    },
+    {
+      "path": "src/torchsky_harness/datasets.py",
+      "bytes": 206
+    },
+    {
+      "path": "src/torchsky_harness/fixtures/upstream_astropy_catalogs/README.md",
+      "bytes": 552
+    },
+    {
+      "path": "src/torchsky_harness/fixtures/upstream_astropy_catalogs/binary2_masked_strings.xml",
+      "bytes": 2497
+    },
+    {
+      "path": "src/torchsky_harness/fixtures/upstream_astropy_catalogs/irsa-nph-m31.xml",
+      "bytes": 9432
+    },
+    {
+      "path": "src/torchsky_harness/fixtures/upstream_astropy_catalogs/vizier_b2_votable.xml",
+      "bytes": 6624
+    },
+    {
+      "path": "src/torchsky_harness/registry.py",
+      "bytes": 1155
+    },
+    {
+      "path": "src/torchsky_harness/runner.py",
+      "bytes": 2711
+    },
+    {
+      "path": "src/torchsky_harness/subject.py",
+      "bytes": 2218
+    },
+    {
+      "path": "tests/_map_field_fixtures.py",
+      "bytes": 2885
+    },
+    {
+      "path": "tests/conftest.py",
+      "bytes": 454
+    },
+    {
+      "path": "tests/data/dummy.fits",
+      "bytes": 8640
+    },
+    {
+      "path": "tests/data/radio_mm_stub.fits",
+      "bytes": 5760
+    },
+    {
+      "path": "tests/data/table_example.fits",
+      "bytes": 8640
+    },
+    {
+      "path": "tests/data/upstream_astropy_catalogs/README.md",
+      "bytes": 552
+    },
+    {
+      "path": "tests/data/upstream_astropy_catalogs/binary2_masked_strings.xml",
+      "bytes": 2497
+    },
+    {
+      "path": "tests/data/upstream_astropy_catalogs/irsa-nph-m31.xml",
+      "bytes": 9432
+    },
+    {
+      "path": "tests/data/upstream_astropy_catalogs/vizier_b2_votable.xml",
+      "bytes": 6624
+    },
+    {
+      "path": "tests/test_bootstrap_map_compat_tools.py",
+      "bytes": 3302
+    },
+    {
+      "path": "tests/test_build_smacs0723_minicutout.py",
+      "bytes": 7498
+    },
+    {
+      "path": "tests/test_build_updc_manifest_flexible.py",
+      "bytes": 3115
+    },
+    {
+      "path": "tests/test_canfar_wcs_sphere_runner.py",
+      "bytes": 5339
+    },
+    {
+      "path": "tests/test_catalog_compat.py",
+      "bytes": 10500
+    },
+    {
+      "path": "tests/test_compare_catalogs_qa.py",
+      "bytes": 5303
+    },
+    {
+      "path": "tests/test_compare_smacs_grid_mapping.py",
+      "bytes": 6902
+    },
+    {
+      "path": "tests/test_download_jwst_smacs0723_mast.py",
+      "bytes": 5298
+    },
+    {
+      "path": "tests/test_download_smacs0723_multiband_public.py",
+      "bytes": 538
+    },
+    {
+      "path": "tests/test_download_updec_webb.py",
+      "bytes": 2404
+    },
+    {
+      "path": "tests/test_healpix_parity.py",
+      "bytes": 22413
+    },
+    {
+      "path": "tests/test_healsparse_upstream.py",
+      "bytes": 7515
+    },
+    {
+      "path": "tests/test_inr_pcg.py",
+      "bytes": 13952
+    },
+    {
+      "path": "tests/test_inr_perf.py",
+      "bytes": 10940
+    },
+    {
+      "path": "tests/test_map_compat_bench.py",
+      "bytes": 37951
+    },
+    {
+      "path": "tests/test_map_conservative_external_parity.py",
+      "bytes": 5998
+    },
+    {
+      "path": "tests/test_map_dfreproject_parity.py",
+      "bytes": 3183
+    },
+    {
+      "path": "tests/test_map_drizzle_external_parity.py",
+      "bytes": 9799
+    },
+    {
+      "path": "tests/test_map_external_tools_smoke.py",
+      "bytes": 1208
+    },
+    {
+      "path": "tests/test_map_field_fit.py",
+      "bytes": 39400
+    },
+    {
+      "path": "tests/test_map_ground_truth.py",
+      "bytes": 15993
+    },
+    {
+      "path": "tests/test_map_ground_truth_image_plane.py",
+      "bytes": 1170
+    },
+    {
+      "path": "tests/test_map_megapipe_scale.py",
+      "bytes": 4780
+    },
+    {
+      "path": "tests/test_map_multifield_truth.py",
+      "bytes": 6083
+    },
+    {
+      "path": "tests/test_map_reducer_scorecard.py",
+      "bytes": 1121
+    },
+    {
+      "path": "tests/test_map_reproject_fft_parity.py",
+      "bytes": 6408
+    },
+    {
+      "path": "tests/test_map_smacs0723_field_fit.py",
+      "bytes": 5972
+    },
+    {
+      "path": "tests/test_map_smacs0723_field_fit_band_sweep.py",
+      "bytes": 980
+    },
+    {
+      "path": "tests/test_map_smacs0723_field_fit_joint.py",
+      "bytes": 83683
+    },
+    {
+      "path": "tests/test_map_smacs0723_real.py",
+      "bytes": 9753
+    },
+    {
+      "path": "tests/test_map_smacs0723_reproduce.py",
+      "bytes": 1596
+    },
+    {
+      "path": "tests/test_map_smacs0723_stackers.py",
+      "bytes": 17828
+    },
+    {
+      "path": "tests/test_map_smacs0723_stackers_band_sweep.py",
+      "bytes": 1005
+    },
+    {
+      "path": "tests/test_map_swarp_optional_parity.py",
+      "bytes": 2274
+    },
+    {
+      "path": "tests/test_multiband_depth_benchmark.py",
+      "bytes": 55683
+    },
+    {
+      "path": "tests/test_prepare_updc_inputs.py",
+      "bytes": 7643
+    },
+    {
+      "path": "tests/test_real_data_validation.py",
+      "bytes": 984
+    },
+    {
+      "path": "tests/test_run_local_sphere_bench.py",
+      "bytes": 648
+    },
+    {
+      "path": "tests/test_runner.py",
+      "bytes": 2059
+    },
+    {
+      "path": "tests/test_score_field_models.py",
+      "bytes": 6245
+    },
+    {
+      "path": "tests/test_score_smacs0723_foam.py",
+      "bytes": 2585
+    },
+    {
+      "path": "tests/test_score_smacs0723_native_classical.py",
+      "bytes": 2164
+    },
+    {
+      "path": "tests/test_smacs0723_full_mosaic_pipeline.py",
+      "bytes": 2128
+    },
+    {
+      "path": "tests/test_smacs_calibration_inspection.py",
+      "bytes": 16856
+    },
+    {
+      "path": "tests/test_smacs_foam_flux_recovery.py",
+      "bytes": 5663
+    },
+    {
+      "path": "tests/test_smacs_measured_adapter.py",
+      "bytes": 4436
+    },
+    {
+      "path": "tests/test_smacs_operator_calibration_fit.py",
+      "bytes": 10456
+    },
+    {
+      "path": "tests/test_smacs_product_visualization.py",
+      "bytes": 8801
+    },
+    {
+      "path": "tests/test_smacs_sampling.py",
+      "bytes": 14656
+    },
+    {
+      "path": "tests/test_sphere_compat.py",
+      "bytes": 7481
+    },
+    {
+      "path": "tests/test_sphere_exact_regions.py",
+      "bytes": 4096
+    },
+    {
+      "path": "tests/test_sphere_geom_exact_contains_gate.py",
+      "bytes": 3458
+    },
+    {
+      "path": "tests/test_sphere_moc.py",
+      "bytes": 3045
+    },
+    {
+      "path": "tests/test_sphere_polygons.py",
+      "bytes": 6989
+    },
+    {
+      "path": "tests/test_sphere_s2fft.py",
+      "bytes": 6244
+    },
+    {
+      "path": "tests/test_sphere_spectral.py",
+      "bytes": 14774
+    },
+    {
+      "path": "tests/test_stage_smacs0723_canfar.py",
+      "bytes": 2136
+    },
+    {
+      "path": "tests/test_svo_passband_bootstrap.py",
+      "bytes": 2753
+    },
+    {
+      "path": "tests/test_synalm_parity.py",
+      "bytes": 733
+    },
+    {
+      "path": "tests/test_updec_webb_real.py",
+      "bytes": 3607
+    },
+    {
+      "path": "tests/test_upstream_parity_inventory.py",
+      "bytes": 436
+    },
+    {
+      "path": "tests/test_wcs_allsky.py",
+      "bytes": 2790
+    },
+    {
+      "path": "tests/test_wcs_cylindrical.py",
+      "bytes": 2916
+    },
+    {
+      "path": "tests/test_wcs_extended_projections.py",
+      "bytes": 19214
+    },
+    {
+      "path": "tests/test_wcs_frames.py",
+      "bytes": 11366
+    },
+    {
+      "path": "tests/test_wcs_hpx.py",
+      "bytes": 2336
+    },
+    {
+      "path": "tests/test_wcs_paper4_and_gls.py",
+      "bytes": 3887
+    },
+    {
+      "path": "tests/test_wcs_parity.py",
+      "bytes": 12720
+    },
+    {
+      "path": "tests/test_wcs_sip.py",
+      "bytes": 3461
+    },
+    {
+      "path": "tests/test_wcs_spectral.py",
+      "bytes": 14452
+    },
+    {
+      "path": "tests/test_wcs_sphere_map_extensions.py",
+      "bytes": 2042
+    },
+    {
+      "path": "tests/test_wcs_stress.py",
+      "bytes": 4595
+    },
+    {
+      "path": "tests/test_wcs_temporal.py",
+      "bytes": 5547
+    },
+    {
+      "path": "tests/test_wcs_tpv.py",
+      "bytes": 4152
+    },
+    {
+      "path": "tests/test_wcs_upstream_astropy.py",
+      "bytes": 3247
+    },
+    {
+      "path": "tests/test_wcs_zpn_ait_intermediate_parity.py",
+      "bytes": 4581
+    }
+  ]
+}

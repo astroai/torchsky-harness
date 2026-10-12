@@ -1,0 +1,128 @@
+{
+  "available_exposure_count": 135,
+  "existing_matching_reports": [
+    {
+      "assessment": "valid all-band pilot; one selected exposure per band, not full-cluster coverage",
+      "bands": [
+        "F090W",
+        "F150W",
+        "F200W",
+        "F277W",
+        "F356W",
+        "F444W"
+      ],
+      "exposure_ids": 6,
+      "families": [
+        "stationary"
+      ],
+      "matching_manifest_sha256": true,
+      "path": "/arc/projects/ots/torchsky-runs/smacs-exposure-calibration-20260914-r2/fit/operator_calibration_fit.json",
+      "per_group_nonempty_validation_and_test": 12,
+      "scope": "exposure",
+      "sha256": "e7dd7074d5ffa1019151ea78cc611c04f662e100375abce2657c975cc175851d",
+      "stationary_groups": 12,
+      "test_sample_range": [
+        2,
+        8
+      ],
+      "validation_sample_range": [
+        2,
+        11
+      ]
+    },
+    {
+      "assessment": "held-out scores valid within the fit; insufficient for all-six-band scope",
+      "bands": [
+        "F150W",
+        "F277W"
+      ],
+      "exposure_ids": 35,
+      "families": [
+        "stationary"
+      ],
+      "matching_manifest_sha256": true,
+      "path": "/arc/projects/ots/torchsky-runs/smacs-recon-20260921-r1/fit/operator_calibration_fit.json",
+      "per_group_nonempty_validation_and_test": 70,
+      "scope": "exposure",
+      "sha256": "5d5e5d9b46b3a141e23c8bd7bcbe79c270b35c2f40320ad52f687e26f4745a81",
+      "stationary_groups": 70,
+      "test_sample_range": [
+        3,
+        12
+      ],
+      "validation_sample_range": [
+        4,
+        11
+      ]
+    }
+  ],
+  "expected_stationary_role_groups": 232,
+  "fit_scope_note": "No --exposure-id: fit all (detector, exposure, band) groups listed in supported_exposures, covering all six bands and 116 of 135 exposures.",
+  "full_cluster_all_six_band_fit_found": false,
+  "heldout_counts_per_supported_exposure_role": {
+    "background": {
+      "test_min": 3,
+      "train_min": 4,
+      "validation_min": 4
+    },
+    "psf": {
+      "test_min": 1,
+      "train_min": 1,
+      "validation_min": 1
+    }
+  },
+  "heldout_slice_note": "The script still reports per-group validation/test scores; with minimum-slice-samples=20, sparse per-exposure held-out slices may be skipped and must be read as unevaluated.",
+  "jointly_unsupported_psf_exposures": 19,
+  "manifest_internal_identity": "7f2740a2452888cc7c970954766ec7ab77b4d2af58b6dabce8e1360320851123",
+  "manifest_sha256": "890e89a006fa0f2561411f5d9d9ecd02853bc32deaef3c8d6275a4e9cfb345ce",
+  "proposed_run": {
+    "command_timeout_seconds": 10800,
+    "commands": [
+      [
+        "python",
+        "{source}/benchmarks/fit_smacs0723_operator_calibration.py",
+        "--manifest",
+        "/arc/projects/ots/torchsky-runs/smacs-exposure-calibration-20260913-r1/exposure_samples.json",
+        "--output-dir",
+        "{output}/fit",
+        "--steps",
+        "300",
+        "--lr",
+        "0.001",
+        "--device",
+        "cuda",
+        "--seed",
+        "1729",
+        "--family",
+        "stationary",
+        "--calibration-scope",
+        "exposure",
+        "--minimum-slice-samples",
+        "20",
+        "--psf-model",
+        "fitted_gaussian_kernel"
+      ]
+    ],
+    "container_image": "images.canfar.net/astroai/base:latest",
+    "data_root": "/arc/projects/ots/torchsky-data",
+    "expected_report": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-all6-stationary-exposure-calibration-20261010-r1/fit/operator_calibration_fit.json",
+    "input_sha256": {
+      "/arc/projects/ots/torchsky-runs/smacs-exposure-calibration-20260913-r1/exposure_samples.json": "890e89a006fa0f2561411f5d9d9ecd02853bc32deaef3c8d6275a4e9cfb345ce"
+    },
+    "launched": false,
+    "run_id": "smacs-all6-stationary-exposure-calibration-20261010-r1"
+  },
+  "read_only_discovery": true,
+  "source_of_truth_manifest": "/arc/projects/ots/torchsky-runs/smacs-exposure-calibration-20260913-r1/exposure_samples.json",
+  "supported_band_counts": {
+    "F090W": 17,
+    "F150W": 36,
+    "F200W": 36,
+    "F277W": 9,
+    "F356W": 9,
+    "F444W": 9
+  },
+  "supported_exposure_band_groups": 116,
+  "unsupported_band": "F090W",
+  "unsupported_reason": "insufficient independent PSF calibration groups; leave omitted rather than pool or reassign exposure-level holdouts"
+}

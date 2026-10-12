@@ -1,0 +1,59 @@
+name: WCS and sphere manual acceptance bench
+env:
+  FORCE_COLOR: '1'
+  KMP_DUPLICATE_LIB_OK: 'TRUE'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+jobs:
+  wcs-sphere-bench-weekly:
+    name: WCS + sphere quick bench (manual)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: astroai/torchsky
+        ref: ${{ inputs.subject_ref }}
+        path: .subject
+        token: ${{ secrets.SUBJECT_READ_TOKEN }}
+    - name: Install system dependencies (Ubuntu)
+      run: 'sudo apt-get update
+
+        sudo apt-get install -y build-essential
+
+        '
+    - uses: prefix-dev/setup-pixi@v0.8.0
+      with:
+        pixi-version: latest
+    - name: Install bench-all environment
+      run: pixi install --frozen -e bench-all
+    - name: Build editable torchsky (C++ extension)
+      run: 'pixi run -e bench-all -- pip install -e .subject --no-deps --no-build-isolation
+
+        pixi run -e bench-all -- pip install -e . --no-deps --no-build-isolation
+
+        '
+    - name: Record open-source comparator versions
+      run: "pixi run -e bench-all -- python scripts/print_benchmark_comparator_versions.py \\\n  --json-out benchmarks_results/VERSIONS_comparators_weekly.json\n"
+    - name: Run WCS and sphere pytest subsets
+      run: 'pixi run -e bench-all -- pytest tests/test_wcs_*.py tests/test_sphere_*.py -q --tb=short
+
+        '
+    - name: Quick WCS bench (parity + rankings contract)
+      run: "pixi run -e bench-all -- python benchmarks/bench_all.py --profile user --wcs-only --quick \\\n  --run-id weekly_wcs_${{ github.run_id }} --output-dir benchmarks_results\n"
+    - name: Quick sphere bench
+      run: "pixi run -e bench-all -- python benchmarks/bench_all.py --profile user --sphere-only --quick \\\n  --run-id weekly_sphere_${{ github.run_id }} --output-dir benchmarks_results\n"
+    - name: Upload bench artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: wcs-sphere-weekly-${{ github.run_id }}
+        path: benchmarks_results/
+'on':
+  workflow_dispatch:
+    inputs:
+      subject_ref:
+        description: Exact torchsky commit to evaluate
+        required: true
+        type: string

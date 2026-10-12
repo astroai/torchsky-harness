@@ -1,0 +1,8 @@
+{
+  "container_image": "images.canfar.net/astroai/base:latest",
+  "pixi_installer_file": "pixi-install-e90779b74d26b507.sh",
+  "pixi_installer_sha256": "e90779b74d26b5070d5e909e4c857f2f2b8b3c4c9e8904d1954cd2e91ae7ef5d",
+  "pixi_version": "0.78.0",
+  "container_registry_digest_at_launch": "sha256:bf74d0e88244f75537662977741897bf537ae0203579ec82ebffdbe7db048e59",
+  "container_digest_pinning_supported": false
+}

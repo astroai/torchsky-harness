@@ -1,0 +1,142 @@
+[
+  {
+    "source": "scripts/archive_benchmark_scorecard.py",
+    "destination": "scripts/archive_benchmark_scorecard.py",
+    "original_sha256": "0b203e32c98d2158993a66e92fc972c211cbd15526714b55ae166048bd9b47b9"
+  },
+  {
+    "source": "scripts/bench_cfht_mef_mosaic.py",
+    "destination": "scripts/bench_cfht_mef_mosaic.py",
+    "original_sha256": "d19f4de2e8eefa0adbff89f5b50da2f95eb15dc302c92fc9c4041e2ac705a353"
+  },
+  {
+    "source": "scripts/bootstrap_map_compat_tools.py",
+    "destination": "scripts/bootstrap_map_compat_tools.py",
+    "original_sha256": "23541ffb747cd3d6e30e7a2cf89d486929e4e799c8034eb22a757d33dbfa0b53"
+  },
+  {
+    "source": "scripts/bootstrap_sphere_bench.py",
+    "destination": "scripts/bootstrap_sphere_bench.py",
+    "original_sha256": "12c42d2b1998ec1d906a71eacd7cfffe7afdab567865ffa4154bbcca02d8de6b"
+  },
+  {
+    "source": "scripts/bootstrap_svo_passbands.py",
+    "destination": "scripts/bootstrap_svo_passbands.py",
+    "original_sha256": "005953d4f8aed53202ebaa9d49ec0719963f12841e23b6fa13c4ddf450a59633"
+  },
+  {
+    "source": "scripts/build_smacs0723_minicutout.py",
+    "destination": "scripts/build_smacs0723_minicutout.py",
+    "original_sha256": "1ce43d8ec94a7c2a2d28b4862bdb23b48740b74ed0bafa441eb2660ff276b486"
+  },
+  {
+    "source": "scripts/build_smacs0723_stack_baseline.py",
+    "destination": "scripts/build_smacs0723_stack_baseline.py",
+    "original_sha256": "076c6c0a32be12f4485bf7c0c4b190de6a08bc456f1c325736017bb969a2e773"
+  },
+  {
+    "source": "scripts/build_updc_manifest_flexible.py",
+    "destination": "scripts/build_updc_manifest_flexible.py",
+    "original_sha256": "de8e6090bebb06e86a95c767fe262286d74c049d2cdf6fd57cb6c84ff41ec33f"
+  },
+  {
+    "source": "scripts/download_cfht_megapipe.py",
+    "destination": "scripts/download_cfht_megapipe.py",
+    "original_sha256": "7352d942db662f7cb9ff5645b32809f3fa5105eb86d78caca223d0a919f60fa4"
+  },
+  {
+    "source": "scripts/download_jwst_smacs0723_mast.py",
+    "destination": "scripts/download_jwst_smacs0723_mast.py",
+    "original_sha256": "21ef4e89d54597831b01671a75df1a52c33398be795a79d33b15c5aa706188b9"
+  },
+  {
+    "source": "scripts/download_smacs0723_multiband_public.py",
+    "destination": "scripts/download_smacs0723_multiband_public.py",
+    "original_sha256": "e4b075aef7449693831d19fb82927550613b23099f7f0694e6680dd5b8e5038b"
+  },
+  {
+    "source": "scripts/download_updec_webb.py",
+    "destination": "scripts/download_updec_webb.py",
+    "original_sha256": "edb0b5c4fdf04814536ae5922cbf636309c672905a8aa614b54ad6fbbe1340ac"
+  },
+  {
+    "source": "scripts/export_stpsf_kernels.py",
+    "destination": "scripts/export_stpsf_kernels.py",
+    "original_sha256": "af3eaa1f8cc3a82abcc9b5d1409dda1542fb198afd3a9e77e0c3abb8625d6f47"
+  },
+  {
+    "source": "scripts/fetch_canfar_wcs_sphere_run.sh",
+    "destination": "scripts/fetch_canfar_wcs_sphere_run.sh",
+    "original_sha256": "368e20c8c5731dd489a0c7303575b16dc60e051a8ad68039597c5adb83eaee7c"
+  },
+  {
+    "source": "scripts/fetch_healpix_pixel_weights.sh",
+    "destination": "scripts/fetch_healpix_pixel_weights.sh",
+    "original_sha256": "598aee79829e5fa21e953595ed0458e35dc62b7b3241bb30e51695f66dbf7f1f"
+  },
+  {
+    "source": "scripts/launch_canfar_wcs_sphere.sh",
+    "destination": "scripts/launch_canfar_wcs_sphere.sh",
+    "original_sha256": "084e19734c27536229e63475f17ff1e4d57dfbb9dc193d97cd375adf5327f7e6"
+  },
+  {
+    "source": "scripts/pretrain_strainer_trunk.py",
+    "destination": "scripts/pretrain_strainer_trunk.py",
+    "original_sha256": "8ab6c9a0f7e7802b1df0a0091bdf09d1bead6d31d73393a5826eba8f2322d029"
+  },
+  {
+    "source": "scripts/print_benchmark_comparator_versions.py",
+    "destination": "scripts/print_benchmark_comparator_versions.py",
+    "original_sha256": "145e939e45d2ba6cfee9ae929115158826902c5a1a9dea2b7fc83c3ab05a29ad"
+  },
+  {
+    "source": "scripts/run_canfar_adass_depth.sh",
+    "destination": "scripts/run_canfar_adass_depth.sh",
+    "original_sha256": "a2215d785e16226abaed661406a8acc8980989f1cf03490aa1b09a7e88d28beb"
+  },
+  {
+    "source": "scripts/run_canfar_cuhpx_sht_spike.sh",
+    "destination": "scripts/run_canfar_cuhpx_sht_spike.sh",
+    "original_sha256": "f66c28fc1347a306bed5d2a2b97df9f393d37ed0c9d4f232c0b6ea27a74fdd61"
+  },
+  {
+    "source": "scripts/run_canfar_wcs_sphere.sh",
+    "destination": "scripts/run_canfar_wcs_sphere.sh",
+    "original_sha256": "626f2f0445686fde33b042dbdf1e95b9cb704c8a50350889db3008fed3d280d2"
+  },
+  {
+    "source": "scripts/run_catalog_scale_contract.py",
+    "destination": "scripts/run_catalog_scale_contract.py",
+    "original_sha256": "bfb757877c0f66a3d3729ae642dc017551abc6ba337158af8818f859303fab4e"
+  },
+  {
+    "source": "scripts/run_catalog_scale_real.py",
+    "destination": "scripts/run_catalog_scale_real.py",
+    "original_sha256": "a1eee41aae3b4b78ad0b1c9aeae71499acf8ad4176d3f4d65e9baba6feccfcac"
+  },
+  {
+    "source": "scripts/run_local_sphere_bench.py",
+    "destination": "scripts/run_local_sphere_bench.py",
+    "original_sha256": "78d6163e0fb84c4bc48e662d9e13ad6d40595fdba99e507a1f447d624a8d6d4c"
+  },
+  {
+    "source": "scripts/smacs0723_field_fit_full_reference.py",
+    "destination": "scripts/smacs0723_field_fit_full_reference.py",
+    "original_sha256": "0486d75708430bc355baf305a059df5b92f02753588c6e6b4ab1796beda1b053"
+  },
+  {
+    "source": "scripts/smacs0723_full_mosaic_pipeline.py",
+    "destination": "scripts/smacs0723_full_mosaic_pipeline.py",
+    "original_sha256": "01db9891d8123ee286226a0da6d102db8a36b81ea5f6ac9bc7f50f65faae1071"
+  },
+  {
+    "source": "scripts/sync_upstream_sphere_sources.py",
+    "destination": "scripts/sync_upstream_sphere_sources.py",
+    "original_sha256": "ead28ce12a52414f640671dcd341957f5ee449c04e681c65fbf7a0151932b2fa"
+  },
+  {
+    "source": "scripts/visualize_smacs0723_products.py",
+    "destination": "scripts/visualize_smacs0723_products.py",
+    "original_sha256": "5e23fa4c7d9d60bbb0f1f611b06051f0779e05bbde584a61dbbddec82c9bc6d9"
+  }
+]

@@ -1,0 +1,144 @@
+{
+  "goal_priority": [
+    "discovery_snr_at_empirical_noise_tail",
+    "matched_resolution",
+    "flux_conservation"
+  ],
+  "attempts": [
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r1",
+      "attempt": 1,
+      "method": "adam",
+      "status": "Launch rejected before session creation: HTTP400 request header too large",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r1.json"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r1",
+      "attempt": 1,
+      "method": "pcg",
+      "status": "Launch rejected before session creation: HTTP400 request header too large",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r1.json"
+    },
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r2",
+      "attempt": 2,
+      "method": "adam",
+      "status": "Launch rejected before session creation: Skaha does not allow digest image reference anonymously",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r2.json"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r2",
+      "attempt": 2,
+      "method": "pcg",
+      "status": "Launch rejected before session creation: Skaha does not allow digest image reference anonymously",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r2.json"
+    },
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r3",
+      "attempt": 3,
+      "method": "adam",
+      "status": "Pixi installer inherited PIXI_BIN_DIR=/usr/local/bin and failed permission; scratch path now forced",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r3.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-adam-c128-20261010-r3/session.log"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r3",
+      "attempt": 3,
+      "method": "pcg",
+      "status": "Pixi installer inherited PIXI_BIN_DIR=/usr/local/bin and failed permission; scratch path now forced",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r3.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-pcg-c128-20261010-r3/session.log"
+    },
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r4",
+      "attempt": 4,
+      "method": "adam",
+      "status": "CUDA PCG canary passed; benchmark rejected512 target header for128 crop",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r4.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-adam-c128-20261010-r4/session.log"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r4",
+      "attempt": 4,
+      "method": "pcg",
+      "status": "CUDA PCG canary passed; benchmark rejected512 target header for128 crop",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r4.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-pcg-c128-20261010-r4/session.log"
+    },
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r5",
+      "attempt": 5,
+      "method": "adam",
+      "status": "CUDA PCG canary passed; benchmark required mounted TORCHSKY_DATA reference root",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r5.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-adam-c128-20261010-r5/session.log"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r5",
+      "attempt": 5,
+      "method": "pcg",
+      "status": "CUDA PCG canary passed; benchmark required mounted TORCHSKY_DATA reference root",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r5.json",
+      "local_session_log": "benchmarks_results/smacs-inr-20261010/runs/smacs-inr-pcg-c128-20261010-r5/session.log"
+    },
+    {
+      "run_id": "smacs-inr-adam-c128-20261010-r6",
+      "attempt": 6,
+      "method": "adam",
+      "status": "Paired corrected pilot accepted; numerical results pending",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r6.json"
+    },
+    {
+      "run_id": "smacs-inr-pcg-c128-20261010-r6",
+      "attempt": 6,
+      "method": "pcg",
+      "status": "Paired corrected pilot accepted; numerical results pending",
+      "depth_claim": false,
+      "scientific_gate_advanced": false,
+      "frozen_job_spec": "benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r6.json"
+    },
+    {
+      "run_id": "smacs-native-plane-audit-20261010-r1",
+      "status": "CPU launch rejected before session creation: CLI rejects --gpu 0; corrected by omitting GPU flag",
+      "session_id": null,
+      "depth_claim": false,
+      "scientific_gate_advanced": false
+    },
+    {
+      "run_id": "smacs-native-plane-audit-20261010-r2",
+      "status": "CPU-only all135 native SCI/ERR/DQ audit accepted; results pending",
+      "session_id": "v5hqjyf8",
+      "depth_claim": false,
+      "scientific_gate_advanced": false
+    },
+    {
+      "run_id": "smacs-all6-stationary-exposure-calibration-20261010-r1",
+      "status": "Independent116-supported-exposure six-band calibration accepted; results pending",
+      "session_id": "yusn3fe0",
+      "depth_claim": false,
+      "scientific_gate_advanced": false
+    }
+  ]
+}

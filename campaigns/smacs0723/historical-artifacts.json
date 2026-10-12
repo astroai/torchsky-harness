@@ -1,0 +1,972 @@
+[
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/all6-calibration-discovery.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/all6-calibration-discovery.json",
+    "sha256": "8c37a7feb7e5a851892c2f2596492f032a41208520cceca38568ae6e40e9abdd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/all6-calibration.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/all6-calibration.json",
+    "sha256": "5ab0f713cee463cb46dcdff53074edd30136e53db8d329af41f848e62650706d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/attempt-ledger.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/attempt-ledger.json",
+    "sha256": "5b5fb4e76248db8c1316e387c4253f79319313e6d97662aabfad4f724f7e17e8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/container-manifest.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/container-manifest.json",
+    "sha256": "bf74d0e88244f75537662977741897bf537ae0203579ec82ebffdbe7db048e59"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/matched-native-drizzle.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/matched-native-drizzle.json",
+    "sha256": "2bda11c3dfd3d99e59b9b3abc40ec9731e7b5010d6760bb562e58b45063cabd1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/native-pcg-canary.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/native-pcg-canary.json",
+    "sha256": "585311eb85d38d8e86da8a3b10eae2b8471a51cba8f9c605d958d0c185941e88"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/native-plane-audit.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/native-plane-audit.json",
+    "sha256": "bd2ba6367e2ab913787d277a87c22af94522663e32b6317acb118e92276b0cb5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/next-discovery-screen-plan.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/next-discovery-screen-plan.json",
+    "sha256": "e622db194b71a0c8906d844b2517719bdc1274c329974bf869dfab8d9e2cef4a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/pcg_objective_audit.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/pcg_objective_audit.json",
+    "sha256": "614a752b9b9541848907cacb4de2ea190e67f028ccf62a7e136df2e804cd59de"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/pilot-adam.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/pilot-adam.json",
+    "sha256": "c959a909794906b3b0c42c1fb12377b90bc645f1b8a574ac57d6a0ca175faba8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/pilot-pcg.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/pilot-pcg.json",
+    "sha256": "bae529725c8119d9aa695e0b752911dbb98864e478556312949b94ed9e07e3e0"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/recovery-adam30.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/recovery-adam30.json",
+    "sha256": "a670167a8684ec0ba526f77868afa97b84b9cb404a0be7db52de39adc5436ccd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/recovery-all6-calibration.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/recovery-all6-calibration.json",
+    "sha256": "e8b113204d79ecaa148bf0657070c272e40bf9b302a779e845cd6151ab76efe8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/recovery-pcg30.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/recovery-pcg30.json",
+    "sha256": "615e8942d00c436b47f27a5c9e540527bad132698a7a549adc57d19f8b0b76b1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runtime.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/runtime.json",
+    "sha256": "c2d1817eb7c4e78ba279dfd9e4b055cb9cf0dc48fe3e6da14e8cfe9a93a0eb21"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-all6-stationary-exposure-calibration-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-all6-stationary-exposure-calibration-20261010-r1.json",
+    "sha256": "fce4313cf37ec2efd402abdff54eaf2c672cef1583498c33cd52a48a7aecd7fd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r1.json",
+    "sha256": "a328a56d0d104769ac5fbb2e1c94fffeded5df2e5302f18fbf880a96d6fc8689"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r2.json",
+    "sha256": "d701fd6ae18595f14556c417d4f003aefce16e41f04f71ea99c8d7729603196c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f090w-inj512-20261011-r3.json",
+    "sha256": "11cc0fe23e4e6ca1bcb5d0fb1bd5925c137b38d9788b024a6d6564c70843a663"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r1.json",
+    "sha256": "c0fea76f22f156a21e8b549190657b27d331a1928954457dca3bd6dfce5a89a6"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r2.json",
+    "sha256": "d6d01ea754e6c1f3173fb516ce273c23cc06d8d07d86f256b0f7cf72f329dee7"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f150w-inj512-20261011-r3.json",
+    "sha256": "1cbd76e5363d7fb75315eabc4fc92420a0c11f92e43dd716dff08056e08b732b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r1.json",
+    "sha256": "7e6d116b19d94340427a54c068e33019631d407e2383d66513da3f871b1c2100"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r2.json",
+    "sha256": "c88f58c5901d2d2bb1222e603ea58ef24a430d3c32a265f9d4f771032abdd06a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f200w-inj512-20261011-r3.json",
+    "sha256": "bbe8da2df571bf405ecb5a9771ac1b43070f970ac459f1e1fbe335a1db2574ab"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r1.json",
+    "sha256": "71b0d5a12ad62048294920fd0e8ad41985bc82b6d493edfaa7b059178959c3b6"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r2.json",
+    "sha256": "e4906c1eb15420e76de9c7488933c81450b1f24fd5dee4f8870020dd5e86e94d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f277w-inj512-20261011-r3.json",
+    "sha256": "d373e69003c86bd02c989a4bc0acf5322e023a1607f18f34186b8fd393992360"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r1.json",
+    "sha256": "0e616f3a595c826f32bd52c0d2128dcec243dbf49c688ca59855a9ba0656c6d8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r2.json",
+    "sha256": "d62d0f1943d05d3a05d47b45332a72773402f3d85443bf8d99bc5d1bc31fbe1c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f356w-inj512-20261011-r3.json",
+    "sha256": "b56cab72f04e9f9d6a02dcf5d704bbbc29732076912e17e83f13b23f8e3c5cfc"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r1.json",
+    "sha256": "6ed8086b977d93c6b7c6330a78fbf17580ebf2f81e192d3eb7f61ec88ca6400f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r2.json",
+    "sha256": "d3226aaaf8bd8071086c7cec3f6ee78f77bbd1f7090bc5115eb9d72c6601b969"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-f444w-inj512-20261011-r3.json",
+    "sha256": "97c6a8b8a52493883b54da7c3d1f1a14b1eac59782f2044afcffa6c515fd6e11"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r1.json",
+    "sha256": "e0cbbad37cb49a6acbe73d9d8bc869c194530a16ad58ccd21e5bf1e3d64761f6"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r2.json",
+    "sha256": "bb5daefc26345d9d28c24a9f0da54740c563796e52d4f3abbf4713fee156b487"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r3.json",
+    "sha256": "edd198ae0da4da9cd233c42440aedce89abea994ce15ff9fbd26ca2336a97d7e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r4.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-classical-sixband-metrics-20261011-r4.json",
+    "sha256": "77e851dae96eee4665e761423c56dfcca77af0169a02554bbf65f6e532ee1ac9"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+    "sha256": "0778884cc7986b46f4091bba00c0f4f2f4abcdecd4cf682f60cec42e480a1dee"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+    "sha256": "7ee755a102df7d2ed6eee2f3ae402166e03b7920c4fbf8eb332732661faffdcb"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-foam-response-audit-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-foam-response-audit-20261011-r1.json",
+    "sha256": "eeaca703b05bf79b202941f4b2fb0650ace766664760dad4520197db5c64b31e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r1.json",
+    "sha256": "88e6db6c43beebb28424d3781f56508cc38f4304000980509a59355aeed1c7d1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-gaussian-basis-response128-20261011-r2.json",
+    "sha256": "c8b45b83b480990051f665e09425d38016486894bdf8854438763615130a43b2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r1.json",
+    "sha256": "16b230f4e37042b640542c822ff4e0198adca8d2a06a82ad57a2ca2fa1c26907"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r2.json",
+    "sha256": "eafb32db016a275f0c37e53058b26801cd3a7475d89fbc315a25e5a2995da30b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r3.json",
+    "sha256": "d8367c98d9410adce9c742e9a6ccc111b18b945025f604efdc3af19dd964ff61"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r4.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r4.json",
+    "sha256": "6d3dca57d4eb71fc2a6dde92ebe033e60a5d5d8b0cd2ed29f3890027c8072b3d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r5.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r5.json",
+    "sha256": "63a89a768cdc3b28be2395c6d1f978abcd640933dbef7d376d0b9c67a6a91420"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r6.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-adam-c128-20261010-r6.json",
+    "sha256": "f006253d3c64dda14e3f9d3da4386d9ca2ef667c7ab3022d8ab0dd260629bd8a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r1.json",
+    "sha256": "22acb0bd5b8e3bbcf2cc54b65cae9f3bddb02dfe746409275d5e1203bde04c28"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r2.json",
+    "sha256": "c59b4fba3d935d43be5bb357d3321380eb15400ca0f6cdbb978b7bdbf7d41a8b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r3.json",
+    "sha256": "7b94e2c74aef94837e9f5e7ae6007f66097ade0c252a2132075ed227affe0f5b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r4.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r4.json",
+    "sha256": "a010fe0c270450446140cc8ec67fecf743e27d5cd8b09a4535150b4ac4ca7dd8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r5.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r5.json",
+    "sha256": "8c5f7e3b4567b5afb668d63b15a476c31e8df92b63632f4704419773ddd21186"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r6.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-inr-pcg-c128-20261010-r6.json",
+    "sha256": "55285a69928d2285b3c591c90b35c16b1c22668eb9e8ddad7daad4871fff0509"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r1.json",
+    "sha256": "a64aaa001f31e17bc397096085f6a9828fbd3013daa76ec2782e2246b0904ed5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-linear-band-grid-field-response128-20261011-r2.json",
+    "sha256": "fcbc5161b950a4658c5dcff02e0eda0fb731396478d56faca7556bde8600f0cd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-map-truth-classical-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r1.json",
+    "sha256": "b99e25fe04eb4268ca0f61150a5e4bfdbc9393571208c3ea508b6fb3297f9326"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-map-truth-classical-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r2.json",
+    "sha256": "1baa5d77755fe16045b45f3bedb4291af32ef54e33bd30918305ca5cf963ff10"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-map-truth-classical-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-map-truth-classical-20261011-r3.json",
+    "sha256": "606c48de0d0d36138f40597ee2731521f2ebd7e6a106f1d120530291ef136794"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-map-truth-montagepy-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-map-truth-montagepy-20261011-r1.json",
+    "sha256": "d0dc7887441eb983c7eab7e9acfe24571d2f27ac46d6cac4bc392991286ec958"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r1.json",
+    "sha256": "a1d15308138e5ea2ddc49daeddfd6bb785aa17cf4c6f2463dcf486ca42297a9a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r2.json",
+    "sha256": "9d700e00b3f78bfb14b56ed409d622972b6e58628069f878591380159c53e393"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-metrics-20261011-r3.json",
+    "sha256": "6973fa129a5c68c4a57e640420d8e13bb689bbb2d0f9f4514133c36405b0e7c5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r1.json",
+    "sha256": "987c17601864e2f2dd76e9197c9c299fb6bfe4a5b26d0c53ea6ce78a3989fa2d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r2.json",
+    "sha256": "9adf5da3e0e71587efdf41f7e99ca31aa1b15f84830854fa75c7e44f28883fc2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-classical-response128-20261011-r3.json",
+    "sha256": "30cc016acb870f4741bc5d7de4b3e2eb3e10f1d54f3641c819f0afd3c05b0a53"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r1.json",
+    "sha256": "078c3229ad4dd559df0f6ce6814d9d9dbd51bdaad506db43c8ba6e72c562a9a3"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r2.json",
+    "sha256": "8918623dc269f76e671f9b21756dfd7a26eb5560cd1c4e4a7d9aad09b4d4faba"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-metrics-recovery-20261011-r3.json",
+    "sha256": "d593d5d7a24eaf4f03470f92cedefcb0049007b605b924410a2ef0895902ccc3"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-montagepy-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-montagepy-response128-20261011-r1.json",
+    "sha256": "07cae7d7628e5415be5da8f354957b9588b82f82b786cbb487a9aa895ddb70be"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-matched-native-drizzle-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-matched-native-drizzle-c128-20261010-r1.json",
+    "sha256": "5dcb4a722a57293b934a334b56802d9d8d523b4063e27809302b9022a75ac578"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-model-known-truth-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-model-known-truth-20261011-r1.json",
+    "sha256": "dd629be7d566e3cf470bec46217133130fa7a43d6c7d39502ae36bab4ddc6f34"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-model-known-truth-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-model-known-truth-20261011-r2.json",
+    "sha256": "6e59f5968219c979eb229048c4a487e090b4a56ce1da39046445c26edc80c3e4"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montage-projection-diagnostic-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montage-projection-diagnostic-20261011-r1.json",
+    "sha256": "1d001eda3a8b22d84519b63533fef24aab0797b0e781ce7fc4b573c4989b9712"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f090w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f090w-inj512-20261011-r1.json",
+    "sha256": "3b25e97209212a02ad6554e316d402751ef04673c504f1cc43160c4c87d65327"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f150w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f150w-inj512-20261011-r1.json",
+    "sha256": "76f9cfc198d9bcce458ff87b4af6edcc6e5e4f39141a438817a6fae3f2ecb613"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f200w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f200w-inj512-20261011-r1.json",
+    "sha256": "89039fbdc1304724641a0ceae02f998b4ad41c646a476f140d91887799025d7c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f277w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f277w-inj512-20261011-r1.json",
+    "sha256": "2763405114e687aabbea900edc098f3cf3c3e6660b5f435cf833e422edf54319"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f356w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f356w-inj512-20261011-r1.json",
+    "sha256": "5df4185a3b2d9ba67986667bf6aeee7a76c1fdf1d5263d9818c8051a9a85b204"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-f444w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-f444w-inj512-20261011-r1.json",
+    "sha256": "7012ca21d8b7d6f4ee6ae818cb1942577a7298d3ae1cf30040e2e6c95f02844c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-montagepy-projection-check-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-montagepy-projection-check-20261011-r1.json",
+    "sha256": "8f3b07fea1084e81ea68b4be966b06b279200eff0eb698e4ba08c8559e1bbdfd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r1.json",
+    "sha256": "78819c1628c2e14a5ca8351a292e91ddf38048d53cbf695c13eed210555d34ff"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r2.json",
+    "sha256": "e34051afbbbd598c22c3663b8b01e12b1cba645827b1b1aa23fa49fae3190ba5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-inputs-response128-20261011-r3.json",
+    "sha256": "5948da0229ac3a6731f231210e690114b8edb6e4467a07e21cf4884b619cd54e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-inr-pcg-canary-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-inr-pcg-canary-c128-20261010-r1.json",
+    "sha256": "779172f93df7c27ef798874aaf4126d36f158063d5eba340add554ba7cf632bf"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-plane-audit-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-plane-audit-20261010-r1.json",
+    "sha256": "56f81824533eb08ae1a9a66ab07a629b90ce83e8ad6acb2c59cb319e10ec30d5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-native-plane-audit-20261010-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-native-plane-audit-20261010-r2.json",
+    "sha256": "2f1a84b79901d6936b012c5d6936be56ce5cc51f9d28babcfc3d26de774ae99b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-published-static-integrity-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-published-static-integrity-20261011-r1.json",
+    "sha256": "34eb3478358f8c3eb90fa73de9f1ba1f887801513c18f07ea299c0d706ce092a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-published-updc-best-stack-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-published-updc-best-stack-20261011-r1.json",
+    "sha256": "ae9aabbf2ef8efd5892090081527865df98a7d6898185086e1b6c3c4601c0346"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r1.json",
+    "sha256": "eabdb11ce92a7a2168c0b6a3630f93fcc1a8c8cb29726b4864fe0b3a4e0159ed"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-published-updc-map-metrics-20261011-r2.json",
+    "sha256": "30a9886a612fe57412cd8c4113a11e190878e213a417dbd227fc1ae8d5e85276"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-ready-model-responses-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-ready-model-responses-20261011-r1.json",
+    "sha256": "2a39f8273915afae9fb15e6e5292ca7001e1cbf6a35bd6ed86b56b422443d384"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-recovery-adam30-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-recovery-adam30-c128-20261010-r1.json",
+    "sha256": "2ef31d0d21cdbe8df72678a6c6b5b6c8a68e69bd4ead7bcfdcb92cb3be7c8237"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-recovery-all6-calibration-20261010-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-recovery-all6-calibration-20261010-r2.json",
+    "sha256": "64a42ef35842a79faf99c90c3e20a83d7de9132ed5cdfcd5c4375c569ab50143"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-recovery-pcg30-c128-20261010-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-recovery-pcg30-c128-20261010-r1.json",
+    "sha256": "f9ed8ca8866db4157fb8ee7643c4bbfdea699cc0ddc42a3106c2e055130708d9"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sasnet-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sasnet-response128-20261011-r1.json",
+    "sha256": "f19912046e2966ed275dc015f2a7d9d08dafc4abf826d2732bc86a15f52b767f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sasnet-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sasnet-response128-20261011-r2.json",
+    "sha256": "f1377d4ef1ed5ab991db1363cca4bd19d571ff5fce894c51d932dbf45a79e9ec"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r1.json",
+    "sha256": "ea6da3eb166c1cc170999a755ff6356304f629d9057ff6b7073794e5bda52032"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sine-implicit-response128-20261011-r2.json",
+    "sha256": "ba88f33e9b179baea28340606953f4614dbb2b0fe49b71447913d013bfb44ba7"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+    "sha256": "b2312376a0c21e3993c8a47cf2fa9159684294468f483924d76b3369e3f99c1c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+    "sha256": "6b72914e72d710b3cd3188e41cb2c1a4d8e082232e743e4fe2a5f8a91ef7828f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+    "sha256": "2f1652059f0da5501766cd0bd5a97ac0040bbb8d681afd32b59719dff7c3be1d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r1.json",
+    "sha256": "9be23ca3985f2d077c46bf633a56c13ab45d121409c2b30e3d6c9d238be7d074"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/smacs-spectral-power-foam-response128-20261011-r2.json",
+    "sha256": "8dd79e1391f7eb6ca9bddb294257629279357695cdd9f885824a64810c895ee0"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/source-26913f98c497c485.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/source-26913f98c497c485.json",
+    "sha256": "89536eebfe89ff572479dc73c4f37d197f29df172e7899a3e73bad3105379a2c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/source-a0ed9e15a793ba28.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/source-a0ed9e15a793ba28.json",
+    "sha256": "ec8b11f49f821b5f62830e73eac923eac6f1ed2bb4f57205fb4225f2adaac70c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/source.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/source.json",
+    "sha256": "928a40b815fccdc65550ea2a3e5f738eb29fe39f61865b71c2a6326564cf47d0"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/target-grid-area.json",
+    "snapshot_path": "history/20261011/smacs-inr-20261010/target-grid-area.json",
+    "sha256": "c6af791db8cbce3770ef07acfd9db01a9e86088854f56d528d7408b1403ae82b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/COVERAGE.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/COVERAGE.md",
+    "sha256": "708c64925e7267ea6ad7ed280ceade183ef6b9431f01dda0aa3cb0f53f477eac"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/PRIORITY-STATUS.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/PRIORITY-STATUS.md",
+    "sha256": "45e689729cacce287f75394470a1bb1fa7a40f2996ed8dddc8b578ab7ad8349c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/RUNS.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/RUNS.md",
+    "sha256": "ab4a02fdd80b795337a045ed31d2529789e9f1e2106cd810cbc31855c5313fa9"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/canfar-ps-smacs-20261011-2217.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/canfar-ps-smacs-20261011-2217.json",
+    "sha256": "c067947fc5a82df4f190e6e00946ca5858f1706a74fc8fb67ee5374bc1698f70"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/check_flux_units.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/check_flux_units.json",
+    "sha256": "3dcddc0e7c76733393b8fbd8cf2eabaf3faade0fb9301f958c3dbc2e338294a7"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/classical-priority-scorecard.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/classical-priority-scorecard.json",
+    "sha256": "e34a97a6aaefea80926123a566131027f74930b687002312ab26dad21a17bb1c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/classical-priority-scorecard.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/classical-priority-scorecard.md",
+    "sha256": "71a883a552d220cc84e1a03e6afc811bc8805808778d880d2e3181786b5542a1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/completed-results.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/completed-results.md",
+    "sha256": "2bb480c8c3b9cecbda179a3fad47d6a52bf266c4a5008fd2361886f862b2ee4a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/coverage-existing.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/coverage-existing.json",
+    "sha256": "56bc9c8b20be2c94bfb3afbad4596507f79f6d080c914f505926db13bf65419e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/coverage-existing.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/coverage-existing.md",
+    "sha256": "70d65536057073058da51af71d1cdca5fe8c29805294e6b8718db230a2524e67"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/detector-validation.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/detector-validation.json",
+    "sha256": "04606586884eb6715676a1d468a6b2b4679c32186c86a8c4c9b6da5f85e8afc4"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/detector-validation.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/detector-validation.md",
+    "sha256": "d6ca21459fc43b5d6f94253f1cf526c5d2f3570d6219cb404baecf2a644f1cfd"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/foam-response-audit.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/foam-response-audit.md",
+    "sha256": "fd18097f53ddc3ea9f1fe8e87a4cb8946cd6c75cf99f9f6554993b51753f91e5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/jobs-ledger.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/jobs-ledger.json",
+    "sha256": "3b510b9de7b3a11433fe74a7a5460b59eca48aec27e1d2c4374a35348be704a2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/latest-status.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/latest-status.md",
+    "sha256": "9358b704c59386e4cd59db16e1d39350493a359bb3b016f5fb3738462c5e3ed2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/live-status.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/live-status.md",
+    "sha256": "87c1d6c2bcae29aa69c2f88efdee2058c130e46d30d09ad2c0bd808a4d953a0d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/model-priority-scorecard.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/model-priority-scorecard.json",
+    "sha256": "5c525d6f9757b5520e1bacbc5ef02699a1afdb5cfd22885e6deea58f87c07995"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/model-priority-scorecard.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/model-priority-scorecard.md",
+    "sha256": "34a1ca5e2fa20a2d430287b70ca8a8ab2f38047c5aea3891f05d454f66038e22"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/published-input-existence.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/published-input-existence.json",
+    "sha256": "1f9e5a2ee05fbf88103ae98120062f7d3c478fa9394f82c8b89433b02b90340d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/published-inventory.md",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/published-inventory.md",
+    "sha256": "f91d285d3443de2ec9a323a69bddd18040a09f3b0c256bcf8eb7a75e0a00063a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/signed-flux-check.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/signed-flux-check.json",
+    "sha256": "85e9c255c061d5e9746348497c88f1307149d22fa876c2c5fa27023a31673ddc"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r2.json",
+    "sha256": "39004c18d75b69c97d1da6944bbe84aa48c5e6ee5e6d21dd8a9a8d9af77c4c1d"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f090w-inj512-20261011-r3.json",
+    "sha256": "cde138bec7e7a8d090aae1c6cd3cd4dd8b93c07d4a273455c4120b561e52ea82"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r2.json",
+    "sha256": "ba6af8294b98a2d5e4a36da82ca151a6eeaa6b10f07c9f88d88915de5cf32a42"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f150w-inj512-20261011-r3.json",
+    "sha256": "6e8e6e9b02363bf2f2d848c22a9c21e63d83dd5a9f0617cc7f8b8c141b77cafa"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r2.json",
+    "sha256": "7398711c5b2dfc0198933576691ac8942d83c71549578a17e919828b87203d84"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f200w-inj512-20261011-r3.json",
+    "sha256": "4aeacb22cc47e79c4cf38a988b0020b905715162456e761a3b85911f4dc179a5"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r2.json",
+    "sha256": "fa3e83fb1a727a8827fe15c3618973f91aa15cd428a3803a01a986a1f42e19c4"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f277w-inj512-20261011-r3.json",
+    "sha256": "18fca1f5d6606ef92da127d7172caa7fc42cd413e805433c8845a13c7d6f3c56"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r2.json",
+    "sha256": "18126ba7f69b9c61752b8d72ef77fd3b4ab29d0577af1dadb88b458b05a9f2cf"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f356w-inj512-20261011-r3.json",
+    "sha256": "ab5f175e7fe930ee282a72fd0db37b8818d2b9d887600e988fd3291454b74c89"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r2.json",
+    "sha256": "1c279a0ea87009d0bafa737ed3fbaf78c6c8bc816a48f9ddd1bf8b37d00bd8aa"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-f444w-inj512-20261011-r3.json",
+    "sha256": "439065117497b8d5eb7821ec8c71711f450ab002e786f781406eb03df22a47d7"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r1.json",
+    "sha256": "54d52d0296fc6aad51ac48b47a407b42104a6a8c339a9e632d8266ff086071ee"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r2.json",
+    "sha256": "a53d9f0121799c0b401d51284a933ec620987f547261ba5375ecb878a805aa4b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r3.json",
+    "sha256": "998e40b0ed191617adc3c6effb63a5b9a6cfce63959a435034aa17322d05934b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r4.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-classical-sixband-metrics-20261011-r4.json",
+    "sha256": "c81acff8fbed5e573df5b7fcb37442bcd580643abbd8116684a0228e46a4c0e1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r1.json",
+    "sha256": "c48f80ba2f1da49355fb319d7d6a177ce2575957f4e1cef3191d0632995ba6ae"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-explicit-spectral-grid-field-response128-20261011-r2.json",
+    "sha256": "dd36ee619a3fa85b0375b7ad2336ce29f7fb22ff79cd48846154b13f087609ca"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-foam-response-audit-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-foam-response-audit-20261011-r1.json",
+    "sha256": "442e8d22708f68cb01ad11f4ae6a79701aff56045afdc8f2d4a22d4075df43ff"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r1.json",
+    "sha256": "40b14eadb90722ab6526b8dbef07b573b53514f2714f3dbc302057e9324f30d8"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-gaussian-basis-response128-20261011-r2.json",
+    "sha256": "db859c4915b5d0130019d71561d54b4d4369d4f0c89d3678815e43e6dad89183"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r1.json",
+    "sha256": "8f41b96bfc9477e2e49deba1a4569e66ef6ce5bb097691e1e54053de170b594f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-linear-band-grid-field-response128-20261011-r2.json",
+    "sha256": "1e60981017f4b2215c68127715e8b21b7d3b51d1980142947cfa09c9fbd298ca"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r1.json",
+    "sha256": "cf5fa2b7425eb3faff46d24294a98daea2f29b446c0a6dadfaf81eb4eff79ff2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-classical-20261011-r3.json",
+    "sha256": "30f65483770fea9a0322cbe23852f4f2d1e4426105b63c24c5ccda0d6477a89f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-map-truth-montagepy-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-map-truth-montagepy-20261011-r1.json",
+    "sha256": "4de831f05aeec8be670a120d57ae456dd775702ad0013e5f4f529ff927c7424e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r1.json",
+    "sha256": "81f0fad0b513bf80487d8cc6cb41e0815dadf5bf9dc97641c562ad7f907749f1"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r2.json",
+    "sha256": "0da95f412fb91d03dbb68896438ec8d79fa42ebc0b949899bac2e4b892d5b4bf"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-metrics-20261011-r3.json",
+    "sha256": "30de8e373951bf43e270d71c1167901ba905fd12a3632d417938e208733c9c50"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r1.json",
+    "sha256": "92e6478a2df4c4d6736f13c4992b62538cc821540010c3312e0303e3fc502177"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r2.json",
+    "sha256": "298c4858bf6d5c1ceed85b75b483c2c42ac4c8b735c3250ff515e0803fc8c87b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-classical-response128-20261011-r3.json",
+    "sha256": "ada87db843f79e286deac4d336005b95d55da76e840fd4de88e7353c9370fc90"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r1.json",
+    "sha256": "30b79c950a070dcae77ed5139b0dcabf7817f78787fce309e5e38ccd311c7143"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r2.json",
+    "sha256": "b4273fb7aa6edf83fa55bea72111006adf150d128208334b109a93915dd9801e"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-metrics-recovery-20261011-r3.json",
+    "sha256": "9ab9605347f59c876923256588e6c6988c60eb5681b8e7e7de4ff6b4a982abca"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-montagepy-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-montagepy-response128-20261011-r1.json",
+    "sha256": "834808c3bc9ec718240d049798714bdf77d199fab3d1dc69b816e46fa89f79a2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-matched-reproject-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-matched-reproject-response128-20261011-r1.json",
+    "sha256": "7c96521621412d43ba520245b1400d8c1879545341602effc5c63fbf2f76c2ec"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r1.json",
+    "sha256": "26bf7f788a9f0b5bd6ac268749df1e8003666db04da3327972b7d58eaf8902c4"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-model-known-truth-20261011-r2.json",
+    "sha256": "c066bbbe2a11e262f8c90186710319b9b80adc4bb775c20a8a56ad3f3e68f045"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montage-projection-diagnostic-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montage-projection-diagnostic-20261011-r1.json",
+    "sha256": "d4dd3b4f524f7301617050921c30a2fca04acd51949043519bdb84e74d1e1fc0"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f090w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f090w-inj512-20261011-r1.json",
+    "sha256": "105fc7b2f6cb3afa9741bea109b54757bec747873d6b10bee5613acf67b0e0f3"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f150w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f150w-inj512-20261011-r1.json",
+    "sha256": "b68e702baf65c6ba3c56538c0d5d443fd8e48879aa74d8e9eb7ebb1321ee2e3f"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f200w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f200w-inj512-20261011-r1.json",
+    "sha256": "b5642d529ba8805f17a3949c150bca1922c8fefa13f22647f9326debd7fab8fa"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f277w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f277w-inj512-20261011-r1.json",
+    "sha256": "8dac5cee5030aeef8d963099fe06b4065063f659a64a0527200bd9069a8fb303"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f356w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f356w-inj512-20261011-r1.json",
+    "sha256": "f108609b62a17beb44223c0c1e372e3741fb3cf2a7004418ef56837cb65fef49"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-f444w-inj512-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-f444w-inj512-20261011-r1.json",
+    "sha256": "89f4118aae92d79d89787182a824910f68e7ec7636bc212d4a0e64edf4ebe52a"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-montagepy-projection-check-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-montagepy-projection-check-20261011-r1.json",
+    "sha256": "78bbdb0f0baa77d22c904ce9246283a0aa75f0b08de128c1da0839176b6b2706"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r1.json",
+    "sha256": "e5a58d1f86532b4c14d1b8e9c9d7ad075daa4ca998122a9b897f297f46a04634"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r2.json",
+    "sha256": "587586385862258cd42c856facb02160f6bbb75e2605fce04cef148c6bc54faa"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-native-inputs-response128-20261011-r3.json",
+    "sha256": "1ef49f8a0cfffcb644f4af1d49e47ec163b020bfee016105188401f194785534"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-published-static-integrity-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-published-static-integrity-20261011-r1.json",
+    "sha256": "a48cf7b1fb413dbc86f9e9335ab9fe12158d158beb1b2db4f081424472012b23"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-published-updc-best-stack-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-best-stack-20261011-r1.json",
+    "sha256": "36242d0cb48fa5895b39bd5a03ee85784626d252691b6ac23706cc17fc7b7ace"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r1.json",
+    "sha256": "2653b5a93e437a7511ec36a08d4bf98c2fd6291cb925f1d245fb55cbad9d4b35"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-published-updc-map-metrics-20261011-r2.json",
+    "sha256": "3a8b3c2397d66efdf3d9593a0bbb415c14743792da9ec6e415376dac24507ca4"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-ready-model-responses-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-ready-model-responses-20261011-r1.json",
+    "sha256": "2b3d8f301b5fce94a3edbdbdae75ef022d0e773a880b93381da57f63d1117042"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r1.json",
+    "sha256": "37a27bd55f1e62302e19b8f0c497dd1ea07e5534f26ef5cc7aa4488fc7857a8c"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sasnet-response128-20261011-r2.json",
+    "sha256": "fc22bf458adcf8db92d3ca9dbb530e3882bd8c0ba1dcc0647de51b1474752d09"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r1.json",
+    "sha256": "61e5b03fb0703a13c1e5f2e478ec7b26f8ee02cda1a4d4c1226822be31250f8b"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sine-implicit-response128-20261011-r2.json",
+    "sha256": "c87c0a09900b96f0e378e6a7342ec114f7ba85a582459df29e005e152308e9db"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r1.json",
+    "sha256": "ba13e53cb458eb1114b8ae98483dec5a3dbc0bc5e1efd01aa298e10f21f659ea"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r2.json",
+    "sha256": "7434b99881c7015742e364985d633c8c79f168179a170cb89359294330eaf0d7"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-sky-lambda-feature-field-response128-20261011-r3.json",
+    "sha256": "f260942759477f3977f569bf5e768ccffca11bf89abfb3762786a5d00c7beac2"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r1.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r1.json",
+    "sha256": "deccfd4bd41a381b253123d3485e952fd8d646d1506ce5370bc70db3f30b0758"
+  },
+  {
+    "original_path": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r2.json",
+    "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/smacs-spectral-power-foam-response128-20261011-r2.json",
+    "sha256": "68a41a590f32141dfb88d321a85de5574317a8dd3ff56bfbb560d6bf3e6bb6a9"
+  }
+]

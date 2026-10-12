@@ -1,0 +1,43 @@
+{
+  "run_id": "smacs-matched-classical-response128-20261011-r3",
+  "hypothesis": "Native and official SWarp, Drizzle and Montage on exactly the same calibrated SCI/ERR/masks and injection batches as all model-family jobs",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "matched calibrated native detector exposures",
+  "cpu": 8,
+  "memory": 64,
+  "gpu": 0,
+  "pixi_environment": "map-compat-cuda",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 14400,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,pathlib,runpy,sys,time\\nsource=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2])\\nprint(\"fresh experiment interpreter\",sys.executable,flush=True)\\nsys.path.insert(0,str(source/\"benchmarks\"))\\nimport torch,torchsky\\nfrom torchsky.map import ImageObservation,coadd_image_plane\\nfrom bench_map_compat import _coadd_with_swarp,_coadd_with_montage\\nfrom bench_map_smacs0723_reproduce import _coadd_with_drizzle\\nfrom bench_multiband_depth import _updec_effective_psf_artifact\\ninputs=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-native-inputs-response128-20261011-r3\")\\n_,header=torchsky.read(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/target-header128.fits\",return_header=True); header=dict(header)\\nmethods=[\"torchsky_bilinear\",\"torchsky_lanczos3\",\"torchsky_conservative_polygon\",\"swarp_lanczos3\",\"montage_tan\"]+[f\"{prefix}_drizzle_pf{pf}\" for prefix in (\"torchsky\",\"official\") for pf in (\"0p600\",\"0p800\",\"1p000\")]\\nmethods=[m for m in methods if m!=\"montage_tan\"]\\nreport={\"profile\":\"smacs-matched-native-classical-response\",\"depth_claim\":False,\"input_root\":str(inputs),\"rows\":[]}\\ndeadline=time.monotonic()+7200\\nfor batch in (\"blank\",\"validation-000\",\"validation-001\",\"validation-002\",\"dropout-000\"):\\n manifest_path=inputs/\"native-training-view\"/batch/\"manifest.json\"\\n while not manifest_path.is_file():\\n  if time.monotonic()>deadline: raise TimeoutError(f\"waiting for native input {manifest_path}\")\\n  time.sleep(15)\\n manifest=json.loads(manifest_path.read_text()); assert manifest[\"profile\"]==\"smacs-native-training-view\" and manifest[\"resampled\"] is False\\n for band in (\"F150W\",\"F277W\"):\\n  rows=[row for row in manifest[\"rows\"] if row[\"band\"]==band]\\n  assert rows and all(row[\"split\"]==\"train\" for row in rows)\\n  for row in rows:\\n   for kind,key in ((\"sci\",\"path\"),(\"wht\",\"weight_path\"),(\"mask\",\"mask_path\")):\\n    assert hashlib.sha256(pathlib.Path(row[\"image_observation\"][key]).read_bytes()).hexdigest()==row[\"file_sha256\"][kind]\\n  observations=[ImageObservation(**row[\"image_observation\"]) for row in rows]\\n  for method in methods:\\n   start=time.perf_counter()\\n   if \"drizzle_pf\" in method:\\n    pf=float(method.split(\"_pf\")[1].replace(\"p\",\".\"))\\n    if method.startswith(\"official\"):\\n     data,weight=_coadd_with_drizzle(observations,target_header=header,kernel=\"square\",pixfrac=pf,value_semantics=\"surface_brightness\")\\n    else:\\n     result=coadd_image_plane(observations,target_header=header,resampling_kernel=\"drizzle_square\",drizzle_pixfrac=pf,value_semantics=\"surface_brightness\",stacking_method=\"weighted_mean\")\\n     data,weight=result.data,result.weight\\n   elif method==\"swarp_lanczos3\":\\n    data,weight=_coadd_with_swarp(observations,target_header=header,resampling_type=\"LANCZOS3\")\\n   elif method==\"montage_tan\":\\n    data,weight,_,_=_coadd_with_montage(observations,target_header=header)\\n   else:\\n    result=coadd_image_plane(observations,target_header=header,resampling_kernel=method.removeprefix(\"torchsky_\"),value_semantics=\"surface_brightness\",stacking_method=\"weighted_mean\")\\n    data,weight=result.data,result.weight\\n   folder=output/\"b\"/batch/\"products\"/\"fitted_gaussian\"/band/method; folder.mkdir(parents=True,exist_ok=False)\\n   staged=output/\"classical\"/batch/band/\"products\"; staged.mkdir(parents=True,exist_ok=True)\\n   for key,array,name,unit in ((\"sci\",data,\"prediction.fits\",\"MJy/sr\"),(\"wht\",weight,\"support_mask.fits\",\"1\")):\\n    h=dict(header); h[\"BUNIT\"]=unit\\n    array=torch.as_tensor(array)\\n    if key==\"wht\": array=(array>0).to(torch.uint8)\\n    path=folder/name; torchsky.write(str(path),array,header=h,overwrite=False)\\n    (staged/f\"{method}_{key}.fits\").symlink_to(path)\\n   report[\"rows\"].append({\"batch\":batch,\"band\":band,\"method\":method,\"elapsed_seconds\":time.perf_counter()-start,\"input_manifest_sha256\":hashlib.sha256(manifest_path.read_bytes()).hexdigest(),\"native_train_exposure_ids\":[r[\"exposure_id\"] for r in rows]})\\n   (output/\"matched-classical.json\").write_text(json.dumps(report,indent=2)+\"\\\\n\")\\n   print(batch,band,method,\"complete\",flush=True)\\nnull=_updec_effective_psf_artifact(positive_product_root=output/\"classical/dropout-000\",blank_product_root=output/\"classical/blank\",injection_manifest_path=inputs/\"manifests/dropout-000/manifest.json\",output_dir=output/\"null_response\",bands=(\"F150W\",\"F277W\"),methods=tuple(methods),radius_px=9)\\n(output/\"null-response.json\").write_text(json.dumps(null,indent=2)+\"\\\\n\")\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}"
+    ],
+    [
+      "python",
+      "{source}/scripts/run_local_sphere_bench.py",
+      "{source}/benchmarks/score_field_models.py",
+      "--input-root",
+      "{output}",
+      "--module",
+      "b",
+      "--bands",
+      "F150W,F277W",
+      "--methods",
+      "fitted_gaussian/torchsky_bilinear,fitted_gaussian/torchsky_lanczos3,fitted_gaussian/torchsky_conservative_polygon,fitted_gaussian/swarp_lanczos3,fitted_gaussian/torchsky_drizzle_pf0p600,fitted_gaussian/torchsky_drizzle_pf0p800,fitted_gaussian/torchsky_drizzle_pf1p000,fitted_gaussian/official_drizzle_pf0p600,fitted_gaussian/official_drizzle_pf0p800,fitted_gaussian/official_drizzle_pf1p000",
+      "--validation-root",
+      "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-native-inputs-response128-20261011-r3/manifests",
+      "--measure-effective-psfs",
+      "--resolution-reference-method",
+      "fitted_gaussian/swarp_lanczos3",
+      "--out-dir",
+      "{output}/scoring"
+    ]
+  ],
+  "retry_reason": "Isolate the failing Montage binary; obtain all ten other methods on the matched calibrated inputs"
+}

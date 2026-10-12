@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "profile": "smacs-matched-response128-model-priority-scorecard",
+  "as_of_date": "2026-10-11",
+  "decision": "No cross-family winner is assigned: four families still lack full injection metrics, and Foam positive-PSF scoring is unavailable.",
+  "validation_scope": {
+    "bands": [
+      "F150W",
+      "F277W"
+    ],
+    "detector_batch": "blank",
+    "detector_pixels_by_band": {
+      "F150W": 127972,
+      "F277W": 31368
+    },
+    "detector_exposures_per_band": {
+      "F150W": 2,
+      "F277W": 2
+    },
+    "injection_batches": [
+      "validation-000",
+      "validation-001",
+      "validation-002"
+    ],
+    "injection_sources_per_batch": 28,
+    "common_support_pixels": 12095,
+    "target_purity": 0.95,
+    "bootstrap_draws_for_m50": 10000,
+    "depth_claim": false,
+    "fixed_budget": {
+      "adam_steps": 120,
+      "adam_learning_rate": 0.003,
+      "pcg_refinement_iterations": 0,
+      "linear_band_grid_cg_iterations_max": 64
+    },
+    "limitations": [
+      "Validation-only fixed-budget comparisons; these settings do not establish optimizer or solver convergence.",
+      "Detector metrics use only two held-out exposures per band and diagonal Gaussian likelihood with supplied ERR; pixel correlations are ignored.",
+      "Blank-batch detector metrics do not substitute for injection completeness, purity, resolution, or source-flux recovery.",
+      "No independent test evaluation or depth claim is made.",
+      "Foam uses 19x19 registered signed-response stamps with border-median subtraction; this is not diffuse-flux conservation.",
+      "A family-level priority ranking is pending full injection metrics for the remaining families and a completed joint evaluation."
+    ],
+    "dropout_diagnostic_batch": "dropout-000"
+  },
+  "provenance": {
+    "frozen_experiment_source_sha256": "3fa81d201d234a0e17c49ef0234addb485bc85c03cc33d6e7073bbf1dc72c5c7",
+    "source_manifest_identity_sha256": "a0ed9e15a793ba28a751ac46cd8d43372134a7375c7d2149eb6a9b04cf9d25e4",
+    "detector_validation": {
+      "path": "benchmarks_results/smacs-metrics-expansion-20261011/detector-validation.json",
+      "sha256": "04606586884eb6715676a1d468a6b2b4679c32186c86a8c4c9b6da5f85e8afc4"
+    },
+    "matched_model_selection": {
+      "run": "smacs-matched-metrics-recovery-20261011-r3",
+      "linear_band_grid_field": {
+        "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/model_scoring/linear_band_grid_field/model_selection.json",
+        "sha256": "90b4bc62caba0d67d44349b578a174cd750882e11caf90be24719a5bf9e5dbe3"
+      },
+      "explicit_spectral_grid_field": {
+        "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/model_scoring/explicit_spectral_grid_field/model_selection.json",
+        "sha256": "ef51f27281f4919da9e8fd74ab47c83595a90dd72d59e6bb6599a7339f26b56f"
+      }
+    },
+    "foam_signed_response": {
+      "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/signed-response/spectral_power_foam.json",
+      "sha256": "14a3fb5d9743d6a508273cf7d894d00a31ab98ae0fc9084ec79aa9dbd8a38605",
+      "profile": "signed-injected-minus-blank-response",
+      "model_manifest_sha256": {
+        "validation-000": {
+          "path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-spectral-power-foam-response128-20261011-r2/manifests/validation-000/manifest.json",
+          "sha256": "f774b566a8b98ab763e25e297f5b5256f71ac888221dc96fcfd08385205a1679"
+        },
+        "validation-001": {
+          "path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-spectral-power-foam-response128-20261011-r2/manifests/validation-001/manifest.json",
+          "sha256": "b505a1dd775bc68dd704f668f7f2f1c86c92de859c57c5ebab6ba910abc8a29f"
+        },
+        "validation-002": {
+          "path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-spectral-power-foam-response128-20261011-r2/manifests/validation-002/manifest.json",
+          "sha256": "5059bf6b639d9a4b10cfc1ae8fddc7303983dd94089b853f5ab38f3ddda52724"
+        },
+        "dropout-000": {
+          "path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-spectral-power-foam-response128-20261011-r2/manifests/dropout-000/manifest.json",
+          "sha256": "943403a56eb7e02ae757bc11e21b0911ec12053e2db80200d230e3fa6704b370"
+        }
+      },
+      "scoring_status_artifact": {
+        "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/model_scoring/spectral_power_foam/scoring-status.json",
+        "sha256": "c3360396262986503d03be83e986873567c58be8558cace19921346fafd0cf42"
+      }
+    }
+  },
+  "families": [
+    {
+      "model": "sine_implicit",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 3.1429375340440635
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 14.22966567117867
+          }
+        },
+        "source_report_sha256": "7712cd4923f0f83f69f3f7f65ee482fd27bbebdd0e1e696291f7b2ed10faee11",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-sine-implicit-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "pending_full_injection_metrics",
+        "metrics": null
+      }
+    },
+    {
+      "model": "sasnet",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 3.4026949094945103
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 17.45603451394798
+          }
+        },
+        "source_report_sha256": "4cbdd066c3d6ddb8740990bfc117252ec33dce7a7fd59dc0f73fa5ff03756711",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-sasnet-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "pending_full_injection_metrics",
+        "metrics": null
+      }
+    },
+    {
+      "model": "spectral_power_foam",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 79.0977476283533
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 227.2279560037989
+          }
+        },
+        "source_report_sha256": "c463daaa10db85ce3a90212c42404dbd7ae0b73a05afcf547fd12f9c687a3f65",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-spectral-power-foam-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "partial_signed_flux_audit_positive_psf_scoring_unavailable",
+        "scoring_status": "unavailable_nonpositive_injection_response",
+        "scoring_unavailable_reason": "effective-PSF stamps must have positive finite total flux",
+        "source_artifact": {
+          "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/signed-response/spectral_power_foam.json",
+          "sha256": "14a3fb5d9743d6a508273cf7d894d00a31ab98ae0fc9084ec79aa9dbd8a38605"
+        },
+        "signed_response_rows": [
+          {
+            "batch": "validation-000",
+            "band": "F150W",
+            "source_count": 4,
+            "stamp_side_pixels": 19,
+            "positive_finite_total_in_every_stamp": false,
+            "median_signed_flux_jy": -6.122660673404355E-10,
+            "median_absolute_flux_jy": 5.28144760763075E-10,
+            "positive_truth_median_fractional_flux_bias": -1.010639321728572,
+            "positive_truth_fractional_flux_nmad": 0.0021672237752765346,
+            "positive_truth_max_absolute_fractional_flux_error": 1.0163176459994328,
+            "positive_source_count": 4,
+            "zero_truth_source_count": 0,
+            "positive_sha256": "d389e325d1aa81f242a0e5fbc3c3a10f6e4a30db7abca70ba9759004b269e0e7",
+            "blank_sha256": "eacb1cdfee40b3a9a35b487b3f29bd57d476fbe175beb1acf739f388d935dae6",
+            "manifest_sha256": "f774b566a8b98ab763e25e297f5b5256f71ac888221dc96fcfd08385205a1679"
+          },
+          {
+            "batch": "validation-000",
+            "band": "F277W",
+            "source_count": 4,
+            "stamp_side_pixels": 19,
+            "positive_finite_total_in_every_stamp": true,
+            "median_signed_flux_jy": 4.366907594883351E-9,
+            "median_absolute_flux_jy": 4.366907594883351E-9,
+            "positive_truth_median_fractional_flux_bias": -0.9421648883879353,
+            "positive_truth_fractional_flux_nmad": 0.0030550113066578496,
+            "positive_truth_max_absolute_fractional_flux_error": 0.9954570413372686,
+            "positive_source_count": 4,
+            "zero_truth_source_count": 0,
+            "positive_sha256": "129d5ef58e123d9d85598e1616619fcd8969fb8bee63a1bc6cd5717b47b74752",
+            "blank_sha256": "2b42810adbd2a277959538663e690de38b036631f2ad9ad7309ec812836f3a49",
+            "manifest_sha256": "f774b566a8b98ab763e25e297f5b5256f71ac888221dc96fcfd08385205a1679"
+          },
+          {
+            "batch": "dropout-000",
+            "band": "F150W",
+            "source_count": 28,
+            "stamp_side_pixels": 19,
+            "positive_finite_total_in_every_stamp": false,
+            "median_signed_flux_jy": -1.1490359873512592E-9,
+            "median_absolute_flux_jy": 1.1087200137088168E-9,
+            "positive_truth_median_fractional_flux_bias": null,
+            "positive_truth_fractional_flux_nmad": null,
+            "positive_truth_max_absolute_fractional_flux_error": null,
+            "positive_source_count": 0,
+            "zero_truth_source_count": 28,
+            "positive_sha256": "ceaecc63b74afac94434419dc6c955bcaff236a2bbef84d1d608c53a3a2631d5",
+            "blank_sha256": "eacb1cdfee40b3a9a35b487b3f29bd57d476fbe175beb1acf739f388d935dae6",
+            "manifest_sha256": "943403a56eb7e02ae757bc11e21b0911ec12053e2db80200d230e3fa6704b370"
+          },
+          {
+            "batch": "dropout-000",
+            "band": "F277W",
+            "source_count": 28,
+            "stamp_side_pixels": 19,
+            "positive_finite_total_in_every_stamp": false,
+            "median_signed_flux_jy": 1.51555613066067E-9,
+            "median_absolute_flux_jy": 1.51555613066067E-9,
+            "positive_truth_median_fractional_flux_bias": -0.9103400672147545,
+            "positive_truth_fractional_flux_nmad": 0.05271502142145703,
+            "positive_truth_max_absolute_fractional_flux_error": 1.071706046783475,
+            "positive_source_count": 28,
+            "zero_truth_source_count": 0,
+            "positive_sha256": "4191cc9f63e0ae6e3c9293bb1ad30c49989041ccf404d43ba38a1b755bce1ac4",
+            "blank_sha256": "2b42810adbd2a277959538663e690de38b036631f2ad9ad7309ec812836f3a49",
+            "manifest_sha256": "943403a56eb7e02ae757bc11e21b0911ec12053e2db80200d230e3fa6704b370"
+          }
+        ],
+        "resolution_fwhm_px_by_band": null,
+        "completeness": null,
+        "purity": null,
+        "depth_claim": false
+      }
+    },
+    {
+      "model": "gaussian_basis",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 14.318715845539874
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 51.99739983723149
+          }
+        },
+        "source_report_sha256": "319ac3529a0e4f22ffbad92a7c4f76ed3a134dcf9d541b1d0a2651efb43d0db1",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-gaussian-basis-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "pending_full_injection_metrics",
+        "metrics": null
+      }
+    },
+    {
+      "model": "explicit_spectral_grid_field",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 32.40543160011331
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 26.18072065730758
+          }
+        },
+        "source_report_sha256": "41b7aed08f56ee2b4a5e67a461272f7bdd890cbd368ca5b1816afc092684ff92",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-explicit-spectral-grid-field-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "complete_validation_only",
+        "source_artifact": {
+          "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/model_scoring/explicit_spectral_grid_field/model_selection.json",
+          "sha256": "ef51f27281f4919da9e8fd74ab47c83595a90dd72d59e6bb6599a7339f26b56f"
+        },
+        "scored_method": "fitted_gaussian__explicit_spectral_grid_field",
+        "selected_comparator": "fitted_gaussian__swarp_lanczos3",
+        "selection_rule": "validation-batches-only: purity gate, held-out calibration gate for learned PSF arms, complete measured effective FWHM no worse than the explicit per-band reference (required for any winner), then largest bootstrap-median m50",
+        "target_purity": 0.95,
+        "pooled_completeness": 0.25,
+        "pooled_purity": 1.0,
+        "target_purity_reached": true,
+        "m50_ab_mag": 27.58333396911621,
+        "m50_ci95_ab_mag": {
+          "low": 27.5,
+          "high": 27.75,
+          "finite_draws": 10000
+        },
+        "resolution_fwhm_px_by_band": {
+          "F150W": 3.015240430831909,
+          "F277W": 3.985260248184204
+        },
+        "resolution_gate_pass": false,
+        "heldout_gate_pass": true,
+        "validation_counts": {
+          "completeness": 0.25,
+          "matched_count": 21,
+          "purity": 1.0,
+          "selected_detection_count": 21,
+          "truth_count": 84
+        },
+        "validation_batches": [
+          {
+            "batch_id": "validation-000",
+            "completeness": 0.32142857142857145,
+            "purity": 1.0,
+            "matched_count": 9,
+            "selected_detection_count": 9,
+            "truth_count": 28
+          },
+          {
+            "batch_id": "validation-001",
+            "completeness": 0.21428571428571427,
+            "purity": 1.0,
+            "matched_count": 6,
+            "selected_detection_count": 6,
+            "truth_count": 28
+          },
+          {
+            "batch_id": "validation-002",
+            "completeness": 0.21428571428571427,
+            "purity": 1.0,
+            "matched_count": 6,
+            "selected_detection_count": 6,
+            "truth_count": 28
+          }
+        ],
+        "bright_source_effective_psf_by_band": {
+          "F150W": {
+            "resolution_fwhm_px": 3.015240430831909,
+            "negative_lobe_fraction": 0.171719491481781,
+            "bright_source_median_fractional_flux_bias": -0.996695811611405,
+            "bright_source_fractional_flux_nmad": 0.0002497594926076364,
+            "bright_source_max_absolute_fractional_flux_error": 0.9968642720812604,
+            "calibration_source_count": 4,
+            "effective_psf_sha256": "43a0902d849c0ebc9c753e80583cea00387898a3511d6a3f8e997a78a0efe79e"
+          },
+          "F277W": {
+            "resolution_fwhm_px": 3.985260248184204,
+            "negative_lobe_fraction": 0.25059881806373596,
+            "bright_source_median_fractional_flux_bias": -0.4932821239954005,
+            "bright_source_fractional_flux_nmad": 0.2570614258749252,
+            "bright_source_max_absolute_fractional_flux_error": 0.8887027347235055,
+            "calibration_source_count": 4,
+            "effective_psf_sha256": "19980a438cf846312ce41202b57a6930882b0ba8285eb7771149e6da70622774"
+          }
+        },
+        "validation_manifest_sha256": {
+          "validation-000": "f774b566a8b98ab763e25e297f5b5256f71ac888221dc96fcfd08385205a1679",
+          "validation-001": "b505a1dd775bc68dd704f668f7f2f1c86c92de859c57c5ebab6ba910abc8a29f",
+          "validation-002": "5059bf6b639d9a4b10cfc1ae8fddc7303983dd94089b853f5ab38f3ddda52724"
+        },
+        "common_support_pixels": 12095,
+        "bootstrap_draws": 10000,
+        "depth_claim": false
+      }
+    },
+    {
+      "model": "linear_band_grid_field",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 1.7175041124596877
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 2.48264695650775
+          }
+        },
+        "source_report_sha256": "660f9fbdfdfa705e5ec8770b325d599212c5684502f103fb6c1d20f0920296ba",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-linear-band-grid-field-response128-20261011-r2/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "complete_validation_only",
+        "source_artifact": {
+          "path": "benchmarks_results/smacs-inr-20261010/runs/smacs-matched-metrics-recovery-20261011-r3/model_scoring/linear_band_grid_field/model_selection.json",
+          "sha256": "90b4bc62caba0d67d44349b578a174cd750882e11caf90be24719a5bf9e5dbe3"
+        },
+        "scored_method": "fitted_gaussian__linear_band_grid_field",
+        "selected_comparator": "fitted_gaussian__swarp_lanczos3",
+        "selection_rule": "validation-batches-only: purity gate, held-out calibration gate for learned PSF arms, complete measured effective FWHM no worse than the explicit per-band reference (required for any winner), then largest bootstrap-median m50",
+        "target_purity": 0.95,
+        "pooled_completeness": 0.6785714285714286,
+        "pooled_purity": 0.95,
+        "target_purity_reached": true,
+        "m50_ab_mag": 29.714284896850586,
+        "m50_ci95_ab_mag": {
+          "low": 29.66666603088379,
+          "high": 30.0,
+          "finite_draws": 10000
+        },
+        "resolution_fwhm_px_by_band": {
+          "F150W": 3.63843035697937,
+          "F277W": 3.9068384170532227
+        },
+        "resolution_gate_pass": false,
+        "heldout_gate_pass": true,
+        "validation_counts": {
+          "completeness": 0.6785714285714286,
+          "matched_count": 57,
+          "purity": 0.95,
+          "selected_detection_count": 60,
+          "truth_count": 84
+        },
+        "validation_batches": [
+          {
+            "batch_id": "validation-000",
+            "completeness": 0.6785714285714286,
+            "purity": 0.9047619047619048,
+            "matched_count": 19,
+            "selected_detection_count": 21,
+            "truth_count": 28
+          },
+          {
+            "batch_id": "validation-001",
+            "completeness": 0.6785714285714286,
+            "purity": 0.95,
+            "matched_count": 19,
+            "selected_detection_count": 20,
+            "truth_count": 28
+          },
+          {
+            "batch_id": "validation-002",
+            "completeness": 0.6785714285714286,
+            "purity": 1.0,
+            "matched_count": 19,
+            "selected_detection_count": 19,
+            "truth_count": 28
+          }
+        ],
+        "bright_source_effective_psf_by_band": {
+          "F150W": {
+            "resolution_fwhm_px": 3.63843035697937,
+            "negative_lobe_fraction": 0.7092761993408203,
+            "bright_source_median_fractional_flux_bias": -0.03183854096811234,
+            "bright_source_fractional_flux_nmad": 0.008931105475727721,
+            "bright_source_max_absolute_fractional_flux_error": 0.19599345115910716,
+            "calibration_source_count": 4,
+            "effective_psf_sha256": "8a71c4ce9335a56a9b411e416a3fa5e724bed99765c75288d178ba6bec9b5601"
+          },
+          "F277W": {
+            "resolution_fwhm_px": 3.9068384170532227,
+            "negative_lobe_fraction": 0.5767488479614258,
+            "bright_source_median_fractional_flux_bias": -0.021936268208409326,
+            "bright_source_fractional_flux_nmad": 0.007561190458998093,
+            "bright_source_max_absolute_fractional_flux_error": 0.22327101131175553,
+            "calibration_source_count": 4,
+            "effective_psf_sha256": "be59ad3a622800473d8a99a5b888399c68deeaec87bd11805801c256414c1651"
+          }
+        },
+        "validation_manifest_sha256": {
+          "validation-000": "f774b566a8b98ab763e25e297f5b5256f71ac888221dc96fcfd08385205a1679",
+          "validation-001": "b505a1dd775bc68dd704f668f7f2f1c86c92de859c57c5ebab6ba910abc8a29f",
+          "validation-002": "5059bf6b639d9a4b10cfc1ae8fddc7303983dd94089b853f5ab38f3ddda52724"
+        },
+        "common_support_pixels": 12095,
+        "bootstrap_draws": 10000,
+        "depth_claim": false
+      }
+    },
+    {
+      "model": "sky_lambda_feature_field",
+      "detector_validation": {
+        "batch": "blank",
+        "bands": {
+          "F150W": {
+            "pixels": 127972,
+            "chi2_per_pixel": 4.380048478240168
+          },
+          "F277W": {
+            "pixels": 31368,
+            "chi2_per_pixel": 31.37587761436467
+          }
+        },
+        "source_report_sha256": "1b2b4ab5de5d40932a65ab4aad0ffa010c21eef860ad7d79c6e5590e5b8cba16",
+        "source_report_path": "benchmarks_results/smacs-inr-20261010/runs/smacs-sky-lambda-feature-field-response128-20261011-r3/b/blank/shared-foam.json"
+      },
+      "injection_metrics": {
+        "status": "pending_full_injection_metrics",
+        "metrics": null
+      }
+    }
+  ],
+  "priority_status": "provisional_no_cross_family_rank",
+  "joint_evaluation_status": "pending"
+}

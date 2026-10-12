@@ -1,0 +1,30 @@
+{
+  "run_id": "smacs-classical-sixband-metrics-20261011-r4",
+  "hypothesis": "Measure seven raw-aligned classical stackers on one scorer-derived common support across all six bands, including verified official MontagePy mProject output",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "historical raw-aligned cohort; separate from calibrated response128 models",
+  "cpu": 8,
+  "memory": 64,
+  "gpu": 0,
+  "pixi_environment": "smacs",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 10800,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,math,pathlib,runpy,subprocess,sys\\nsource=pathlib.Path(sys.argv[1]);output=pathlib.Path(sys.argv[2]);methods=json.loads(sys.argv[3])\\narc=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010\")\\nprevious=arc/\"smacs-classical-sixband-metrics-20261011-r2\"\\nprovenance_path=previous/\"provenance.json\"\\nprovenance=json.loads(provenance_path.read_text())\\nassert provenance[\"methods\"]==methods,provenance[\"methods\"]\\nassert len(provenance[\"products\"])==168,len(provenance[\"products\"])\\nfor row in provenance[\"products\"]:\\n assert pathlib.Path(row[\"staged_science\"]).is_file(),row\\n assert pathlib.Path(row[\"staged_support\"]).is_file(),row\\nassert json.loads((previous/\"progress.json\").read_text())[\"pending_bands\"]==[]\\n\\ndef finite_json(value,path=\"$\",missing=None):\\n if missing is None:missing=[]\\n if isinstance(value,float) and not math.isfinite(value):\\n  missing.append({\"path\":path,\"original_value\":repr(value)})\\n  return None\\n if isinstance(value,dict):return {k:finite_json(v,path+\".\"+str(k),missing) for k,v in value.items()}\\n if isinstance(value,(list,tuple)):return [finite_json(v,path+\"[\"+str(i)+\"]\",missing) for i,v in enumerate(value)]\\n return value\\n\\nclass OutputJSON:\\n def __getattr__(self,name):return getattr(json,name)\\n def dumps(self,value,*args,**kwargs):\\n  if isinstance(value,dict) and \"per_method\" in value and \"selection_rule\" in value:\\n   missing=[];value=finite_json(value,missing=missing)\\n   value[\"serialization_audit\"]={\"policy\":\"Non-finite numerical outputs are unavailable and serialized as null; original gates and winner selection are unchanged.\",\"nonfinite_fields\":missing}\\n   (output/\"nonfinite-fields.json\").write_text(json.dumps(missing,indent=2,allow_nan=False)+\"\\\\n\")\\n  return json.dumps(value,*args,**kwargs)\\n\\nmissing=[]\\nassert finite_json({\"x\":[1.25,float(\"nan\"),float(\"inf\"),-float(\"inf\")]},missing=missing)=={\"x\":[1.25,None,None,None]}\\nassert [item[\"path\"] for item in missing]==[\"$.x[1]\",\"$.x[2]\",\"$.x[3]\"]\\nadapter=OutputJSON()\\nassert json.loads(adapter.dumps({\"per_method\":[],\"selection_rule\":\"test\",\"unavailable\":float(\"nan\")},allow_nan=False))[\"unavailable\"] is None\\nmetadata={\"previous_staging_provenance\":str(provenance_path),\"previous_staging_provenance_sha256\":hashlib.sha256(provenance_path.read_bytes()).hexdigest(),\"original_source_products_unchanged\":True,\"change\":\"Output serialization only; no numerical algorithm or selection gate changes\", \"depth_claim\":False}\\n(output/\"recovery-provenance.json\").write_text(json.dumps(metadata,indent=2)+\"\\\\n\")\\nsys.path.insert(0,str(source/\"benchmarks\"))\\nentry=runpy.run_path(str(source/\"benchmarks/score_field_models.py\"))\\nentry[\"main\"].__globals__[\"json\"]=adapter\\nsys.argv=[str(source/\"benchmarks/score_field_models.py\"),\"--input-root\",str(previous/\"merged\"),\\n \"--module\",\"b\",\"--bands\",\"F090W,F150W,F200W,F277W,F356W,F444W\",\\n \"--methods\",\",\".join(\"classical/\"+method for method in methods),\\n \"--validation-root\",\"/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940\",\\n \"--measure-effective-psfs\",\"--resolution-reference-method\",\"classical/swarp_lanczos3\",\\n \"--out-dir\",str(output/\"scoring\")]\\nassert entry[\"main\"]()==0\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}",
+      "[\"torchsky_bilinear\", \"torchsky_lanczos3\", \"torchsky_drizzle_square\", \"torchsky_conservative_polygon\", \"drizzle_square\", \"swarp_lanczos3\", \"montagepy_mproject\"]"
+    ]
+  ],
+  "retry_reason": "All 168 source products staged and numerical scoring completed; strict JSON serialization rejected unavailable NaN metrics. Serialize unavailable summary values as null with explicit original-field audit, retaining the numerical algorithms and selection gates.",
+  "notes": [
+    "Uses the six native r3 stackers and the official MontagePy r1 mProject comparator across F090W, F150W, F200W, F277W, F356W, and F444W.",
+    "Waits for four batches per band in both source roots; every expected row must have status OK and existing SCI/WHT products. Overall source-job exit status is not a readiness gate because downstream scoring may fail after valid stacker products were written.",
+    "Scores all seven methods in one invocation so the scorer computes a common support mask. Measures effective PSF relative to classical/swarp_lanczos3; no depth claim is made.",
+    "Records SHA-256 for original stacker reports and SCI/WHT products. Source stacker writes SCI and weights as float32; any needed weight conversion is limited to a derived staged copy and must preserve positive support exactly."
+  ]
+}

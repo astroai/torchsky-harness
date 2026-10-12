@@ -1,0 +1,23 @@
+name: Harness infrastructure
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: prefix-dev/setup-pixi@v0.8.0
+      with:
+        pixi-version: latest
+    - run: pixi install --frozen -e test
+    - run: pixi run -e test -- python -m pip install -e . --no-deps --no-build-isolation
+    - run: pixi run preflight
+    - name: Infrastructure contracts without a scientific subject
+      run: pixi run -e test -- pytest tests/test_runner.py tests/test_run_local_sphere_bench.py -q
+    - name: Build pure-Python harness wheel
+      run: pixi run build
+    - uses: actions/upload-artifact@v4
+      with:
+        name: torchsky-harness-wheel
+        path: dist/*.whl
+'on':
+  push: null
+  pull_request: null

@@ -1,0 +1,70 @@
+{
+  "captured_at_utc": "2026-10-11 22:17:21 UTC",
+  "source": "canfar ps --json (read-only)",
+  "filter": "session ids present in the SMACS metrics-expansion jobs ledger",
+  "fields": [
+    "id",
+    "status",
+    "name",
+    "requestedRAM",
+    "requestedCPUCores",
+    "requestedGPUCores",
+    "isFixedResources"
+  ],
+  "sessions": [
+    {
+      "id": "ch2c9hfj",
+      "status": "Running",
+      "name": "smacs-gaussian-basis-response128-20261011-r2",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "1",
+      "isFixedResources": true
+    },
+    {
+      "id": "ksahtkqk",
+      "status": "Running",
+      "name": "smacs-sasnet-response128-20261011-r2",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "1",
+      "isFixedResources": true
+    },
+    {
+      "id": "sc05fk39",
+      "status": "Running",
+      "name": "smacs-sine-implicit-response128-20261011-r2",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "1",
+      "isFixedResources": true
+    },
+    {
+      "id": "oq1zxrx2",
+      "status": "Running",
+      "name": "smacs-sky-lambda-feature-field-response128-20261011-r3",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "0",
+      "isFixedResources": true
+    },
+    {
+      "id": "wmclm1ba",
+      "status": "Running",
+      "name": "smacs-matched-metrics-recovery-20261011-r2",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "0",
+      "isFixedResources": true
+    },
+    {
+      "id": "wkgscklq",
+      "status": "Running",
+      "name": "smacs-matched-metrics-recovery-20261011-r3",
+      "requestedRAM": "68.72",
+      "requestedCPUCores": "8",
+      "requestedGPUCores": "0",
+      "isFixedResources": true
+    }
+  ]
+}

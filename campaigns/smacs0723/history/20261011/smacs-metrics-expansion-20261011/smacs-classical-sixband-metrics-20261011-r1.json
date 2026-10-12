@@ -1,0 +1,23 @@
+{
+  "run_id": "smacs-classical-sixband-metrics-20261011-r1",
+  "hypothesis": "Measure common-support discovery, injection flux, effective PSF and artifact metrics for six raw-aligned classical stackers in all six bands relative to SWarp Lanczos3",
+  "scientific_evidence": true,
+  "depth_claim": false,
+  "source_kind": "historical raw-aligned cohort; separate from calibrated response128 models",
+  "cpu": 8,
+  "memory": 64,
+  "gpu": 0,
+  "pixi_environment": "smacs",
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "command_timeout_seconds": 28800,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport json,pathlib,runpy,subprocess,sys,time\\nsource=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2]); methods=json.loads(sys.argv[3])\\nprint(\"fresh experiment interpreter\",sys.executable,flush=True)\\narc=pathlib.Path(\"/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010\")\\nbands=(\"F090W\",\"F150W\",\"F200W\",\"F277W\",\"F356W\",\"F444W\")\\ndeadline=time.monotonic()+21600\\npending=list(bands)\\nwhile pending:\\n if time.monotonic()>deadline: raise TimeoutError(\"waiting for six-band classical products\")\\n for band in list(pending):\\n  root=arc/f\"smacs-classical-{band.lower()}-inj512-20261011-r3\"\\n  exit_path=root/\"exit_status.json\"\\n  if not exit_path.is_file(): continue\\n  assert json.loads(exit_path.read_text())[\"exit_code\"]==0,str(root)\\n  for batch in (\"blank\",\"validation-000\",\"validation-001\",\"validation-002\"):\\n   for method in methods:\\n    for suffix,filename in ((\"sci\",\"prediction.fits\"),(\"wht\",\"support_mask.fits\")):\\n     path=root/batch/band/\"products\"/f\"{method}_{suffix}.fits\"; assert path.is_file(),str(path)\\n     target=output/\"merged/b\"/batch/\"products/classical\"/band/method/filename\\n     target.parent.mkdir(parents=True,exist_ok=True); target.symlink_to(path)\\n  pending.remove(band)\\n  (output/\"progress.json\").write_text(json.dumps({\"pending_bands\":pending,\"staged_bands\":[b for b in bands if b not in pending]},indent=2)+\"\\\\n\")\\n if pending: time.sleep(60)\\ncommand=[sys.executable,str(source/\"benchmarks/score_field_models.py\"),\"--input-root\",str(output/\"merged\"),\"--module\",\"b\",\"--bands\",\",\".join(bands),\"--methods\",\",\".join(\"classical/\"+m for m in methods),\"--validation-root\",\"/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940\",\"--measure-effective-psfs\",\"--resolution-reference-method\",\"classical/swarp_lanczos3\",\"--out-dir\",str(output/\"scoring\")]\\nsubprocess.run(command,check=True,timeout=7200)\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}",
+      "[\"torchsky_bilinear\", \"torchsky_lanczos3\", \"torchsky_drizzle_square\", \"torchsky_conservative_polygon\", \"drizzle_square\", \"swarp_lanczos3\"]"
+    ]
+  ]
+}

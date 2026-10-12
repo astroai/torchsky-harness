@@ -1,0 +1,727 @@
+[
+  {
+    "source": "benchmarks/PHASE0_WCS_SPHERE.md",
+    "destination": "benchmarks/PHASE0_WCS_SPHERE.md",
+    "sha256": "6f520f60b5b0f09adb3c7be910ece08fdb4ec97fbfef6ca96d86c9cd9c5d3751"
+  },
+  {
+    "source": "benchmarks/__init__.py",
+    "destination": "benchmarks/__init__.py",
+    "sha256": "156fc2a3e0bfd7634169728f2df63c9acadf1b3a08cd279c6ba45063df1bf956"
+  },
+  {
+    "source": "benchmarks/aggregate_ground_truth_competitive_large_union.py",
+    "destination": "benchmarks/aggregate_ground_truth_competitive_large_union.py",
+    "sha256": "ad59ce257751dc5374a81ab450d455771dd36a78ed98097fd168f6f083a36148"
+  },
+  {
+    "source": "benchmarks/baselines/map_compat_ci_gate.json",
+    "destination": "benchmarks/baselines/map_compat_ci_gate.json",
+    "sha256": "f86f0646652e0bf44150bc05dec49a81fddb24917b272a4c7885ffabea5bb1db"
+  },
+  {
+    "source": "benchmarks/baselines/map_compat_real_smoke.json",
+    "destination": "benchmarks/baselines/map_compat_real_smoke.json",
+    "sha256": "b8f15d511db8a93b94c591ca743bf144322301c3ad6c1f71624081aaa12318d1"
+  },
+  {
+    "source": "benchmarks/baselines/map_compat_real_smoke.md",
+    "destination": "benchmarks/baselines/map_compat_real_smoke.md",
+    "sha256": "f70e18f2d185b57e99adb266028bb924d849b0312e5b849bf02933f35ea1157f"
+  },
+  {
+    "source": "benchmarks/baselines/map_compat_time_gate_example.json",
+    "destination": "benchmarks/baselines/map_compat_time_gate_example.json",
+    "sha256": "964739bc437220036ce0a498b3c11ec369ad4460dbf274c7a5df0eebee9e331c"
+  },
+  {
+    "source": "benchmarks/baselines/map_drizzle_acceptance.json",
+    "destination": "benchmarks/baselines/map_drizzle_acceptance.json",
+    "sha256": "7e4cf33ddb8987c6ca1e7db06be569decd3f3dca723415d9080092ca741e4a16"
+  },
+  {
+    "source": "benchmarks/baselines/map_field_fit_rep.json",
+    "destination": "benchmarks/baselines/map_field_fit_rep.json",
+    "sha256": "8e433abfd6a36e44a00cb70167eba7d255fc38791269b48fb24f621169478957"
+  },
+  {
+    "source": "benchmarks/baselines/map_field_fit_rep.md",
+    "destination": "benchmarks/baselines/map_field_fit_rep.md",
+    "sha256": "52086f947b6f61126a7f16dc2655287efc334ba9fa816e90401e5ba477463e94"
+  },
+  {
+    "source": "benchmarks/baselines/map_field_fit_smoke.json",
+    "destination": "benchmarks/baselines/map_field_fit_smoke.json",
+    "sha256": "04396e5cccf0bb3ae3b3f7c24828d3b80df1048760122aed560e36b46040227d"
+  },
+  {
+    "source": "benchmarks/baselines/map_field_fit_smoke.md",
+    "destination": "benchmarks/baselines/map_field_fit_smoke.md",
+    "sha256": "48a3b998acea737a05a461694b98efc6feeec745cc6746392009a80a19abedb8"
+  },
+  {
+    "source": "benchmarks/baselines/map_ground_truth_rep.json",
+    "destination": "benchmarks/baselines/map_ground_truth_rep.json",
+    "sha256": "df5146d9e8f8a4e00580a070ceba158f36f41951c7d74f030cf7e936d02c56c4"
+  },
+  {
+    "source": "benchmarks/baselines/map_ground_truth_rep.md",
+    "destination": "benchmarks/baselines/map_ground_truth_rep.md",
+    "sha256": "fad7374f2cd1f9db37cf1df07ff2dc9204dfde9407cd174f6a9ffcab7b6e5670"
+  },
+  {
+    "source": "benchmarks/baselines/map_ground_truth_smoke.json",
+    "destination": "benchmarks/baselines/map_ground_truth_smoke.json",
+    "sha256": "32270c2a5e918a296f7f3ecb6de24849b33234a434e58b06eb96c87fccf8d277"
+  },
+  {
+    "source": "benchmarks/baselines/map_ground_truth_smoke.md",
+    "destination": "benchmarks/baselines/map_ground_truth_smoke.md",
+    "sha256": "f343ea2a849e52a9b1d4135f7bf83260b10ca0da5006afca2a0d20ae0b57f333"
+  },
+  {
+    "source": "benchmarks/baselines/map_montage_acceptance.json",
+    "destination": "benchmarks/baselines/map_montage_acceptance.json",
+    "sha256": "5ae782beb3134305bcb22b7f63c6d142ce109a68f9a3a35c4941b913388ea49c"
+  },
+  {
+    "source": "benchmarks/baselines/map_multifield_truth_rep.json",
+    "destination": "benchmarks/baselines/map_multifield_truth_rep.json",
+    "sha256": "f53bd77202875da6f6cc3dbcc25083d5223717465767d60bff55a85cbe423404"
+  },
+  {
+    "source": "benchmarks/baselines/map_multifield_truth_rep.md",
+    "destination": "benchmarks/baselines/map_multifield_truth_rep.md",
+    "sha256": "0792ca85029111244c4bf46ec56bf7f2079cc0e9552cee85201ba28cc201806b"
+  },
+  {
+    "source": "benchmarks/baselines/map_multifield_truth_smoke.json",
+    "destination": "benchmarks/baselines/map_multifield_truth_smoke.json",
+    "sha256": "36549c5dd76eb7375f0698f982bf2951673f112c544d084775f911e6c25c5707"
+  },
+  {
+    "source": "benchmarks/baselines/map_multifield_truth_smoke.md",
+    "destination": "benchmarks/baselines/map_multifield_truth_smoke.md",
+    "sha256": "a57fa19919b08fdede62b5e26ab2e5f0a5f83ed306c07066e31b10ec704f1a0a"
+  },
+  {
+    "source": "benchmarks/baselines/map_radio_tp_smoke.json",
+    "destination": "benchmarks/baselines/map_radio_tp_smoke.json",
+    "sha256": "ef292c50b6b752709a990f2ef0cd59ddb1d3a7f592887b71684a788a517c1a30"
+  },
+  {
+    "source": "benchmarks/baselines/map_swarp_acceptance.json",
+    "destination": "benchmarks/baselines/map_swarp_acceptance.json",
+    "sha256": "8246a7c1120551d4483e12de40045cb7df3d0bbebc71b887162a4bcfe45d7afc"
+  },
+  {
+    "source": "benchmarks/baselines/map_swarp_clipped_acceptance.json",
+    "destination": "benchmarks/baselines/map_swarp_clipped_acceptance.json",
+    "sha256": "c46ff9fe7a72f261ef42ae949c0b525b57efd1e026d6f05b3bd6d2ce1018a6c5"
+  },
+  {
+    "source": "benchmarks/baselines/smacs_full_mosaic_parity.json",
+    "destination": "benchmarks/baselines/smacs_full_mosaic_parity.json",
+    "sha256": "0b25969b24a24ecaff9e86dbc892d3aa07db6d97297bb78b5884ad9eb1e0f0ec"
+  },
+  {
+    "source": "benchmarks/baselines/sphere_geom_exact_contains_gate.json",
+    "destination": "benchmarks/baselines/sphere_geom_exact_contains_gate.json",
+    "sha256": "eed75370dc0fe7c591717bf14d7d20a634bf1fe58c438913ba57ffd76d1b2d6d"
+  },
+  {
+    "source": "benchmarks/baselines/spin_matrix_extended_baseline.json",
+    "destination": "benchmarks/baselines/spin_matrix_extended_baseline.json",
+    "sha256": "97d32017f216666ba4f991b3813c3839a63d8af8723733865fa6ac779fd25347"
+  },
+  {
+    "source": "benchmarks/bench_all.py",
+    "destination": "benchmarks/bench_all.py",
+    "sha256": "dc52e815fa1817bd8791963e533cf852ca3568e0e182f300f209bf66677f0cf8"
+  },
+  {
+    "source": "benchmarks/bench_catalog_compat.py",
+    "destination": "benchmarks/bench_catalog_compat.py",
+    "sha256": "cd20addb21dce50c8eef7db477b516f0a145d51e95441df4115766983ba91166"
+  },
+  {
+    "source": "benchmarks/bench_catalog_crossmatch.py",
+    "destination": "benchmarks/bench_catalog_crossmatch.py",
+    "sha256": "1ed6d2f847caf397785cee514a0ae5dc30dc90975692c792eb2f3ff2312d91ec"
+  },
+  {
+    "source": "benchmarks/bench_catalog_crossmatch_arrow.py",
+    "destination": "benchmarks/bench_catalog_crossmatch_arrow.py",
+    "sha256": "ff3face75ab7af7f51515863d683d04d786d518a05862bf834a5b515f5b164b1"
+  },
+  {
+    "source": "benchmarks/bench_cold_targets.py",
+    "destination": "benchmarks/bench_cold_targets.py",
+    "sha256": "4713ae6cd15e185e80b9890b6883ec120999f597e467d8f562d1fc4e91e5518d"
+  },
+  {
+    "source": "benchmarks/bench_competitors.py",
+    "destination": "benchmarks/bench_competitors.py",
+    "sha256": "8f4e21b472a44b2e6104292e371c1a551eff2b4d166be142a77abd369bd69863"
+  },
+  {
+    "source": "benchmarks/bench_contract.py",
+    "destination": "benchmarks/bench_contract.py",
+    "sha256": "ff8c9e753bb7f4dfb9cb68285d8eae5644097f2331bbcc96e6b6787509ec6005"
+  },
+  {
+    "source": "benchmarks/bench_cuhpx_sht_spike.py",
+    "destination": "benchmarks/bench_cuhpx_sht_spike.py",
+    "sha256": "57af5c9d0cdfc7ddca570c16faf37b6168bbdddfedaced7e10eaf4e11818d615"
+  },
+  {
+    "source": "benchmarks/bench_gpu_memory.py",
+    "destination": "benchmarks/bench_gpu_memory.py",
+    "sha256": "4c434e0ae76bdfc54e50f862632696a2fb7c963831f5a63c69758795bbb11f22"
+  },
+  {
+    "source": "benchmarks/bench_healpix.py",
+    "destination": "benchmarks/bench_healpix.py",
+    "sha256": "727ef32ebc7330b224da5c9f90deb956cd0d78842496eed2184b5ab2bb39caba"
+  },
+  {
+    "source": "benchmarks/bench_healpix_advanced.py",
+    "destination": "benchmarks/bench_healpix_advanced.py",
+    "sha256": "ad72ced477ed9916423e62cd211eadc25d954c069397ddcbf95f2ff237c8229e"
+  },
+  {
+    "source": "benchmarks/bench_inr_perf.py",
+    "destination": "benchmarks/bench_inr_perf.py",
+    "sha256": "15f39bd3468280ca7a496ee4c60a2398a5e64e225b27bd09ffcba36ff60fb155"
+  },
+  {
+    "source": "benchmarks/bench_map_boundary_support.py",
+    "destination": "benchmarks/bench_map_boundary_support.py",
+    "sha256": "f1c985ec1782fca6fbbc8955dc458956eb64ba5316f4a968ecbc379c78f75158"
+  },
+  {
+    "source": "benchmarks/bench_map_compat.py",
+    "destination": "benchmarks/bench_map_compat.py",
+    "sha256": "64efdc771cd023e239f96ad763217bb83beb70f25b629abbcef0d71bf0f283b5"
+  },
+  {
+    "source": "benchmarks/bench_map_field_fit.py",
+    "destination": "benchmarks/bench_map_field_fit.py",
+    "sha256": "b087e6fb7eedf911f4fa79d8e08ce2db23cffe34e692581e34637d4ee7a17736"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_exact_solve.py",
+    "destination": "benchmarks/bench_map_foam_exact_solve.py",
+    "sha256": "46f5381b3e1c81b0dbe93011171c4de598ac9053dde652ebb7255af78ddc14be"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_operator.py",
+    "destination": "benchmarks/bench_map_foam_operator.py",
+    "sha256": "a39b3e465cf58e95b8bb892114fbf6834f1241e7c497ce01f2201fd4c5cc2d99"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_sparse.py",
+    "destination": "benchmarks/bench_map_foam_sparse.py",
+    "sha256": "51a3d24d0da1f978e46e385b01acd1e4e550f7e8984d20076284b626d686eca3"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_spectral.py",
+    "destination": "benchmarks/bench_map_foam_spectral.py",
+    "sha256": "a3d3f9f69e738e3abe67bb8b1dc4b90404f8cdcef0b4b0c763fa63d5d4e55ba8"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_tiles.py",
+    "destination": "benchmarks/bench_map_foam_tiles.py",
+    "sha256": "0b46306acfe80636da94f381bd72d36b5d84eaac0f6a6a034c4a16b19362b4d3"
+  },
+  {
+    "source": "benchmarks/bench_map_foam_training.py",
+    "destination": "benchmarks/bench_map_foam_training.py",
+    "sha256": "5e9975ccc985cd6c709beec2b677a17c189cf972a86a0c3b8432a64b4481949d"
+  },
+  {
+    "source": "benchmarks/bench_map_ground_truth.py",
+    "destination": "benchmarks/bench_map_ground_truth.py",
+    "sha256": "21a50c1bc7609c3444066520c2598c332c9096e94344331a92868403df4f0678"
+  },
+  {
+    "source": "benchmarks/bench_map_image_plane.py",
+    "destination": "benchmarks/bench_map_image_plane.py",
+    "sha256": "87700e46f63553fb689a67d1a2a99f87bfa916765f022481607ed1b512b9e6da"
+  },
+  {
+    "source": "benchmarks/bench_map_multifield_truth.py",
+    "destination": "benchmarks/bench_map_multifield_truth.py",
+    "sha256": "1aeab20e3e82b279b66e5cc3109aed494c5be2ad4afd4cef35c02b395f781e9e"
+  },
+  {
+    "source": "benchmarks/bench_map_overlap_background.py",
+    "destination": "benchmarks/bench_map_overlap_background.py",
+    "sha256": "b41bb63f081148c95627ea56374ffcf4a4f7df465cc4ff22484e038d492a4aac"
+  },
+  {
+    "source": "benchmarks/bench_map_projection_mosaic_suite.py",
+    "destination": "benchmarks/bench_map_projection_mosaic_suite.py",
+    "sha256": "349779cf3c291d91d33e6c13a1235202e1d197796146dfdf0aa3592da27c029b"
+  },
+  {
+    "source": "benchmarks/bench_map_reducer_streaming.py",
+    "destination": "benchmarks/bench_map_reducer_streaming.py",
+    "sha256": "c545b823a85606b76a977e175c00d7e5425be01fbe92e688cd4a5649bc83bcb7"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_field_fit.py",
+    "destination": "benchmarks/bench_map_smacs0723_field_fit.py",
+    "sha256": "f6a15c01fbb9681b980689c3ce84dea77b31f5a48c0d459949040c40b1019d96"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_field_fit_band_sweep.py",
+    "destination": "benchmarks/bench_map_smacs0723_field_fit_band_sweep.py",
+    "sha256": "b878c6793bcdff3c7f522108da83cac6255118b2147a79276af9c55502723ce7"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_field_fit_joint.py",
+    "destination": "benchmarks/bench_map_smacs0723_field_fit_joint.py",
+    "sha256": "dd40d120e490b6e91b24d9fb6c931aed8a1d47ed9500a33579dc0df8d406fa1d"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_ladder.py",
+    "destination": "benchmarks/bench_map_smacs0723_ladder.py",
+    "sha256": "6eaf79b410d9d3fd231f4f9561f58f4106c699eac06878d49bc4f40e2b60467f"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_real.py",
+    "destination": "benchmarks/bench_map_smacs0723_real.py",
+    "sha256": "15d9a6f4de88baeadfa965b93a7538107d405f1987bd5e37a3b0a9a7aecfadc6"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_reproduce.py",
+    "destination": "benchmarks/bench_map_smacs0723_reproduce.py",
+    "sha256": "1ff0c85b00557df0d8986ef0a9a4af955c8982ebe7f63476ed6bd2557fee7dd5"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_stackers.py",
+    "destination": "benchmarks/bench_map_smacs0723_stackers.py",
+    "sha256": "358b45844a85066e012ae37a0ff526e6ed5dfcc6aacc52597497c7b072f65761"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_stackers_band_sweep.py",
+    "destination": "benchmarks/bench_map_smacs0723_stackers_band_sweep.py",
+    "sha256": "734973f658201f26ef0d9666f96b981cafd0c68eacbb002fdedc061c5f3a7d79"
+  },
+  {
+    "source": "benchmarks/bench_map_smacs0723_strainer_transfer.py",
+    "destination": "benchmarks/bench_map_smacs0723_strainer_transfer.py",
+    "sha256": "3a62571c225111436afb94124c1c8fa0855b0a47d90c50c4c6dbfdb806f03fb8"
+  },
+  {
+    "source": "benchmarks/bench_map_tan_sip_suite.py",
+    "destination": "benchmarks/bench_map_tan_sip_suite.py",
+    "sha256": "29041967d406229330e924e232ccd319d317f4bc8a2b693bf13279cf18ec042c"
+  },
+  {
+    "source": "benchmarks/bench_multiband_depth.py",
+    "destination": "benchmarks/bench_multiband_depth.py",
+    "sha256": "8173fbf8e0733536b48eacff1a2f25bb4b83d13b62f5da69c332564a607cf1b6"
+  },
+  {
+    "source": "benchmarks/bench_observed_place.py",
+    "destination": "benchmarks/bench_observed_place.py",
+    "sha256": "b0e87bc4006d6e3cc0072bd4ff9bff58d67e05eb1a0669ba211fd67350a89171"
+  },
+  {
+    "source": "benchmarks/bench_operator_chunking.py",
+    "destination": "benchmarks/bench_operator_chunking.py",
+    "sha256": "5694bba659189c09d89e380ab3bf8d9bae6d5f8020567ef2b08f43ae0658054b"
+  },
+  {
+    "source": "benchmarks/bench_operator_multiexposure.py",
+    "destination": "benchmarks/bench_operator_multiexposure.py",
+    "sha256": "559467333917bd0cca5dd3e0077e04ff85023ce9e048b56f2614f580e2bef809"
+  },
+  {
+    "source": "benchmarks/bench_pipeline_table_sphere.py",
+    "destination": "benchmarks/bench_pipeline_table_sphere.py",
+    "sha256": "5397307ef0dd4b79eb99b14669dfa9425f2b95e17d15d3ed2fe2c1b428c9791c"
+  },
+  {
+    "source": "benchmarks/bench_sphere_core.py",
+    "destination": "benchmarks/bench_sphere_core.py",
+    "sha256": "3854d049c9a054e4f078345ed521680fe697fb723e79075df61515b2f46bb309"
+  },
+  {
+    "source": "benchmarks/bench_sphere_geom_exact_contains.py",
+    "destination": "benchmarks/bench_sphere_geom_exact_contains.py",
+    "sha256": "ddca90afa1d87462def5643835c8656c8a3292a700702fc1067438e9a1459177"
+  },
+  {
+    "source": "benchmarks/bench_sphere_geometry.py",
+    "destination": "benchmarks/bench_sphere_geometry.py",
+    "sha256": "195fef76a067641e774419214c3186aed0f11161b60d9054bb7eedd67dd5562a"
+  },
+  {
+    "source": "benchmarks/bench_sphere_matrix.py",
+    "destination": "benchmarks/bench_sphere_matrix.py",
+    "sha256": "bca4ba143b0f1601b723db312a201284e046e205493f3aae90163ce8d9c7ff6c"
+  },
+  {
+    "source": "benchmarks/bench_sphere_polygons.py",
+    "destination": "benchmarks/bench_sphere_polygons.py",
+    "sha256": "66dadc153dcc7ad22fa53ed55d66f6c975d588347f82fda9af5d853028e5d838"
+  },
+  {
+    "source": "benchmarks/bench_sphere_sparse.py",
+    "destination": "benchmarks/bench_sphere_sparse.py",
+    "sha256": "38bbc8a634075c591ed7d754db0a58859fb30e917eef2d11c36031df2c887245"
+  },
+  {
+    "source": "benchmarks/bench_sphere_spectral.py",
+    "destination": "benchmarks/bench_sphere_spectral.py",
+    "sha256": "8717493c5c1508837a631fab4ea94503c2260f6778c7eed7dffb17f1082940d6"
+  },
+  {
+    "source": "benchmarks/bench_sphere_suite.py",
+    "destination": "benchmarks/bench_sphere_suite.py",
+    "sha256": "68ba41cc251fd4c652b998a01957e546b541d4bdbc690ee99cb11a4b94bac475"
+  },
+  {
+    "source": "benchmarks/bench_spin_matrix.py",
+    "destination": "benchmarks/bench_spin_matrix.py",
+    "sha256": "14907146e64068ed38659357281b7c00bc971b321b60f77b1ce8874a7df77c8a"
+  },
+  {
+    "source": "benchmarks/bench_strainer_phase2.py",
+    "destination": "benchmarks/bench_strainer_phase2.py",
+    "sha256": "d742af577e4c7e67d29cb128fbbdc23b5406a111ac9a48f306504a85e2442ad8"
+  },
+  {
+    "source": "benchmarks/bench_transforms.py",
+    "destination": "benchmarks/bench_transforms.py",
+    "sha256": "77ee23e7b8f747208a218968cf7f9a78ea17508b627d8ec2ea49d5cc06ce4960"
+  },
+  {
+    "source": "benchmarks/bench_updec_webb_real.py",
+    "destination": "benchmarks/bench_updec_webb_real.py",
+    "sha256": "1830187fbbfbf0a5904cdbe34ba2ecf120c5cf4210106fc5db9e82cde6d92d0b"
+  },
+  {
+    "source": "benchmarks/bench_wcs.py",
+    "destination": "benchmarks/bench_wcs.py",
+    "sha256": "05222e3b29e94ef2c5283b72934f47d7ca0188f20577cae47eecc1916a3b1da6"
+  },
+  {
+    "source": "benchmarks/bench_wcs_legacy_only.py",
+    "destination": "benchmarks/bench_wcs_legacy_only.py",
+    "sha256": "4a09bf139dbe0f9be144e0fecd7c21866b701d9cbac80079a965ace57c6d372a"
+  },
+  {
+    "source": "benchmarks/bench_wcs_small_n_paths.py",
+    "destination": "benchmarks/bench_wcs_small_n_paths.py",
+    "sha256": "0279b159263822eb06c9666fba121e78fa57c2137887012f405f04e073ea5921"
+  },
+  {
+    "source": "benchmarks/bench_wcs_spectral_temporal.py",
+    "destination": "benchmarks/bench_wcs_spectral_temporal.py",
+    "sha256": "166bf7877a4254639d0e0d53b1a280272d21405f890745eded612044d9d9978c"
+  },
+  {
+    "source": "benchmarks/bench_wcs_suite.py",
+    "destination": "benchmarks/bench_wcs_suite.py",
+    "sha256": "50858385e21fbdffc5a070b507e78367b9bb8ea5940aa94cce4d14c29b31db1f"
+  },
+  {
+    "source": "benchmarks/bench_wcs_tabular.py",
+    "destination": "benchmarks/bench_wcs_tabular.py",
+    "sha256": "3a23a3f3e67e1128a3b80fd7fadb4dad529b940a5d9b7204853721327b537d17"
+  },
+  {
+    "source": "benchmarks/bench_wcs_tpv_inverse.py",
+    "destination": "benchmarks/bench_wcs_tpv_inverse.py",
+    "sha256": "848947d5419b63f019f1b314dd66403d57006b41f23b5095301dfb9456295d85"
+  },
+  {
+    "source": "benchmarks/compare_smacs_grid_mapping.py",
+    "destination": "benchmarks/compare_smacs_grid_mapping.py",
+    "sha256": "0485776903b9d1a4fc91e8af5b9444ebf0f1f56260315af73786374e038b25e7"
+  },
+  {
+    "source": "benchmarks/config.py",
+    "destination": "benchmarks/config.py",
+    "sha256": "ef925e347b6b7ee7e5a897904d0893056d8e6d2552c463ee1114c321ab2d0a7f"
+  },
+  {
+    "source": "benchmarks/diagnose_field_fit_residuals.py",
+    "destination": "benchmarks/diagnose_field_fit_residuals.py",
+    "sha256": "1efba0e2959063b6d2782bdeaf3cc1dd8d09bdbb0496329e1777c893ea5408bf"
+  },
+  {
+    "source": "benchmarks/diagnose_field_fit_sparse_frontier.py",
+    "destination": "benchmarks/diagnose_field_fit_sparse_frontier.py",
+    "sha256": "7cbc9ebfe39db2038e118061f9b5a521f63737eff4ce2c0e5f9b53cb299bdf6e"
+  },
+  {
+    "source": "benchmarks/diagnose_field_fit_stochastic_chunks.py",
+    "destination": "benchmarks/diagnose_field_fit_stochastic_chunks.py",
+    "sha256": "5b081e70762f16dff86a102a5e65090e29e78cd09ef27d449afacf88a8cc47f7"
+  },
+  {
+    "source": "benchmarks/diagnose_field_fit_sweep.py",
+    "destination": "benchmarks/diagnose_field_fit_sweep.py",
+    "sha256": "6c987a73a562210ba65cb13571ff96529ecf229f184fa9cecbaa861374a7246c"
+  },
+  {
+    "source": "benchmarks/diagnose_map_large_union_accumulation.py",
+    "destination": "benchmarks/diagnose_map_large_union_accumulation.py",
+    "sha256": "eecbf856cb6475494581802129d91937322610a2e05f906f3213526d6585dcf6"
+  },
+  {
+    "source": "benchmarks/diagnose_map_large_union_reprojection.py",
+    "destination": "benchmarks/diagnose_map_large_union_reprojection.py",
+    "sha256": "863d3cc97452cca07f4f9fd095d7d7b93485472fd4236a900e56eea9b81aeb95"
+  },
+  {
+    "source": "benchmarks/diagnose_map_large_union_timing.py",
+    "destination": "benchmarks/diagnose_map_large_union_timing.py",
+    "sha256": "e0d773d87408c040d8ab132ce4fc49f466489629537fc81a453b166f77cdfa28"
+  },
+  {
+    "source": "benchmarks/diagnose_map_projection_tail.py",
+    "destination": "benchmarks/diagnose_map_projection_tail.py",
+    "sha256": "4e6b78ff6ce2485681384245fa8ce5d23485f6dec5df30b30496f0f38955733c"
+  },
+  {
+    "source": "benchmarks/export_smacs0723_calibration_inspection.py",
+    "destination": "benchmarks/export_smacs0723_calibration_inspection.py",
+    "sha256": "510a1c2a3e41516265ff769074242268dd34b75f709804de4eb9226932cbb8c2"
+  },
+  {
+    "source": "benchmarks/fit_smacs0723_operator_calibration.py",
+    "destination": "benchmarks/fit_smacs0723_operator_calibration.py",
+    "sha256": "d75a47770d927d613e3e79998d3a3e061a00b6a36fdda8866aa8b087451f4dac"
+  },
+  {
+    "source": "benchmarks/mpl_config.py",
+    "destination": "benchmarks/mpl_config.py",
+    "sha256": "14a2a0b5f893a44248831dcca42ed2a6925ad952449a108eca215ad4049f6bd0"
+  },
+  {
+    "source": "benchmarks/probe_canfar_cuda.py",
+    "destination": "benchmarks/probe_canfar_cuda.py",
+    "sha256": "43db92560775d20db6d14a9dd9733a589adf1b3450ea353a9466f9b056c82004"
+  },
+  {
+    "source": "benchmarks/replays/replay_upstream_astropy_healpy.py",
+    "destination": "benchmarks/replays/replay_upstream_astropy_healpy.py",
+    "sha256": "5b833c22b284b18ebb6c72998118330850b84ba60f03d9e82d6db09fd49e47fb"
+  },
+  {
+    "source": "benchmarks/replays/replay_upstream_healpy_interp_edges.py",
+    "destination": "benchmarks/replays/replay_upstream_healpy_interp_edges.py",
+    "sha256": "41956064463f82bb175125f058929b93d967af0aafb4e850fe45f3bd7bc02f72"
+  },
+  {
+    "source": "benchmarks/replays/replay_upstream_healpy_spin.py",
+    "destination": "benchmarks/replays/replay_upstream_healpy_spin.py",
+    "sha256": "77b8805bd9c32ec49f8a53bf5655033d8f713e8c74e11176827831c4881220b2"
+  },
+  {
+    "source": "benchmarks/replays/replay_upstream_spherical_geometry_polygons.py",
+    "destination": "benchmarks/replays/replay_upstream_spherical_geometry_polygons.py",
+    "sha256": "08e60f83d2b138f533de626785be68de544a84819a6b45601b7ba49c6e896601"
+  },
+  {
+    "source": "benchmarks/replays/replay_upstream_test_functions.py",
+    "destination": "benchmarks/replays/replay_upstream_test_functions.py",
+    "sha256": "30f863a04626b7a9f341af1055208c2075fa29752ccac6b6cd5a599c51419845"
+  },
+  {
+    "source": "benchmarks/replays/upstream_sources.json",
+    "destination": "benchmarks/replays/upstream_sources.json",
+    "sha256": "1dd689dfb1b02751a2d7fb253c02b2fc20a293cb382c76ae4515c7897d5b2601"
+  },
+  {
+    "source": "benchmarks/run_ground_truth_competitive_large_union.py",
+    "destination": "benchmarks/run_ground_truth_competitive_large_union.py",
+    "sha256": "157b4514e9d2c6cc54285a4bb3240cdfc8f01dd3376d1361aeb4f914799e0b3d"
+  },
+  {
+    "source": "benchmarks/score_field_models.py",
+    "destination": "benchmarks/score_field_models.py",
+    "sha256": "77222b5816f3bdc1401ed175354a42cc0683881eb5b0243d89ca60ae5d2eae6c"
+  },
+  {
+    "source": "benchmarks/score_smacs0723_foam.py",
+    "destination": "benchmarks/score_smacs0723_foam.py",
+    "sha256": "066b10ecd5541c6336e7e5d6d39b669a78d9e853187bc2da5c775d3fbed3f215"
+  },
+  {
+    "source": "benchmarks/score_smacs0723_native_classical.py",
+    "destination": "benchmarks/score_smacs0723_native_classical.py",
+    "sha256": "52914820c4a282eaf5fa1db398946bbd19cc54f988464543ff30d9be587949b8"
+  },
+  {
+    "source": "benchmarks/scorecards/20260612_main_domains.json",
+    "destination": "benchmarks/scorecards/20260612_main_domains.json",
+    "sha256": "6c30e2bd32d5240e556086033845ffa07c0931e048ee6e807ed825cc7024eace"
+  },
+  {
+    "source": "benchmarks/scorecards/20260612_main_domains.md",
+    "destination": "benchmarks/scorecards/20260612_main_domains.md",
+    "sha256": "e6e0ec443bad0931e4843b406ef4256b30fe2bea28679bd114456e18573e939d"
+  },
+  {
+    "source": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.json",
+    "destination": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.json",
+    "sha256": "d13d78055eea88b2a58d042c5e5cdf608f3810c452bb7f8ae79f302f974c54cc"
+  },
+  {
+    "source": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.md",
+    "destination": "benchmarks/scorecards/20260815_wcs_sphere_spectral_audit.md",
+    "sha256": "460d1190e01cc2a343e04a8e2002ee6fad6cb917434c21c322562f5919e05b35"
+  },
+  {
+    "source": "benchmarks/scorecards/20260816_world_layer.md",
+    "destination": "benchmarks/scorecards/20260816_world_layer.md",
+    "sha256": "7e016cb6ada9f56bd01840bf53afbc00850b123e29d643313dc76d2cc5901cb9"
+  },
+  {
+    "source": "benchmarks/scorecards/20260817_world_layer.md",
+    "destination": "benchmarks/scorecards/20260817_world_layer.md",
+    "sha256": "f74917ab98a4be1ccfa35642ff65443bc5d626da5cad129f75ebcde5a16a141a"
+  },
+  {
+    "source": "benchmarks/scorecards/20260819_sht_polar_fft.md",
+    "destination": "benchmarks/scorecards/20260819_sht_polar_fft.md",
+    "sha256": "4202c3eb12752e1196522d29d39825579a44071a485d022472a98f716fedf84a"
+  },
+  {
+    "source": "benchmarks/scorecards/20260820_world_layer_pending.md",
+    "destination": "benchmarks/scorecards/20260820_world_layer_pending.md",
+    "sha256": "23c70b47aad16212c3712aa177047645db9d7a42878ca44691473ebb2c7ddc05"
+  },
+  {
+    "source": "benchmarks/scorecards/20260821_catalog_scale.md",
+    "destination": "benchmarks/scorecards/20260821_catalog_scale.md",
+    "sha256": "e2e5ca7b25ef1e80c431cbcd9b7cb1bc7676b87b7744e728b66a597263d09d24"
+  },
+  {
+    "source": "benchmarks/scorecards/20260821_wcs_sphere_claim_close.md",
+    "destination": "benchmarks/scorecards/20260821_wcs_sphere_claim_close.md",
+    "sha256": "1ae05c43819ea4d5e3506cead113166bad36c0e32b71f65b3323e2419a78630d"
+  },
+  {
+    "source": "benchmarks/scorecards/20260821_world_layer.md",
+    "destination": "benchmarks/scorecards/20260821_world_layer.md",
+    "sha256": "10f6a13ca29c8c642985358d3c1ddb045c60c187b796b70f34e075557e562750"
+  },
+  {
+    "source": "benchmarks/scorecards/20260831_map_overlap_background.json",
+    "destination": "benchmarks/scorecards/20260831_map_overlap_background.json",
+    "sha256": "a3a893c36da04066499689218a85757fdc50291e223fc18fcdb3d6d787a3389b"
+  },
+  {
+    "source": "benchmarks/scorecards/20260831_map_overlap_background.md",
+    "destination": "benchmarks/scorecards/20260831_map_overlap_background.md",
+    "sha256": "42c146d19527d3ea8fdaa40ae41e26cbc53e7894af431c8432ed21768834ee4b"
+  },
+  {
+    "source": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.json",
+    "destination": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.json",
+    "sha256": "61bc8fbd489e3824266b19942a9c74ea415359fef3d51c83fb48d1db5247c8db"
+  },
+  {
+    "source": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.md",
+    "destination": "benchmarks/scorecards/20260928_smacs_grid_mapping_validation.md",
+    "sha256": "378b45925873e6661d2eeb0aaaa194468a39366b3a0b1e64f85249209ea40edf"
+  },
+  {
+    "source": "benchmarks/scorecards/README.md",
+    "destination": "benchmarks/scorecards/README.md",
+    "sha256": "6b37d745a5f57510a8474b2ed7250769b50554301987c4d1d59e6d8d3a89c42d"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_1e6_dense_best.json",
+    "destination": "benchmarks/scorecards/catalog_scale_1e6_dense_best.json",
+    "sha256": "b66f1806b004d350c7171422dac7715d5ee19a84c119db297fe66997ab14e548"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_1e6_sparse_best.json",
+    "destination": "benchmarks/scorecards/catalog_scale_1e6_sparse_best.json",
+    "sha256": "f0900bf9ea2276e64525ee715c73e068d9cf8511078cb9baaa21a7902a576e25"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_1e7_sparse_best.json",
+    "destination": "benchmarks/scorecards/catalog_scale_1e7_sparse_best.json",
+    "sha256": "5b316ca4ad44329823184203073f93f7a54d5e23a9098a9d4512445b07e7072e"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_200k_dense.json",
+    "destination": "benchmarks/scorecards/catalog_scale_200k_dense.json",
+    "sha256": "c1152ad5dc073e4b7628b526284412b10c682e2689348f0f77c9cf2bdc04f405"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_20k.json",
+    "destination": "benchmarks/scorecards/catalog_scale_20k.json",
+    "sha256": "f81d5ddb336ed56124d305eb7590f400eb11f6fa02b2cf08292b3ff6f713da6f"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_20k_dense.json",
+    "destination": "benchmarks/scorecards/catalog_scale_20k_dense.json",
+    "sha256": "ee26b705732be9586aa27e272843df728d07dbc1a7f3b8536c6f7f453b13435d"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_50k.json",
+    "destination": "benchmarks/scorecards/catalog_scale_50k.json",
+    "sha256": "16fcbad6900ee995cfaddcabc813c7c78ab5392ea8e2c2dc45ed43f975b05257"
+  },
+  {
+    "source": "benchmarks/scorecards/catalog_scale_5k.json",
+    "destination": "benchmarks/scorecards/catalog_scale_5k.json",
+    "sha256": "c3f974b5b009cc40135090807c636e116f479f6f73beee3826e96fa69eae8745"
+  },
+  {
+    "source": "benchmarks/scorecards/index.md",
+    "destination": "benchmarks/scorecards/index.md",
+    "sha256": "81c56a693ae60f116176bca3c179883d4a045bee0676f9fee6d0103fa9aa83a3"
+  },
+  {
+    "source": "benchmarks/scorecards/xmatch_contract_10k.json",
+    "destination": "benchmarks/scorecards/xmatch_contract_10k.json",
+    "sha256": "984780d6e2bb8bb6c5fe9d9964bdb787e91123ec980a12aa425e25caf6951907"
+  },
+  {
+    "source": "benchmarks/sht_peer_layout.py",
+    "destination": "benchmarks/sht_peer_layout.py",
+    "sha256": "c3011d0c829b13709aa7955edbde3cdf737758240eebbdb14445dfd4798fffa5"
+  },
+  {
+    "source": "benchmarks/stage_smacs0723_canfar.py",
+    "destination": "benchmarks/stage_smacs0723_canfar.py",
+    "sha256": "5ef24dd467f77066bf6405ec19c6829e840e7721c9ae96367af16c7ac319bccd"
+  },
+  {
+    "source": "benchmarks/updc/README.md",
+    "destination": "benchmarks/updc/README.md",
+    "sha256": "095759075e6a83be6cc9d9c721085f8cb3df504d68bec9d33483e63d04649d88"
+  },
+  {
+    "source": "benchmarks/updc/compare_catalogs_vs_reference.py",
+    "destination": "benchmarks/updc/compare_catalogs_vs_reference.py",
+    "sha256": "9021163c5a2e14c063c5cfa63aef69b3c1abdc342c526c1b664c3bc1793488e3"
+  },
+  {
+    "source": "benchmarks/updc/prepare_inputs.py",
+    "destination": "benchmarks/updc/prepare_inputs.py",
+    "sha256": "dba4683c0953e2ad63bdfb482215a5ed7f7dd5dceb3c878f7a44e36985078cd3"
+  },
+  {
+    "source": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.json",
+    "destination": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.json",
+    "sha256": "2f32b4e85f29f5a26a03db3dba5ad51069e8e7337cdc869e049e2d43764bac0c"
+  },
+  {
+    "source": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.md",
+    "destination": "benchmarks/scorecards/20261006_smacs_linear_grid_solver_validation.md",
+    "sha256": "4c2a97c960b1d1d753810aeab21f18964282c0899995d9e29e785eb2069858c4"
+  }
+]

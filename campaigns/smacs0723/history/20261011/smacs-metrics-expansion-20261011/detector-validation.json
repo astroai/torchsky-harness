@@ -1,0 +1,166 @@
+{
+  "profile": "matched-response128-blank-detector-validation",
+  "depth_claim": false,
+  "reference_calibration_sha256": [
+    "890e89a006fa0f2561411f5d9d9ecd02853bc32deaef3c8d6275a4e9cfb345ce",
+    "5d5e5d9b46b3a141e23c8bd7bcbe79c270b35c2f40320ad52f687e26f4745a81"
+  ],
+  "validation_exposures": {
+    "F150W": [
+      [
+        "F150W_047_jw02736001001_02103_00003_nrcb4_o001_crf_rshift_tweakreg",
+        65349
+      ],
+      [
+        "F150W_067_jw02736001001_02103_00008_nrcb4_o001_crf_rshift_tweakreg",
+        62623
+      ]
+    ],
+    "F277W": [
+      [
+        "F277W_110_jw02736001001_02101_00003_nrcblong_o001_crf_rshift_tweakreg",
+        15900
+      ],
+      [
+        "F277W_115_jw02736001001_02101_00008_nrcblong_o001_crf_rshift_tweakreg",
+        15468
+      ]
+    ]
+  },
+  "limitations": [
+    "Blank batch only; pending injection batches are not inferred complete",
+    "Two held-out detector exposures per band; no independent test evaluation",
+    "Diagonal Gaussian with supplied ERR; ignores pixel correlations",
+    "NLL in original MJy/sr units; lower is better for this identical validation set",
+    "No SWarp/Drizzle/Montage detector-forward score in these reports",
+    "Fixed optimizer/CG budgets do not establish convergence"
+  ],
+  "rows": [
+    {
+      "model": "sine_implicit",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 3.1429375340440635,
+      "gaussian_nll_per_pixel": -1.498928667467019,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sine-implicit-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "7712cd4923f0f83f69f3f7f65ee482fd27bbebdd0e1e696291f7b2ed10faee11"
+    },
+    {
+      "model": "sine_implicit",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 14.22966567117867,
+      "gaussian_nll_per_pixel": 2.992181830284247,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sine-implicit-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "7712cd4923f0f83f69f3f7f65ee482fd27bbebdd0e1e696291f7b2ed10faee11"
+    },
+    {
+      "model": "sasnet",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 3.4026949094945103,
+      "gaussian_nll_per_pixel": -1.3690499797417954,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sasnet-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "4cbdd066c3d6ddb8740990bfc117252ec33dce7a7fd59dc0f73fa5ff03756711"
+    },
+    {
+      "model": "sasnet",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 17.45603451394798,
+      "gaussian_nll_per_pixel": 4.6053662516689045,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sasnet-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "4cbdd066c3d6ddb8740990bfc117252ec33dce7a7fd59dc0f73fa5ff03756711"
+    },
+    {
+      "model": "spectral_power_foam",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 79.0977476283533,
+      "gaussian_nll_per_pixel": 36.478476379687606,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-spectral-power-foam-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "c463daaa10db85ce3a90212c42404dbd7ae0b73a05afcf547fd12f9c687a3f65"
+    },
+    {
+      "model": "spectral_power_foam",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 227.2279560037989,
+      "gaussian_nll_per_pixel": 109.49132699659437,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-spectral-power-foam-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "c463daaa10db85ce3a90212c42404dbd7ae0b73a05afcf547fd12f9c687a3f65"
+    },
+    {
+      "model": "gaussian_basis",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 14.318715845539874,
+      "gaussian_nll_per_pixel": 4.088960488280887,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-gaussian-basis-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "319ac3529a0e4f22ffbad92a7c4f76ed3a134dcf9d541b1d0a2651efb43d0db1"
+    },
+    {
+      "model": "gaussian_basis",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 51.99739983723149,
+      "gaussian_nll_per_pixel": 21.876048913310655,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-gaussian-basis-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "319ac3529a0e4f22ffbad92a7c4f76ed3a134dcf9d541b1d0a2651efb43d0db1"
+    },
+    {
+      "model": "explicit_spectral_grid_field",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 32.40543160011331,
+      "gaussian_nll_per_pixel": 13.132318365567603,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-explicit-spectral-grid-field-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "41b7aed08f56ee2b4a5e67a461272f7bdd890cbd368ca5b1816afc092684ff92"
+    },
+    {
+      "model": "explicit_spectral_grid_field",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 26.18072065730758,
+      "gaussian_nll_per_pixel": 8.967709323348702,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-explicit-spectral-grid-field-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "41b7aed08f56ee2b4a5e67a461272f7bdd890cbd368ca5b1816afc092684ff92"
+    },
+    {
+      "model": "linear_band_grid_field",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 1.7175041124596877,
+      "gaussian_nll_per_pixel": -2.211645378259207,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-linear-band-grid-field-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "660f9fbdfdfa705e5ec8770b325d599212c5684502f103fb6c1d20f0920296ba"
+    },
+    {
+      "model": "linear_band_grid_field",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 2.48264695650775,
+      "gaussian_nll_per_pixel": -2.8813275270512126,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-linear-band-grid-field-response128-20261011-r2/b/blank/shared-foam.json",
+      "source_sha256": "660f9fbdfdfa705e5ec8770b325d599212c5684502f103fb6c1d20f0920296ba"
+    },
+    {
+      "model": "sky_lambda_feature_field",
+      "band": "F150W",
+      "pixels": 127972,
+      "chi2_per_pixel": 4.380048478240168,
+      "gaussian_nll_per_pixel": -0.880373195368967,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sky-lambda-feature-field-response128-20261011-r3/b/blank/shared-foam.json",
+      "source_sha256": "1b2b4ab5de5d40932a65ab4aad0ffa010c21eef860ad7d79c6e5590e5b8cba16"
+    },
+    {
+      "model": "sky_lambda_feature_field",
+      "band": "F277W",
+      "pixels": 31368,
+      "chi2_per_pixel": 31.37587761436467,
+      "gaussian_nll_per_pixel": 11.565287801877247,
+      "source": "/Users/fabbros/src/astroai/torchsky/benchmarks_results/smacs-inr-20261010/runs/smacs-sky-lambda-feature-field-response128-20261011-r3/b/blank/shared-foam.json",
+      "source_sha256": "1b2b4ab5de5d40932a65ab4aad0ffa010c21eef860ad7d79c6e5590e5b8cba16"
+    }
+  ]
+}

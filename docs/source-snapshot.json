@@ -1,0 +1,7 @@
+{
+  "source_repository": "astroai/torchsky",
+  "git_base_commit": "e46496597227137b82ff8b96d5685e389536910e",
+  "working_tree": "dirty; live benchmark/test contents preserved",
+  "subject_wheel_sha256": "e347acbee03c6047d5bfc7951ff6148f81fe82111826813d29a78735f8879615",
+  "migration_day": "2026-10-12"
+}

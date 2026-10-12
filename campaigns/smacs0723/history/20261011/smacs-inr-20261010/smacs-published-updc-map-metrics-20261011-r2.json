@@ -1,0 +1,34 @@
+{
+  "artifact_root": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/smacs-published-updc-map-metrics-20261011-r2",
+  "bootstrap_sha256": "3a6012cf2b4c4fb76256152720594b49b6e5ac17433d8a34a96206bf1b70a099",
+  "command_timeout_seconds": 10800,
+  "commands": [
+    [
+      "python",
+      "-c",
+      "import pathlib,subprocess,sys\nsource=pathlib.Path(sys.argv[1])\nsubprocess.check_call([sys.executable,'-c','import runpy,sys;runpy.run_path(sys.argv[1])[\"_ensure_local_cpp\"]()',str(source/'scripts/run_local_sphere_bench.py')])\nsubprocess.check_call([sys.executable,'-c','\\nimport hashlib,json,pathlib,runpy,sys\\nsource=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2])\\nprint(\"fresh experiment interpreter\",sys.executable,flush=True)\\nimport torch,torchsky\\nfrom torchsky.map import ImageObservation,coadd_image_plane,field_image_quality_metrics,evaluate_map_product\\nheader_path=\"/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940/validation-000/common-support-r9-f0p99.fits\"\\n_,header=torchsky.read(header_path,return_header=True); header=dict(header)\\nassert (header[\"NAXIS1\"],header[\"NAXIS2\"])==(512,512)\\nroot=pathlib.Path(\"/arc/projects/ots/torchsky-data/updec_webb\")\\nreport={\"profile\":\"published-updc-common-map-diagnostics\",\"depth_claim\":False,\"reference_is_truth\":False,\"resampling_kernel\":\"bilinear\",\"target_header_sha256\":hashlib.sha256(pathlib.Path(header_path).read_bytes()).hexdigest(),\"limitations\":[\"Published static mosaics cannot measure injection response or detector held-out likelihood\", \"Signal-to-residual metrics quantify agreement with iter0, not physical detection SNR\", \"Sharpness is not a measured effective PSF\", \"Resampling can alter small-scale noise and apparent resolution\"],\"rows\":[]}\\nfor band in (\"F090W\",\"F150W\",\"F200W\",\"F277W\",\"F356W\",\"F444W\"):\\n products=[]; provenance=[]\\n for iteration in (0,10):\\n  path=root/f\"{band}b_UPDC-v2_iter{iteration}_i2d.fits.fz\"\\n  _,original_header=torchsky.read(str(path),hdu=\"SCI\",return_header=True)\\n  assert str(original_header.get(\"BUNIT\",\"\")).strip().lower() in (\"mjy/sr\",\"mjy / sr\"), (path,original_header.get(\"BUNIT\"))\\n  result=coadd_image_plane([ImageObservation(path=str(path),hdu=\"SCI\")],target_header=header,resampling_kernel=\"bilinear\",value_semantics=\"surface_brightness\",stacking_method=\"weighted_mean\",spatial_tile_hw=(128,128))\\n  products.append(result)\\n  folder=output/band; folder.mkdir(parents=True,exist_ok=True)\\n  for key,array in ((\"sci\",result.data),(\"support\",(result.weight>0).to(torch.uint8))):\\n   h=dict(header); h[\"BUNIT\"]=\"MJy/sr\" if key==\"sci\" else \"1\"\\n   torchsky.write(str(folder/f\"iter{iteration}_{key}.fits\"),array,header=h,overwrite=False)\\n  provenance.append({\"path\":str(path),\"size\":path.stat().st_size,\"sha256\":hashlib.sha256(path.read_bytes()).hexdigest(),\"bunit\":original_header[\"BUNIT\"]})\\n ref,pred=products; mask=(ref.weight>0)&(pred.weight>0)&torch.isfinite(ref.data)&torch.isfinite(pred.data)\\n assert bool(mask.any())\\n metrics=field_image_quality_metrics(pred.data,ref.data,mask=mask)\\n metrics.update(evaluate_map_product(pred.data,ref.data,weight=mask.float(),header=header,value_semantics=\"surface_brightness\"))\\n metrics[\"common_support_flux_ratio_vs_iter0\"]=float(pred.data[mask].sum()/ref.data[mask].sum())\\n row={\"band\":band,\"input_products\":provenance,\"common_support_pixels\":int(mask.sum()),\"metrics_vs_iter0\":metrics}\\n report[\"rows\"].append(row)\\n (output/\"published-metrics.json\").write_text(json.dumps(report,indent=2,allow_nan=False)+\"\\\\n\")\\n print(\"published band complete\",band,flush=True)\\n',*sys.argv[1:]])\n",
+      "{source}",
+      "{output}"
+    ]
+  ],
+  "container_digest_pinning_supported": false,
+  "container_image": "images.canfar.net/astroai/base:latest",
+  "container_registry_digest_at_launch": "sha256:bf74d0e88244f75537662977741897bf537ae0203579ec82ebffdbe7db048e59",
+  "cpu": 8,
+  "data_root": "/arc/projects/ots/torchsky-data",
+  "depth_claim": false,
+  "git_base_commit": "e46496597227137b82ff8b96d5685e389536910e",
+  "gpu": 0,
+  "hypothesis": "Published iteration0 and iteration10 measured on the frozen common sky grid through torchsky.map; agreement metrics are not truth or detection-depth measurements",
+  "memory": 64,
+  "pixi_environment": "smacs",
+  "pixi_installer_path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/pixi-install-e90779b74d26b507.sh",
+  "pixi_installer_sha256": "e90779b74d26b5070d5e909e4c857f2f2b8b3c4c9e8904d1954cd2e91ae7ef5d",
+  "pixi_version": "0.78.0",
+  "run_id": "smacs-published-updc-map-metrics-20261011-r2",
+  "scientific_evidence": true,
+  "source_kind": "published mosaics",
+  "source_manifest_identity": "a0ed9e15a793ba28a751ac46cd8d43372134a7375c7d2149eb6a9b04cf9d25e4",
+  "source_path": "/arc/projects/ots/torchsky-runs/smacs-inr-autonomous-20261010/source-a0ed9e15a793ba28-3fa81d201d234a0e.tar.gz",
+  "source_sha256": "3fa81d201d234a0e17c49ef0234addb485bc85c03cc33d6e7073bbf1dc72c5c7"
+}

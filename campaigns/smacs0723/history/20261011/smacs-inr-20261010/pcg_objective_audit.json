@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-10",
+  "scientific_evidence": false,
+  "depth_claim": false,
+  "source_report_sha256": "be1ac314e4b7c38790edb259e7f7b5262905f4d39b67910fe2b4049b68337777",
+  "original_resolution_reference": "legacy__explicit_spectral_grid_field",
+  "corrected_comparator": "fitted_gaussian__coadd_bilinear",
+  "comparison": {
+    "F150W": {
+      "pcg_fwhm_px": 3.652419328689575,
+      "same_input_coadd_fwhm_px": 1.4289188385009766,
+      "ratio": 2.5560719267451097,
+      "non_worse": false
+    },
+    "F277W": {
+      "pcg_fwhm_px": 3.529930353164673,
+      "same_input_coadd_fwhm_px": 2.1067118644714355,
+      "ratio": 1.6755639025417064,
+      "non_worse": false
+    }
+  },
+  "resolution_gate_vs_same_input_coadd": false,
+  "drizzle_updec_gate": "UNEVALUATED: requires matched products and independent effective-response measurement",
+  "discovery_snr_gate": "UNEVALUATED: m50 on smooth continuum injections is not highest-redshift discovery SNR",
+  "decision": "Retain PCG as a numerical comparator; do not expand or certify it as an accepted INR winner."
+}
