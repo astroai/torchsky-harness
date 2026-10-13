@@ -82,6 +82,7 @@ from torchsky.map import (  # noqa: E402
 )
 from torchsky.map.field import (  # noqa: E402
     FieldFitResult,
+    IRLSConfig,
     LinearBandGridField,
     adapt_stationary_calibrated_band_observation,
     bind_linear_band_grid_observations_to_operator_set,
@@ -1297,6 +1298,8 @@ def _fit_linear_band_grid_scene(
     irls_steps: int = 1,
     edge_preserving: bool = False,
     non_negative_weight: float = 0.0,
+    data_weight_fn: str = "none",
+    irls_use_mad_scaling: bool = False,
     damping: float = 5.0e-3,
     smoothness_weight: float = 2.0e-2,
     relative_regularization: bool = True,
@@ -1459,7 +1462,21 @@ def _fit_linear_band_grid_scene(
 
     diagnostics_by_band: dict[str, dict[str, Any]] = {}
     solve_results_by_band: dict[str, Any] = {}
-    if solver == "cg" and int(irls_steps) > 1 and bool(edge_preserving) and len(operators_by_band) > 1:
+    irls_cfg = (
+        IRLSConfig(
+            max_iter=max(1, int(irls_steps)),
+            weight_fn=str(data_weight_fn),
+            use_mad_scaling=bool(irls_use_mad_scaling),
+        )
+        if str(data_weight_fn).lower() != "none"
+        else None
+    )
+    if (
+        solver == "cg"
+        and int(irls_steps) > 1
+        and (bool(edge_preserving) or str(data_weight_fn).lower() != "none")
+        and len(operators_by_band) > 1
+    ):
         solve_results_by_band = solve_joint_multiband_grid_cg(
             operators_by_band,
             targets_by_band,
@@ -1474,6 +1491,8 @@ def _fit_linear_band_grid_scene(
             tolerance=float(tolerance),
             edge_preserving=bool(edge_preserving),
             non_negative_weight=float(non_negative_weight),
+            data_weight_fn=str(data_weight_fn),
+            irls_config=irls_cfg,
             diagnostics_by_band=diagnostics_by_band,
         )
     elif solver == "cg":
@@ -1493,6 +1512,8 @@ def _fit_linear_band_grid_scene(
                 irls_steps=int(irls_steps),
                 edge_preserving=bool(edge_preserving),
                 non_negative_weight=float(non_negative_weight),
+                data_weight_fn=str(data_weight_fn),
+                irls_config=irls_cfg,
                 diagnostics=solver_diag,
             )
             diagnostics_by_band[band_key] = solver_diag
@@ -1554,6 +1575,9 @@ def _fit_linear_band_grid_scene(
             ),
             "linear_solver_non_negative_weight": float(
                 solver_diag.get("non_negative_weight", non_negative_weight)
+            ),
+            "linear_solver_data_weight_fn": str(
+                solver_diag.get("data_weight_fn", data_weight_fn)
             ),
             "linear_solver_damping": float(damping),
             "linear_solver_smoothness_weight": float(smoothness_weight),
@@ -5103,6 +5127,8 @@ def main() -> int:
                     "irls_steps": 1,
                     "edge_preserving": False,
                     "non_negative_weight": 0.0,
+                    "data_weight_fn": "none",
+                    "irls_use_mad_scaling": False,
                     "damping": 5.0e-3,
                     "smoothness_weight": 2.0e-2,
                     "relative_regularization": True,
@@ -5277,6 +5303,12 @@ def main() -> int:
                     edge_preserving=bool(model_kwargs.get("edge_preserving", True)),
                     non_negative_weight=float(
                         model_kwargs.get("non_negative_weight", 0.25)
+                    ),
+                    data_weight_fn=str(
+                        model_kwargs.get("data_weight_fn", "none")
+                    ),
+                    irls_use_mad_scaling=bool(
+                        model_kwargs.get("irls_use_mad_scaling", False)
                     ),
                     damping=float(model_kwargs.get("damping", 1.0e-3)),
                     smoothness_weight=float(

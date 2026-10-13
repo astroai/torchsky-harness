@@ -2258,3 +2258,96 @@ def test_linear_band_grid_scene_fits_with_stationary_calibrated_bundles_and_scor
     assert set(by_val_band) == {"F090W", "F200W"}
     assert by_val_band["F090W"]["chi2_per_pixel"] < 1.0e-3
     assert by_val_band["F200W"]["chi2_per_pixel"] < 1.0e-3
+
+
+def test_linear_band_grid_scene_detector_irls_rejects_outlier() -> None:
+    clean = replace(
+        _initialization_observation(1.25, wavelength=9_000.0, band="F090W"),
+        err=torch.full((3, 3), 0.05),
+    )
+    corrupted_img = clean.image.clone()
+    corrupted_img[1, 1] += 20.0
+    corrupted = replace(clean, image=corrupted_img)
+    exposures = [clean, clean, clean, corrupted]
+    train_contexts = [
+        ForwardContext(
+            survey="F090W",
+            detector="NRCB1",
+            exposure_id=f"exp_{idx}",
+            extra={"split": "train"},
+        )
+        for idx in range(len(exposures))
+    ]
+    domain = joint_benchmark.estimate_field_domain(
+        exposures, coord_mode="local_tangent"
+    )
+    band_entries = [
+        {
+            "band": "F090W",
+            "target_header": dict(_initialization_header()),
+            "target_observation": clean,
+            "fitted_psf_fwhm_arcsec": 0.06,
+        }
+    ]
+    bounds = joint_benchmark._grid_target_footprint_bounds(
+        domain, band_entries, margin_sigma=4.0
+    )
+
+    scene_l2 = joint_benchmark._MultiBandLinearGridScene(
+        domain,
+        band_entries=band_entries,
+        spatial_resolution=6,
+        spatial_bounds_local_deg=bounds,
+    )
+    res_l2 = joint_benchmark._fit_linear_band_grid_scene(
+        exposures,
+        scene_l2,
+        contexts=train_contexts,
+        operator_bundles=None,
+        background_reference="none",
+        solver="cg",
+        max_iterations=24,
+        irls_steps=1,
+        edge_preserving=False,
+        data_weight_fn="none",
+        damping=1.0e-3,
+        smoothness_weight=0.0,
+    )
+
+    scene_tukey = joint_benchmark._MultiBandLinearGridScene(
+        domain,
+        band_entries=band_entries,
+        spatial_resolution=6,
+        spatial_bounds_local_deg=bounds,
+    )
+    res_tukey = joint_benchmark._fit_linear_band_grid_scene(
+        exposures,
+        scene_tukey,
+        contexts=train_contexts,
+        operator_bundles=None,
+        background_reference="none",
+        solver="cg",
+        max_iterations=24,
+        irls_steps=4,
+        edge_preserving=False,
+        data_weight_fn="tukey",
+        damping=1.0e-3,
+        smoothness_weight=0.0,
+    )
+
+    assert (
+        res_tukey.diagnostics["linear_solver_by_band"]["F090W"][
+            "linear_solver_data_weight_fn"
+        ]
+        == "tukey"
+    )
+    pred_l2 = joint_benchmark.render_field_observation(
+        res_l2.model, clean, num_spectral_samples=1, spatial_sampling="center"
+    )
+    pred_tukey = joint_benchmark.render_field_observation(
+        res_tukey.model, clean, num_spectral_samples=1, spatial_sampling="center"
+    )
+    err_l2 = float(torch.abs(pred_l2[1, 1] - clean.image[1, 1]).item())
+    err_tukey = float(torch.abs(pred_tukey[1, 1] - clean.image[1, 1]).item())
+    assert err_tukey < 0.1 * err_l2
+
