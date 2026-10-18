@@ -26,7 +26,7 @@ from torchsky.calibration_evidence import (  # noqa: E402
     calibration_exposure_id,
     load_operator_calibration_split,
 )
-from torchsky.io import read, write  # noqa: E402
+from torchfits import read, write  # noqa: E402
 from torchsky.map.operators import (  # noqa: E402
     ConditionedBackgroundField,
     apply_operator_calibration_pruning,

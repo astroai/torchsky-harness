@@ -20,7 +20,7 @@ from torchsky.instrument import (
     jwst_exposure_timing,
     nircam_imaging_band,
 )
-from torchsky.io import get_header
+from torchfits import read_header as get_header
 from torchsky.map.operators import spatial_fill_distance_bounds
 
 _PATT_SPLIT = {

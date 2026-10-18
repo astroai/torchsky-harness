@@ -12,7 +12,7 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor
 from torchsky.instrument import nircam_imaging_band
-from torchsky.io import get_header, read, write
+from torchfits import read_header as get_header, read, write
 from torchsky.map.operators import fit_background_plane, registered_image_stamps
 from torchsky.wcs import WCS, propagate_proper_motion
 

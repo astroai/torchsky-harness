@@ -14,7 +14,7 @@ import torch
 import torchfits
 
 import torchsky
-from torchsky.hdu import HDUList, Header, TensorHDU
+from torchfits.hdu import HDUList, Header, TensorHDU
 
 
 def _time(fn, warmup: int, runs: int):

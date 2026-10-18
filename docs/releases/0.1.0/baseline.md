@@ -170,8 +170,18 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
     `complex128`; the MPS likelihood contract passes.
   - The linear-band-grid footprint bounds check uses a float32/MPS tolerance
     rather than the float64 `1e-10` threshold; the MPS field contract passes.
-- Full suite rerun: **2692 passed, 104 skipped** (274 s); the previous three
-  failures are fixed.
+- **API boundary reset (breaking):** removed the torchfits alias layer from
+  torchsky: root `read/write/open/get_header/get_wcs/HDUList/Header/...`, the
+  `io`, `table`, `hdu`, `cache`, `datasets`, `dataloader`, `header_parser`, and
+  `core` modules, and the matching compatibility tests. All internal, test, and
+  example callers now use `torchfits` directly. Full suite after the reset:
+  **2658 passed, 98 skipped**; torchsky preflight and harness preflight pass;
+  harness catalog/runner/metrics tests pass; a WCS smoke run completes with
+  parity 3.7e-10 arcsec.
+- Docs/changelog/README now state the boundary explicitly; the removed
+  compatibility-transition text is gone.
+- Full suite rerun: **2692 passed, 104 skipped** earlier; after deleting three
+  compat test modules the suite is **2658 passed, 98 skipped**.
 
 The torchsky dirty-diff hash advanced because the fixes above are part of the
 release work; the package-content hash is unchanged. Re-run `subject` before

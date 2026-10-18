@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 import torch
+import torchfits
 from astropy.coordinates import SkyCoord
 from astropy.table import Table
 import astropy.units as u
@@ -9,9 +10,8 @@ import tempfile
 
 pytest.importorskip("scipy")
 
-import torchsky
 from torchsky.catalogs import crossmatch_sky
-from torchsky.table import write as _table_write
+from torchfits.table import write as _table_write
 
 
 def _has_native_table_io() -> bool:
@@ -19,7 +19,7 @@ def _has_native_table_io() -> bool:
 
 
 def _fits_table_column_to_float64_tensor(table, name: str) -> torch.Tensor:
-    """``torchsky.table.read`` returns PyArrow; convert a numeric column to torch."""
+    """``torchfits.table.read`` returns PyArrow; convert a numeric column to torch."""
     col = table.column(name)
     if hasattr(col, "combine_chunks"):
         col = col.combine_chunks()
@@ -304,11 +304,11 @@ def test_crossmatch_sky_end_to_end_matches_astropy_after_fits_read_on_real_catal
             overwrite=True,
         )
 
-        left_loaded = torchsky.table.read(
+        left_loaded = torchfits.table.read(
             str(left_path),
             columns=["RA", "DEC"],
         )
-        right_loaded = torchsky.table.read(
+        right_loaded = torchfits.table.read(
             str(right_path),
             columns=["RA", "DEC"],
         )
