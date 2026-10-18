@@ -58,6 +58,44 @@ def test_check_map_benchmark_regressions_respects_skip_time_flag() -> None:
     errors = check_map_benchmark_regressions(current, baseline)
     assert errors == []
 
+
+def test_check_map_benchmark_regressions_requires_complete_coverage() -> None:
+    baseline = [
+        {
+            "case": "case",
+            "library": "torchsky",
+            "method": "coadd",
+            "variant": "bilinear",
+            "reconstruction_rmse": 1.0,
+            "signal_to_residual_db": 10.0,
+            "total_flux_relative_error": 0.1,
+            "time_ms": 1.0,
+            "skip_time_regression": True,
+        }
+    ]
+    assert check_map_benchmark_regressions([], baseline) == []
+    errors = check_map_benchmark_regressions(
+        [], baseline, require_complete=True
+    )
+    assert any("missing required benchmark row" in error for error in errors)
+
+    incomplete = [
+        {
+            "case": "case",
+            "library": "torchsky",
+            "method": "coadd",
+            "variant": "bilinear",
+            "reconstruction_rmse": 1.0,
+        }
+    ]
+    errors = check_map_benchmark_regressions(
+        incomplete, baseline, require_complete=True
+    )
+    assert any(
+        "missing required metric signal_to_residual_db" in error
+        for error in errors
+    )
+
 def test_evaluate_map_frontier_regions_tracks_fringe_and_overlap() -> None:
     truth = torch.zeros((1, 7, 7), dtype=torch.float32)
     pred = truth.clone()

@@ -3891,6 +3891,11 @@ def main() -> None:
     parser.add_argument("--markdown-out", type=str, default="")
     parser.add_argument("--baseline-json", type=str, default="")
     parser.add_argument(
+        "--require-complete-baseline",
+        action="store_true",
+        help="Fail when a required baseline row or metric is missing",
+    )
+    parser.add_argument(
         "--training-patch-size",
         type=int,
         default=-1,
@@ -3975,7 +3980,11 @@ def main() -> None:
         print(write_map_benchmark_artifacts(rows))
     if args.baseline_json:
         baseline_rows = json.loads(Path(args.baseline_json).read_text(encoding="utf-8"))
-        errors = check_map_benchmark_regressions(rows, baseline_rows)
+        errors = check_map_benchmark_regressions(
+            rows,
+            baseline_rows,
+            require_complete=args.require_complete_baseline,
+        )
         if errors:
             raise SystemExit("\n".join(errors))
 

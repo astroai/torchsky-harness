@@ -271,13 +271,23 @@ def _check_compat_regressions(
     *,
     data_diff_tolerance: float = 0.10,
     weight_diff_tolerance: float = 0.10,
+    require_complete: bool = False,
 ) -> list[str]:
     baseline_by_key = {_compat_row_key(row): row for row in baseline_rows}
+    current_by_key = {_compat_row_key(row): row for row in rows}
     errors: list[str] = []
+    if require_complete:
+        for key, baseline in baseline_by_key.items():
+            if str(baseline.get("status", "OK")) != "OK":
+                continue
+            if key not in current_by_key:
+                errors.append(f"{key}: missing required benchmark row")
     for row in rows:
         key = _compat_row_key(row)
         baseline = baseline_by_key.get(key)
         if baseline is None:
+            if require_complete:
+                errors.append(f"{key}: row not present in baseline")
             continue
         current_status = str(row.get("status", "OK"))
         baseline_status = str(baseline.get("status", "OK"))
@@ -3286,6 +3296,11 @@ def main() -> int:
     parser.add_argument("--markdown-out", type=Path, default=None)
     parser.add_argument("--baseline-json", type=Path, default=None)
     parser.add_argument(
+        "--require-complete-baseline",
+        action="store_true",
+        help="Fail when a required baseline row is missing",
+    )
+    parser.add_argument(
         "--acceptance-json",
         type=Path,
         default=None,
@@ -3544,7 +3559,11 @@ def main() -> int:
         print(f"Markdown: {markdown_path}")
     if args.baseline_json is not None:
         baseline_rows = json.loads(args.baseline_json.read_text(encoding="utf-8"))
-        errors = _check_compat_regressions(rows, baseline_rows)
+        errors = _check_compat_regressions(
+            rows,
+            baseline_rows,
+            require_complete=args.require_complete_baseline,
+        )
         if errors:
             raise SystemExit("\n".join(errors))
     if args.time_baseline_json is not None:

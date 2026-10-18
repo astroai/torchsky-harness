@@ -554,13 +554,23 @@ def check_map_benchmark_regressions(
     signal_to_residual_db_tolerance: float = 0.10,
     total_flux_relative_error_tolerance: float = 0.10,
     time_tolerance: float = 0.15,
+    require_complete: bool = False,
 ) -> list[str]:
     baseline_by_key = {map_benchmark_row_key(row): row for row in baseline_rows}
+    current_by_key = {map_benchmark_row_key(row): row for row in rows}
     errors: list[str] = []
+    if require_complete:
+        for key, baseline in baseline_by_key.items():
+            if str(baseline.get("status", "OK")) != "OK":
+                continue
+            if key not in current_by_key:
+                errors.append(f"{key}: missing required benchmark row")
     for row in rows:
         key = map_benchmark_row_key(row)
         baseline = baseline_by_key.get(key)
         if baseline is None:
+            if require_complete:
+                errors.append(f"{key}: row not present in baseline")
             continue
         current_status = str(row.get("status", "OK"))
         baseline_status = str(baseline.get("status", "OK"))
@@ -573,7 +583,11 @@ def check_map_benchmark_regressions(
         def compare_upper(metric: str, tolerance: float) -> None:
             base_value = baseline.get(metric)  # noqa: B023
             current_value = row.get(metric)  # noqa: B023
-            if base_value is None or current_value is None:
+            if base_value is None:
+                return
+            if current_value is None:
+                if require_complete:
+                    errors.append(f"{key}: missing required metric {metric}")
                 return
             allowed = float(base_value) * (1.0 + tolerance)
             if float(current_value) > allowed:
@@ -584,7 +598,11 @@ def check_map_benchmark_regressions(
         def compare_lower(metric: str, tolerance: float) -> None:
             base_value = baseline.get(metric)  # noqa: B023
             current_value = row.get(metric)  # noqa: B023
-            if base_value is None or current_value is None:
+            if base_value is None:
+                return
+            if current_value is None:
+                if require_complete:
+                    errors.append(f"{key}: missing required metric {metric}")
                 return
             floor = float(base_value) - abs(float(base_value)) * tolerance
             if float(current_value) < floor:

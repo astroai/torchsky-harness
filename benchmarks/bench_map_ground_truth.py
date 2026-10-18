@@ -2184,6 +2184,11 @@ def main() -> int:
     parser.add_argument("--json-out", type=Path, default=None)
     parser.add_argument("--markdown-out", type=Path, default=None)
     parser.add_argument("--baseline-json", type=Path, default=None)
+    parser.add_argument(
+        "--require-complete-baseline",
+        action="store_true",
+        help="Fail when a required baseline row or metric is missing",
+    )
     args = parser.parse_args()
 
     rows: list[dict[str, Any]] = []
@@ -2247,7 +2252,11 @@ def main() -> int:
         print(f"Markdown: {markdown_path}")
     if args.baseline_json is not None:
         baseline_rows = json.loads(args.baseline_json.read_text(encoding="utf-8"))
-        errors = check_map_benchmark_regressions(rows, baseline_rows)
+        errors = check_map_benchmark_regressions(
+            rows,
+            baseline_rows,
+            require_complete=args.require_complete_baseline,
+        )
         if errors:
             raise SystemExit("\n".join(errors))
     return 0

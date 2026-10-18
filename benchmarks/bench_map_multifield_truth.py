@@ -2007,6 +2007,11 @@ def main() -> int:
         default=None,
         help="Optional baseline JSON artifact to enforce regression gates against",
     )
+    parser.add_argument(
+        "--require-complete-baseline",
+        action="store_true",
+        help="Fail when a required baseline row or metric is missing",
+    )
     args = parser.parse_args()
 
     rows: list[dict[str, Any]] = []
@@ -2057,7 +2062,11 @@ def main() -> int:
     )
     if args.baseline_json is not None:
         baseline_rows = json.loads(args.baseline_json.read_text(encoding="utf-8"))
-        errors = check_map_benchmark_regressions(rows, baseline_rows)
+        errors = check_map_benchmark_regressions(
+            rows,
+            baseline_rows,
+            require_complete=args.require_complete_baseline,
+        )
         if errors:
             for error in errors:
                 print(f"REGRESSION: {error}", file=sys.stderr)

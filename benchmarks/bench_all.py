@@ -408,6 +408,7 @@ def main() -> int:
     print(f"scopes={scopes}", flush=True)
     print(f"output={run_dir}", flush=True)
     all_rows: list[dict[str, Any]] = []
+    domain_errors: list[str] = []
 
     if "wcs" in scopes:
         try:
@@ -466,6 +467,7 @@ def main() -> int:
         except Exception as exc:
             err = f"{type(exc).__name__}: {exc}"
             print(f"[bench-all][wcs] failed: {err}", flush=True)
+            domain_errors.append(f"wcs: {err}")
             all_rows.append(_domain_failure_row(run_id=run_id, domain="wcs", error=err))
 
     if "sphere" in scopes:
@@ -481,6 +483,7 @@ def main() -> int:
         except Exception as exc:
             err = f"{type(exc).__name__}: {exc}"
             print(f"[bench-all][sphere] failed: {err}", flush=True)
+            domain_errors.append(f"sphere: {err}")
             all_rows.append(
                 _domain_failure_row(run_id=run_id, domain="sphere", error=err)
             )
@@ -504,6 +507,22 @@ def main() -> int:
     print(f"- Summary MD: {summary_md}", flush=True)
     _print_deficit_summary(deficits)
 
+    if domain_errors:
+        print(
+            "\nBenchmark orchestrator failed in: " + "; ".join(domain_errors),
+            flush=True,
+        )
+        return 1
+    failed_rows = [
+        row for row in all_rows if str(row.get("status", "OK")) == "FAILED"
+    ]
+    if failed_rows:
+        print(
+            f"\nBenchmark orchestrator recorded {len(failed_rows)} FAILED row(s); "
+            f"see {results_csv}",
+            flush=True,
+        )
+        return 1
     return 0
 
 

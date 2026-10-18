@@ -1433,6 +1433,13 @@ def main() -> int:
     if args.json_out:
         write_json(args.json_out, rows)
     print(f"[sphere] wrote {len(rows)} rows to {out_csv}")
+    failed = [row for row in rows if str(row.get("status", "OK")) == "FAILED"]
+    if failed:
+        print(
+            f"[sphere] {len(failed)} benchmark row(s) failed; see {out_csv}",
+            flush=True,
+        )
+        return 1
     return 0
 
 
