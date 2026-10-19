@@ -399,7 +399,7 @@ Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
 built from torchsky `b669af2f` and installed into the harness test environment as
 a wheel (import path `site-packages/torchsky`, not the checkout). Subject
 `package_content_sha256 = 49f816de7a1daafc60b9695e34897e13b2916148c3816e781d05ab7cec63d0d6`,
-`source.kind = archive`, harness revision `ad0d7a38`. Every gate below is a
+`source.kind = archive`, harness revision `d6f9757`. Every gate below is a
 `pixi run` task against that install:
 
 | Gate | Evaluation | Verdict |
