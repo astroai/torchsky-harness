@@ -62,7 +62,7 @@ Linux CPU/CUDA confirmation uses `scripts/launch_canfar_wcs_sphere.sh`. Modes:
 - `suite` / `many` — parallel `spectral`, `sphere`, `sparse`, `spin`, `geometry`, `cuhpx`
 - `sht` — `spectral` + `sparse` + `spin` only
 - world-layer jobs (also `world` to submit them together): `wcs-paper2`, `wcs-tpv`, `wcs-spectral`, `wcs-tabular`, `sht-profile`, `moc`, `catalog`, `observed`, `geom-cuda`, `world-cuda`. `catalog` also runs `bench_catalog_compat.py` (Astropy SkyCoord peer). `wcs-paper2` writes fused=0/1 CSC A/B JSON.
-- `world-cuda` puts WCS/catalog/observed/sparse/polygon tensors on the GPU (`--device cuda`). `geom-cuda` remains the polygon-only CUDA job.
+- `world-cuda` puts WCS/catalog/observed/sparse/polygon tensors on the GPU (`--device cuda`). `geom-cuda` remains the polygon-only CUDA job. `gpu-validate` is the current-subject device check: it installs the subject into the harness `cuda-bench` environment, runs the device-named package tests, and runs the harness WCS comparison on GPU (including the reference-offset cases) with a junit and comparison JSON artifact. Use `gpu-validate` for release evidence; the older modes still call benchmarks from the subject checkout, which no longer owns them.
 
 That submits AstroAI headless sessions which run `scripts/run_canfar_wcs_sphere.sh` at an exact `TORCHSKY_COMMIT`, write `/arc/projects/ots/torchsky-runs/<run_id>/`, and copy the same tree to `vos:sfabbro/torchsky-runs/<run_id>/`. Pull a finished run with `bash scripts/fetch_canfar_wcs_sphere_run.sh <run_id>` (`vcp` / `pip install vos`). Do not reuse the ADASS/SMACS runner for this domain. Local Mac smoke stays `--quick` via `pixi run wcs-sphere-acceptance`; the full oracle ingest is `pixi run wcs-sphere-acceptance-full` or the CANFAR `cpu` job. CANFAR `cpu`/`spin`/`geometry` jobs pass `--no-throughput-gate` so Mac-tuned healpy ratio thresholds do not fail the job; rel L2 and index/angle mismatch gates still apply. Mac pixi tasks (`sphere-bench-geometry-gate`, `sphere-upstream-spin-matrix-gate`) keep the ratio gates. The cuHPX scalar SHT spike is a separate CUDA-only job: `scripts/run_canfar_cuhpx_sht_spike.sh` or the `suite` `cuhpx` session. Current Linux ingest: [`benchmarks/scorecards/20260817_world_layer.md`](../benchmarks/scorecards/20260817_world_layer.md) (main WCS 87/90 CPU, 90/90 CUDA large-N) plus [`benchmarks/scorecards/20260821_world_layer.md`](../benchmarks/scorecards/20260821_world_layer.md) (Paper II / TPV / spectral / tabular / observed / moc / `world-cuda` on SHA `775762c2`). Claim-or-close ingest: [`benchmarks/scorecards/20260821_wcs_sphere_claim_close.md`](../benchmarks/scorecards/20260821_wcs_sphere_claim_close.md) on SHA `d8d706f6` stamp `20260821-1744*` plus relaunch SHA `7564070c` stamp `20260821-1852*` (`world-cuda` pytest 18/18; CUDA CSC host-copy 8.35 mas **not** claimed; `catalog_compat` vs SkyCoord 0.116× **not** claimed; N=1e6/N=1e7 still running). World-layer throughput is **not claimed** as a suite win; see that card.
 
@@ -82,6 +82,11 @@ harness API directly; the torchsky runtime package has no fallback to harness
 code.
 
 On each push/PR, workflow **Map mosaic (bench extras + compat gate)** (see `.github/workflows/ci.yml`) installs **`torchsky[bench]`**, runs the full **`pytest tests/`** suite (including **`reproject`** bilinear/bicubic parity, optional **`dfreproject`** bilinear parity, and optional **`drizzle`** external-path smoke tests), then runs **`benchmarks/bench_map_compat.py`** on **`synthetic_shifted_wcs`** with **`benchmarks/baselines/map_compat_ci_gate.json`** enforcing status and comparator diff ceilings for the bilinear `reproject_interp` row. A follow-up bench step runs **`torchsky:fft_shift`** on **`upstream_drizzle_crpix_translation`** (no baseline; smoke only). The weekly **`workflow_dispatch` / schedule** in **`.github/workflows/map_compat_weekly.yml`** also builds the pinned official SWarp and Montage source revisions and requires Drizzle, SWarp, and Montage rows to satisfy the committed absolute acceptance contracts. A skipped official comparator is a failed job, not a parity pass.
+
+**Current state (2026-10-18):** the push/PR workflow
+`.github/workflows/ci.yml` is `Harness infrastructure` and runs preflight plus
+infrastructure contracts only; the scientific map gates above are opt-in
+local/CANFAR commands. Verify the workflow before citing a per-push map gate.
 
 **Optional map-compat wall-time regression:** after recording representative `time_ms` rows on a pinned runner, pass **`--time-baseline-json`** (format in **`benchmarks/baselines/map_compat_time_gate_example.json`**) and **`--time-regression-tolerance`** (default `0.35`) to fail if OK rows slow down beyond the baseline. This is intentionally **off** in default CI because wall times vary by hardware.
 
@@ -246,8 +251,7 @@ Correctness is validated separately using upstream test fixtures and public refe
 
 | Gate | Command | Validates |
 |---|---|---|
-| Local CI parity (optional) | `pixi run ci-local` | Ruff, compileall, pyright, and the full pytest suite in the test env. Git pre-push is `preflight-push` only; GitHub `build-test` is the suite. |
-| Refactor cohesion audit | `pixi run audit-refactor-cohesion` | Cheap wiring check for benchmark tasks, docs, promoted map/operator APIs, and known large-file pressure points |
+| Local CI parity (optional) | `pixi run ci-local` | Ruff, compileall, and the full pytest suite in the test env. Git pre-push is `preflight-push` only; the GitHub harness workflow runs preflight plus infrastructure contracts. |
 | WCS parity/perf | `pixi run bench-wcs` and `pixi run bench-wcs-tpv-inverse` | WCS projections, spectral/temporal paths, and TPV inverse benchmarks |
 | FITS boundary integration | focused cross-package smoke | `torchfits` output preserves torchsky WCS/map/catalog semantics |
 | HEALPix geometry | `pixi run sphere-bench-geometry-gate` | HEALPix geometry matrix with correctness and median ratio gates |
