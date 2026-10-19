@@ -46,14 +46,24 @@ the supporting `bench-map-compat-gate` comparison):
 
 | Gate | Task |
 |---|---|
-| 30-projection WCS parity vs astropy | `pixi run bench-wcs-release-gate` |
+| 38-case WCS parity vs astropy | `pixi run bench-wcs-release-gate` |
 | HEALPix core parity vs healpy | `pixi run bench-healpix-release-gate` |
 | HEALPix neighbors/interpolation parity vs healpy | `pixi run bench-healpix-advanced-release-gate` |
 | sphere geometry vs healpy | `pixi run bench-sphere-matrix-release-gate` |
 | spin-2 SHT vs healpy | `pixi run bench-spin-matrix-release-gate` |
 | catalog crossmatch vs astropy | `pixi run bench-catalog-release-gate` |
 
-Then `pixi run evidence-bundle` writes
+Real-data gates (`bench-all` environment; vendored fixtures with recorded
+provenance):
+
+| Gate | Task |
+|---|---|
+| real instrument WCS headers vs astropy | `pixi run bench-wcs-real-headers-gate` |
+| real-sky HEALPix map vs healpy | `pixi run bench-sphere-real-map-gate` |
+| real CFHT cutout reprojection vs astropy reproject | `pixi run bench-map-real-cutout-gate` |
+
+The bundle includes sixteen declared gates (seven synthetic/truth, six
+reference-comparison, three real-data). Then `pixi run evidence-bundle` writes
 `benchmark_results/evidence_bundle.{json,md}` (git-ignored by design). Attach
 the bundle to the tag/release notes. The raw run directories stay in durable
 storage; the bundle hashes them.
