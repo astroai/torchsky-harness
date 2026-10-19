@@ -35,15 +35,15 @@ BENCHMARKS = ROOT
 
 from torchsky import WCS  # noqa: E402
 from torchsky.device import default_compute_device  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (
     FieldObservation,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     render_field_observation,
 )
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 from torchsky.map.field.types import FieldModelKind  # noqa: E402
 
 try:

@@ -16,11 +16,8 @@ SRC = ROOT / "src"
 
 import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E402
 from torchsky import WCS  # noqa: E402
-from torchsky.map import (
-    ProductResult,
-    plan_map_product,
-    stack_product,
-)  # noqa: E402
+from torchsky.map import ProductResult, stack_product
+from torchsky.map.product import plan_map_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 

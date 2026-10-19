@@ -52,16 +52,16 @@ from torchsky_harness.benchmarks.bench_map_smacs0723_real import (  # noqa: E402
 DEFAULT_REFERENCE_PATH = DATA / "updec_webb" / "F277Wb_UPDC-v2_iter0_i2d.fits.fz"
 DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (
     FieldObservation,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     pretrain_strainer_trunk_synthetic,
     render_field_observation,
 )
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _skip_payload(reason: str) -> dict[str, Any]:

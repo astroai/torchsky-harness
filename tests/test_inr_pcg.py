@@ -43,7 +43,8 @@ def test_neural_pcg_cli_rejects_a_grid_only_request() -> None:
 def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_path: Path) -> None:
     from dataclasses import replace
 
-    from torchsky.map import FieldObservation, ForwardContext, ImageObservation, render_field_observation
+    from torchsky.map.field import FieldObservation, ForwardContext, render_field_observation
+    from torchsky.map.observation import ImageObservation
     from torchsky.map.operators import LearnedBackgroundOp, field_observation_operator_bundle
 
     from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _ZeroScene, _export_native_training_view
@@ -146,7 +147,7 @@ def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_
 def test_neural_pcg_refines_native_detector_likelihood(
     model_kind: str, calibrated: bool
 ) -> None:
-    from torchsky.map import (
+    from torchsky.map.field import (
         FieldDomain,
         FieldObservation,
         ForwardContext,

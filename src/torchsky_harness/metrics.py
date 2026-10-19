@@ -11,7 +11,8 @@ from typing import Any
 import torch
 import torch.nn.functional as F
 from torch import Tensor
-from torchsky.map import ProductResult, MapValueSemantics
+from torchsky.map import ProductResult
+from torchsky.map.operators import MapValueSemantics
 from torchsky.map.field import FieldObservation, field_quality_scorecard
 from torchsky.map.operators import pixel_area_sr_map
 from torchsky.wcs import WCS

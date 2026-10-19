@@ -34,7 +34,8 @@ DEFAULT_EXPOSURE_GLOB = str(DATA / "jwst_smacs0723" / "*_crf.fits")
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_ladder.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_ladder.md"
 
-from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _time_many(fn, runs: int) -> float:

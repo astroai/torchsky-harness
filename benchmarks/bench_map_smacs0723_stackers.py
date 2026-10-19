@@ -103,15 +103,15 @@ SMACS_FULL_MOSAIC_PARITY_PAIRS: tuple[dict[str, str], ...] = (
     },
 )
 
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (
     FieldObservation,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     render_field_observation,
 )
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _uniform_mask(pred: np.ndarray, reference: np.ndarray) -> np.ndarray:

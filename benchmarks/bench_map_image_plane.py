@@ -19,14 +19,14 @@ SRC = ROOT / "src"
 import astropy  # noqa: E402
 
 import torchsky  # noqa: E402
-from torchsky.map import (  # noqa: E402
-    ImageObservation,
+from torchsky.map.image_plane import (
     coadd_image_plane,
     coadd_image_plane_cube,
     coadd_image_plane_multiband,
     plan_image_plane_cube_target_from_header,
     plan_image_plane_target,
 )
+from torchsky.map.observation import ImageObservation
 
 try:  # noqa: E402
     import torchsky.cpp  # noqa: F401

@@ -17,7 +17,7 @@ BENCHMARKS = ROOT / "benchmarks"
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
 import torchsky.map.image_plane as image_plane_mod  # noqa: E402
 import torchsky.map.operators.resampling as resampling_mod  # noqa: E402
-from torchsky.map import ImageObservation  # noqa: E402
+from torchsky.map.observation import ImageObservation
 from torchsky.map.operators import (  # noqa: E402
     headers_equivalent_for_direct_copy,
     normalized_header_for_shape,

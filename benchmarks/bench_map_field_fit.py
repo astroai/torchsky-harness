@@ -22,19 +22,16 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 import torchsky  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map import ProductResult, UncertaintyProduct, stack_product
+from torchsky.map.field import (
     FieldDomain,
     FieldObservation,
-    ImageObservation,
     LearnedSpectralBasisField,
-    UncertaintyProduct,
-    ProductResult,
+    SineImplicitField,
     SkyEncoderBandpassField,
     SkyEncoderMLPField,
     SkyEncoderResMLPField,
-    SineImplicitField,
     SpectralBasisField,
-    estimate_map_inverse_variance,
     estimate_field_domain,
     field_image_quality_metrics,
     fit_field_model,
@@ -42,13 +39,12 @@ from torchsky.map import (  # noqa: E402
     render_field_cube,
     render_field_observation,
     render_field_observation_distribution,
-    render_field_product,
-    plan_map_product,
     spectral_data_budget,
-    stack_product,
     suggest_num_spectral_samples,
     suggest_spectral_model_capacity,
 )
+from torchsky.map.observation import ImageObservation
+from torchsky.map.product import estimate_map_inverse_variance, plan_map_product, render_field_product
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,
     evaluate_map_frontier_regions,

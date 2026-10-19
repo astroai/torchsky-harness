@@ -18,7 +18,9 @@ BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
-from torchsky.map import ImageObservation, MapResult, coadd_image_plane  # noqa: E402
+from torchsky.map import MapResult
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _is_tpv(header: dict[str, object]) -> bool:

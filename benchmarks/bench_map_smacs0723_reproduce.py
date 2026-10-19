@@ -35,7 +35,8 @@ DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.md"
 
-from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 try:  # noqa: E402
     from astropy.wcs import WCS  # type: ignore

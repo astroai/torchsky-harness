@@ -18,7 +18,8 @@ BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
-from torchsky.map import ImageObservation, coadd_image_plane, plan_image_plane_target  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map.observation import ImageObservation
 
 
 DEFAULT_METHODS = (

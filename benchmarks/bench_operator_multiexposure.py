@@ -31,7 +31,9 @@ SRC = ROOT / "src"
 
 from torchsky_harness.benchmarks.config import DEFAULT_OUTPUT_DIR  # noqa: E402
 
-from torchsky.map import ImageObservation, MapResult, coadd_image_plane  # noqa: E402
+from torchsky.map import MapResult
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _gaussian_source(

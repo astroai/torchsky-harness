@@ -25,17 +25,10 @@ import torchsky  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_compat as map_compat  # noqa: E402
 from torchsky import WCS  # noqa: E402
 from torchsky.sphere import healpix as hp  # noqa: E402
-from torchsky.map import (  # noqa: E402
-    FieldObservation,
-    ImageObservation,
-    BandpassSpec,
-    ProductSpec,
-    estimate_field_domain,
-    fit_field_model,
-    make_field_model,
-    plan_map_product,
-    stack_product,
-)
+from torchsky.map import BandpassSpec, ProductSpec, stack_product
+from torchsky.map.field import FieldObservation, estimate_field_domain, fit_field_model, make_field_model
+from torchsky.map.observation import ImageObservation
+from torchsky.map.product import plan_map_product
 from torchsky_harness.metrics import (  # noqa: E402
     check_map_benchmark_regressions,
     evaluate_map_product,

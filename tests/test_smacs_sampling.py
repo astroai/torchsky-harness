@@ -12,7 +12,7 @@ import torch
 
 from _map_field_fixtures import Scene, _foam, _header, observation
 from torchsky.map.field import FieldObservation
-from torchsky.map import ForwardContext
+from torchsky.map.field import ForwardContext
 from torchsky.map.operators import LearnedBackgroundOp, ObservationOperatorBundle
 
 import torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint as joint

@@ -17,16 +17,15 @@ BENCHMARKS = ROOT / "benchmarks"
 
 
 import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map import stack_product
+from torchsky.map.field import (
     SkyEncoderMLPField,
     SpectralBasisField,
     estimate_field_domain,
     fit_field_model,
-    plan_map_product,
     render_field_observation,
-    render_field_product,
-    stack_product,
 )
+from torchsky.map.product import plan_map_product, render_field_product
 
 
 def _masked_rmse(values: torch.Tensor, mask: torch.Tensor) -> float:

@@ -51,14 +51,9 @@ from torchsky_harness.scripts.download_jwst_smacs0723_mast import (  # noqa: E40
 from torchsky_harness.scripts.download_smacs0723_multiband_public import ALL_BANDS  # noqa: E402
 from torchsky_harness.scripts.download_updec_webb import download_spec as download_updec_spec  # noqa: E402
 from torchsky_harness.scripts.download_updec_webb import resolve_specs  # noqa: E402
-from torchsky.map import (  # noqa: E402
-    FieldObservation,
-    ImageObservation,
-    coadd_image_plane,
-    estimate_field_domain,
-    make_field_model,
-    render_field_observation,
-)
+from torchsky.map.field import FieldObservation, estimate_field_domain, make_field_model, render_field_observation  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane  # noqa: E402
+from torchsky.map.observation import ImageObservation  # noqa: E402
 
 
 def _parse_csv(value: str) -> list[str]:

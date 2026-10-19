@@ -18,7 +18,8 @@ import torchsky_harness.benchmarks.bench_map_projection_mosaic_suite as projecti
 import torchsky_harness.benchmarks.bench_map_tan_sip_suite as tan_sip_suite  # noqa: E402
 import torchsky_harness.benchmarks.run_ground_truth_competitive_large_union as competitive_runner  # noqa: E402
 
-from torchsky.map import ImageObservation, plan_image_plane_target  # noqa: E402
+from torchsky.map.image_plane import plan_image_plane_target
+from torchsky.map.observation import ImageObservation
 
 
 def test_plan_image_plane_target_matches_montage_style_template(tmp_path) -> None:

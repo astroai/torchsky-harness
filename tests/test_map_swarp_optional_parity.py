@@ -10,7 +10,8 @@ import torch
 
 pytest.importorskip("torchsky.cpp")
 
-from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARKS = ROOT / "benchmarks"

@@ -16,7 +16,7 @@ import torch
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 
-from torchsky.map import (
+from torchsky.map.field import (
     FieldDomain,
     FieldObservation,
     estimate_field_domain,

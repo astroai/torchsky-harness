@@ -22,7 +22,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 import torchsky  # noqa: E402
-from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 from torchsky.map.operators.execution import (  # noqa: E402
     overlap_background_scratch_bytes,
 )

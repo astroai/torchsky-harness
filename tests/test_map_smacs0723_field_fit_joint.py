@@ -57,7 +57,7 @@ from torchsky.map.field import (  # noqa: E402
     make_tangent_plane_header,
     render_spectral_power_foam_observation_exact,
 )
-from torchsky.map import ForwardContext  # noqa: E402
+from torchsky.map.field import ForwardContext
 from torchsky.map.operators import (  # noqa: E402
     LearnedBackgroundOp,
     LearnedPSFOp,

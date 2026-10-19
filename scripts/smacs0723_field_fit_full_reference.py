@@ -55,15 +55,15 @@ from torchsky_harness.benchmarks.bench_map_smacs0723_real import (  # noqa: E402
     _reference_path_for_band,
     _sci_header,
 )
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (  # noqa: E402
     FieldObservation,
     ForwardContext,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     make_field_model,
     render_field_observation,
 )
+from torchsky.map.image_plane import coadd_image_plane  # noqa: E402
+from torchsky.map.observation import ImageObservation  # noqa: E402
 
 
 def main() -> int:

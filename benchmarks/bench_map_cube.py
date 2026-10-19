@@ -19,7 +19,8 @@ import time
 import torch
 import torchfits
 
-from torchsky.map import ImageObservation, coadd_cube
+from torchsky.map import coadd_cube
+from torchsky.map.observation import ImageObservation
 from torchsky.spectral import SpectralAxis
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,

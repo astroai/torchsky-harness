@@ -3,7 +3,8 @@ from __future__ import annotations
 import pytest
 import torch
 import torchsky
-from torchsky.map import FieldObservation, BandpassSpec
+from torchsky.map import BandpassSpec
+from torchsky.map.field import FieldObservation
 
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,

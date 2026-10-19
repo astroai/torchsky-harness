@@ -23,17 +23,16 @@ BENCHMARKS = ROOT / "benchmarks"
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_field_fit as field_fit_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map import stack_product
+from torchsky.map.field import (
     FieldObservation,
-    ImageObservation,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
-    plan_map_product,
     render_field_cube,
-    render_field_product,
-    stack_product,
 )
+from torchsky.map.observation import ImageObservation
+from torchsky.map.product import plan_map_product, render_field_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 

@@ -69,11 +69,9 @@ DEFAULT_EXPORT_DIR = DATA / "benchmark_results" / "smacs0723_field_fit_joint_exp
 
 import torchsky  # noqa: E402
 from torchsky.map.field.core import ExplicitSpectralGridField  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (
     FieldObservation,
     ForwardContext,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     fit_field_model,
     fit_structured_noise_crossfit,
@@ -81,6 +79,8 @@ from torchsky.map import (  # noqa: E402
     render_field_observation,
     render_spectral_power_foam_observation_exact,
 )
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 from torchsky.map.field import (  # noqa: E402
     FieldFitResult,
     IRLSConfig,

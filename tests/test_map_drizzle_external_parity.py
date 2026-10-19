@@ -22,7 +22,8 @@ from astropy.wcs import WCS as AstropyWCS  # noqa: E402
 from drizzle.resample import Drizzle as DrizzleResampler  # noqa: E402
 from drizzle.utils import calc_pixmap, estimate_pixel_scale_ratio  # noqa: E402
 
-from torchsky.map import ImageObservation, coadd_image_plane
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 def _header(

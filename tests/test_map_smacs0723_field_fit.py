@@ -19,7 +19,7 @@ from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit import (  # noqa:
     _summarize_row_markdown,
 )
 from torchsky_harness.benchmarks.bench_map_smacs0723_real import _field_observation_kwargs_for_band  # noqa: E402
-from torchsky.map import FieldObservation, ForwardContext  # noqa: E402
+from torchsky.map.field import FieldObservation, ForwardContext
 
 
 def test_summarize_row_markdown_lists_models() -> None:

@@ -28,11 +28,8 @@ import astropy  # noqa: E402
 from astropy.wcs import WCS  # noqa: E402
 
 import torchsky  # noqa: E402
-from torchsky.map import (  # noqa: E402
-    ImageObservation,
-    coadd_image_plane,
-    plan_image_plane_target,
-)
+from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map.observation import ImageObservation
 
 
 def _distribution_version(name: str) -> str | None:

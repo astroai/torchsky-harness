@@ -21,11 +21,9 @@ import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E40
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
 import torchsky  # noqa: E402
 from torchsky import WCS  # noqa: E402
-from torchsky.map import (  # noqa: E402
-    ImageObservation,
-    plan_map_product,
-    stack_product,
-)
+from torchsky.map import stack_product
+from torchsky.map.observation import ImageObservation
+from torchsky.map.product import plan_map_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 from torchsky.map.operators import (  # noqa: E402
     headers_equivalent_for_direct_copy,

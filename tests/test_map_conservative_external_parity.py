@@ -11,7 +11,8 @@ import pytest
 from astropy.wcs import WCS
 import torch
 
-from torchsky.map import ImageObservation, coadd_image_plane
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 pytest.importorskip("torchsky.cpp")
 

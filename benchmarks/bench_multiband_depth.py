@@ -26,7 +26,8 @@ import torch
 import torch.nn.functional as F
 
 import torchsky
-from torchsky.map import ImageObservation, coadd_image_plane
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 from torchsky.map.field import (
     bounded_power_pixel_operator,
     solve_power_pixel_least_squares,

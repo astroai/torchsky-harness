@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 import torch
-from torchsky.map import ImageObservation
+from torchsky.map.observation import ImageObservation
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -41,16 +41,16 @@ DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_field_fit.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_field_fit.md"
 import torchsky  # noqa: E402
-from torchsky.map import (  # noqa: E402
+from torchsky.map.field import (
     FieldObservation,
     ForwardContext,
-    ImageObservation,
-    coadd_image_plane,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     render_field_observation,
 )
+from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map.observation import ImageObservation
 
 
 REAL_CASE = "tpv_field_fit_sparse_large_mosaic_exact_3band_multivisit"
