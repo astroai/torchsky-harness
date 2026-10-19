@@ -59,9 +59,9 @@ parity are all part of the gate.
 imaging exists only as smoke rows in `bench_map_image_plane` and
 `bench_map_multifield_truth` (no per-band/colour gate); a synthetic 2D-band cube
 assembly gate now exists (`bench_map_cube`, voxel RMSE and flux conservation),
-but a full 3D IFU/WCS evaluator with a non-uniform spectral axis is still
-missing and the new IFU diagnostic recovers only 25% of voxels (the rest are
-zero); HEALPix multi-band is only the opt-in
+a matched-sampling 3D IFU gate now checks exact valid-voxel indexing and sparse
+coverage, but a dense spectral-interpolation/non-uniform-axis evaluator is still
+missing; HEALPix multi-band is only the opt-in
 `--include-spherical-inverse` path in `bench_map_multifield_truth`; the joint
 field held-out contract exists but has no committed noninferiority baseline.
 

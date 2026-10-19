@@ -214,12 +214,15 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   error (<0.2). Smoke recovers flux to 0.09% and background to 0.0067; task
   `bench-native-response-gate` and a unit test are committed. This is a
   linear-profile gate, not a full likelihood/joint/real-detector claim.
-- **3D IFU diagnostic:** added
-  `benchmarks/diagnose_ifu_cube_recovery.py` for a known linear spectrum through
-  the native 3D IFU path. It currently recovers only **25%** of voxels; the
-  remaining voxels are zero, with max valid-voxel error 0.20. This is a
-  diagnostic, not a gate and not an accuracy claim; the IFU path needs a
-  correctness fix before the multi-spectral IFU row can pass.
+- **3D IFU matched-sampling gate:** added `benchmarks/bench_map_ifu.py` and
+  baseline `benchmarks/baselines/map_ifu_smoke.json`. A synthetic IFU
+  observation carries one spectral sample per detector pixel via a wavelength
+  map; the target cube uses the same sampling. The gate checks exact valid-voxel
+  recovery (max error <1e-5) and the expected sparse coverage (~1/N slices).
+  Smoke: zero error, valid fraction 0.0845 vs expected 0.0833; task
+  `bench-map-ifu-gate` and a unit test pass. This does **not** claim dense
+  spectral interpolation; an earlier unmatched 40 Å target grid produced sparse
+  nearest-mapped output and is recorded as a limitation, not an accuracy gate.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately

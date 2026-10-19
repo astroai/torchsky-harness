@@ -1,0 +1,16 @@
+[
+  {
+    "case": "ifu_matched_sparse_spectrum",
+    "library": "torchsky",
+    "method": "coadd_cube",
+    "variant": "12x12x12",
+    "status": "OK",
+    "valid_fraction": 0.08449073880910873,
+    "expected_sparse_fraction": 0.08333333333333333,
+    "reconstruction_rmse": 0.0,
+    "reconstruction_max_abs_err": 0.0,
+    "signal_to_residual_db": 300.0,
+    "total_flux_relative_error": 0.0,
+    "skip_time_regression": true
+  }
+]
