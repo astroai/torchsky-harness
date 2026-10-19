@@ -4198,9 +4198,12 @@ def main() -> int:
     )
     from torchsky_harness.subject import identify_subject
     subject_identity = identify_subject()
+    subject_source = subject_identity.get("source") or {}
     artifact["environment"] = {
-        "git_commit": subject_identity["source"]["revision"],
-        "git_dirty": subject_identity["source"]["dirty"],
+        "git_commit": subject_source.get("revision"),
+        "git_dirty": subject_source.get("dirty"),
+        "subject_source_kind": subject_source.get("kind"),
+        "subject_source_sha256": subject_source.get("sha256"),
         "harness_git_commit": git_commit or None,
         "harness_git_dirty": git_dirty,
         "subject": subject_identity,

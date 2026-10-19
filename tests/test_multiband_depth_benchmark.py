@@ -1276,7 +1276,13 @@ def test_classical_smoke_cli_exposes_joint_foam_comparison(
     artifact = json.loads(output.read_text())
     assert artifact["foam_grid_side"] == 5
     assert artifact["environment"]["subject"]["package_content_sha256"]
-    assert isinstance(artifact["environment"]["git_dirty"], bool)
+    assert artifact["environment"]["subject_source_kind"] in {
+        "archive",
+        "source_tree",
+        "registry",
+    }
+    dirty = artifact["environment"]["git_dirty"]
+    assert dirty is None or isinstance(dirty, bool)
     assert artifact["environment"]["device"] == "cpu"
     assert artifact["environment"]["dtype"] == "float32"
     assert artifact["configuration"]["include_foam"] is True
