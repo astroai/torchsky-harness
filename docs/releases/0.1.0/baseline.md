@@ -214,6 +214,12 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   against posterior standard deviations (max standardized error 0.226), and
   verifies that mutating bound data raises a stale-evidence error. Task
   `bench-native-likelihood-gate` and a unit test are committed.
+- **Native public API frozen:** added `__all__` to `map/query.py`,
+  `map/operators/continuous_response.py`, and `map/operators/epsf.py`, and
+  extended `docs/api-manifest.json` to cover the native likelihood, query,
+  evidence, nuisance, continuous/detector response, pixel-calibration, EPSF,
+  native-response, native-physical, band-grid Gaussian, and joint-native
+  modules. The manifest guard and preflight pass.
 - **Native nuisance gate:** added `benchmarks/bench_native_nuisance.py` and
   baseline `native_nuisance_smoke.json`. It compares profiled and calibrated
   nuisance precision actions against independent dense references and gates
