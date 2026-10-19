@@ -973,7 +973,7 @@ def _write_mef(
 def _load_weight_map(obs: ImageObservation, image: torch.Tensor) -> torch.Tensor:
     weight = torch.isfinite(image).to(dtype=torch.float32)
     if obs.weight_path is not None:
-        source = torchsky.read(obs.weight_path, hdu=obs.weight_hdu).to(
+        source = torchfits.read(obs.weight_path, hdu=obs.weight_hdu).to(
             dtype=torch.float32
         )
         source = torch.where(
@@ -983,7 +983,7 @@ def _load_weight_map(obs: ImageObservation, image: torch.Tensor) -> torch.Tensor
         )
         weight = weight * source
     if obs.mask_path is not None:
-        mask = torchsky.read(obs.mask_path, hdu=obs.mask_hdu).to(dtype=torch.float32)
+        mask = torchfits.read(obs.mask_path, hdu=obs.mask_hdu).to(dtype=torch.float32)
         mask = torch.where(
             torch.isfinite(mask) & (mask > 0.0),
             torch.ones_like(mask),
@@ -1002,7 +1002,7 @@ def _reproject_weighted_observation(
     if reproject_interp is None:  # pragma: no cover - checked by caller
         raise RuntimeError("reproject is unavailable")
 
-    image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+    image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
     image = image.to(dtype=torch.float32)
     weight = _load_weight_map(obs, image)
     target_shape = (int(target_header["NAXIS2"]), int(target_header["NAXIS1"]))
@@ -1049,7 +1049,7 @@ def _reproject_exact_weighted_observation(
     if reproject_exact is None:  # pragma: no cover - checked by caller
         raise RuntimeError("reproject_exact is unavailable")
 
-    image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+    image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
     image = image.to(dtype=torch.float32)
     weight = _load_weight_map(obs, image)
     target_shape = (int(target_header["NAXIS2"]), int(target_header["NAXIS1"]))
@@ -1096,7 +1096,7 @@ def _dfreproject_weighted_observation(
     if calculate_reprojection is None:  # pragma: no cover - checked by caller
         raise RuntimeError("dfreproject is unavailable")
 
-    image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+    image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
     image = image.to(dtype=torch.float32)
     weight = _load_weight_map(obs, image)
     target_shape = (int(target_header["NAXIS2"]), int(target_header["NAXIS1"]))
@@ -1229,7 +1229,7 @@ def _coadd_with_drizzle(
         disable_ctx=True,
     )
     for obs in observations:
-        image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+        image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
         image = image.to(dtype=torch.float32)
         weight = _load_weight_map(obs, image)
         source_shape = tuple(int(v) for v in image.shape)
@@ -1377,7 +1377,7 @@ def _coadd_with_montage(
         template_path = tmpdir / "target.hdr"
         _write_header_template(template_path, target_header)
         for idx, obs in enumerate(observations):
-            image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+            image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
             image = image.to(dtype=torch.float32)
             weight = _load_weight_map(obs, image)
             montage_bin = default_bin
@@ -1405,13 +1405,13 @@ def _coadd_with_montage(
             denom_in = tmpdir / f"montage_{idx}_denom_in.fits"
             numer_out = tmpdir / f"montage_{idx}_numer_out.fits"
             denom_out = tmpdir / f"montage_{idx}_denom_out.fits"
-            torchsky.write(
+            torchfits.write(
                 str(numer_in),
                 torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight,
                 header=dict(header),
                 overwrite=True,
             )
-            torchsky.write(str(denom_in), weight, header=dict(header), overwrite=True)
+            torchfits.write(str(denom_in), weight, header=dict(header), overwrite=True)
             numer_ok = _project_with_montage(
                 montage_bin, numer_in, numer_out, template_path
             )
@@ -1420,8 +1420,8 @@ def _coadd_with_montage(
             )
             if not numer_ok or not denom_ok:
                 continue
-            numer_proj, numer_header = torchsky.read(str(numer_out), return_header=True)
-            denom_proj, denom_header = torchsky.read(str(denom_out), return_header=True)
+            numer_proj, numer_header = torchfits.read(str(numer_out), return_header=True)
+            denom_proj, denom_header = torchfits.read(str(denom_out), return_header=True)
             numer_proj = torch.nan_to_num(numer_proj, nan=0.0, posinf=0.0, neginf=0.0)
             denom_proj = torch.nan_to_num(denom_proj, nan=0.0, posinf=0.0, neginf=0.0)
             numer += _embed_on_target_grid(
@@ -1548,7 +1548,7 @@ def _coadd_with_casutools(
     loaded: list[tuple[torch.Tensor, dict[str, Any], torch.Tensor]] = []
     max_weight = 0.0
     for obs in observations:
-        image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+        image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
         image = image.to(dtype=torch.float32)
         _validate_casutools_header(dict(header))
         weight = _load_weight_map(obs, image)
@@ -1614,8 +1614,8 @@ def _coadd_with_casutools(
                 f"casutools imstack failed: {completed.stdout.strip()} {completed.stderr.strip()}".strip()
             )
 
-        data, out_header = torchsky.read(str(out_path), hdu=1, return_header=True)
-        conf, conf_header = torchsky.read(str(conf_out_path), hdu=1, return_header=True)
+        data, out_header = torchfits.read(str(out_path), hdu=1, return_header=True)
+        conf, conf_header = torchfits.read(str(conf_out_path), hdu=1, return_header=True)
         data_np = _align_array_to_target(
             data.to(dtype=torch.float32).cpu().numpy().astype(np.float32, copy=False),
             header=dict(out_header),
@@ -1657,7 +1657,7 @@ def _coadd_with_swarp(
         direct_weight = torch.zeros(target_shape, dtype=torch.float32)
         all_direct_copy = True
         for obs in observations:
-            image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+            image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
             image = image.to(dtype=torch.float32)
             if not (
                 headers_equivalent_for_direct_copy(dict(header), target_header)
@@ -1683,7 +1683,7 @@ def _coadd_with_swarp(
         numer_paths: list[str] = []
         denom_paths: list[str] = []
         for idx, obs in enumerate(observations):
-            image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+            image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
             image = image.to(dtype=torch.float32)
             weight = _load_weight_map(obs, image)
             swarp_header = _swarp_source_header(
@@ -1692,13 +1692,13 @@ def _coadd_with_swarp(
             )
             numer_path = tmpdir / f"swarp_{idx}_numer.fits"
             denom_path = tmpdir / f"swarp_{idx}_denom.fits"
-            torchsky.write(
+            torchfits.write(
                 str(numer_path),
                 torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight,
                 header=swarp_header,
                 overwrite=True,
             )
-            torchsky.write(
+            torchfits.write(
                 str(denom_path),
                 weight,
                 header=swarp_header,
@@ -1757,8 +1757,8 @@ def _coadd_with_swarp(
                 f"SWarp denominator pass failed: "
                 f"{denom_completed.stdout.strip()} {denom_completed.stderr.strip()}".strip()
             )
-        numer = torchsky.read(str(numer_imageout_path)).to(dtype=torch.float32)
-        weight = torchsky.read(str(denom_imageout_path)).to(dtype=torch.float32)
+        numer = torchfits.read(str(numer_imageout_path)).to(dtype=torch.float32)
+        weight = torchfits.read(str(denom_imageout_path)).to(dtype=torch.float32)
         data = numer / torch.clamp(weight, min=1e-8)
         if tuple(int(v) for v in data.shape) != target_shape:
             raise RuntimeError(
@@ -1790,7 +1790,7 @@ def _coadd_with_swarp_direct_stack(
         image_paths: list[str] = []
         weight_paths: list[str] = []
         for idx, obs in enumerate(observations):
-            image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+            image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
             image = image.to(dtype=torch.float32)
             support = (_load_weight_map(obs, image) > 0.0).to(dtype=torch.float32)
             swarp_header = _swarp_source_header(
@@ -1809,7 +1809,7 @@ def _coadd_with_swarp_direct_stack(
                 )
             image_path = tmpdir / f"swarp_direct_{idx}.fits"
             weight_path = tmpdir / f"swarp_direct_{idx}.weight.fits"
-            torchsky.write(
+            torchfits.write(
                 str(image_path),
                 scale
                 * (
@@ -1819,7 +1819,7 @@ def _coadd_with_swarp_direct_stack(
                 header=swarp_header,
                 overwrite=True,
             )
-            torchsky.write(
+            torchfits.write(
                 str(weight_path),
                 support,
                 header=swarp_header,
@@ -1857,9 +1857,9 @@ def _coadd_with_swarp_direct_stack(
                 f"SWarp direct pass failed: "
                 f"{completed.stdout.strip()} {completed.stderr.strip()}".strip()
             )
-        data = torchsky.read(str(imageout_path)).to(dtype=torch.float32)
+        data = torchfits.read(str(imageout_path)).to(dtype=torch.float32)
         if weightout_path.exists():
-            weight = torchsky.read(str(weightout_path)).to(dtype=torch.float32)
+            weight = torchfits.read(str(weightout_path)).to(dtype=torch.float32)
         else:
             weight = torch.isfinite(data).to(dtype=torch.float32)
         if tuple(int(v) for v in data.shape) != (
@@ -2069,7 +2069,7 @@ def _prepare_synthetic_diagonal_scale_case(
         dtype=torch.float32
     )
     image_path = tmpdir / "synthetic_diagonal_scale.fits"
-    torchsky.write(str(image_path), image, header=src, overwrite=True)
+    torchfits.write(str(image_path), image, header=src, overwrite=True)
     return [ImageObservation(str(image_path))], tgt
 
 
@@ -2101,7 +2101,7 @@ def _prepare_synthetic_montage_sin_grid_case(
         dtype=torch.float32
     )
     image_path = tmpdir / "synthetic_montage_sin_grid.fits"
-    torchsky.write(str(image_path), image, header=header, overwrite=True)
+    torchfits.write(str(image_path), image, header=header, overwrite=True)
     return [ImageObservation(str(image_path))]
 
 
@@ -2125,8 +2125,8 @@ def _prepare_synthetic_shifted_case(
         image = base + float(idx)
         weight = torch.ones_like(image)
         weight[:, : size // 4] = 2.0 + float(idx)
-        torchsky.write(str(image_path), image, header=obs_header, overwrite=True)
-        torchsky.write(str(weight_path), weight, header=obs_header, overwrite=True)
+        torchfits.write(str(image_path), image, header=obs_header, overwrite=True)
+        torchfits.write(str(weight_path), weight, header=obs_header, overwrite=True)
         observations.append(
             ImageObservation(str(image_path), weight_path=str(weight_path))
         )
@@ -2155,7 +2155,7 @@ def _prepare_synthetic_swarp_clipped_case(
             center = size // 2
             image[center - 1 : center + 2, center - 1 : center + 2] += 50.0
         image_path = tmpdir / f"swarp_clipped_{idx}.fits"
-        torchsky.write(str(image_path), image, header=header, overwrite=True)
+        torchfits.write(str(image_path), image, header=header, overwrite=True)
         observations.append(
             ImageObservation(
                 str(image_path),
@@ -2182,11 +2182,11 @@ def _prepare_upstream_drizzle_translation_case(
     base_path = tmpdir / "drizzle_translation_base.fits"
     translated_path = tmpdir / "drizzle_translation_shifted.fits"
     weight_path = tmpdir / "drizzle_translation_wht.fits"
-    torchsky.write(str(base_path), image, header=header, overwrite=True)
-    torchsky.write(
+    torchfits.write(str(base_path), image, header=header, overwrite=True)
+    torchfits.write(
         str(translated_path), image, header=translated_header, overwrite=True
     )
-    torchsky.write(str(weight_path), weight, header=header, overwrite=True)
+    torchfits.write(str(weight_path), weight, header=header, overwrite=True)
     return [
         ImageObservation(str(base_path), weight_path=str(weight_path)),
         ImageObservation(str(translated_path)),
@@ -2194,15 +2194,15 @@ def _prepare_upstream_drizzle_translation_case(
 
 
 def _prepare_real_case(tmpdir: Path) -> list[ImageObservation]:
-    image = torchsky.read(str(_astropy_sip_fixture())).to(dtype=torch.float32)
+    image = torchfits.read(str(_astropy_sip_fixture())).to(dtype=torch.float32)
     mask_a = tmpdir / "mask_a.fits"
     mask_b = tmpdir / "mask_b.fits"
     left = torch.zeros_like(image)
     left[:, : image.shape[1] // 2] = 1.0
     right = torch.zeros_like(image)
     right[:, image.shape[1] // 2 :] = 1.0
-    torchsky.write(str(mask_a), left, overwrite=True)
-    torchsky.write(str(mask_b), right, overwrite=True)
+    torchfits.write(str(mask_a), left, overwrite=True)
+    torchfits.write(str(mask_b), right, overwrite=True)
     return [
         ImageObservation(str(_astropy_sip_fixture()), mask_path=str(mask_a)),
         ImageObservation(str(_astropy_sip_fixture()), mask_path=str(mask_b)),
@@ -2210,13 +2210,13 @@ def _prepare_real_case(tmpdir: Path) -> list[ImageObservation]:
 
 
 def _prepare_real_shifted_sip_case(tmpdir: Path) -> list[ImageObservation]:
-    image, header = torchsky.read(str(_astropy_sip_fixture()), return_header=True)
+    image, header = torchfits.read(str(_astropy_sip_fixture()), return_header=True)
     image = image.to(dtype=torch.float32)
     shifted_header = dict(header)
     shifted_header["CRVAL1"] = float(shifted_header["CRVAL1"]) + 0.01
     shifted_header["CRVAL2"] = float(shifted_header["CRVAL2"]) - 0.01
     shifted_path = tmpdir / "sip_shifted.fits"
-    torchsky.write(str(shifted_path), image, header=shifted_header, overwrite=True)
+    torchfits.write(str(shifted_path), image, header=shifted_header, overwrite=True)
     return [
         ImageObservation(str(_astropy_sip_fixture())),
         ImageObservation(str(shifted_path)),
@@ -2228,7 +2228,7 @@ def _prepare_real_sip_mef_case(
     *,
     shifted: bool,
 ) -> list[ImageObservation]:
-    image, header = torchsky.read(str(_astropy_sip_fixture()), return_header=True)
+    image, header = torchfits.read(str(_astropy_sip_fixture()), return_header=True)
     data_np = image.to(dtype=torch.float32).cpu().numpy().astype(np.float32, copy=False)
     header_1 = _as_fits_header(dict(header))
     header_2 = _as_fits_header(dict(header))

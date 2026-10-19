@@ -1,6 +1,7 @@
 """Optional SWarp CLI parity vs torchsky on a tiny weighted stack (same grid)."""
 
 from __future__ import annotations
+import torchfits
 
 from pathlib import Path
 
@@ -9,7 +10,6 @@ import torch
 
 pytest.importorskip("torchsky.cpp")
 
-import torchsky  # noqa: E402
 from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,8 +50,8 @@ def test_swarp_bilinear_stack_near_torchsky_on_tiny_shifted_pair(
     blob = torch.exp(-((xx - nx / 2.0) ** 2 + (yy - ny / 2.0) ** 2) / (2.0 * 4.0**2))
     pa = tmp_path / "a.fits"
     pb = tmp_path / "b.fits"
-    torchsky.write(str(pa), blob, header=ha, overwrite=True)
-    torchsky.write(str(pb), blob * 0.95, header=hb, overwrite=True)
+    torchfits.write(str(pa), blob, header=ha, overwrite=True)
+    torchfits.write(str(pb), blob * 0.95, header=hb, overwrite=True)
     obs = [ImageObservation(str(pa)), ImageObservation(str(pb))]
     target_header = dict(base)
     ts = coadd_image_plane(

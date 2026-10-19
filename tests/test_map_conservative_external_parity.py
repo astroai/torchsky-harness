@@ -1,6 +1,7 @@
 """Parity tests for native conservative overlap against optional ``reproject_exact``."""
 
 from __future__ import annotations
+import torchfits
 
 import importlib.util
 import math
@@ -10,7 +11,6 @@ import pytest
 from astropy.wcs import WCS
 import torch
 
-import torchsky
 from torchsky.map import ImageObservation, coadd_image_plane
 
 pytest.importorskip("torchsky.cpp")
@@ -133,7 +133,7 @@ def test_conservative_polygon_parity_matches_reproject_exact_data_and_support(
     source_header = _header()
     image = _blob()
     path = tmp_path / "conservative_affine.fits"
-    torchsky.write(str(path), image, header=source_header, overwrite=True)
+    torchfits.write(str(path), image, header=source_header, overwrite=True)
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],
@@ -168,9 +168,9 @@ def test_conservative_polygon_parity_respects_weight_and_mask_maps(
     image_path = tmp_path / "conservative_image.fits"
     weight_path = tmp_path / "conservative_weight.fits"
     mask_path = tmp_path / "conservative_mask.fits"
-    torchsky.write(str(image_path), image, header=source_header, overwrite=True)
-    torchsky.write(str(weight_path), weight_map, header=source_header, overwrite=True)
-    torchsky.write(str(mask_path), mask, header=source_header, overwrite=True)
+    torchfits.write(str(image_path), image, header=source_header, overwrite=True)
+    torchfits.write(str(weight_path), weight_map, header=source_header, overwrite=True)
+    torchfits.write(str(mask_path), mask, header=source_header, overwrite=True)
 
     obs = ImageObservation(
         str(image_path),

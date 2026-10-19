@@ -1,6 +1,7 @@
 """Score frozen SMACS J0723 spectral-Foam validation products."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import importlib.metadata
@@ -12,7 +13,6 @@ from pathlib import Path
 from typing import Any
 
 import torch
-import torchsky
 
 from torchsky_harness.benchmarks.bench_multiband_depth import (
     _updec_classical_detection_artifact,
@@ -138,10 +138,10 @@ def _build_effective_psfs(
     output_root.mkdir(parents=True, exist_ok=True)
     rows = {}
     for band in BANDS:
-        blank = torchsky.read(
+        blank = torchfits.read(
             str(input_root / "blank" / band / "products" / f"{METHOD}_sci.fits")
         )
-        injected = torchsky.read(
+        injected = torchfits.read(
             str(
                 input_root
                 / "validation-000"
@@ -158,7 +158,7 @@ def _build_effective_psfs(
             radius_px=9,
         )
         path = output_root / f"{band}_{METHOD}_effective_psf.fits"
-        torchsky.write(str(path), psf, overwrite=True)
+        torchfits.write(str(path), psf, overwrite=True)
         rows[band] = {
             **effective_psf_metrics(psf),
             "calibration_ab_magnitude": calibration_magnitude,
@@ -191,7 +191,7 @@ def main() -> int:
     )
 
     support_inputs = [
-        torchsky.read(
+        torchfits.read(
             str(
                 input_root
                 / batch
@@ -211,12 +211,12 @@ def main() -> int:
     )
     if not bool(support.any()):
         raise ValueError("Foam products have no common eroded support")
-    _, target_header = torchsky.read(
+    _, target_header = torchfits.read(
         str(input_root / "blank" / BANDS[0] / "products" / f"{METHOD}_sci.fits"),
         return_header=True,
     )
     support_path = out_dir / "foam_common_support.fits"
-    torchsky.write(
+    torchfits.write(
         str(support_path),
         support.to(torch.uint8),
         header=dict(target_header),

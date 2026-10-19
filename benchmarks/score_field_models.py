@@ -11,6 +11,7 @@ per-band effective FWHM against an explicit reference method.
 """
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import hashlib
@@ -528,7 +529,7 @@ def main() -> int:
         for batch in BATCHES:
             for band in bands:
                 path = work_root / batch / band / "products" / f"{method}_wht.fits"
-                weight, header = torchsky.read(str(path), return_header=True)
+                weight, header = torchfits.read(str(path), return_header=True)
                 world = torchsky.WCS(dict(header)).pixel_to_world(probe)
                 if target_world is None:
                     target_world = world
@@ -549,7 +550,7 @@ def main() -> int:
         raise ValueError("model cells share no common eroded support")
     assert target_header is not None
     support_path = out_dir / "model_common_support.fits"
-    torchsky.write(
+    torchfits.write(
         str(support_path),
         support.to(torch.uint8),
         header=target_header,

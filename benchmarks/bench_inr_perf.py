@@ -14,6 +14,7 @@ Usage (standalone)::
 """
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -32,7 +33,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 BENCHMARKS = ROOT
 
-import torchsky  # noqa: E402
 from torchsky import WCS  # noqa: E402
 from torchsky.device import default_compute_device  # noqa: E402
 from torchsky.map import (  # noqa: E402
@@ -594,7 +594,7 @@ def measure_render_quality(
                 device=dev,
             )
             img_path = tmpdir / f"coadd_obs_{i}.fits"
-            torchsky.write(str(img_path), clean.cpu(), header=obs_header, overwrite=True)
+            torchfits.write(str(img_path), clean.cpu(), header=obs_header, overwrite=True)
             obs_list.append(ImageObservation(str(img_path)))
 
         if dev.type == "cuda":

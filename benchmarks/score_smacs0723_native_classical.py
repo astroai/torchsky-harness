@@ -1,6 +1,7 @@
 """Score the completed native Torchsky Drizzle validation fanout."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import hashlib
@@ -224,7 +225,7 @@ def main() -> int:
     for band in BANDS:
         for method in METHODS:
             path = input_root / "blank" / band / "products" / f"{method}_wht.fits"
-            weight, header = torchsky.read(str(path), return_header=True)
+            weight, header = torchfits.read(str(path), return_header=True)
             if weight.shape != (512, 512):
                 raise ValueError(f"{path}: expected a 512-square target")
             world = torchsky.WCS(dict(header)).pixel_to_world(probe)
@@ -245,7 +246,7 @@ def main() -> int:
         raise ValueError("native candidates have no common eroded support")
     assert target_header is not None
     support_path = out_dir / "native_common_support.fits"
-    torchsky.write(
+    torchfits.write(
         str(support_path),
         support.to(torch.uint8),
         header=target_header,

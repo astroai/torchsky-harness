@@ -44,9 +44,9 @@ def test_cutout_header_shifts_crpix_and_shape() -> None:
 
 def test_sci_header_restores_compressed_image_dimensions(monkeypatch) -> None:
     monkeypatch.setattr(
-        torchsky,
-        "get_header",
-        lambda *_args: {
+        torchfits,
+        "read_header",
+        lambda *_args, **_kwargs: {
             "NAXIS1": 24,
             "NAXIS2": 9584,
             "ZNAXIS1": 9584,
@@ -258,9 +258,9 @@ def test_smacs_mef_io_and_aux_files_use_torchfits_boundary(tmp_path: Path) -> No
     science_path, weight_path, mask_path = _prepare_aux_files(
         path, aux_dir, linearize_sip=False
     )
-    output_science = torchsky.read(str(science_path)).cpu().numpy()
-    output_weight = torchsky.read(str(weight_path)).cpu().numpy()
-    output_mask = torchsky.read(str(mask_path)).cpu().numpy()
+    output_science = torchfits.read(str(science_path)).cpu().numpy()
+    output_weight = torchfits.read(str(weight_path)).cpu().numpy()
+    output_mask = torchfits.read(str(mask_path)).cpu().numpy()
     assert np.array_equal(output_science, science)
     assert output_weight[0, 0] == 0.0
     assert output_weight[0, 1] == 0.25
@@ -277,7 +277,7 @@ def test_smacs_mef_io_and_aux_files_use_torchfits_boundary(tmp_path: Path) -> No
         science_override=override,
     )
     assert np.array_equal(
-        torchsky.read(str(override_science_path)).cpu().numpy(),
+        torchfits.read(str(override_science_path)).cpu().numpy(),
         override,
     )
 

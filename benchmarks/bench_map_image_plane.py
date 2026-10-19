@@ -133,7 +133,7 @@ def _write_mef(path: Path, image_hdus: list[torchfits.TensorHDU]) -> None:
 
 
 def _write_real_sip_mef(tmpdir: Path, *, shifted: bool) -> Path:
-    image, header = torchsky.read(str(_astropy_sip_fixture()), return_header=True)
+    image, header = torchfits.read(str(_astropy_sip_fixture()), return_header=True)
     data = image.to(dtype=torch.float32).cpu().numpy()
     sci1 = _clean_header(dict(header))
     sci1["EXTNAME"] = "SCI"
@@ -268,8 +268,8 @@ def _prepare_synthetic_case(
         image = base + float(i)
         weight = torch.ones_like(image)
         weight[:, : size // 4] = 2.0 + float(i)
-        torchsky.write(str(image_path), image, header=obs_header, overwrite=True)
-        torchsky.write(str(weight_path), weight, header=obs_header, overwrite=True)
+        torchfits.write(str(image_path), image, header=obs_header, overwrite=True)
+        torchfits.write(str(weight_path), weight, header=obs_header, overwrite=True)
         observations.append(
             ImageObservation(
                 str(image_path),
@@ -280,7 +280,7 @@ def _prepare_synthetic_case(
 
 
 def _prepare_real_case(tmpdir: Path) -> tuple[list[ImageObservation], tuple[int, int]]:
-    image = torchsky.read(str(_astropy_sip_fixture()))
+    image = torchfits.read(str(_astropy_sip_fixture()))
     image = image.to(dtype=torch.float32)
     mask_a = tmpdir / "mask_a.fits"
     mask_b = tmpdir / "mask_b.fits"
@@ -290,8 +290,8 @@ def _prepare_real_case(tmpdir: Path) -> tuple[list[ImageObservation], tuple[int,
     right = torch.zeros_like(image)
     right[:, image.shape[1] // 2 :] = 1.0
 
-    torchsky.write(str(mask_a), left, overwrite=True)
-    torchsky.write(str(mask_b), right, overwrite=True)
+    torchfits.write(str(mask_a), left, overwrite=True)
+    torchfits.write(str(mask_b), right, overwrite=True)
 
     return (
         [
@@ -305,13 +305,13 @@ def _prepare_real_case(tmpdir: Path) -> tuple[list[ImageObservation], tuple[int,
 def _prepare_real_shifted_sip_case(
     tmpdir: Path,
 ) -> tuple[list[ImageObservation], tuple[int, int]]:
-    image, header = torchsky.read(str(_astropy_sip_fixture()), return_header=True)
+    image, header = torchfits.read(str(_astropy_sip_fixture()), return_header=True)
     image = image.to(dtype=torch.float32)
     shifted_header = dict(header)
     shifted_header["CRVAL1"] = float(shifted_header["CRVAL1"]) + 0.01
     shifted_header["CRVAL2"] = float(shifted_header["CRVAL2"]) - 0.01
     shifted_path = tmpdir / "sip_shifted.fits"
-    torchsky.write(str(shifted_path), image, header=shifted_header, overwrite=True)
+    torchfits.write(str(shifted_path), image, header=shifted_header, overwrite=True)
     return (
         [
             ImageObservation(str(_astropy_sip_fixture())),
@@ -327,7 +327,7 @@ def _prepare_real_sip_mef_case(
     shifted: bool,
 ) -> tuple[list[ImageObservation], tuple[int, int]]:
     mef_path = _write_real_sip_mef(tmpdir, shifted=shifted)
-    image = torchsky.read(str(_astropy_sip_fixture())).to(dtype=torch.float32)
+    image = torchfits.read(str(_astropy_sip_fixture())).to(dtype=torch.float32)
     return (
         [
             ImageObservation(

@@ -2,6 +2,7 @@
 """Diagnose per-observation reprojection differences on large-union truth cases."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -80,7 +81,7 @@ def _torchsky_weighted_observation(
     kernel: str,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     observation = obs.observation
-    image, header = torchsky.read(
+    image, header = torchfits.read(
         observation.path, hdu=observation.hdu, return_header=True
     )
     image = validate_image_plane_2d(image)
@@ -403,7 +404,7 @@ def main() -> int:
             width=args.width,
             height=args.height,
         )
-        first_image, _ = torchsky.read(
+        first_image, _ = torchfits.read(
             observations[0].observation.path,
             hdu=observations[0].observation.hdu,
             return_header=True,

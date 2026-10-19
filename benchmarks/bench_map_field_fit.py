@@ -2,6 +2,7 @@
 """Benchmark differentiable latent-field fitting against synthetic truth."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -3117,8 +3118,8 @@ def _simulate_observations(
         obs_index = len(observations) - 1
         image_path = tmpdir / f"{case_spec.case}_{obs_index}.fits"
         weight_path = tmpdir / f"{case_spec.case}_{obs_index}_wht.fits"
-        torchsky.write(str(image_path), image, header=spec.header, overwrite=True)
-        torchsky.write(str(weight_path), weight, header=spec.header, overwrite=True)
+        torchfits.write(str(image_path), image, header=spec.header, overwrite=True)
+        torchfits.write(str(weight_path), weight, header=spec.header, overwrite=True)
         image_observations.append(
             ImageObservation(
                 str(image_path),
@@ -3267,7 +3268,7 @@ def _apply_sky_holdout_to_training_observations(
             )
         )
         weight_path = tmpdir / f"{case_spec.case}_{index}_sky_holdout_wht.fits"
-        torchsky.write(
+        torchfits.write(
             str(weight_path),
             training_weight,
             header=observation.header,

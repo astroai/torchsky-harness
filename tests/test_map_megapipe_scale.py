@@ -1,6 +1,7 @@
 """Megapipe-scale benchmark: torchsky vs SWarp on CFHT-representative data."""
 
 from __future__ import annotations
+import torchfits
 
 from pathlib import Path
 
@@ -9,7 +10,6 @@ import torch
 
 pytest.importorskip("torchsky.cpp")
 
-import torchsky
 from torchsky.map import ImageObservation, coadd_image_plane
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,8 +62,8 @@ def test_megapipe_scale_torchsky_beats_swarp_on_speed(tmp_path: Path) -> None:
 
         path = tmp_path / f"obs_{i}.fits"
         wt_path = tmp_path / f"obs_{i}_wt.fits"
-        torchsky.write(str(path), img, header=hdr, overwrite=True)
-        torchsky.write(str(wt_path), wt, header=hdr, overwrite=True)
+        torchfits.write(str(path), img, header=hdr, overwrite=True)
+        torchfits.write(str(wt_path), wt, header=hdr, overwrite=True)
         obs_list.append(ImageObservation(str(path), weight_path=str(wt_path)))
 
     target_header = dict(_cfht_scale_header(h, w))
@@ -131,8 +131,8 @@ def test_megapipe_scale_torchsky_no_oom(tmp_path: Path) -> None:
 
         path = tmp_path / f"obs_{i}.fits"
         wt_path = tmp_path / f"obs_{i}_wt.fits"
-        torchsky.write(str(path), img, header=hdr, overwrite=True)
-        torchsky.write(str(wt_path), wt, header=hdr, overwrite=True)
+        torchfits.write(str(path), img, header=hdr, overwrite=True)
+        torchfits.write(str(wt_path), wt, header=hdr, overwrite=True)
         obs_list.append(ImageObservation(str(path), weight_path=str(wt_path)))
 
     target_header = dict(_cfht_scale_header(h, w))

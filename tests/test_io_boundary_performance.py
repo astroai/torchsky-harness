@@ -1,6 +1,7 @@
 """Retained legacy facade timing gate; FITS performance ownership is torchfits."""
 
 from __future__ import annotations
+import torchfits
 
 import os
 from pathlib import Path
@@ -8,7 +9,6 @@ import statistics
 import time
 
 import pytest
-import torchsky
 import torchsky_harness
 
 pytestmark = pytest.mark.performance
@@ -31,7 +31,7 @@ def test_gate_fits_image_read_stub() -> None:
     assert _FIXTURE.is_file(), f"missing {_FIXTURE}"
 
     def run() -> None:
-        torchsky.read(str(_FIXTURE), return_header=True)
+        torchfits.read(str(_FIXTURE), return_header=True)
 
     max_s = float(os.environ.get("TORCHSKY_PERF_GATE_READ_FITS_S", "3.0"))
     assert _median_seconds(run) < max_s

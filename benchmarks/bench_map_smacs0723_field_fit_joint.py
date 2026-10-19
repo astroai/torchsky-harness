@@ -2,6 +2,7 @@
 """Joint multiband real-data field-fit benchmark on JWST SMACS J0723 products."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import collections
@@ -381,7 +382,7 @@ def _save_scene_initialization_product(
     }
     files = {}
     for name, (output_path, tensor, header) in outputs.items():
-        torchsky.write(
+        torchfits.write(
             str(output_path), tensor.detach().cpu(), header=header,
             overwrite=False,
         )
@@ -710,7 +711,7 @@ def _export_native_training_view(
                 path = output_dir / f"{index:03d}_{kind}.fits"
                 header = dict(observation.header)
                 header["BUNIT"] = {"sci": "MJy/sr", "wht": "(MJy/sr)^-2", "mask": "1"}[kind]
-                torchsky.write(str(path), array, header=header, overwrite=False)
+                torchfits.write(str(path), array, header=header, overwrite=False)
                 paths[kind] = str(path)
                 hashes[kind] = calibration_fit._sha256(path)
             source_path = Path(str(context.extra["source_path"]))
@@ -3114,31 +3115,31 @@ def _write_export_products(
     model_dir = export_dir / _safe_slug(psf_mode) / _safe_slug(band) / _safe_slug(model)
     model_dir.mkdir(parents=True, exist_ok=True)
     residual = prediction - reference
-    torchsky.write(
+    torchfits.write(
         str(model_dir / "reference.fits"),
         torch.from_numpy(reference.astype(np.float32, copy=False)),
         header=dict(header),
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(model_dir / "prediction.fits"),
         torch.from_numpy(prediction.astype(np.float32, copy=False)),
         header=dict(header),
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(model_dir / "residual.fits"),
         torch.from_numpy(residual.astype(np.float32, copy=False)),
         header=dict(header),
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(model_dir / "support_mask.fits"),
         torch.from_numpy(support_mask.astype(np.float32, copy=False)),
         header=dict(header),
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(model_dir / "source_mask.fits"),
         torch.from_numpy(source_mask.astype(np.float32, copy=False)),
         header=dict(header),
@@ -4408,7 +4409,7 @@ def main() -> int:
             key = (calibration_exposure_id(sample), str(sample["band"]).upper())
             calibration_samples.setdefault(key, []).append(sample)
     explicit_target_header = (
-        dict(torchsky.read(str(args.target_header_path), return_header=True)[1])
+        dict(torchfits.read(str(args.target_header_path), return_header=True)[1])
         if args.target_header_path is not None
         else None
     )

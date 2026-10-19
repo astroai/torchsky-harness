@@ -1,4 +1,5 @@
 from __future__ import annotations
+import torchfits
 import json
 import math
 import pytest
@@ -15,7 +16,6 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 import torch
-import torchsky
 
 pytest.importorskip("PIL")
 
@@ -751,7 +751,7 @@ def test_scene_initialization_product_is_persisted_with_hashes(tmp_path: Path) -
         assert path.is_file()
         assert identity["size"] == path.stat().st_size
         assert identity["sha256"] == joint_benchmark.calibration_fit._sha256(path)
-    reopened, header = torchsky.read(metadata["files"]["data"]["path"], return_header=True)
+    reopened, header = torchfits.read(metadata["files"]["data"]["path"], return_header=True)
     torch.testing.assert_close(reopened, product.data * 3.0)
     assert header["BUNIT"] == "MJy/sr"
     assert int(header["NAXIS3"]) == 1

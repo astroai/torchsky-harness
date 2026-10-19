@@ -35,7 +35,6 @@ DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.md"
 
-import torchsky  # noqa: E402
 from torchsky.map import ImageObservation, coadd_image_plane  # noqa: E402
 
 try:  # noqa: E402
@@ -146,7 +145,7 @@ def _as_fits_header(header: dict[str, Any]) -> dict[str, Any]:
 def _load_weight_map(obs: ImageObservation, image: torch.Tensor) -> torch.Tensor:
     weight = torch.isfinite(image).to(dtype=torch.float32)
     if obs.weight_path is not None:
-        source = torchsky.read(obs.weight_path, hdu=obs.weight_hdu).to(
+        source = torchfits.read(obs.weight_path, hdu=obs.weight_hdu).to(
             dtype=torch.float32
         )
         source = torch.where(
@@ -156,7 +155,7 @@ def _load_weight_map(obs: ImageObservation, image: torch.Tensor) -> torch.Tensor
         )
         weight = weight * source
     if obs.mask_path is not None:
-        mask = torchsky.read(obs.mask_path, hdu=obs.mask_hdu).to(dtype=torch.float32)
+        mask = torchfits.read(obs.mask_path, hdu=obs.mask_hdu).to(dtype=torch.float32)
         mask = torch.where(
             torch.isfinite(mask) & (mask > 0.0),
             torch.ones_like(mask),
@@ -197,7 +196,7 @@ def _coadd_with_drizzle(
         disable_ctx=True,
     )
     for obs in observations:
-        image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+        image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
         image = image.to(dtype=torch.float32)
         weight = _load_weight_map(obs, image)
         source_shape = tuple(int(v) for v in image.shape)

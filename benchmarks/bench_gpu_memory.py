@@ -89,7 +89,7 @@ class GPUMemoryBenchmark:
                     import time
 
                     start_time = time.perf_counter()
-                    gpu_tensor = torchsky.read(filepath, device="cuda")
+                    gpu_tensor = torchfits.read(filepath, device="cuda")
                     direct_time = time.perf_counter() - start_time
 
                     mem_after_direct, _ = self.get_gpu_memory_usage()
@@ -115,7 +115,7 @@ class GPUMemoryBenchmark:
                 mem_before, _ = self.get_gpu_memory_usage()
 
                 start_time = time.perf_counter()
-                cpu_tensor = torchsky.read(filepath)
+                cpu_tensor = torchfits.read(filepath)
                 gpu_tensor = cpu_tensor.cuda()
                 transfer_time = time.perf_counter() - start_time
 
@@ -167,7 +167,7 @@ class GPUMemoryBenchmark:
                 mem_before, _ = self.get_gpu_memory_usage()
 
                 # Load to GPU
-                tensor = torchsky.read(
+                tensor = torchfits.read(
                     filepath, device="cuda" if self.cuda_available else "cpu"
                 )
 
@@ -222,7 +222,7 @@ class GPUMemoryBenchmark:
 
             # Test CPU transforms
             self.clear_gpu_memory()
-            cpu_tensor = torchsky.read(filepath)
+            cpu_tensor = torchfits.read(filepath)
 
             import time
 
@@ -278,7 +278,7 @@ class GPUMemoryBenchmark:
             # Perform multiple load/delete cycles
             n_cycles = 10
             for i in range(n_cycles):
-                tensor = torchsky.read(
+                tensor = torchfits.read(
                     filepath, device="cuda" if self.cuda_available else "cpu"
                 )
 

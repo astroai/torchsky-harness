@@ -2,6 +2,7 @@
 """Focused runtime/RSS/scratch scorecard for overlap-background mapmaking."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import gc
@@ -73,7 +74,7 @@ def _worker(*, size: int, n_obs: int, tile: int) -> dict[str, Any]:
                 - fraction * 0.25 * yy
             )
             path = root / f"observation-{index}.fits"
-            torchsky.write(
+            torchfits.write(
                 str(path),
                 scene + background,
                 header=_header(size),

@@ -13,7 +13,6 @@ import numpy as np
 import torch
 import torchfits
 
-import torchsky
 from torchfits.hdu import HDUList, Header, TensorHDU
 
 
@@ -87,10 +86,10 @@ def main():
         print("-" * 80)
 
         methods = {
-            "torchsky_read_cold": lambda p=path: torchsky.read(
+            "torchsky_read_cold": lambda p=path: torchfits.read(
                 str(p), mmap=True, cache_capacity=0
             ),
-            "torchsky_read_cold_nommap": lambda p=path: torchsky.read(
+            "torchsky_read_cold_nommap": lambda p=path: torchfits.read(
                 str(p), mmap=False, cache_capacity=0
             ),
             "torchfits_read": lambda p=path: torchfits.read(str(p)),
@@ -127,7 +126,7 @@ def main():
     HDUList(hdus).write(str(mef_path), overwrite=True)
 
     mef_methods = {
-        "torchsky_read_cold_ext1": lambda p=mef_path: torchsky.read(
+        "torchsky_read_cold_ext1": lambda p=mef_path: torchfits.read(
             str(p), hdu=1, mmap=True, cache_capacity=0
         ),
         "torchfits_read_ext1": lambda p=mef_path: torchfits.read(str(p), hdu=1),

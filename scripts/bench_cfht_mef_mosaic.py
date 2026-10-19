@@ -42,11 +42,10 @@ def exposure_str(seconds: float) -> str:
 def estimate_background_offsets(
     exposures: list[Path], n_ccd: int
 ) -> dict[tuple[str, int], float]:
-    import torchsky
     offsets: dict[tuple[str, int], float] = {}
     for exp_path in exposures:
         for ext_idx in range(1, n_ccd + 1):
-            img = torchsky.read(str(exp_path), hdu=int(ext_idx))
+            img = torchfits.read(str(exp_path), hdu=int(ext_idx))
             offsets[(str(exp_path), ext_idx)] = float(img.median())
     return offsets
 

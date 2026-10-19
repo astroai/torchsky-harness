@@ -1,11 +1,11 @@
 from __future__ import annotations
+import torchfits
 
 import hashlib
 import json
 from pathlib import Path
 import torch
 import pytest
-import torchsky
 
 from torchsky.calibration_evidence import load_operator_calibration_split
 
@@ -52,8 +52,8 @@ def test_exposure_selection_preserves_independent_splits_and_provenance(
                 rows.append(row)
     kernels = tmp_path / "kernels.fits"
     weights = tmp_path / "weights.fits"
-    torchsky.write(str(kernels), torch.ones((1, 3, 3)) / 9.0)
-    torchsky.write(str(weights), torch.ones((1, 3, 3)))
+    torchfits.write(str(kernels), torch.ones((1, 3, 3)) / 9.0)
+    torchfits.write(str(weights), torch.ones((1, 3, 3)))
     payload = {
         "extraction": {
             "products": {

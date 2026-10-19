@@ -2,6 +2,7 @@
 """Real-exposure SMACS J0723 smoke benchmark against a published F277W drizzle product."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -228,9 +229,9 @@ def _module_detector_tokens(band: str, module: str | None) -> tuple[str, ...]:
 
 def _exposure_filter_band(path: Path) -> str | None:
     try:
-        primary = dict(torchsky.get_header(str(path), 0))
+        primary = dict(torchfits.read_header(str(path), 0))
         try:
-            science = dict(torchsky.get_header(str(path), "SCI"))
+            science = dict(torchfits.read_header(str(path), "SCI"))
         except Exception:
             science = primary
         for key in ("FILTER", "PUPIL"):
@@ -245,8 +246,8 @@ def _exposure_filter_band(path: Path) -> str | None:
 
 
 def _sci_header(path: Path) -> dict[str, Any]:
-    header = dict(torchsky.get_header(str(path), "SCI"))
-    primary = dict(torchsky.get_header(str(path), 0))
+    header = dict(torchfits.read_header(str(path), "SCI"))
+    primary = dict(torchfits.read_header(str(path), 0))
     for key in ("BUNIT", "PHOTMJSR", "PIXAR_SR", "CRDS_CTX"):
         if key not in header and key in primary:
             header[key] = primary[key]
@@ -258,7 +259,7 @@ def _sci_header(path: Path) -> dict[str, Any]:
 
 
 def _read_ext(path: Path, ext: str) -> np.ndarray:
-    image = torchsky.read(str(path), hdu=ext)
+    image = torchfits.read(str(path), hdu=ext)
     return image.detach().cpu().numpy().astype(np.float32, copy=False)
 
 
@@ -570,19 +571,19 @@ def _prepare_aux_files(
     science_path = tmpdir / f"{stem}_sci.fits"
     weight_path = tmpdir / f"{stem}_wht.fits"
     mask_path = tmpdir / f"{stem}_mask.fits"
-    torchsky.write(
+    torchfits.write(
         str(science_path),
         torch.from_numpy(np.asarray(science, dtype=np.float32)),
         header=header,
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(weight_path),
         torch.from_numpy(np.asarray(weight, dtype=np.float32)),
         header=header,
         overwrite=True,
     )
-    torchsky.write(
+    torchfits.write(
         str(mask_path),
         torch.from_numpy(np.asarray(mask, dtype=np.float32)),
         header=header,

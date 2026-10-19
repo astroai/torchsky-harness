@@ -2,6 +2,7 @@
 """Compare legacy stackers, torchsky kernels, and INR models on real SMACS J0723 data."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -148,7 +149,7 @@ def _wcs_overlap_probe(
     target_astropy = WCS(_as_fits_header(target_header))
     rows: list[dict[str, Any]] = []
     for observation in observations:
-        image, source_header = torchsky.read(
+        image, source_header = torchfits.read(
             observation.path,
             hdu=observation.hdu,
             return_header=True,
@@ -898,16 +899,16 @@ def _score_product_parity_pairs(
                     f"input method failed: {native_name}={native.get('status')}, "
                     f"{official_name}={official.get('status')}"
                 )
-            native_data, native_header = torchsky.read(
+            native_data, native_header = torchfits.read(
                 str(native["product_path"]), return_header=True
             )
-            native_weight, native_weight_header = torchsky.read(
+            native_weight, native_weight_header = torchfits.read(
                 str(native["product_weight_path"]), return_header=True
             )
-            official_data, official_header = torchsky.read(
+            official_data, official_header = torchfits.read(
                 str(official["product_path"]), return_header=True
             )
-            official_weight, official_weight_header = torchsky.read(
+            official_weight, official_weight_header = torchfits.read(
                 str(official["product_weight_path"]), return_header=True
             )
             headers = (
@@ -1118,7 +1119,7 @@ def _coadd_with_reproject_exact(
     denom = np.zeros(target_shape, dtype=np.float32)
     target_header_astropy = _as_fits_header(target_header)
     for obs in observations:
-        image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+        image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
         image = image.to(dtype=torch.float32)
         weight = _load_weight_map(obs, image)
         if (
@@ -1171,7 +1172,7 @@ def _coadd_with_reproject_adaptive(
     denom = np.zeros(target_shape, dtype=np.float32)
     target_header_astropy = _as_fits_header(target_header)
     for obs in observations:
-        image, header = torchsky.read(obs.path, hdu=obs.hdu, return_header=True)
+        image, header = torchfits.read(obs.path, hdu=obs.hdu, return_header=True)
         image = image.to(dtype=torch.float32)
         weight = _load_weight_map(obs, image)
         if (
@@ -1482,13 +1483,13 @@ def run_stacker_benchmark(
                     product_out_dir.mkdir(parents=True, exist_ok=True)
                     product_path = product_out_dir / f"{spec['name']}_sci.fits"
                     weight_path = product_out_dir / f"{spec['name']}_wht.fits"
-                    torchsky.write(
+                    torchfits.write(
                         str(product_path),
                         torch.from_numpy(product_pred),
                         header=target_header,
                         overwrite=True,
                     )
-                    torchsky.write(
+                    torchfits.write(
                         str(weight_path),
                         torch.from_numpy(product_weight),
                         header=target_header,
@@ -1722,7 +1723,7 @@ def main() -> int:
         ),
         science_overrides=science_overrides,
         target_header_override=(
-            dict(torchsky.read(str(args.target_header_path), return_header=True)[1])
+            dict(torchfits.read(str(args.target_header_path), return_header=True)[1])
             if args.target_header_path is not None
             else None
         ),

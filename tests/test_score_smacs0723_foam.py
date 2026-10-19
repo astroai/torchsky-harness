@@ -1,9 +1,9 @@
+import torchfits
 import json
 from pathlib import Path
 
 import pytest
 import torch
-import torchsky
 
 from torchsky_harness.benchmarks.score_smacs0723_foam import (
     BANDS,
@@ -59,7 +59,7 @@ def test_foam_effective_psf_uses_product_dtype(tmp_path: Path) -> None:
         for batch, image in (("blank", blank), ("validation-000", injected)):
             path = input_root / batch / band / "products" / f"{METHOD}_sci.fits"
             path.parent.mkdir(parents=True, exist_ok=True)
-            torchsky.write(str(path), image, overwrite=True)
+            torchfits.write(str(path), image, overwrite=True)
     manifest = tmp_path / "manifest.json"
     manifest.write_text(
         json.dumps(
@@ -74,7 +74,7 @@ def test_foam_effective_psf_uses_product_dtype(tmp_path: Path) -> None:
 
     assert set(rows) == set(BANDS)
     for band in BANDS:
-        psf = torchsky.read(str(rows[band]["path"]))
+        psf = torchfits.read(str(rows[band]["path"]))
         torch.testing.assert_close(psf.sum(), torch.tensor(1.0))
         assert rows[band]["calibration_ab_magnitude"] == 27.0
         assert rows[band]["calibration_source_count"] == 1

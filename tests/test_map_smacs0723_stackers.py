@@ -1,4 +1,5 @@
 from __future__ import annotations
+import torchfits
 
 from pathlib import Path
 from types import SimpleNamespace
@@ -6,7 +7,6 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 import torch
-import torchsky
 from torchsky.map import ImageObservation
 
 
@@ -52,7 +52,7 @@ def test_wcs_overlap_probe_compares_torchsky_and_astropy(tmp_path: Path) -> None
         "CDELT2": 0.01,
     }
     path = tmp_path / "probe.fits"
-    torchsky.write(str(path), torch.ones((8, 8)), header=header, overwrite=True)
+    torchfits.write(str(path), torch.ones((8, 8)), header=header, overwrite=True)
 
     row = _wcs_overlap_probe([ImageObservation(str(path))], header)[0]
 
@@ -299,7 +299,7 @@ def test_product_only_persists_supported_product_without_reference_metrics(
         "CDELT2": 0.01,
     }
     source_path = tmp_path / "source.fits"
-    torchsky.write(
+    torchfits.write(
         str(source_path), torch.ones((2, 2)), header=header, overwrite=True
     )
     monkeypatch.setattr(
@@ -398,13 +398,13 @@ def test_score_product_parity_pairs_compares_persisted_common_grid(
     for name, scale in (("native", 1.0), ("official", 1.01)):
         science_path = tmp_path / f"{name}_sci.fits"
         weight_path = tmp_path / f"{name}_wht.fits"
-        torchsky.write(
+        torchfits.write(
             str(science_path),
             scale * torch.arange(1, 5, dtype=torch.float32).reshape(2, 2),
             header=header,
             overwrite=True,
         )
-        torchsky.write(
+        torchfits.write(
             str(weight_path),
             torch.ones((2, 2)),
             header=header,

@@ -7,6 +7,7 @@ coadds to the full published stacks, and optionally fits one full-grid INR per b
 """
 
 from __future__ import annotations
+import torchfits
 
 import sys
 
@@ -26,7 +27,6 @@ SRC = ROOT / "src"
 BENCH = ROOT / "benchmarks"
 SCRIPTS = ROOT / "scripts"
 
-import torchsky  # noqa: E402
 from torchsky_harness.benchmarks.bench_map_field_fit import _field_model_kwargs_for_case  # noqa: E402
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit import (  # noqa: E402
     REAL_CASE,
@@ -222,7 +222,7 @@ def _coadd_full_band(
     mosaic_dir.mkdir(parents=True, exist_ok=True)
     metric_dir.mkdir(parents=True, exist_ok=True)
     output_path = mosaic_dir / f"{band}_torchsky_full_mosaic.fits"
-    torchsky.write(str(output_path), result.data, header=target_header, overwrite=True)
+    torchfits.write(str(output_path), result.data, header=target_header, overwrite=True)
 
     row = {
         "band": band,
@@ -396,7 +396,7 @@ def _fit_full_band(
     fit_dir.mkdir(parents=True, exist_ok=True)
     metric_dir.mkdir(parents=True, exist_ok=True)
     output_path = fit_dir / f"{band}_{model_kind}_full_prediction.fits"
-    torchsky.write(str(output_path), pred, header=target_header, overwrite=True)
+    torchfits.write(str(output_path), pred, header=target_header, overwrite=True)
 
     support_metric_mask = _metric_mask(pred, reference, support_mask)
     support_diff = pred[support_metric_mask] - reference[support_metric_mask]

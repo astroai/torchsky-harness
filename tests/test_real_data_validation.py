@@ -7,7 +7,7 @@ import pytest
 import torch
 from astropy.wcs import WCS as AstropyWCS
 
-import torchsky
+from torchsky import WCS
 import torchfits
 
 
@@ -18,7 +18,7 @@ SIP_WCS_FIXTURE = ASTROPY_ROOT / "nddata" / "tests" / "data" / "sip-wcs.fits"
 
 def test_local_sip_wcs_fixture_matches_astropy_world_coordinates() -> None:
     awcs = AstropyWCS(torchfits.read_header(SIP_WCS_FIXTURE.as_posix()))
-    twcs = torchsky.get_wcs(SIP_WCS_FIXTURE.as_posix(), hdu=0)
+    twcs = WCS(torchfits.read_header(SIP_WCS_FIXTURE.as_posix(), hdu=0))
     xy = np.array([[0.0, 0.0], [20.0, 10.0], [80.0, 40.0]], dtype=np.float64)
 
     ra_ast, dec_ast = awcs.all_pix2world(xy[:, 0], xy[:, 1], 0)

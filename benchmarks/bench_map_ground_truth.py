@@ -2,6 +2,7 @@
 """Benchmark torchsky mapmaking against synthetic ground truth."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -625,12 +626,12 @@ def _simulate_observation(
 
     image_path = tmpdir / f"{name}.fits"
     weight_path = tmpdir / f"{name}_wht.fits"
-    torchsky.write(str(image_path), noisy_flux, header=header, overwrite=True)
-    torchsky.write(str(weight_path), weight, header=header, overwrite=True)
+    torchfits.write(str(image_path), noisy_flux, header=header, overwrite=True)
+    torchfits.write(str(weight_path), weight, header=header, overwrite=True)
     mask_path = None
     if mask_tensor is not None:
         mask_path = tmpdir / f"{name}_msk.fits"
-        torchsky.write(str(mask_path), mask_tensor, header=header, overwrite=True)
+        torchfits.write(str(mask_path), mask_tensor, header=header, overwrite=True)
     zero_weight_fraction = float((weight <= 0.0).to(torch.float32).mean().item())
     explicit_mask_fraction = (
         float((mask_tensor <= 0.0).to(torch.float32).mean().item())
@@ -1293,7 +1294,7 @@ def _target_mask_region_masks(
         obs_without_mask = _clone_observation(
             obs_with_mask, keep_weight=True, keep_mask=False
         )
-        image, header = torchsky.read(
+        image, header = torchfits.read(
             obs_with_mask.path, hdu=obs_with_mask.hdu, return_header=True
         )
         image = validate_image_plane_2d(image).to(device=device)
@@ -1815,20 +1816,20 @@ def _field_observations_from_simulated_inputs(
     selected = observations[: max(int(max_observations), 1)]
     field_observations: list[FieldObservation] = []
     for item in selected:
-        image = torchsky.read(
+        image = torchfits.read(
             item.observation.path,
             hdu=item.observation.hdu,
             device="cpu",
         ).to(dtype=torch.float32)
         weight = None
         if item.observation.weight_path is not None:
-            weight = torchsky.read(
+            weight = torchfits.read(
                 item.observation.weight_path,
                 device="cpu",
             ).to(dtype=torch.float32)
         mask = None
         if item.observation.mask_path is not None:
-            mask = torchsky.read(
+            mask = torchfits.read(
                 item.observation.mask_path,
                 device="cpu",
             ).to(dtype=torch.float32)

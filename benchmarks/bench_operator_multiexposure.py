@@ -14,6 +14,7 @@ Metrics tracked:
 """
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -30,7 +31,6 @@ SRC = ROOT / "src"
 
 from torchsky_harness.benchmarks.config import DEFAULT_OUTPUT_DIR  # noqa: E402
 
-import torchsky  # noqa: E402
 from torchsky.map import ImageObservation, MapResult, coadd_image_plane  # noqa: E402
 
 
@@ -104,7 +104,7 @@ def _create_synthetic_exposures(
             size, cx=0.25, cy=-0.2, amplitude=0.5, sigma=8.0
         )
         path = tmpdir / f"exp_{i:04d}.fits"
-        torchsky.write(str(path), image, header=header, overwrite=True)
+        torchfits.write(str(path), image, header=header, overwrite=True)
         obs.append(ImageObservation(str(path)))
     return obs
 

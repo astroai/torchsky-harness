@@ -7,6 +7,7 @@ source-extraction API to :mod:`torchsky`.
 """
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 from dataclasses import asdict, dataclass
@@ -1247,7 +1248,7 @@ def coadd_synthetic_exposures(
             observations: list[ImageObservation] = []
             for exposure, header in enumerate(exposures.headers):
                 path = root / f"exposure-{exposure:02d}-band-{band:02d}.fits"
-                torchsky.write(
+                torchfits.write(
                     str(path),
                     exposures.images[exposure, band].to("cpu"),
                     header=header,
@@ -2960,7 +2961,7 @@ def _updec_adass_smoke_artifact(
             position_error_px = float(
                 torch.linalg.vector_norm(centroid - injection.source_xy[0])
             )
-            primary_header = dict(torchsky.get_header(str(path), 0))
+            primary_header = dict(torchfits.read_header(str(path), 0))
             patt_num = int(primary_header["PATT_NUM"])
             rows.append(
                 {
@@ -3046,11 +3047,11 @@ def _updec_effective_psf_artifact(
             relative = Path(band) / "products" / f"{method}_sci.fits"
             positive_path = (positive_product_root / relative).resolve()
             blank_path = (blank_product_root / relative).resolve()
-            positive, positive_header = torchsky.read(
+            positive, positive_header = torchfits.read(
                 str(positive_path),
                 return_header=True,
             )
-            blank, blank_header = torchsky.read(
+            blank, blank_header = torchfits.read(
                 str(blank_path),
                 return_header=True,
             )
@@ -3132,7 +3133,7 @@ def _updec_effective_psf_artifact(
                 radius_px=radius_px,
             ).to(torch.float32)
             output_path = output_dir / f"{band}_{method}_effective_psf.fits"
-            torchsky.write(
+            torchfits.write(
                 str(output_path),
                 effective,
                 header={
@@ -3216,7 +3217,7 @@ def _updec_classical_detection_artifact(
         or background_block_size < 8
     ):
         raise ValueError("invalid classical detection contract")
-    support = torchsky.read(str(support_mask_path)).to(torch.bool)
+    support = torchfits.read(str(support_mask_path)).to(torch.bool)
     if support.ndim != 2 or not bool(support.any()):
         raise ValueError("support mask must be a nonempty 2-D FITS image")
     estimator = MeshSkyEstimator(
@@ -3243,9 +3244,9 @@ def _updec_classical_detection_artifact(
         psf_path = (
             effective_psf_root / f"{band}_{method}_effective_psf.fits"
         ).resolve()
-        image, header = torchsky.read(str(science_path), return_header=True)
-        weight = torchsky.read(str(weight_path))
-        psf = torchsky.read(str(psf_path))
+        image, header = torchfits.read(str(science_path), return_header=True)
+        weight = torchfits.read(str(weight_path))
+        psf = torchfits.read(str(psf_path))
         if (
             image.shape != support.shape
             or weight.shape != support.shape
@@ -3357,7 +3358,7 @@ def _updec_classical_detection_artifact(
     world = torchsky.WCS(target_header).pixel_to_world(detections)
     statistic_out = statistic_out.expanduser().resolve()
     statistic_out.parent.mkdir(parents=True, exist_ok=True)
-    torchsky.write(
+    torchfits.write(
         str(statistic_out),
         statistic,
         header=target_header,
@@ -3972,7 +3973,7 @@ def main() -> int:
         )
         target_world = target_wcs.pixel_to_world(target_probe)
         for path in support_paths:
-            weight, header = torchsky.read(
+            weight, header = torchfits.read(
                 str(path),
                 return_header=True,
             )
@@ -4071,7 +4072,7 @@ def main() -> int:
         if valid_mask is not None and args.support_mask_out is not None:
             support_mask_path = args.support_mask_out.expanduser().resolve()
             support_mask_path.parent.mkdir(parents=True, exist_ok=True)
-            torchsky.write(
+            torchfits.write(
                 str(support_mask_path),
                 valid_mask.to(torch.uint8),
                 header=target_header,

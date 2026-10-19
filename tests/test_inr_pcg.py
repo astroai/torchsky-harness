@@ -1,3 +1,4 @@
+import torchfits
 """Software checks only; these fixtures provide no scientific evidence."""
 
 import json
@@ -42,7 +43,6 @@ def test_neural_pcg_cli_rejects_a_grid_only_request() -> None:
 def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_path: Path) -> None:
     from dataclasses import replace
 
-    import torchsky
     from torchsky.map import FieldObservation, ForwardContext, ImageObservation, render_field_observation
     from torchsky.map.operators import LearnedBackgroundOp, field_observation_operator_bundle
 
@@ -91,7 +91,7 @@ def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_
     observation.image.copy_(fixed + signal)
     observation.image[0, 0] = float("nan")
     scale = 3.
-    torchsky.write(str(source_path), observation.image * scale, header=header)
+    torchfits.write(str(source_path), observation.image * scale, header=header)
     source_bytes = source_path.read_bytes()
     before = {name: getattr(observation, name).clone() for name in ("image", "err", "weight", "mask")}
     report = _export_native_training_view(
@@ -102,9 +102,9 @@ def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_
     saved = json.loads(Path(report["manifest_path"]).read_text())
     descriptor = saved["rows"][0]["image_observation"]
     image_observation = ImageObservation(**descriptor)
-    science, exported_header = torchsky.read(image_observation.path, return_header=True)
-    saved_weight = torchsky.read(image_observation.weight_path)
-    saved_mask = torchsky.read(image_observation.mask_path)
+    science, exported_header = torchfits.read(image_observation.path, return_header=True)
+    saved_weight = torchfits.read(image_observation.weight_path)
+    saved_mask = torchfits.read(image_observation.mask_path)
     valid = mask > 0
     torch.testing.assert_close(science[valid], (signal * scale)[valid])
     torch.testing.assert_close(saved_weight[valid], weight[valid] / scale ** 2)

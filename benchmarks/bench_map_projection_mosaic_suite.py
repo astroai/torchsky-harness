@@ -2,6 +2,7 @@
 """Run the wide-projection mosaicking scoreboard beyond TAN/SIP."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 from dataclasses import dataclass, replace
@@ -22,7 +23,6 @@ BENCHMARKS = ROOT / "benchmarks"
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_field_fit as field_fit_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
-import torchsky  # noqa: E402
 from torchsky.map import (  # noqa: E402
     FieldObservation,
     ImageObservation,
@@ -1364,7 +1364,7 @@ def _evaluate_stack_vs_inr_case(
                 )
             )
             image_path = tmpdir / f"common_psf_{idx}.fits"
-            torchsky.write(
+            torchfits.write(
                 str(image_path),
                 image.to(dtype=torch.float32),
                 header=observation.header,

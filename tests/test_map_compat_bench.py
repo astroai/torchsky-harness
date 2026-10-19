@@ -39,7 +39,7 @@ def test_plan_image_plane_target_matches_montage_style_template(tmp_path) -> Non
         "CD2_2": 0.01,
     }
     path_in = tmp_path / "in.fits"
-    torchsky.write(
+    torchfits.write(
         str(path_in),
         torch.ones((24, 32), dtype=torch.float32),
         header=header,
@@ -128,7 +128,7 @@ def test_plan_image_plane_target_matches_montage_template_cdelta_only(tmp_path) 
         "CDELT2": 0.008,
     }
     path_in = tmp_path / "in_cdelta.fits"
-    torchsky.write(
+    torchfits.write(
         str(path_in),
         torch.ones((20, 28), dtype=torch.float32),
         header=header,
@@ -908,8 +908,8 @@ def test_swarp_weighted_coadd_uses_direct_sum_on_aligned_inputs(tmp_path: Path) 
     path_b = tmp_path / "aligned_b.fits"
     data_a = torch.arange(16 * 12, dtype=torch.float32).reshape(12, 16)
     data_b = data_a + 5.0
-    torchsky.write(str(path_a), data_a, header=header, overwrite=True)
-    torchsky.write(str(path_b), data_b, header=header, overwrite=True)
+    torchfits.write(str(path_a), data_a, header=header, overwrite=True)
+    torchfits.write(str(path_b), data_b, header=header, overwrite=True)
 
     obs_list = [
         bench_map_ground_truth.ImageObservation(str(path_a)),
@@ -919,7 +919,7 @@ def test_swarp_weighted_coadd_uses_direct_sum_on_aligned_inputs(tmp_path: Path) 
     direct_numer = None
     direct_weight = None
     for obs in obs_list:
-        image = bench_map_ground_truth.torchsky.read(obs.path, hdu=obs.hdu).to(
+        image = bench_map_ground_truth.torchfits.read(obs.path, hdu=obs.hdu).to(
             dtype=torch.float32
         )
         weight = bench_map_compat._load_weight_map(obs, image)

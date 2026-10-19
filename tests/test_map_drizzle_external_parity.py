@@ -7,6 +7,7 @@ Requires: ``torchsky.cpp``, optional ``drizzle``.
 """
 
 from __future__ import annotations
+import torchfits
 
 import math
 from pathlib import Path
@@ -21,7 +22,6 @@ from astropy.wcs import WCS as AstropyWCS  # noqa: E402
 from drizzle.resample import Drizzle as DrizzleResampler  # noqa: E402
 from drizzle.utils import calc_pixmap, estimate_pixel_scale_ratio  # noqa: E402
 
-import torchsky
 from torchsky.map import ImageObservation, coadd_image_plane
 
 
@@ -182,7 +182,7 @@ def test_external_drizzle_parity_across_affine_cases(
     source_header = _header()
     image = _blob()
     path = tmp_path / f"{kernel}_{value_semantics}_{pixfrac:.1f}.fits"
-    torchsky.write(str(path), image, header=source_header, overwrite=True)
+    torchfits.write(str(path), image, header=source_header, overwrite=True)
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],
@@ -228,9 +228,9 @@ def test_external_drizzle_parity_respects_weight_and_mask_maps(
     image_path = tmp_path / f"{kernel}_image.fits"
     weight_path = tmp_path / f"{kernel}_weight.fits"
     mask_path = tmp_path / f"{kernel}_mask.fits"
-    torchsky.write(str(image_path), image, header=source_header, overwrite=True)
-    torchsky.write(str(weight_path), weight_map, header=source_header, overwrite=True)
-    torchsky.write(str(mask_path), mask, header=source_header, overwrite=True)
+    torchfits.write(str(image_path), image, header=source_header, overwrite=True)
+    torchfits.write(str(weight_path), weight_map, header=source_header, overwrite=True)
+    torchfits.write(str(mask_path), mask, header=source_header, overwrite=True)
 
     obs = ImageObservation(
         str(image_path),
@@ -275,7 +275,7 @@ def test_external_drizzle_parity_square_support_matches_weighted_uniform_field(
     target_header = _header(crval1=180.015, rotation_deg=13.0, scale=0.95)
     image = torch.ones((16, 16), dtype=torch.float32)
     path = tmp_path / "uniform.fits"
-    torchsky.write(str(path), image, header=source_header, overwrite=True)
+    torchfits.write(str(path), image, header=source_header, overwrite=True)
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],

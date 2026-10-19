@@ -2,6 +2,7 @@
 """Benchmark multiwavelength latent-field mapmaking against known cube truth."""
 
 from __future__ import annotations
+import torchfits
 
 import argparse
 import json
@@ -627,8 +628,8 @@ def _simulate_observation(
 
     image_path = tmpdir / f"{name}.fits"
     weight_path = tmpdir / f"{name}_wht.fits"
-    torchsky.write(str(image_path), noisy, header=spec.header, overwrite=True)
-    torchsky.write(str(weight_path), weight, header=spec.header, overwrite=True)
+    torchfits.write(str(image_path), noisy, header=spec.header, overwrite=True)
+    torchfits.write(str(weight_path), weight, header=spec.header, overwrite=True)
     center = 0.5 * (spec.spectral_min + spec.spectral_max)
     return SimulatedObservation(
         observation=ImageObservation(
@@ -1865,20 +1866,20 @@ def _field_observations_from_simulated_inputs(
     selected = observations[: max(int(max_observations), 1)]
     field_observations: list[FieldObservation] = []
     for item in selected:
-        image = torchsky.read(
+        image = torchfits.read(
             item.observation.path,
             hdu=item.observation.hdu,
             device="cpu",
         ).to(dtype=torch.float32)
         weight = None
         if item.observation.weight_path is not None:
-            weight = torchsky.read(
+            weight = torchfits.read(
                 item.observation.weight_path,
                 device="cpu",
             ).to(dtype=torch.float32)
         mask = None
         if item.observation.mask_path is not None:
-            mask = torchsky.read(
+            mask = torchfits.read(
                 item.observation.mask_path,
                 device="cpu",
             ).to(dtype=torch.float32)

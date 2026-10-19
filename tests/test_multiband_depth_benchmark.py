@@ -540,7 +540,7 @@ def test_manifest_cli_reads_final_weight_support(
     weight_path = tmp_path / "weight.fits"
     weight = torch.ones((64, 64), dtype=torch.float32)
     weight[:12] = 0.0
-    torchsky.write(str(weight_path), weight, header=header)
+    torchfits.write(str(weight_path), weight, header=header)
     output = tmp_path / "manifest.json"
     support_mask_path = tmp_path / "support_mask.fits"
     avoidance_path = tmp_path / "avoidance.json"
@@ -624,7 +624,7 @@ def test_manifest_cli_reads_final_weight_support(
         radius_px=3,
     )
     torch.testing.assert_close(
-        torchsky.read(str(support_mask_path)),
+        torchfits.read(str(support_mask_path)),
         expected_support.to(torch.uint8),
     )
 
@@ -826,8 +826,8 @@ def test_effective_psf_artifact_reads_torchsky_products(tmp_path: Path) -> None:
     relative = Path("F200W/products/torchsky_bilinear_sci.fits")
     (blank_root / relative.parent).mkdir(parents=True)
     (positive_root / relative.parent).mkdir(parents=True)
-    torchsky.write(str(blank_root / relative), torch.zeros_like(positive), header=header)
-    torchsky.write(str(positive_root / relative), positive, header=header)
+    torchfits.write(str(blank_root / relative), torch.zeros_like(positive), header=header)
+    torchfits.write(str(positive_root / relative), positive, header=header)
     manifest_path = tmp_path / "manifest.json"
     flux_jy = (0.04 / 3600.0 * math.pi / 180.0) ** 2 * 1.0e6
     manifest_path.write_text(
@@ -856,7 +856,7 @@ def test_effective_psf_artifact_reads_torchsky_products(tmp_path: Path) -> None:
     assert row["negative_lobe_fraction"] < 0.002
     assert abs(row["median_fractional_flux_bias"]) < 0.02
     assert len(row["aperture_flux_jy"]) == 2
-    psf = torchsky.read(row["effective_psf_path"])
+    psf = torchfits.read(row["effective_psf_path"])
     assert psf.shape == (9, 9)
     torch.testing.assert_close(psf.sum(), torch.tensor(1.0), atol=1e-6, rtol=0.0)
 
@@ -896,10 +896,10 @@ def test_effective_psf_artifact_reports_null_band_without_flux_bias(
         relative = Path(band) / "products" / "torchsky_bilinear_sci.fits"
         (blank_root / relative.parent).mkdir(parents=True)
         (positive_root / relative.parent).mkdir(parents=True)
-        torchsky.write(
+        torchfits.write(
             str(blank_root / relative), torch.zeros_like(difference), header=header
         )
-        torchsky.write(str(positive_root / relative), difference, header=header)
+        torchfits.write(str(positive_root / relative), difference, header=header)
 
     pixel_flux_jy = (0.04 / 3600.0 * math.pi / 180.0) ** 2 * 1.0e6
     manifest_path = tmp_path / "manifest.json"
@@ -956,24 +956,24 @@ def test_classical_detection_artifact_uses_mesh_psf_and_blank_whitening(
     product_root = tmp_path / "products"
     product_dir = product_root / band / "products"
     product_dir.mkdir(parents=True)
-    torchsky.write(
+    torchfits.write(
         str(product_dir / f"{method}_sci.fits"),
         image,
         header=header,
     )
-    torchsky.write(
+    torchfits.write(
         str(product_dir / f"{method}_wht.fits"),
         weight,
         header=header,
     )
     psf_root = tmp_path / "psfs"
     psf_root.mkdir()
-    torchsky.write(
+    torchfits.write(
         str(psf_root / f"{band}_{method}_effective_psf.fits"),
         psf,
     )
     support_path = tmp_path / "support.fits"
-    torchsky.write(
+    torchfits.write(
         str(support_path),
         torch.ones((size, size), dtype=torch.uint8),
         header=header,

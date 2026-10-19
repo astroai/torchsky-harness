@@ -101,8 +101,8 @@ def test_sci_header_retains_primary_calibration_provenance(monkeypatch):
     headers = {"SCI": {"BUNIT": "MJy/sr", "PIXAR_SR": 2.e-14},
                0: {"BUNIT": "wrong primary unit", "PHOTMJSR": 3., "CRDS_CTX": "jwst_1234.pmap"}}
     monkeypatch.setattr(
-        "torchsky_harness.benchmarks.bench_map_smacs0723_real.torchsky.get_header",
-        lambda path, hdu: headers[hdu],
+        "torchsky_harness.benchmarks.bench_map_smacs0723_real.torchfits.read_header",
+        lambda path, hdu, **_kwargs: headers[hdu],
     )
     header = _sci_header(Path("example.fits"))
     assert header == {"BUNIT": "MJy/sr", "PIXAR_SR": 2.e-14, "PHOTMJSR": 3., "CRDS_CTX": "jwst_1234.pmap"}
