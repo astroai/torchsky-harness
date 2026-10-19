@@ -207,6 +207,11 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `benchmarks/baselines/map_cube_smoke.json` and task `bench-map-cube-gate` are
   committed. Smoke and unit test pass (RMSE ≈4.9e-8). This covers 2D-band cube
   assembly, not the full 3D IFU/WCS evaluator, which remains open.
+- **Map spectral helper split:** extracted the spectral-axis validation,
+  interval projection, Gaussian-filter projection, band-name, and band-metadata
+  helpers (225 lines) from `map/image_plane.py` into
+  `map/spectral_projection.py`. `image_plane.py` is now ~6,045 lines, down from
+  6,588 at the start of the split work; map tests pass.
 - **Native response gate:** added `benchmarks/bench_native_response.py` and
   baseline `benchmarks/baselines/native_response_smoke.json`. It injects a known
   pixel-integrated Gaussian star on a native stamp, fits flux plus constant
