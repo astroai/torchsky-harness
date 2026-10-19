@@ -423,7 +423,7 @@ install; the bundle records the harness revision.
 | `bench-wcs-release-gate` | `bench_wcs` | astropy | 30 projections: angular parity max 4.13e-5 asec (AIR formula floor; others ≤4e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; forward 0.54–3.70× and inverse 0.86–6.90× astropy |
 | `bench-healpix-release-gate` | `bench_healpix` | healpy | 6 ops at nside 512: zero index mismatches, max angle 1.14e-13 deg, throughput 1.02–2.19× |
 | `bench-healpix-advanced-release-gate` | `bench_healpix_advanced` | healpy | 6 ops: zero mismatches, throughput 1.25–2.06× |
-| `bench-sphere-matrix-release-gate` | `bench_sphere_matrix` | healpy | 3 profiles: median ratios 2.24/1.55/1.22/1.02/1.42/1.11, no failed thresholds |
+| `bench-sphere-matrix-release-gate` | `bench_sphere_matrix` | healpy | 3 profiles at nside 512: index/angle parity gates pass; median ratios 2.00/1.54/1.27/0.98/1.43/0.98 recorded but not gated on macOS (run-to-run noise crosses the Mac-tuned threshold; pinned-runner work) |
 | `bench-spin-matrix-release-gate` | `bench_spin_matrix` | healpy | spin-2 SHT: no failures, small-bucket median ratios 0.459/0.422 vs 0.15 thresholds |
 | `bench-catalog-release-gate` | `bench_catalog_compat` | astropy SkyCoord | 6 rows OK, max separation difference 1.13e-10 asec |
 

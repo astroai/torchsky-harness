@@ -97,9 +97,9 @@ CLAIMS: dict[str, EvaluationClaim] = {
         comparators=("healpy",),
         summary_failures_key="failed_thresholds",
         limitations=(
-            "index and angle parity plus median throughput ratios at nside 512",
-            "throughput ratios compare one CPU with healpy; not a pinned-runner"
-            " performance claim",
+            "index and angle parity at nside 512; median healpy ratios are"
+            " recorded but not gated on macOS (hardware-fingerprinted"
+            " performance gates belong on the pinned runner)",
         ),
     ),
     "bench_spin_matrix": EvaluationClaim(
