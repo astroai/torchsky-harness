@@ -547,7 +547,7 @@ case "${mode}" in
       pytest \
       "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_core.py" \
       "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_extended_projections.py" \
-      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_own_projection_matrix.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_projection_matrix.py" \
       "${TORCHSKY_SUBJECT_ROOT}/tests/test_invariants_randomized.py" \
       "${TORCHSKY_SUBJECT_ROOT}/tests/test_science_invariants.py" \
       -q --tb=line -k cuda \
