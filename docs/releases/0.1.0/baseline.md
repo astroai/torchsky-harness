@@ -435,7 +435,11 @@ formula-precision floor shared by astropy's implementation.
 
 `pixi run evidence-bundle` reports `release_ready: true`,
 `subject_consistent: true`, `verdict_counts = {established: 13}`,
-`missing_claims: []`. The bundle (git-ignored) is regenerated for the tag;
+`missing_claims: []`, `incomplete_claims: []`. The local run records carry
+`harness.source.dirty = true` because this checkout has pre-existing
+uncommitted tooling files (`.dsh/`, `docs/benchmarks.md`); the release bundle
+must be regenerated on a clean pinned-runner checkout and attached to the tag.
+All thirteen claim runs are recorded at the same harness revision. The bundle (git-ignored) is regenerated for the tag;
 attach it to the release notes. Comparison throughput numbers are same-machine
 (macOS) ratios, not pinned-runner performance claims; correctness metrics are
 hardware-independent.
