@@ -1,0 +1,16 @@
+[
+  {
+    "case": "native_nuisance_precision",
+    "library": "torchsky",
+    "method": "ProfiledNuisancePrecision/CalibratedNuisancePrecision",
+    "variant": "4-pixel-2-mode",
+    "status": "OK",
+    "profiled_max_abs_error": 8.881784197001252e-16,
+    "calibrated_max_abs_error": 1.1102230246251565e-16,
+    "profiled_rank": 2,
+    "reconstruction_rmse": 8.881784197001252e-16,
+    "signal_to_residual_db": 300.0,
+    "total_flux_relative_error": 0.0,
+    "skip_time_regression": true
+  }
+]

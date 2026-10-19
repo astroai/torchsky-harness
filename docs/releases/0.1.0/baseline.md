@@ -214,6 +214,11 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   against posterior standard deviations (max standardized error 0.226), and
   verifies that mutating bound data raises a stale-evidence error. Task
   `bench-native-likelihood-gate` and a unit test are committed.
+- **Native nuisance gate:** added `benchmarks/bench_native_nuisance.py` and
+  baseline `native_nuisance_smoke.json`. It compares profiled and calibrated
+  nuisance precision actions against independent dense references and gates
+  max absolute error (<1e-10, observed ~9e-16) and profiled rank. Task
+  `bench-native-nuisance-gate` and a unit test are committed.
 - **Map spectral helper split:** extracted the spectral-axis validation,
   interval projection, Gaussian-filter projection, band-name, and band-metadata
   helpers (225 lines) from `map/image_plane.py` into
