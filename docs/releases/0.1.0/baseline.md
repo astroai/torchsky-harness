@@ -485,7 +485,10 @@ found were fixed or recorded, not hidden:
   `reproject_interp` and 34.9 ms for `reproject_exact`, with a 0.128 RMSE
   disagreement on the noisy synthetic field (interpolation-kernel difference to
   investigate against the existing drizzle/swarp CI baselines; not a release
-  claim). This is supporting evidence, not a declared gate.
+  claim). This is supporting evidence, not a declared gate. The older
+  `bench-map-compat-gate` also fails locally on a 1/256 (`0.00390625`) MEF
+  drizzle row; it is not a declared release claim and needs a pinned-runner
+  re-baseline.
 ## Version bump (release candidate)
 
 torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is
