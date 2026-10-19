@@ -11,7 +11,7 @@ jobs:
     - run: pixi run -e test -- python -m pip install -e . --no-deps --no-build-isolation
     - run: pixi run preflight
     - name: Infrastructure contracts without a scientific subject
-      run: pixi run -e test -- pytest tests/test_runner.py tests/test_run_local_sphere_bench.py -q
+      run: pixi run -e test -- pytest tests/test_runner.py tests/test_run_local_sphere_bench.py tests/test_docs_links.py -q
     - name: Build pure-Python harness wheel
       run: pixi run build
     - uses: actions/upload-artifact@v4
