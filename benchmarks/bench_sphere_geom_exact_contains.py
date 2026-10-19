@@ -38,13 +38,17 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
-import torchsky.sphere.geom as geom  # noqa: E402
 from torchsky.sphere.geom import (  # noqa: E402
     SphericalPolygon,
     _numpy_sg_contains_lonlat_bulk,
     spherical_polygon_contains,
     to_exact_region,
 )
+
+
+def _spherical_geometry_available() -> bool:
+    """Whether the optional ``spherical_geometry`` comparator is installed."""
+    return importlib.util.find_spec("spherical_geometry") is not None
 
 
 def _time_many(fn: Callable[[], Any], runs: int) -> float:
@@ -179,7 +183,7 @@ def main() -> int:
     lon_q_t = torch.from_numpy(lon_q).to(torch.float64)
     lat_q_t = torch.from_numpy(lat_q).to(torch.float64)
 
-    if not geom._spherical_geometry_available():
+    if not _spherical_geometry_available():
         rows.append(
             {
                 "operation": "exact_region_contains",
