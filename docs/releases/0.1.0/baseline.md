@@ -377,6 +377,32 @@ retain the ACS campaign as evidence, not a pass.
   for editable installs, and `kind=registry` otherwise; the evidence bundle
   records the source kind and digest per run. Covered by
   `tests/test_subject_source.py`.
+## Release candidate evidence (2026-10-18)
+
+Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
+(sha256 `f9e537dd49fdfccb17ad49774567d3e5a835af9d84132cb18cb6e560b07d6259`),
+built from torchsky `b669af2f` and installed into the harness test environment as
+a wheel (import path `site-packages/torchsky`, not the checkout). Subject
+`package_content_sha256 = 49f816de7a1daafc60b9695e34897e13b2916148c3816e781d05ab7cec63d0d6`,
+`source.kind = archive`, harness revision `ad0d7a38`. Every gate below is a
+`pixi run` task against that install:
+
+| Gate | Evaluation | Verdict |
+|---|---|---|
+| `bench-map-cube-gate` | `bench_map_cube` | established / baseline_compared |
+| `bench-map-ifu-gate` | `bench_map_ifu` | established / baseline_compared |
+| `bench-map-ifu-spectral-axis-gate` | `bench_map_ifu_spectral_axis` | established / baseline_compared |
+| `bench-map-healpix-multiband-gate` | `bench_map_healpix_multiband` | established / baseline_compared |
+| `bench-native-response-gate` | `bench_native_response` | established / baseline_compared |
+| `bench-native-likelihood-gate` | `bench_native_likelihood` | established / baseline_compared |
+| `bench-native-nuisance-gate` | `bench_native_nuisance` | established / baseline_compared |
+
+`pixi run evidence-bundle` reports `release_ready: true`,
+`subject_consistent: true`, `verdict_counts = {established: 7}`,
+`missing_claims: []`, `incomplete_runs: []`. The bundle (git-ignored) is
+regenerated for the tag; attach it to the release notes. These are bounded
+synthetic claims only: see the gate matrix for what each does not cover.
+
 ## Version bump (release candidate)
 
 torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is
