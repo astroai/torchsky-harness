@@ -199,6 +199,14 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   configuration, target, and result types from `map/image_plane.py` into
   `map/observation.py`. Full suite after these changes: **2659 passed,
   98 skipped**.
+- **New spectral-cube gate:** added
+  `benchmarks/bench_map_cube.py`, a synthetic truth-cube test that splits a
+  known spatial-spectral cube into per-band 2D observations and recombines them
+  with `coadd_cube`. It gates voxel RMSE (`<1e-5`), maximum absolute error, and
+  band/total flux conservation (`<1e-3`); baseline
+  `benchmarks/baselines/map_cube_smoke.json` and task `bench-map-cube-gate` are
+  committed. Smoke and unit test pass (RMSE ≈4.9e-8). This covers 2D-band cube
+  assembly, not the full 3D IFU/WCS evaluator, which remains open.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately
