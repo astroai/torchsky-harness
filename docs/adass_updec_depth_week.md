@@ -1,7 +1,7 @@
 # ADASS UPdec Depth Sprint
 
 > Current execution: follow the accepted 2026-09-05 plan in
-> [`../roadmap/next.md`](../roadmap/next.md). Development is on fork `main`.
+> [`archive/core-before-second-pass/docs/roadmap/next.md`](archive/core-before-second-pass/docs/roadmap/next.md). Development is on fork `main`.
 > Historical deadlines and exact-SHA instructions below describe earlier runs.
 > Select models by validation detector likelihood after fidelity checks; depth
 > is a separate scientific endpoint. Nominal Gaussian PSFs and summary passbands

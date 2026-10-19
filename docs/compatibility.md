@@ -35,12 +35,12 @@ Out of this program: ducc0 internals, lsst.sphgeom, wcslib/pyast/Kapteyn (option
 | WCS / projections | **Astropy** `astropy.wcs`, FITS WCS | `torchsky.wcs.WCS`, C++/fused paths; parity tests vs Astropy where scoped |
 | FITS I/O & tables | **torchfits** | `torchfits` / `torchsky.table` façade; never `astropy.io.fits` or Python `fitsio` |
 | Spherical geometry / polygons | **spherical_geometry**, **astropy-healpix** (where applicable) | `torchsky.sphere` and `torchsky.sphere.geom`; exact regions and benchmarks vs upstream fixtures |
-| Catalogs / coordinates | **Astropy** `SkyCoord` / ERFA | `torchsky.wcs.CatalogState` and `torchsky.wcs.frames`; see [coordinates.md](coordinates.md). Not a SkyCoord clone. |
+| Catalogs / coordinates | **Astropy** `SkyCoord` / ERFA | `torchsky.wcs.CatalogState` and `torchsky.wcs.frames`; see [coordinates.md](https://github.com/astroai/torchsky/blob/main/docs/coordinates.md). Not a SkyCoord clone. |
 
 ## Where compatibility lives
 
 - **HEALPix native pixel API** — `torchsky.sphere.healpix` owns indexing, neighbors, interpolation, range helpers, and query primitives.
-- **HEALPix / healpy-shaped API** — [`torchsky.sphere.compat`](sphere.md#compatibility) and [`torchsky.sphere.healpy`](sphere.md#compatibility) (same symbols; use `import torchsky.sphere.healpy as hp` if you prefer healpy naming).
+- **HEALPix / healpy-shaped API** — [`torchsky.sphere.compat`](https://github.com/astroai/torchsky/blob/main/docs/sphere.md#compatibility) and [`torchsky.sphere.healpy`](https://github.com/astroai/torchsky/blob/main/docs/sphere.md#compatibility) (same symbols; use `import torchsky.sphere.healpy as hp` if you prefer healpy naming).
 - **Sphere native + extended geometry** — `torchsky.sphere` (regions, MOC, sparse maps, etc.), often compared to healpy/hpgeom/spherical_geometry in tests and benchmarks.
 - **WCS** — `torchsky.wcs` (see tests and WCS-related benchmarks).
 - **FITS / tables** — `torchfits`; torchsky accepts decoded tensors, headers,
@@ -104,4 +104,4 @@ Many parity and benchmark paths import **healpy**, **Astropy**, **hpgeom**, or o
 
 1. Prefer implementing behavior in **torch-native** primitives, then expose a **thin** compatibility wrapper with the upstream name/signature.
 2. Add **tests** against the reference library or packaged fixtures when available.
-3. Document the mapping here or in the domain doc (`sphere.md`, `api.md`, etc.).
+3. Document the mapping here or in the domain doc (`sphere.md`, `api.md`, etc. in the torchsky package docs).

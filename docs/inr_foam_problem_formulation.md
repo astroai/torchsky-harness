@@ -3,7 +3,7 @@
 ## Active SMACS assumptions — 2026-09-05
 
 The accepted execution specification is in
-[`../roadmap/next.md`](../roadmap/next.md#accepted-execution-plan--2026-09-05).
+[`archive/core-before-second-pass/docs/roadmap/next.md`](archive/core-before-second-pass/docs/roadmap/next.md#accepted-execution-plan--2026-09-05).
 The first comparison learns a static spatial/spectral `I_nu` scene through fixed
 measured passbands and independently calibrated PSFs/backgrounds. Effective PSFs
 include detector pixel response; do not integrate pixels twice. Use calibrated
@@ -1194,14 +1194,14 @@ metric.
 
 ## Related Torchsky documents
 
-- [Continuous fields](../field.md): current field APIs, models, observation
+- [Continuous fields](archive/core-before-second-pass/docs/field.md): current field APIs, models, observation
   operators, and training workflow.
-- [Implicit forward modelling](../implicit_forward.md): compact multi-survey
+- [Implicit forward modelling](https://github.com/astroai/torchsky/blob/main/docs/implicit_forward.md): compact multi-survey
   prediction and robust-loss scaffold.
 - [ADASS UPDec depth sprint](adass_updec_depth_week.md): frozen data split,
   method matrix, claim gates, and current execution status.
-- [Source unmixing with known or unknown sources](source_unmixing_problem_formulation.md):
+- Source unmixing with known or unknown sources:
   component identifiability, protected targets, cross-fitting, and uncertainty
   after reconstruction.
-- [FOSSIL primitives](fossil.md): longer-term differentiable
+- FOSSIL primitives: longer-term differentiable
   spatial-spectral component-separation use cases.
