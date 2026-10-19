@@ -90,6 +90,15 @@ local/CANFAR commands. Verify the workflow before citing a per-push map gate.
 
 **Optional map-compat wall-time regression:** after recording representative `time_ms` rows on a pinned runner, pass **`--time-baseline-json`** (format in **`benchmarks/baselines/map_compat_time_gate_example.json`**) and **`--time-regression-tolerance`** (default `0.35`) to fail if OK rows slow down beyond the baseline. This is intentionally **off** in default CI because wall times vary by hardware.
 
+## Real-data sphere parity
+
+`benchmarks/bench_sphere_real_map.py` compares torchsky and healpy on a compact
+real-sky map derived from the local 2 GB CFHT MegaPipe g-band mosaic
+(`scripts/derive_real_sphere_fixture.py`; provenance in
+`benchmarks/fixtures/real_sphere/PROVENANCE.md`). The fixture stores only
+per-pixel means and real sky positions. It gates pixel lookup, interpolation,
+`ud_grade`, `map2alm`/`alm2map`/`alm2cl`, and `smoothmap`.
+
 ## Real-data WCS parity
 
 `benchmarks/bench_wcs_real_headers.py` compares torchsky and astropy on eleven

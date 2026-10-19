@@ -71,6 +71,27 @@ CLAIMS: dict[str, EvaluationClaim] = {
             " from the round-trip thresholds, not from the angular parity gate",
         ),
     ),
+    "bench_sphere_real_map": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "ang2pix_real",
+            "interp_real",
+            "ud_grade_512_256",
+            "ud_grade_512_128",
+            "map2alm_real",
+            "alm2map_real",
+            "alm2cl_real",
+            "smooth_real",
+        ),
+        comparators=("healpy",),
+        limitations=(
+            "real-sky fixture derived from a locally held 2 GB CFHT MegaPipe"
+            " g-band mosaic (stride 8, nside 512, 106 occupied pixels); raw"
+            " survey pixels are not redistributed",
+            "maps are a single real survey footprint, not a full-sky survey"
+            " product; full-sky synthetic cases remain in bench_healpix",
+        ),
+    ),
     "bench_wcs_real_headers": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(
