@@ -11,7 +11,7 @@ from torchsky_harness.cli import main as harness_main
 
 def _ensure_local_cpp() -> None:
     """Fail closed; installation/building is an explicit separate operation."""
-    subprocess.run([sys.executable, "-c", "import torchsky; import torchsky.cpp"], check=True)
+    subprocess.run([sys.executable, "-c", "import torchsky; import torchsky._cpp"], check=True)
 
 
 def main() -> int:

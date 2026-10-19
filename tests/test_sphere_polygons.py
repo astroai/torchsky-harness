@@ -22,7 +22,7 @@ except Exception:  # pragma: no cover - optional comparator fixtures
 
 def _has_cpp_geom() -> bool:
     try:
-        from torchsky import cpp as _cpp_mod  # type: ignore
+        from torchsky import _cpp as _cpp_mod  # type: ignore
     except Exception:
         return False
     return hasattr(_cpp_mod, "_sphere_planar_point_in_polygon_cpu") and hasattr(

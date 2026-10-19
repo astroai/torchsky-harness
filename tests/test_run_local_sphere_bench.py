@@ -17,4 +17,4 @@ def test_missing_native_subject_fails_without_install(monkeypatch):
     with pytest.raises(subprocess.CalledProcessError):
         runner._ensure_local_cpp()
     assert len(commands) == 1
-    assert commands[0][1:] == ["-c", "import torchsky; import torchsky.cpp"]
+    assert commands[0][1:] == ["-c", "import torchsky; import torchsky._cpp"]

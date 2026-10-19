@@ -158,7 +158,7 @@ pixi_run "${native_build_env}" python - "${native_build_env}" <<'PYRUNTIME'
 import sys
 from pathlib import Path
 import torch
-import torchsky.cpp
+import torchsky._cpp
 import torchfits
 print(f"runtime_prefix={sys.prefix} torch={torch.__version__} torchfits={torchfits.__version__}")
 maps = Path("/proc/self/maps")

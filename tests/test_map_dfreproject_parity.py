@@ -3,7 +3,7 @@
 Uses the same weighted numerator/denominator pattern as ``benchmarks/bench_map_compat.py``.
 ``dfreproject`` is optional: install via ``torchsky[bench]`` (see ``pyproject.toml``).
 
-Requires: ``torchsky.cpp``, ``dfreproject``, ``astropy``.
+Requires: ``torchsky._cpp``, ``dfreproject``, ``astropy``.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 pytest.importorskip("dfreproject")
 import torchfits  # noqa: E402
 

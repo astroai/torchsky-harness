@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import torch
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 
 from torchsky.map.image_plane import coadd_image_plane
 from torchsky_harness.metrics import evaluate_map_product

@@ -11,7 +11,7 @@ fine ``nside`` yields a non-degenerate footprint and a bounded bilinear round-tr
 error (see ``test_reproject_healpix_roundtrip_large_field``). The tiny-cutout test
 below may still skip when coverage is sparse.
 
-Requires: ``torchsky.cpp`` plus ``reproject`` (and its ``astropy`` dependency), e.g. from
+Requires: ``torchsky._cpp`` plus ``reproject`` (and its ``astropy`` dependency), e.g. from
 ``torchsky[bench]`` — this module is skipped when ``reproject`` is not installed.
 """
 
@@ -23,7 +23,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 pytest.importorskip("reproject")
 import torchfits  # noqa: E402
 

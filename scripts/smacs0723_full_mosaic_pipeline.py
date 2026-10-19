@@ -63,7 +63,7 @@ def _parse_csv(value: str) -> list[str]:
 def _has_local_cpp() -> bool:
     try:
         importlib.import_module("torchsky")
-        importlib.import_module("torchsky.cpp")
+        importlib.import_module("torchsky._cpp")
     except Exception:
         return False
     return True
@@ -75,9 +75,9 @@ def _ensure_local_cpp() -> None:
     cmd = [sys.executable, "-m", "pip", "install", "-e", ".", "--no-build-isolation"]
     print("Installing local torchsky editable build into the active env")
     subprocess.check_call(cmd, cwd=ROOT)
-    probe = [sys.executable, "-c", "import torchsky; import torchsky.cpp"]
+    probe = [sys.executable, "-c", "import torchsky; import torchsky._cpp"]
     if subprocess.call(probe, cwd=ROOT) != 0:
-        raise RuntimeError("torchsky.cpp still unavailable after editable install")
+        raise RuntimeError("torchsky._cpp still unavailable after editable install")
 
 
 def _band_filename_contains(band: str, module: str) -> str | None:

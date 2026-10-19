@@ -475,7 +475,7 @@ Common first-day issues:
 
 - **`pixi: command not found`**: Pixi is not installed yet. Ask before
   installing Python tooling by hand; the project is meant to run through Pixi.
-- **`ModuleNotFoundError: torchsky.cpp`**: you ran in the `default` Pixi env
+- **`ModuleNotFoundError: torchsky._cpp`**: you ran in the `default` Pixi env
   instead of `test`. Re-run with `pixi run -e test -- python ...`.
 - **`missing reference ...`**: the UPdec FITS files have not been downloaded.
   Re-run the cutout script with `--download`.

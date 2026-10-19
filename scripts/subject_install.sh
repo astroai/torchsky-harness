@@ -23,5 +23,5 @@ torchsky_install_subject() {
   pixi run --manifest-path "${harness_root}/pixi.toml" -e "${env_name}" -- \
     python -m pip install -e "${harness_root}" --no-deps --no-build-isolation
   pixi run --manifest-path "${harness_root}/pixi.toml" -e "${env_name}" -- \
-    python -c 'import torchsky; import torchsky.cpp'
+    python -c 'import torchsky; import torchsky._cpp'
 }

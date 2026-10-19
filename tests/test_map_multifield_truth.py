@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 
 
 from torchsky_harness.benchmarks import bench_map_multifield_truth as _multifield_bench

@@ -14,7 +14,7 @@ import torch
 from torchsky.map.image_plane import coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 
 
 def _reproject_installed() -> bool:

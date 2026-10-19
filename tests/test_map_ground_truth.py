@@ -7,7 +7,7 @@ import torch
 
 from torchsky.map.operators import validate_image_plane_2d
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 
 
 from torchsky_harness.benchmarks import bench_map_ground_truth as _truth_bench

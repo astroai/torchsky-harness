@@ -3,7 +3,7 @@
 Compares native torchsky drizzle kernels against the low-level Python
 ``drizzle`` package when it is installed.
 
-Requires: ``torchsky.cpp``, optional ``drizzle``.
+Requires: ``torchsky._cpp``, optional ``drizzle``.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 import torch
 
-pytest.importorskip("torchsky.cpp")
+pytest.importorskip("torchsky._cpp")
 pytest.importorskip("drizzle")
 
 from astropy.wcs import WCS as AstropyWCS  # noqa: E402

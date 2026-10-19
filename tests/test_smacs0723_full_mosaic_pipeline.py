@@ -40,7 +40,7 @@ def test_ensure_local_cpp_installs_when_missing(
     def _fake_import_module(name: str):
         if name == "torchsky":
             return object()
-        if name == "torchsky.cpp":
+        if name == "torchsky._cpp":
             raise ModuleNotFoundError(name)
         return _real_import_module(name)
 
@@ -49,7 +49,7 @@ def test_ensure_local_cpp_installs_when_missing(
         state["install_calls"] += 1
 
     def _fake_call(cmd, cwd):
-        assert cmd == [sys.executable, "-c", "import torchsky; import torchsky.cpp"]
+        assert cmd == [sys.executable, "-c", "import torchsky; import torchsky._cpp"]
         assert cwd == ROOT
         state["probe_calls"] += 1
         return 0
