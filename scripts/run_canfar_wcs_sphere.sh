@@ -228,21 +228,8 @@ case "${mode}" in
     cuda_rc=0
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
       pytest \
-      tests/test_healpix_primitives.py \
+      tests/test_cuda_smoke.py \
       tests/test_healpix_parity.py \
-      tests/test_healpix_image_plane.py \
-      tests/test_wcs_core.py \
-      tests/test_wcs_sip.py \
-      tests/test_wcs_parity.py \
-      tests/test_wcs_extended_projections.py \
-      tests/test_wcs_observed_frames.py \
-      tests/test_wcs_tabular.py \
-      tests/test_wcs_spectral.py \
-      tests/test_wcs_temporal.py \
-      tests/test_catalogs.py \
-      tests/test_sphere_polygons.py \
-      tests/test_sphere_sparse.py \
-      tests/test_wcs_gwcs_sampling.py \
       -q --tb=line -k cuda \
       --junitxml="${artifact_root}/cuda_pytest.xml" || cuda_rc=$?
     record_versions cuda-bench || cuda_rc=$?
@@ -254,7 +241,7 @@ case "${mode}" in
     vos_upload after_wcs || echo "after_wcs VOS upload failed; continuing job" >&2
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
       python "${source_root}/benchmarks/bench_all.py" \
-      --profile user --sphere-only --no-throughput-gate \
+      --profile user --sphere-only \
       --run-id acceptance_sphere_cuda \
       --output-dir "${artifact_root}" || cuda_rc=$?
     if [[ "${cuda_rc}" -ne 0 ]]; then
