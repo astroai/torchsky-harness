@@ -395,15 +395,17 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `8ba1e4005cc2925581f75079ac42d7f6be4700b6d26834a7ad37e7a723aeb420`),
-built from torchsky `63eb123d` and installed into the harness environments as a
+(sha256 `1570e1e7afd123c5e709f21c86edf3cf40252ea8ab117032cb38573d711ff8de`),
+built from torchsky `53e16213` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = fd6f20f97a00f475a6062ccbc3f422d4ae4086a4005e5844d69caeb6d83caa9f`,
+`package_content_sha256 = 0dca88a21c93e63fec2f660860951cc9dc6b8781ee4b799ae940470264bac186`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
-This wheel supersedes the earlier `f9e537dd…` and `7f0862c6…` artifacts.
+This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, and `8ba1e400…`
+artifacts; the last rebuild packs the API-surface cleanup (abandoned-module
+deletion, decoupled field facade) that followed the WCS fix.
 Adding the reference-latitude-offset WCS cases exposed a center-native
 inverse-rotation defect in `world_to_pixel` (wrong pixels at `CRVAL2 != 0` for
 MER, CYP, AIT, HPX, SFL, BON, PAR); the fixed subject round-trips those cases at
