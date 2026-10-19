@@ -395,20 +395,20 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `7f0862c685527d67786acc0d90b858447a16cba219d82f5cce506bad15a8466c`),
-built from torchsky `05b36dd3` and installed into the harness test environment as
-a wheel (import path `site-packages/torchsky`, not the checkout). Later
-docs-only commits do not change the packaged content. Subject
-`package_content_sha256 = fefd664a6dabcd293846eba96718d85841eded5968ab9343c1e331839f98b4f5`,
+(sha256 `8ba1e4005cc2925581f75079ac42d7f6be4700b6d26834a7ad37e7a723aeb420`),
+built from torchsky `63eb123d` and installed into the harness environments as a
+wheel (import path `site-packages/torchsky`, not the checkout). Subject
+`package_content_sha256 = fd6f20f97a00f475a6062ccbc3f422d4ae4086a4005e5844d69caeb6d83caa9f`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
-install; the bundle records the harness revision.
+install; the bundle records one harness revision for all declared claims
+(`claim_harness_revisions`).
 
-This wheel supersedes the earlier `f9e537dd…` artifact. Adding the
-reference-latitude-offset WCS cases exposed a center-native inverse-rotation
-defect in `world_to_pixel` (wrong pixels at `CRVAL2 != 0` for MER, CYP, AIT,
-HPX, SFL, BON, PAR); the fixed subject now round-trips those cases at
-≤1.9e-9 asec. The earlier artifact's recorded WCS verdict was therefore not
-sufficient on its own, and all thirteen claims were re-run against this wheel.
+This wheel supersedes the earlier `f9e537dd…` and `7f0862c6…` artifacts.
+Adding the reference-latitude-offset WCS cases exposed a center-native
+inverse-rotation defect in `world_to_pixel` (wrong pixels at `CRVAL2 != 0` for
+MER, CYP, AIT, HPX, SFL, BON, PAR); the fixed subject round-trips those cases at
+≤1.9e-9 asec. The later spectral-namespace cleanup changes packaged content
+again, so all thirteen claims were re-run against this frozen wheel.
 
 ### GPU device check (CANFAR, 2026-10-19)
 

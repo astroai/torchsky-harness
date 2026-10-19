@@ -467,6 +467,10 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         (entry.get("harness") or {}).get("source", {}).get("revision")
         for entry in selected.values()
     }
+    claim_harness_revisions = {
+        (entry.get("harness") or {}).get("source", {}).get("revision")
+        for entry in claim_entries.values()
+    }
     incomplete = sorted(
         evaluation
         for evaluation, entry in selected.items()
@@ -520,6 +524,9 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         ),
         "subject_consistent": len(subjects) <= 1,
         "harness_revisions": sorted(str(item) for item in harness_revisions),
+        "claim_harness_revisions": sorted(
+            str(item) for item in claim_harness_revisions
+        ),
         "incomplete_runs": incomplete,
         "incomplete_claims": incomplete_claims,
         "unreadable_runs": unreadable,
