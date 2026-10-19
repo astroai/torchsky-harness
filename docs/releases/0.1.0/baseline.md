@@ -193,7 +193,12 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `scripts/api_manifest.py`, `docs/api-manifest.json`, and
   `tests/test_api_manifest.py` to freeze the public `__all__` surfaces for root,
   WCS, sphere, map, scene, field, catalogs, coords, and encoders. Preflight and
-  API-manifest test pass.
+  API-manifest test pass; CI now runs the manifest check.
+- **Sphere/map splits:** removed the duplicate `torchsky.sphere.harmonics` alias
+  (implementation is `torchsky.sphere.spectral`) and extracted map observation,
+  configuration, target, and result types from `map/image_plane.py` into
+  `map/observation.py`. Full suite after these changes: **2659 passed,
+  98 skipped**.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately
