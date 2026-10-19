@@ -24,7 +24,11 @@ Default benchmark outputs are directed into that run's `outputs/` directory;
 explicit output arguments retain the selected evaluator's original behavior.
 Numerical metrics, backend/device evidence, required comparator gates and
 eligibility are provided by the selected evaluator. A zero process exit code
-does not certify scientific validity. Do not reuse run IDs.
+does not certify scientific validity by itself: the record declares
+`scientific_validity` only for the release gates whose claims are declared in
+`torchsky_harness.evidence`, and every other evaluation stays `not_assessed`.
+See [docs/evidence-verdicts.md](docs/evidence-verdicts.md). Collect a release
+bundle with `pixi run evidence-bundle`. Do not reuse run IDs.
 
 The `benchmarks/` and `scripts/` trees install under the `torchsky_harness`
 namespace, preserving existing file names and colocated baselines. Use
@@ -37,7 +41,8 @@ existing durable locations. Historical reports retain their original cohort,
 software and calibration conventions; extraction does not rerun experiments.
 
 See `docs/` for migration ownership, verification and existing evaluation
-methodology. Reusable map scoring and benchmark-row helpers live in
+methodology. The 0.1.0 release procedure, gate bundle, and publish workflow are
+documented in [docs/releases/0.1.0/release-procedure.md](docs/releases/0.1.0/release-procedure.md). Reusable map scoring and benchmark-row helpers live in
 [`torchsky_harness.metrics`](docs/map-metrics.md); they are harness APIs and do
 not load through `torchsky.map`. No CANFAR jobs are launched by installation or
 verification.

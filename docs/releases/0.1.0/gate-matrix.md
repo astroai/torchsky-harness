@@ -1,8 +1,11 @@
 # Release gate matrix — torchsky 0.4.0 / harness 0.1.0
 
-Status: **draft**. No gate in this matrix has passed yet. The matrix is the
-contract the release must satisfy; tolerances are frozen after the first
-calibrated run and are not adjusted to make a failing gate pass.
+Status: **active**. Seven declared synthetic gates pass with
+`scientific_validity: established` and `comparison_eligibility:
+baseline_compared` in the release bundle; rows below that are still marked open
+are not claimed. Tolerances are frozen after the first calibrated run and are
+not adjusted to make a failing gate pass. Release steps:
+[release-procedure.md](release-procedure.md).
 
 ## Gate rules
 

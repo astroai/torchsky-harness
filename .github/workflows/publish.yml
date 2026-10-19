@@ -1,0 +1,91 @@
+name: Publish to PyPI
+
+# Tag-driven release: push a `v*` tag after the release gate bundle for that
+# commit is recorded under docs/releases/0.1.0/. torchsky 0.4.0 must already be
+# available on PyPI because the harness declares it as a dependency.
+'on':
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and smoke-test distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          pixi-version: latest
+      - name: Install test environment
+        run: pixi install --frozen -e test
+      - name: Preflight
+        run: pixi run preflight
+      - name: Build wheel
+        run: pixi run build
+      - name: Verify wheel contents and version
+        run: |
+          pixi run -e test -- python - <<'PY'
+          import glob
+          import pathlib
+          import tomllib
+          import zipfile
+
+          version = tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["version"]
+          tag = "${{ github.ref_name }}"
+          assert tag == f"v{version}", f"tag {tag} does not match version {version}"
+          wheels = glob.glob("dist/*.whl")
+          assert len(wheels) == 1, wheels
+          assert version in wheels[0], (version, wheels[0])
+          names = zipfile.ZipFile(wheels[0]).namelist()
+          required = [
+              "torchsky_harness/cli.py",
+              "torchsky_harness/evidence.py",
+              "torchsky_harness/benchmarks/bench_map_healpix_multiband.py",
+              "torchsky_harness/benchmarks/baselines/map_healpix_multiband_smoke.json",
+          ]
+          missing = [name for name in required if name not in names]
+          assert not missing, missing
+          print("wheel:", wheels[0], "version:", version)
+          PY
+      - name: Wheel install smoke with the released subject
+        run: |
+          python -m venv /tmp/smoke
+          /tmp/smoke/bin/python -m pip install --upgrade pip
+          /tmp/smoke/bin/python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          /tmp/smoke/bin/python -m pip install dist/*.whl
+          /tmp/smoke/bin/torchsky-harness list --domain map > /tmp/evaluations.txt
+          grep -q bench_map_healpix_multiband /tmp/evaluations.txt
+          /tmp/smoke/bin/torchsky-harness subject > /tmp/subject.json
+          /tmp/smoke/bin/python - <<'PY'
+          import json
+          import pathlib
+          import torchsky
+
+          subject = json.loads(pathlib.Path("/tmp/subject.json").read_text())
+          assert subject["distribution"] == "torchsky"
+          assert subject["version"] == "0.4.0", subject
+          assert subject["package_content_sha256"], subject
+          assert pathlib.Path(subject["import_path"]).is_file(), subject
+          print("harness smoke OK against torchsky", torchsky.__version__)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/*
+  publish:
+    name: Publish distributions to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/torchsky-harness
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
