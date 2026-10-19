@@ -29,6 +29,10 @@ esac
 
 COMMIT="${TORCHSKY_HARNESS_COMMIT:-$(git rev-parse HEAD)}"
 SUBJECT_COMMIT="${TORCHSKY_COMMIT:?set exact torchsky subject SHA}"
+if [[ ! "${SUBJECT_COMMIT}" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "TORCHSKY_COMMIT must be a full 40-char subject SHA, got ${SUBJECT_COMMIT}" >&2
+  exit 2
+fi
 if ! git cat-file -e "${COMMIT}^{commit}" 2>/dev/null; then
   echo "TORCHSKY_COMMIT=${COMMIT} is not a local commit" >&2
   exit 2
