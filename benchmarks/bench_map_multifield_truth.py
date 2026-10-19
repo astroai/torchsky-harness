@@ -1783,7 +1783,6 @@ def evaluate_torchsky_multiband_spherical_inverse_case(
         diagonal = operator_set.estimate_normal_operator_diagonal(
             data,
             initial_probe=torch.zeros_like(joint_truth),
-            max_entries=max(int(joint_truth.numel()), 128),
             damping=1.0e-4,
         )
         return operator_set.solve_normal_equation_cg(

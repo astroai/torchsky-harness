@@ -1740,7 +1740,6 @@ def evaluate_torchsky_joint_teb_case(
         diagonal = operator_set.estimate_normal_operator_diagonal(
             data,
             initial_probe=torch.zeros_like(teb_truth),
-            max_entries=64,
             damping=1.0e-4,
         )
         return operator_set.solve_normal_equation_cg(

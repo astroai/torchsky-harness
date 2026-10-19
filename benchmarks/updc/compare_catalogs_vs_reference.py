@@ -34,7 +34,7 @@ def _require_astropy():
     except ImportError as exc:
         raise RuntimeError(
             "compare_catalogs_vs_reference requires astropy "
-            "(pip install 'torchsky[catalog-qa]')"
+            "(pip install astropy)"
         ) from exc
     return Table
 
@@ -222,8 +222,8 @@ def detect_candidates_photutils(
         from photutils.detection import DAOStarFinder
     except ImportError as exc:
         print(
-            "photutils detection requires the 'catalog-qa' extras group "
-            "(pip install 'torchsky[catalog-qa]')",
+            "photutils detection requires photutils "
+            "(pip install photutils)",
             file=sys.stderr,
         )
         raise SystemExit(2) from exc
