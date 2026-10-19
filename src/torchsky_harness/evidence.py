@@ -247,6 +247,8 @@ def _run_entry(run_dir: Path, record: dict[str, Any]) -> dict[str, Any]:
             "version": subject.get("version"),
             "import_path": subject.get("import_path"),
             "package_content_sha256": subject.get("package_content_sha256"),
+            "source_kind": source.get("kind"),
+            "source_sha256": source.get("sha256"),
             "revision": source.get("revision"),
             "dirty": source.get("dirty"),
         },
@@ -329,11 +331,7 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         and entry.get("scientific_validity") == "established"
     )
     subjects = {
-        (
-            entry["subject"]["package_content_sha256"],
-            entry["subject"]["revision"],
-        )
-        for entry in selected.values()
+        entry["subject"]["package_content_sha256"] for entry in selected.values()
     }
     harness_revisions = {
         (entry.get("harness") or {}).get("source", {}).get("revision")
@@ -361,10 +359,18 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         "declared_claims": declared,
         "missing_claims": missing_claims,
         "extra_established": extra_established,
-        "subject_identities": [
-            {"package_content_sha256": content, "revision": revision}
-            for content, revision in sorted(subjects, key=str)
-        ],
+        "subject_identities": sorted(
+            {
+                (
+                    entry["subject"]["package_content_sha256"],
+                    entry["subject"]["source_kind"],
+                    entry["subject"]["source_sha256"],
+                    entry["subject"]["revision"],
+                )
+                for entry in selected.values()
+            },
+            key=str,
+        ),
         "subject_consistent": len(subjects) <= 1,
         "harness_revisions": sorted(str(item) for item in harness_revisions),
         "incomplete_runs": incomplete,

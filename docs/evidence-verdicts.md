@@ -10,7 +10,7 @@ only place the harness states what a run did and what it is allowed to claim.
 |---|---|
 | `schema_version` | record layout version (currently `1`) |
 | `evaluation`, `command`, `working_directory` | what ran, exactly |
-| `subject` | installed subject distribution, version, import path, package-content SHA-256, VCS revision/dirty state, Python, platform. The subject is never a checkout on `sys.path`. |
+| `subject` | installed subject distribution, version, import path, package-content SHA-256, source identity, Python, platform. The subject is never a checkout on `sys.path`. `subject.source.kind` is `archive` for a wheel install (with the wheel SHA-256, and no VCS revision), `source_tree` for an editable/dir install (with the source repo revision and dirty flag), or `registry` when there is no direct URL. A wheel install never inherits the revision of the repository that happens to contain `site-packages`. |
 | `harness` | harness version and source identity |
 | `inputs` | SHA-256 of every command argument that is an existing file at launch |
 | `execution` | `running`, `completed`, `failed`, or `interrupted` |
@@ -91,7 +91,7 @@ artifact. Anything else is supporting evidence, not a pass.
 | `release_ready` | every declared claim has an `established` run, no selected run is incomplete, all selected runs share one subject identity, and no run directory is unreadable |
 | `missing_claims` | declared claims without an `established` run |
 | `extra_established` | established runs for evaluations that declare no claim (supporting evidence) |
-| `subject_identities`, `subject_consistent` | package-content SHA-256 and revision of every selected run |
+| `subject_identities`, `subject_consistent` | package-content SHA-256, source kind, source digest, and revision of every selected run |
 | `harness_revisions` | harness revisions observed in the bundle |
 | `incomplete_runs`, `unreadable_runs` | runs that cannot certify anything |
 | `superseded_runs` | older runs that were not selected |

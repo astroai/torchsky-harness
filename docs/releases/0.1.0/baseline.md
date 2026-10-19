@@ -369,6 +369,14 @@ retain the ACS campaign as evidence, not a pass.
   **923 passed, 152 skipped, 17 deselected** in 239 s. The default `test` task
   still runs the opt-in `performance`/`benchmark`/`slow`/`integration` cases.
 
+- **Subject provenance fix:** `identify_subject()` resolved the subject's git
+  identity from the directory that contains `site-packages`, so a wheel install
+  inside a checkout recorded the *harness* repository revision as the subject
+  revision. `source_identity()` now reports `kind=archive` with the wheel
+  SHA-256 for wheel installs, `kind=source_tree` with the real source revision
+  for editable installs, and `kind=registry` otherwise; the evidence bundle
+  records the source kind and digest per run. Covered by
+  `tests/test_subject_source.py`.
 ## Version bump (release candidate)
 
 torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is

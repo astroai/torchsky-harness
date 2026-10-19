@@ -9,6 +9,7 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
+from urllib.parse import unquote, urlparse
 
 
 def sha256(path: Path) -> str:
@@ -31,6 +32,48 @@ def git_identity(path: Path) -> dict:
     return {"revision": revision, "dirty": bool(status), "tracked_diff_sha256": hashlib.sha256(diff).hexdigest()}
 
 
+def source_identity(direct_url: dict | None) -> dict:
+    """Describe where the installed subject came from.
+
+    A wheel install must not inherit the VCS identity of the repository that
+    happens to contain its site-packages directory, so only an editable/dir
+    install is resolved through git.
+    """
+    if direct_url is None:
+        return {"kind": "registry", "revision": None, "dirty": None}
+    url = str(direct_url.get("url", ""))
+    archive = direct_url.get("archive_info")
+    if archive:
+        hashes = archive.get("hashes") if isinstance(archive, dict) else None
+        digest = None
+        if isinstance(hashes, dict):
+            digest = hashes.get("sha256")
+        if digest is None and isinstance(archive, dict):
+            digest = str(archive.get("hash", "")).removeprefix("sha256=") or None
+        return {
+            "kind": "archive",
+            "revision": None,
+            "dirty": None,
+            "url": url,
+            "sha256": digest,
+        }
+    if direct_url.get("dir_info") is not None:
+        parsed = urlparse(url)
+        root = Path(unquote(parsed.path)) if parsed.scheme == "file" else None
+        identity = (
+            git_identity(root)
+            if root is not None
+            else {"revision": None, "dirty": None}
+        )
+        return {"kind": "source_tree", "url": url, **identity}
+    return {
+        "kind": "unknown",
+        "revision": None,
+        "dirty": None,
+        "url": url,
+    }
+
+
 def identify_subject() -> dict:
     module = importlib.import_module("torchsky")
     package_path = Path(module.__file__).resolve()
@@ -45,6 +88,7 @@ def identify_subject() -> dict:
         "distribution": "torchsky", "version": distribution.version,
         "import_path": str(package_path), "package_content_sha256": digest.hexdigest(),
         "direct_url": json.loads(direct_url) if direct_url else None,
-        "source": git_identity(package_path.parent), "python": sys.version,
+        "source": source_identity(json.loads(direct_url) if direct_url else None),
+        "python": sys.version,
         "platform": platform.platform(),
     }
