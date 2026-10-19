@@ -57,7 +57,7 @@ from torchsky.map.field import (  # noqa: E402
     SpectralPowerFoamField,
 )
 from torchsky.map.field.core import ExplicitSpectralGridField  # noqa: E402
-from torchsky.field.frequency_adaptive import BaconField, SASNetField  # noqa: E402
+from torchsky.map.field.frequency_adaptive import BaconField, SASNetField  # noqa: E402
 from torchsky.map.operators.psf import gaussian_support_radius  # noqa: E402
 from torchsky.spectral import SpectralAxis  # noqa: E402
 
