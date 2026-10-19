@@ -457,19 +457,25 @@ again, so all thirteen claims were re-run against this frozen wheel.
 
 ### GPU device check (CANFAR, 2026-10-19)
 
-Session `nuicd7md` (run id `gpu-validate-20261019-083744`) ran the
-`gpu-validate` mode on the AstroAI notebook image with one GPU against subject
-`63eb123d` and harness `4c39e97`:
+Session `oig9h0b3` (run id `gpu-validate-20261019-105417`) reran the
+`gpu-validate` mode on the AstroAI notebook image with one H100 MIG GPU against
+subject `ec607ea2` and harness `4c50ad7`:
 
-- Device-named package tests: 7 passed, 168 deselected.
+- Device-named package tests: 7 passed, 173 deselected.
 - `bench_wcs` on CUDA, 17 cases including `MER_OFF`, `CYP_OFF`, `AIT_OFF`,
   `HPX_OFF`, `SFL_OFF`, `XPH_OFF`, `BON_OFF`, `PAR_OFF`: every case OK.
 - Max angular parity **8.23e-3 asec** (CUDA float64 transcendental kernels
   differ from CPU; the CPU gate is 3.6e-3 asec), max non-seam round-trip
   **7.11e-7 asec**.
 
+This run also caught a real packaging defect: the extension was itself named
+`_cpp`, so importing it before torch dlopened failed with "libtorch.so: cannot
+open shared object file" on PyPI torch wheels. The extension is now `_cpp_ext`
+behind a `torchsky/_cpp.py` loader that preloads torch; the rerun above is the
+first green CANFAR validation after that fix.
+
 The images used for this check do not put `vcp` on `PATH`, so artifacts were
-kept on `/arc/projects/ots/torchsky-runs/gpu-validate-20261019-083744/` and the
+kept on `/arc/projects/ots/torchsky-runs/gpu-validate-20261019-105417/` and the
 session log/gist; they are not a VOS-uploaded evidence bundle. This is a device
 portability check on session hardware, not a pinned-runner performance claim.
 
