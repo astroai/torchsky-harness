@@ -207,6 +207,13 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `benchmarks/baselines/map_cube_smoke.json` and task `bench-map-cube-gate` are
   committed. Smoke and unit test pass (RMSE ≈4.9e-8). This covers 2D-band cube
   assembly, not the full 3D IFU/WCS evaluator, which remains open.
+- **Native response gate:** added `benchmarks/bench_native_response.py` and
+  baseline `benchmarks/baselines/native_response_smoke.json`. It injects a known
+  pixel-integrated Gaussian star on a native stamp, fits flux plus constant
+  background at the true centroid, and gates flux error (<5%) and background
+  error (<0.2). Smoke recovers flux to 0.09% and background to 0.0067; task
+  `bench-native-response-gate` and a unit test are committed. This is a
+  linear-profile gate, not a full likelihood/joint/real-detector claim.
 - **3D IFU diagnostic:** added
   `benchmarks/diagnose_ifu_cube_recovery.py` for a known linear spectrum through
   the native 3D IFU path. It currently recovers only **25%** of voxels; the
