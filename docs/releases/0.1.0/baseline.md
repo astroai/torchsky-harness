@@ -207,6 +207,12 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `benchmarks/baselines/map_cube_smoke.json` and task `bench-map-cube-gate` are
   committed. Smoke and unit test pass (RMSE ≈4.9e-8). This covers 2D-band cube
   assembly, not the full 3D IFU/WCS evaluator, which remains open.
+- **3D IFU diagnostic:** added
+  `benchmarks/diagnose_ifu_cube_recovery.py` for a known linear spectrum through
+  the native 3D IFU path. It currently recovers only **25%** of voxels; the
+  remaining voxels are zero, with max valid-voxel error 0.20. This is a
+  diagnostic, not a gate and not an accuracy claim; the IFU path needs a
+  correctness fix before the multi-spectral IFU row can pass.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately
