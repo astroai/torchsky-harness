@@ -6,7 +6,6 @@ import numpy as np
 import pytest
 import torch
 import torchfits
-import torchsky
 
 
 ROOT = Path(__file__).resolve().parents[1]
