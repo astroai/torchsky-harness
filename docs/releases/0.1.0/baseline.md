@@ -178,6 +178,19 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   **2658 passed, 98 skipped**; torchsky preflight and harness preflight pass;
   harness catalog/runner/metrics tests pass; a WCS smoke run completes with
   parity 3.7e-10 arcsec.
+- **Scene and map consolidation:** the experimental scene facade now contains
+  only representations, target specs, and operator adapters; duplicated map/field
+  verbs were removed. Map product classes were canonicalized to
+  `ProductSpec`/`BandpassSpec`/`ProductResult`/`UncertaintyProduct`,
+  `stack_map_product` became `stack_product`, and `map.__all__` is now the
+  workflow set only. The target ownership model is recorded in
+  [architecture-review.md](architecture-review.md).
+- Full torchsky suite after the scene/map consolidation: **2658 passed,
+  98 skipped**; targeted scene/map/docs tests: **357 passed, 3 skipped**.
+- The full harness test suite is opt-in and was stopped after one early failure
+  while running long/external cases; this is not a release gate result. Targeted
+  harness boundary and gate tests pass. Record the full-suite result separately
+  before release.
 - Docs/changelog/README now state the boundary explicitly; the removed
   compatibility-transition text is gone.
 - Full suite rerun: **2692 passed, 104 skipped** earlier; after deleting three
