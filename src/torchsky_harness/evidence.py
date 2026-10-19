@@ -71,6 +71,17 @@ CLAIMS: dict[str, EvaluationClaim] = {
             " from the round-trip thresholds, not from the angular parity gate",
         ),
     ),
+    "bench_map_real_cutout": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=("resample_bilinear_real",),
+        comparators=("reproject",),
+        limitations=(
+            "single real 256x256 CFHT MegaPipe g-band cutout with its original"
+            " TAN WCS; raw survey pixels beyond this cutout are not redistributed",
+            "interior of the shared footprint is compared (edge erosion); the"
+            " coverage-boundary convention is recorded, not gated",
+        ),
+    ),
     "bench_sphere_real_map": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(

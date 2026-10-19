@@ -41,6 +41,7 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_map_ifu",
         "bench_map_ifu_spectral_axis",
         "bench_map_healpix_multiband",
+        "bench_map_real_cutout",
         "bench_native_likelihood",
         "bench_native_nuisance",
         "bench_native_response",

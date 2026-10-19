@@ -412,6 +412,15 @@ WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
 compatibility shims, unused helpers, lazy `map.field` facade). No public API
 names changed.
 
+### Real-data map parity (`bench_map_real_cutout`)
+
+A 256x256 cutout of the real CFHT MegaPipe g-band mosaic (with its original TAN
+WCS) is reprojected onto a 300x300 grid rotated 15 deg and scaled 1.2x with
+`torchsky.map.resample` and astropy `reproject`. On the interior of the shared
+footprint (43,879 pixels, two-pixel edge erosion): max relative difference
+**2.3e-6**, p99 **1.0e-7**, coverage-boundary fraction 4e-3 (recorded, not
+gated); torchsky 8.9 ms vs reproject 33.2 ms on CPU.
+
 ### Real-data sphere parity (`bench_sphere_real_map`)
 
 A compact real-sky fixture (106 occupied HEALPix pixels, nside 512) is derived
@@ -496,6 +505,7 @@ portability check on session hardware, not a pinned-runner performance claim.
 
 | Gate | Evaluation | Comparator | Measured |
 |---|---|---|---|
+| `bench-map-real-cutout-gate` | `bench_map_real_cutout` | reproject | Real CFHT MegaPipe g-band cutout (256x256) reprojected 15 deg/1.2x: interior max rel 2.3e-6, p99 1.0e-7, CPU 8.9 ms vs 33.2 ms |
 | `bench-sphere-real-map-gate` | `bench_sphere_real_map` | healpy | 106-pixel real CFHT MegaPipe map: lookup exact, rel <=1.1e-6 on SHT/smoothing, `ud_grade` abs <=7.3e-12 |
 | `bench-wcs-real-headers-gate` | `bench_wcs_real_headers` | astropy | 11 real instrument headers/images: forward angular parity 2.0e-7 asec (max), inverse pixel parity 2.6e-6 px (max); lookup-distortion fixtures SKIPPED with reasons |
 | `bench-wcs-release-gate` | `bench_wcs` | astropy | 38 cases (30 projections + 8 reference-offset): angular parity max 6.1e-7 asec (AIR 4.1e-7), pole/seam-excluded sky round trip 1.3e-6 asec, pixel round trip 1.3e-6 px, p99 sky round trip 6.3e-3 asec; offset cases ≤1.5e-8 asec / ≤4.6e-10 px round trip; forward 0.48–3.32× and inverse 0.91–5.56× astropy |
