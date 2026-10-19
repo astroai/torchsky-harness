@@ -32,7 +32,7 @@ from torchsky.map import (  # noqa: E402
     plan_map_product,
     render_field_cube,
     render_field_product,
-    stack_map_product,
+    stack_product,
 )
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
@@ -851,14 +851,14 @@ def _run_projection_truth_suite(
             )
             kernel = variant or "bilinear"
             dt = truth_bench._time_many(
-                lambda: stack_map_product(
+                lambda: stack_product(
                     obs_list,
                     product,
                     resampling_kernel=kernel,
                 ),
                 max(runs, torchsky_runs),
             )
-            result = stack_map_product(
+            result = stack_product(
                 obs_list,
                 product,
                 resampling_kernel=kernel,
@@ -1003,7 +1003,7 @@ def _run_projection_equal_psf_suite(
         )
         for kernel in kernels:
             for stacking_method in stacking_methods:
-                result = stack_map_product(
+                result = stack_product(
                     obs_list,
                     product,
                     resampling_kernel=kernel,
@@ -1076,7 +1076,7 @@ def _run_projection_stack_method_suite(
             for stacking_method in stacking_methods:
                 try:
                     dt = truth_bench._time_many(
-                        lambda: stack_map_product(
+                        lambda: stack_product(
                             obs_list,
                             product,
                             resampling_kernel=kernel,
@@ -1084,7 +1084,7 @@ def _run_projection_stack_method_suite(
                         ),
                         max(runs, torchsky_runs),
                     )
-                    result = stack_map_product(
+                    result = stack_product(
                         obs_list,
                         product,
                         resampling_kernel=kernel,
@@ -1177,14 +1177,14 @@ def _run_montage_compat_suite(
                     value_semantics=case_spec.value_semantics,
                 )
                 dt = truth_bench._time_many(
-                    lambda: stack_map_product(
+                    lambda: stack_product(
                         obs_list,
                         product,
                         resampling_kernel=kernel,
                     ),
                     max(runs, torchsky_runs),
                 )
-                result = stack_map_product(
+                result = stack_product(
                     obs_list,
                     product,
                     resampling_kernel=kernel,
@@ -1228,7 +1228,7 @@ def _run_montage_compat_suite(
                     header_overrides=target_header,
                     value_semantics=case_spec.value_semantics,
                 )
-                baseline_result = stack_map_product(
+                baseline_result = stack_product(
                     obs_list,
                     baseline_product,
                     resampling_kernel="bilinear",
@@ -1396,14 +1396,14 @@ def _evaluate_stack_vs_inr_case(
         kernel = model_kind.split("_", 1)[1]
         fit_times: list[float] = []
         product_pred = None
-        stack_map_product(
+        stack_product(
             image_observations,
             product,
             resampling_kernel=kernel,
         )
         for _ in range(int(runs)):
             start = time.perf_counter()
-            product_pred = stack_map_product(
+            product_pred = stack_product(
                 image_observations,
                 product,
                 resampling_kernel=kernel,

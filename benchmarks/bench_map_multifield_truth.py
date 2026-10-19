@@ -27,13 +27,13 @@ from torchsky.sphere import healpix as hp  # noqa: E402
 from torchsky.map import (  # noqa: E402
     FieldObservation,
     ImageObservation,
-    MapBandpassSpec,
-    MapProductSpec,
+    BandpassSpec,
+    ProductSpec,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     plan_map_product,
-    stack_map_product,
+    stack_product,
 )
 from torchsky_harness.metrics import (  # noqa: E402
     check_map_benchmark_regressions,
@@ -1357,14 +1357,14 @@ def evaluate_torchsky_case(
         spectral_bin_edges=spectral_edges,
     )
     dt = _time_many(
-        lambda: stack_map_product(
+        lambda: stack_product(
             obs_list,
             product,
             resampling_kernel=resampling_kernel,
         ),
         runs,
     )
-    result = stack_map_product(
+    result = stack_product(
         obs_list,
         product,
         resampling_kernel=resampling_kernel,
@@ -1438,10 +1438,10 @@ def evaluate_torchsky_field_case(
         observations,
         max_observations=max_observations,
     )
-    product = MapProductSpec(
+    product = ProductSpec(
         target_header=target_header,
         bands=tuple(
-            MapBandpassSpec(
+            BandpassSpec(
                 label=f"band_{idx}",
                 spectral_min=float(spectral_edges[idx].item()),
                 spectral_max=float(spectral_edges[idx + 1].item()),
@@ -1558,10 +1558,10 @@ def evaluate_torchsky_spherical_case(
         if spherical_mode == "harmonic_direct"
         else "spherical_spectral_healpix_bridge"
     )
-    product = MapProductSpec(
+    product = ProductSpec(
         target_header=target_header,
         bands=tuple(
-            MapBandpassSpec(
+            BandpassSpec(
                 label=f"band_{idx}",
                 spectral_min=float(spectral_edges[idx].item()),
                 spectral_max=float(spectral_edges[idx + 1].item()),

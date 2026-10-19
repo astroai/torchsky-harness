@@ -4,7 +4,7 @@ from pathlib import Path
 
 import torch
 
-from torchsky.map import plan_map_product, stack_map_product
+from torchsky.map import plan_map_product, stack_product
 
 
 from torchsky_harness.benchmarks import bench_map_field_fit as _field_fit_bench
@@ -921,7 +921,7 @@ def test_tan_exact_transmission_case_populates_all_target_bands_in_coadd_baselin
             spectral_axis=case_spec.spectral_axis,
             spectral_bin_edges=case_spec.spectral_bin_edges,
         )
-        result = stack_map_product(
+        result = stack_product(
             image_observations, product, resampling_kernel="bilinear"
         )
 

@@ -11,7 +11,7 @@ from typing import Any
 import torch
 import torch.nn.functional as F
 from torch import Tensor
-from torchsky.map import MapProductResult, MapValueSemantics
+from torchsky.map import ProductResult, MapValueSemantics
 from torchsky.map.field import FieldObservation, field_quality_scorecard
 from torchsky.map.operators import pixel_area_sr_map
 from torchsky.wcs import WCS
@@ -25,14 +25,14 @@ def _as_cube(tensor: Tensor) -> Tensor:
     raise ValueError("Map product evaluation expects 2D or 3D tensors")
 
 def evaluate_map_product(
-    prediction: MapProductResult | Tensor,
-    truth: MapProductResult | Tensor,
+    prediction: ProductResult | Tensor,
+    truth: ProductResult | Tensor,
     *,
     weight: Tensor | None = None,
     header: dict[str, Any] | None = None,
     value_semantics: MapValueSemantics | None = None,
 ) -> dict[str, float | list[float] | None]:
-    if isinstance(prediction, MapProductResult):
+    if isinstance(prediction, ProductResult):
         pred_data = prediction.data
         if weight is not None:
             pred_weight = _as_cube(weight)
@@ -51,7 +51,7 @@ def evaluate_map_product(
         pred_weight = (
             _as_cube(weight) if weight is not None else torch.ones_like(pred_data)
         )
-    if isinstance(truth, MapProductResult):
+    if isinstance(truth, ProductResult):
         truth_data = truth.data
         if header is None:
             header = dict(truth.header)
@@ -206,8 +206,8 @@ def evaluate_map_product(
     return metrics
 
 def evaluate_map_frontier_regions(
-    prediction: MapProductResult | Tensor,
-    truth: MapProductResult | Tensor,
+    prediction: ProductResult | Tensor,
+    truth: ProductResult | Tensor,
     *,
     support_weight: Tensor,
     overlap_count: Tensor | None = None,
@@ -216,9 +216,9 @@ def evaluate_map_frontier_regions(
     if fringe_kernel_size <= 0 or fringe_kernel_size % 2 == 0:
         raise ValueError("fringe_kernel_size must be a positive odd integer")
     pred_data = (
-        prediction.data if isinstance(prediction, MapProductResult) else prediction
+        prediction.data if isinstance(prediction, ProductResult) else prediction
     )
-    truth_data = truth.data if isinstance(truth, MapProductResult) else truth
+    truth_data = truth.data if isinstance(truth, ProductResult) else truth
     pred_cube = _as_cube(pred_data).to(dtype=torch.float32)
     truth_cube = _as_cube(truth_data).to(dtype=torch.float32, device=pred_cube.device)
     support_cube = _as_cube(support_weight).to(
@@ -298,15 +298,15 @@ def _mean_pool_cube(cube: Tensor, *, kernel_size: int) -> Tensor:
 
 def evaluate_map_uncertainty(
     inverse_variance: Tensor,
-    prediction: MapProductResult | Tensor,
-    truth: MapProductResult | Tensor,
+    prediction: ProductResult | Tensor,
+    truth: ProductResult | Tensor,
     *,
     support_weight: Tensor | None = None,
 ) -> dict[str, float]:
     pred_data = (
-        prediction.data if isinstance(prediction, MapProductResult) else prediction
+        prediction.data if isinstance(prediction, ProductResult) else prediction
     )
-    truth_data = truth.data if isinstance(truth, MapProductResult) else truth
+    truth_data = truth.data if isinstance(truth, ProductResult) else truth
     pred_cube = _as_cube(pred_data).to(dtype=torch.float32)
     truth_cube = _as_cube(truth_data).to(dtype=torch.float32, device=pred_cube.device)
     ivar_cube = _as_cube(inverse_variance).to(

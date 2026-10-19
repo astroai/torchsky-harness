@@ -25,7 +25,7 @@ from torchsky.map import (  # noqa: E402
     plan_map_product,
     render_field_observation,
     render_field_product,
-    stack_map_product,
+    stack_product,
 )
 
 
@@ -267,7 +267,7 @@ def main() -> int:
             spectral_axis=spec.spectral_axis,
             spectral_bin_edges=spec.spectral_bin_edges,
         )
-        coadd_product = stack_map_product(
+        coadd_product = stack_product(
             image_observations,
             product,
             resampling_kernel="bilinear",

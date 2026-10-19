@@ -23,7 +23,7 @@ from torchsky import WCS  # noqa: E402
 from torchsky.map import (  # noqa: E402
     ImageObservation,
     plan_map_product,
-    stack_map_product,
+    stack_product,
 )
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 from torchsky.map.operators import (  # noqa: E402
@@ -214,10 +214,10 @@ def _stack_rows(
         value_semantics="surface_brightness",
     )
     torchsky_dt = _time_many(
-        lambda: stack_map_product(obs_list, product, resampling_kernel=torchsky_kernel),
+        lambda: stack_product(obs_list, product, resampling_kernel=torchsky_kernel),
         runs,
     )
-    torchsky_result = stack_map_product(
+    torchsky_result = stack_product(
         obs_list, product, resampling_kernel=torchsky_kernel
     )
     torchsky_metrics = evaluate_map_product(

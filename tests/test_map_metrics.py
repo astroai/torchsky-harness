@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 import torch
 import torchsky
-from torchsky.map import FieldObservation, MapBandpassSpec
+from torchsky.map import FieldObservation, BandpassSpec
 
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,
@@ -125,12 +125,12 @@ def test_evaluate_map_frontier_regions_tracks_fringe_and_overlap() -> None:
     assert metrics["far_extrapolated_fraction"] > 0.0
 
 def test_evaluate_map_product_uses_mask_when_weight_is_unavailable() -> None:
-    product = torchsky.map.MapProductSpec(
+    product = torchsky.map.ProductSpec(
         target_header=_simple_header(),
-        bands=(MapBandpassSpec(label="single"),),
+        bands=(BandpassSpec(label="single"),),
     )
     data = torch.ones((1, 6, 6), dtype=torch.float32)
-    prediction = torchsky.map.MapProductResult(
+    prediction = torchsky.map.ProductResult(
         product=product,
         data=data,
         weight=None,
@@ -143,15 +143,15 @@ def test_evaluate_map_product_uses_mask_when_weight_is_unavailable() -> None:
     assert metrics["coverage_fraction"] == pytest.approx(1.0)
 
 def test_evaluate_map_product_uses_product_level_metrics() -> None:
-    product = torchsky.map.MapProductSpec(
+    product = torchsky.map.ProductSpec(
         target_header=_simple_header(),
-        bands=(MapBandpassSpec(label="single"),),
+        bands=(BandpassSpec(label="single"),),
     )
     truth = torch.ones((1, 6, 6), dtype=torch.float32)
     pred = truth.clone()
     pred[0, 0, 0] = 3.0
     metrics = evaluate_map_product(
-        torchsky.map.MapProductResult(
+        torchsky.map.ProductResult(
             product=product,
             data=pred,
             weight=torch.ones_like(pred),

@@ -16,7 +16,7 @@ SRC = ROOT / "src"
 BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_projection_mosaic_suite as projection_suite  # noqa: E402
-from torchsky.map import plan_map_product, stack_map_product  # noqa: E402
+from torchsky.map import plan_map_product, stack_product  # noqa: E402
 
 
 def _support_mask(weight: torch.Tensor) -> torch.Tensor:
@@ -44,7 +44,7 @@ def _overlap_map(
     overlap = None
     singles: list[tuple[torch.Tensor, torch.Tensor]] = []
     for obs in observations:
-        single = stack_map_product(
+        single = stack_product(
             [obs],
             product,
             resampling_kernel=kernel,
@@ -259,7 +259,7 @@ def main() -> int:
         results: dict[str, tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = {}
         method_metrics: dict[str, dict[str, float]] = {}
         for method in methods:
-            result = stack_map_product(
+            result = stack_product(
                 obs_list,
                 product,
                 resampling_kernel=args.kernel,

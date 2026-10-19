@@ -17,9 +17,9 @@ SRC = ROOT / "src"
 import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E402
 from torchsky import WCS  # noqa: E402
 from torchsky.map import (
-    MapProductResult,
+    ProductResult,
     plan_map_product,
-    stack_map_product,
+    stack_product,
 )  # noqa: E402
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
@@ -163,7 +163,7 @@ def _assemble_stochastic_chunk_product(
             spectral_axis=case_spec.spectral_axis,
             spectral_bin_edges=case_spec.spectral_bin_edges,
         )
-        support_reference_product = stack_map_product(
+        support_reference_product = stack_product(
             image_observations,
             product,
             resampling_kernel="bilinear",
@@ -250,7 +250,7 @@ def _assemble_stochastic_chunk_product(
                 spatial_chunk_size=None,
             )
             taper = _hann2d(tile_h, tile_w, device=local_pred.data.device)
-            local_support = stack_map_product(
+            local_support = stack_product(
                 local_image_observations,
                 local_product,
                 resampling_kernel="bilinear",
@@ -263,7 +263,7 @@ def _assemble_stochastic_chunk_product(
             assembled_weight[:, y0 : y0 + tile_h, x0 : x0 + tile_w] += blend_weight
             used_chunks += 1
         normalized = assembled_data / torch.clamp(assembled_weight, min=1.0e-6)
-        stitched = MapProductResult(
+        stitched = ProductResult(
             product=product,
             data=normalized,
             weight=assembled_weight,

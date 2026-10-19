@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 from torchsky_harness.benchmarks import bench_map_compat  # noqa: E402
 
 from torchsky.map import ImageObservation  # noqa: E402
-from torchsky.map.product import plan_map_product, stack_map_product  # noqa: E402
+from torchsky.map.product import plan_map_product, stack_product  # noqa: E402
 
 DATA_DIR = ROOT / "data" / "cfht" / "MegaPipe.028.181" / "g"
 
@@ -123,11 +123,11 @@ def main():
     print(f"  Plan:   {plan_time * 1000:.0f}ms")
 
     # ── Step 4: torchsky coadd ────────────────────────────────────
-    print("\n── torchsky coadd (stack_map_product, bilinear) ──")
+    print("\n── torchsky coadd (stack_product, bilinear) ──")
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
     t0 = time.perf_counter()
-    result = stack_map_product(
+    result = stack_product(
         obs_list,
         product,
         resampling_kernel="bilinear",

@@ -124,9 +124,9 @@ from torchsky.map.operators import (  # noqa: E402
 )
 from torchsky.map.field.types import PSFSpec  # noqa: E402
 from torchsky.map.product import (  # noqa: E402
-    MapBandpassSpec,
-    MapProductResult,
-    MapProductSpec,
+    BandpassSpec,
+    ProductResult,
+    ProductSpec,
     render_field_product,
 )
 from torchsky.spectrophotometry import Passband  # noqa: E402
@@ -340,7 +340,7 @@ def _refine_neural_scene_pcg(
 
 def _save_scene_initialization_product(
     path: Path,
-    product: MapProductResult,
+    product: ProductResult,
     *,
     elapsed_ms: float,
     pixel_response_convention: str,
@@ -756,7 +756,7 @@ def _training_scene_initialization_product(
     *,
     target_header: dict[str, Any],
     fit_kwargs: dict[str, Any],
-) -> MapProductResult:
+) -> ProductResult:
     """Coadd normalized training SCI minus its fixed additive detector signal."""
     if not observations or not (len(observations) == len(contexts) == len(bundles)):
         raise ValueError("scene initialization requires aligned training observations")
@@ -838,7 +838,7 @@ def _training_scene_initialization_product(
         if center in band_specs:
             continue
         if observation.passband is not None:
-            band_specs[center] = MapBandpassSpec(
+            band_specs[center] = BandpassSpec(
                 label=label,
                 spectral_min=observation.spectral_min,
                 spectral_max=observation.spectral_max,
@@ -848,7 +848,7 @@ def _training_scene_initialization_product(
             observation.transmission_wavelength is not None
             and observation.transmission_throughput is not None
         ):
-            band_specs[center] = MapBandpassSpec(
+            band_specs[center] = BandpassSpec(
                 label=label,
                 spectral_min=observation.spectral_min,
                 spectral_max=observation.spectral_max,
@@ -860,7 +860,7 @@ def _training_scene_initialization_product(
                 ),
             )
         else:
-            band_specs[center] = MapBandpassSpec(
+            band_specs[center] = BandpassSpec(
                 label=label,
                 spectral_min=observation.spectral_min,
                 spectral_max=observation.spectral_max,
@@ -868,11 +868,11 @@ def _training_scene_initialization_product(
                 transmission_sigma=observation.transmission_sigma,
             )
     output_dtype = observations[0].image.dtype
-    product = MapProductSpec(
+    product = ProductSpec(
         target_header=dict(target_header),
         bands=tuple(band_specs[center] for center in centers),
     )
-    return MapProductResult(
+    return ProductResult(
         product=product,
         data=data.to(dtype=output_dtype),
         weight=weights.to(dtype=output_dtype),
@@ -890,7 +890,7 @@ def _training_scene_initialization_product(
 def _initialize_joint_scene(
     model: torch.nn.Module,
     model_kind: str,
-    product: MapProductResult,
+    product: ProductResult,
     *,
     policy: str = "common_product",
 ) -> dict[str, Any]:
@@ -1021,7 +1021,7 @@ def _fit_training_scene_initialization_product(
     fit_kwargs: dict[str, Any],
     steps: int,
     lr: float,
-) -> MapProductResult:
+) -> ProductResult:
     if int(steps) <= 0:
         raise ValueError("scene initialization steps must be positive")
     if not math.isfinite(float(lr)) or float(lr) <= 0.0:
@@ -1112,7 +1112,7 @@ def _fit_training_scene_initialization_product(
 
 
 def _foam_initialization_entries(
-    product: MapProductResult,
+    product: ProductResult,
     band_entries: Sequence[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     if product.mask is None:
@@ -1181,7 +1181,7 @@ class _MultiBandLinearGridScene(torch.nn.Module):
         assert isinstance(model, LinearBandGridField)
         return model
 
-    def initialize_from_product(self, product: MapProductResult) -> None:
+    def initialize_from_product(self, product: ProductResult) -> None:
         for band, model in self.band_models.items():
             assert isinstance(model, LinearBandGridField)
             model.initialize_from_product(product, band_name=band)
@@ -4991,7 +4991,7 @@ def main() -> int:
                 ),
             }
 
-        scene_initialization_product: MapProductResult | None = None
+        scene_initialization_product: ProductResult | None = None
         scene_initialization_metadata: dict[str, Any] = {
             "policy": str(args.scene_initialization),
             "elapsed_ms": 0.0,

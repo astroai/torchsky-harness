@@ -26,8 +26,8 @@ from torchsky.map import (  # noqa: E402
     FieldObservation,
     ImageObservation,
     LearnedSpectralBasisField,
-    MapUncertaintyProduct,
-    MapProductResult,
+    UncertaintyProduct,
+    ProductResult,
     SkyEncoderBandpassField,
     SkyEncoderMLPField,
     SkyEncoderResMLPField,
@@ -44,7 +44,7 @@ from torchsky.map import (  # noqa: E402
     render_field_product,
     plan_map_product,
     spectral_data_budget,
-    stack_map_product,
+    stack_product,
     suggest_num_spectral_samples,
     suggest_spectral_model_capacity,
 )
@@ -271,13 +271,13 @@ def _render_field_product_chunked(
     uncertainty = None
     if variance_planes:
         total_variance = torch.stack(variance_planes, dim=0)
-        uncertainty = MapUncertaintyProduct(
+        uncertainty = UncertaintyProduct(
             variance=total_variance,
             kind="model_predictive",
             components={"model": total_variance},
         )
     data = torch.stack(planes, dim=0)
-    return MapProductResult(
+    return ProductResult(
         product=product,
         data=data,
         weight=None,
@@ -3453,7 +3453,7 @@ def evaluate_case(
             spectral_bin_edges=case_spec.spectral_bin_edges,
         )
         render_chunk_size = 64 if max(product.shape) >= 128 else None
-        support_reference_product = stack_map_product(
+        support_reference_product = stack_product(
             training_image_observations,
             product,
             resampling_kernel="bilinear",
@@ -3478,14 +3478,14 @@ def evaluate_case(
             kernel = model_kind.split("_", 1)[1]
             coadd_times = []
             result_product = None
-            stack_map_product(
+            stack_product(
                 training_image_observations,
                 product,
                 resampling_kernel=kernel,
             )
             for _ in range(int(runs)):
                 start = time.perf_counter()
-                result_product = stack_map_product(
+                result_product = stack_product(
                     training_image_observations,
                     product,
                     resampling_kernel=kernel,

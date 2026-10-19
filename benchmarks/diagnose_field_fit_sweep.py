@@ -25,7 +25,7 @@ from torchsky.map import (  # noqa: E402
     fit_field_model,
     plan_map_product,
     render_field_product,
-    stack_map_product,
+    stack_product,
 )
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
@@ -118,7 +118,7 @@ def _evaluate_field_model(
             spectral_axis=spec.spectral_axis,
             spectral_bin_edges=spec.spectral_bin_edges,
         )
-        support_product = stack_map_product(
+        support_product = stack_product(
             image_observations,
             product,
             resampling_kernel="bilinear",

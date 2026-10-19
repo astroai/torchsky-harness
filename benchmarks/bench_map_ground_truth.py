@@ -25,13 +25,13 @@ from torchsky.sphere import healpix as hp  # noqa: E402
 from torchsky.map import (  # noqa: E402
     FieldObservation,
     ImageObservation,
-    MapBandpassSpec,
-    MapProductSpec,
+    BandpassSpec,
+    ProductSpec,
     estimate_field_domain,
     fit_field_model,
     make_field_model,
     plan_map_product,
-    stack_map_product,
+    stack_product,
 )
 from torchsky_harness.metrics import (  # noqa: E402
     check_map_benchmark_regressions,
@@ -1369,14 +1369,14 @@ def evaluate_torchsky_case(
         value_semantics=case_spec.value_semantics,
     )
     dt = _time_many(
-        lambda: stack_map_product(
+        lambda: stack_product(
             obs_list,
             product,
             resampling_kernel=resampling_kernel,
         ),
         runs,
     )
-    result = stack_map_product(
+    result = stack_product(
         obs_list,
         product,
         resampling_kernel=resampling_kernel,
@@ -1509,9 +1509,9 @@ def evaluate_torchsky_field_case(
         wavelength_angstrom=wavelength_angstrom,
         max_observations=max_observations,
     )
-    product = MapProductSpec(
+    product = ProductSpec(
         target_header=target_header,
-        bands=(MapBandpassSpec(label="mono", transmission_center=wavelength_angstrom),),
+        bands=(BandpassSpec(label="mono", transmission_center=wavelength_angstrom),),
         value_semantics=case_spec.value_semantics,
     )
 
@@ -1602,9 +1602,9 @@ def evaluate_torchsky_spherical_case(
         if spherical_mode == "harmonic_direct"
         else "spherical_spectral_healpix_bridge"
     )
-    product = MapProductSpec(
+    product = ProductSpec(
         target_header=target_header,
-        bands=(MapBandpassSpec(label="mono"),),
+        bands=(BandpassSpec(label="mono"),),
         value_semantics=case_spec.value_semantics,
     )
     scene = HealpixMapScene(
