@@ -13,7 +13,8 @@ whose evidence bundle is `release_ready`.
    `performance`/`benchmark`/`slow`/`integration` cases, which are not part of
    the release suite). torchsky: `pixi run test` plus the map shards
    (`pixi run -e test -- pytest -n auto -q 'tests/test_map_*.py'`).
-2. Every declared gate records `scientific_validity: established` with
+2. Every declared gate records `scientific_validity: established`; the
+   synthetic/truth gates additionally record
    `comparison_eligibility: baseline_compared`, and
    `pixi run evidence-bundle --fail-on-missing` reports `release_ready: true`
    with a single subject identity.
@@ -27,6 +28,8 @@ whose evidence bundle is `release_ready`.
 
 ## Gate bundle
 
+Synthetic/truth gates (`test` environment):
+
 | Gate | Task |
 |---|---|
 | multi-band cube assembly | `pixi run bench-map-cube-gate` |
@@ -36,6 +39,18 @@ whose evidence bundle is `release_ready`.
 | native Gaussian response | `pixi run bench-native-response-gate` |
 | native Gaussian likelihood + stale evidence | `pixi run bench-native-likelihood-gate` |
 | native nuisance precision | `pixi run bench-native-nuisance-gate` |
+
+Reference-comparison gates (`bench-all`/`sphere-bench` environments; install the
+release wheel and the harness there, then run):
+
+| Gate | Task |
+|---|---|
+| 30-projection WCS parity vs astropy | `pixi run bench-wcs-release-gate` |
+| HEALPix core parity vs healpy | `pixi run bench-healpix-release-gate` |
+| HEALPix neighbors/interpolation parity vs healpy | `pixi run bench-healpix-advanced-release-gate` |
+| sphere geometry vs healpy | `pixi run bench-sphere-matrix-release-gate` |
+| spin-2 SHT vs healpy | `pixi run bench-spin-matrix-release-gate` |
+| catalog crossmatch vs astropy | `pixi run bench-catalog-release-gate` |
 
 Then `pixi run evidence-bundle` writes
 `benchmark_results/evidence_bundle.{json,md}` (git-ignored by design). Attach

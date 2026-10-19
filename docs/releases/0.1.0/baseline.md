@@ -381,7 +381,7 @@ Open after 0.4.0 (do not claim these yet):
   sites and the `get_wcs` test were updated, and the tiled-vs-full gradient
   check in `test_smacs_sampling` now uses the float32 accumulation tolerance
   (float64 agreement is ~1e-9 relative). Added the `test-bounded` pixi task:
-  **927 passed, 152 skipped, 17 deselected** in 221 s against the 0.4.0 wheel. The default `test` task
+  **942 passed, 152 skipped, 17 deselected** in 242 s against the 0.4.0 wheel. The default `test` task
   still runs the opt-in `performance`/`benchmark`/`slow`/`integration` cases.
 
 - **Subject provenance fix:** `identify_subject()` resolved the subject's git
@@ -399,9 +399,10 @@ Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
 built from torchsky `4055e819` and installed into the harness test environment as
 a wheel (import path `site-packages/torchsky`, not the checkout). Subject
 `package_content_sha256 = 49f816de7a1daafc60b9695e34897e13b2916148c3816e781d05ab7cec63d0d6`,
-`source.kind = archive`, and the harness revision recorded in the bundle.
-Every gate below is a
-`pixi run` task against that install:
+`source.kind = archive`. Every gate below is a `pixi run` task against that
+install; the bundle records the harness revision.
+
+### Synthetic and truth gates (baseline_compared)
 
 | Gate | Evaluation | Verdict |
 |---|---|---|
@@ -413,11 +414,64 @@ Every gate below is a
 | `bench-native-likelihood-gate` | `bench_native_likelihood` | established / baseline_compared |
 | `bench-native-nuisance-gate` | `bench_native_nuisance` | established / baseline_compared |
 
+### Reference-comparison gates (suite_owned thresholds)
+
+| Gate | Evaluation | Comparator | Measured |
+|---|---|---|---|
+| `bench-wcs-release-gate` | `bench_wcs` | astropy | 30 projections: angular parity max 4.13e-5 asec (AIR formula floor; others ≤4e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; forward 0.54–3.70× and inverse 0.86–6.90× astropy |
+| `bench-healpix-release-gate` | `bench_healpix` | healpy | 6 ops at nside 512: zero index mismatches, max angle 1.14e-13 deg, throughput 1.02–2.19× |
+| `bench-healpix-advanced-release-gate` | `bench_healpix_advanced` | healpy | 6 ops: zero mismatches, throughput 1.25–2.06× |
+| `bench-sphere-matrix-release-gate` | `bench_sphere_matrix` | healpy | 3 profiles: median ratios 2.24/1.55/1.22/1.02/1.42/1.11, no failed thresholds |
+| `bench-spin-matrix-release-gate` | `bench_spin_matrix` | healpy | spin-2 SHT: no failures, small-bucket median ratios 0.459/0.422 vs 0.15 thresholds |
+| `bench-catalog-release-gate` | `bench_catalog_compat` | astropy SkyCoord | 6 rows OK, max separation difference 1.13e-10 asec |
+
+Quad-cube seams and all-sky poles are conditioning properties of the
+projections, not mapping errors: `bench_wcs` verifies them with sky-domain and
+pole-excluded metrics and exempts TSC/CSC/QSC from the pixel round-trip
+thresholds (astropy shows the same seam behaviour). AIR carries a ~1e-8 deg
+formula-precision floor shared by astropy's implementation.
+
 `pixi run evidence-bundle` reports `release_ready: true`,
-`subject_consistent: true`, `verdict_counts = {established: 7}`,
-`missing_claims: []`, `incomplete_runs: []`. The bundle (git-ignored) is
-regenerated for the tag; attach it to the release notes. These are bounded
-synthetic claims only: see the gate matrix for what each does not cover.
+`subject_consistent: true`, `verdict_counts = {established: 13}`,
+`missing_claims: []`. The bundle (git-ignored) is regenerated for the tag;
+attach it to the release notes. Comparison throughput numbers are same-machine
+(macOS) ratios, not pinned-runner performance claims; correctness metrics are
+hardware-independent.
+
+## Verification iteration (0.4.0 candidate)
+
+The candidate was re-verified with the wider harness inventory and the failures
+found were fixed or recorded, not hidden:
+
+- **Harness I/O boundary:** 38 benchmark/test/script modules still imported the
+  removed `torchsky.read/write/get_header/get_wcs`; migrated to `torchfits`
+  (86 bounded-suite failures to zero).
+- **Subject provenance:** a wheel installed under a checkout inherited that
+  checkout's git revision; `source.kind=archive` + wheel SHA-256 is now
+  recorded instead (`tests/test_subject_source.py`).
+- **Comparator inventory:** added reference-comparison gates and claims for WCS
+  (30 projections vs astropy), HEALPix core + advanced (vs healpy), sphere
+  geometry and spin-2 SHT (vs healpy), and catalog crossmatch (vs astropy).
+  `bench_wcs` now reports sky-domain round trips, pole-excluded maxima, p99
+  round-trip gating, and round-trip exempt cases for quad-cube seams; the
+  previously misleading 0.7 px MOL "error" is identified as all-sky polar
+  conditioning and the 45 asec CSC artifact as seam conditioning identical in
+  astropy.
+- **Summary-report evidence:** evaluators that emit a summary object
+  (`bench_sphere_matrix`, `bench_spin_matrix`) can now back a claim through a
+  declared failure list.
+- **Map truth gates:** `bench_map_ground_truth` and
+  `bench_map_multifield_truth` pass their committed smoke baselines.
+  `bench_map_field_fit` was re-baselined: the stale baseline predated a
+  support/metric-definition change (current RMSE is 7× lower at 0.0013 while
+  the derived `signal_to_residual_db` scale moved), so the old row was not a
+  comparable regression. It passes the re-baselined smoke contract; a held-out
+  noninferiority baseline is still open.
+- **Suites:** torchsky 1,899 + 773 passed (98 skipped); torchsky `pyright`
+  0 errors; harness bounded suite **942 passed, 152 skipped, 17 deselected**.
+  The default harness `test` task also runs opt-in performance cases
+  (`test_inr_perf` and friends) that train models for tens of minutes; the
+  release suite is `test-bounded`.
 
 ## Version bump (release candidate)
 

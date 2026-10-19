@@ -32,7 +32,8 @@ A run never guesses. Validity is derived only from declarations in
   the run did not finish.
 * `established` — the evaluation has a declared claim, the child exited `0`, and
   every declared required row is present in the evidence report with
-  `status=OK`.
+  `status=OK`. Summary-report evaluations declare a `summary_failures_key`
+  instead of rows and are established when that failure list is empty.
 * `not_established` — a declared claim exists but one of the above failed; each
   failure is listed in `verdict_reasons`.
 
@@ -62,6 +63,12 @@ throughput.
 | Evaluation | Rows | Task |
 |---|---|---|
 | `bench_map_cube` | `cube_constant_bands` | `bench-map-cube-gate` |
+| `bench_wcs` | 30 projection rows (`TAN` … `TPV`) | `bench-wcs-release-gate` |
+| `bench_healpix` | `ang2pix_ring`, `ang2pix_nested`, `pix2ang_ring`, `pix2ang_nested`, `ring2nest`, `nest2ring` | `bench-healpix-release-gate` |
+| `bench_healpix_advanced` | `neighbors_ring`, `neighbors_nested`, `interp_weights_ring`, `interp_weights_nested`, `interp_val_ring`, `interp_val_nested` | `bench-healpix-advanced-release-gate` |
+| `bench_sphere_matrix` | summary `failed_thresholds` must be empty | `bench-sphere-matrix-release-gate` |
+| `bench_spin_matrix` | summary `failures` must be empty | `bench-spin-matrix-release-gate` |
+| `bench_catalog_compat` | `synthetic_clustered`, `real_astropy_votable_catalogs`, `real_astropy_votable_fits_roundtrip` | `bench-catalog-release-gate` |
 | `bench_map_ifu` | `ifu_matched_sparse_spectrum` | `bench-map-ifu-gate` |
 | `bench_map_ifu_spectral_axis` | `ifu_nonuniform_axis_line_localization`, `ifu_nonuniform_axis_constant_spectrum`, `ifu_regular_axis_spectrum_interpolation`, `ifu_nonuniform_axis_interpolation_envelope` | `bench-map-ifu-spectral-axis-gate` |
 | `bench_map_healpix_multiband` | `healpix_multiband_flat_multiscale`, `healpix_multiband_sed_registration`, `healpix_multiband_plane_photometry`, `healpix_multiband_roundtrip_cube` | `bench-map-healpix-multiband-gate` |
