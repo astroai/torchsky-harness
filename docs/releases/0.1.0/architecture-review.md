@@ -73,15 +73,16 @@ Rules:
    names; keep `compat`/`healpy` as the only compatibility surface.
 4. Split `map/image_plane.py`, `wcs/core.py`, `sphere/spectral.py`, and
    `map/field/core.py` at the boundaries recorded in the audit.
-5. Add the missing IFU/cube evaluator and synthetic native-response gate in the
-   harness; enable completeness checks on purpose-built baselines.
-6. Bump versions, add publish workflows, and make `execution.json` carry a real
-   gate verdict.
+5. Done: cube, matched-sampling IFU, HEALPix multi-band, and three native
+   gates exist with committed baselines and completeness checks.
+6. Bump versions and add publish workflows. Done: `execution.json` carries a
+   real, declared gate verdict (see [evidence-verdicts.md](../../evidence-verdicts.md)).
 
 ## Verification state
 
 - torchsky full suite was green after the I/O reset and scene/API changes;
   the map cleanup is being verified by a fresh full-suite run.
 - harness preflight and targeted boundary/gate tests pass.
-- no release gate has been claimed; the gate matrix is still a contract, not a
-  pass record.
+- six synthetic release gates now record `scientific_validity: established` with
+  `comparison_eligibility: baseline_compared`; they are bounded claims, not a
+  general validity claim, and real-data rows remain open.

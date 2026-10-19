@@ -246,6 +246,16 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `bench-map-ifu-gate` and a unit test pass. This does **not** claim dense
   spectral interpolation; an earlier unmatched 40 Å target grid produced sparse
   nearest-mapped output and is recorded as a limitation, not an accuracy gate.
+- **Runner verdict fields:** `execution.json` no longer hard-codes
+  `scientific_validity: not_assessed`. `src/torchsky_harness/evidence.py`
+  declares the six release-gate claims (scope, required rows, limitations) and
+  the runner derives `established` / `not_established` / `not_assessed` plus an
+  independent `comparison_eligibility` (`suite_owned` / `baseline_compared`)
+  from the child exit code, the `--json-out` report, and the baseline flags.
+  Undeclared evaluations stay `not_assessed` and every failure is listed in
+  `verdict_reasons`. All six gates now record `established` +
+  `baseline_compared`; record format documented in `docs/evidence-verdicts.md`
+  and covered by `tests/test_evidence_verdict.py`.
 - **HEALPix multi-band gate:** added
   `benchmarks/bench_map_healpix_multiband.py`, baseline
   `benchmarks/baselines/map_healpix_multiband_smoke.json`, task

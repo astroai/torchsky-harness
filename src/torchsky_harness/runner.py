@@ -9,6 +9,7 @@ import tempfile
 
 from torchsky_harness import __version__
 from torchsky_harness.benchmarks.config import benchmark_subprocess_env
+from torchsky_harness.evidence import verdict
 from torchsky_harness.registry import resolve
 from torchsky_harness.subject import git_identity, identify_subject, sha256
 
@@ -43,6 +44,7 @@ def run(name: str, args: list[str], run_dir: Path, subject_artifact: Path | None
         "harness": {"version": __version__, "source": git_identity(Path(__file__).parent)},
         "inputs": inputs, "execution": "running", "returncode": None,
         "scientific_validity": "not_assessed", "comparison_eligibility": "not_assessed",
+        "verdict_reasons": ["execution not finished"],
         "metrics": "suite_owned", "device": "suite_owned",
     }
     record_path = run_dir / "execution.json"
@@ -55,9 +57,18 @@ def run(name: str, args: list[str], run_dir: Path, subject_artifact: Path | None
         code = completed.returncode
     except BaseException as exc:
         record.update(execution="interrupted", error=repr(exc))
+        record["verdict_reasons"] = ["execution interrupted"]
         write_record(record_path, record)
         raise
     record.update(execution="completed" if code == 0 else "failed", returncode=code)
+    record.update(
+        verdict(
+            name,
+            returncode=code,
+            command=command,
+            working_directory=Path.cwd(),
+        )
+    )
     record["logs"] = [{"path": name, "sha256": sha256(run_dir / name)} for name in ("stdout.log", "stderr.log")]
     write_record(record_path, record)
     return code

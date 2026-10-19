@@ -15,6 +15,10 @@ calibrated run and are not adjusted to make a failing gate pass.
    machine.
 4. Every run records the installed subject identity, harness revision,
    comparator versions, device, dtype, seeds, and the run-directory hash.
+   A declared gate also records `scientific_validity` and
+   `comparison_eligibility`; see [evidence-verdicts.md](../../evidence-verdicts.md).
+   A run may only claim `established` for a claim declared in
+   `src/torchsky_harness/evidence.py` with all required rows present and passing.
 5. A passing gate certifies only its declared cases and contract. It does not
    certify unlisted projections, devices, data regimes, or models.
 
@@ -87,7 +91,8 @@ colour/uncertainty gate, and missing IFU non-uniform evaluator.
 
 ## Evidence bundle
 
-`docs/releases/0.1.0/` must contain, per gate:
+`docs/releases/0.1.0/` must contain, per gate (record format:
+[evidence-verdicts.md](../../evidence-verdicts.md)):
 
 - exact command, run directory, `execution.json` hash;
 - subject version, import path, package-content SHA-256, dirty flag;
