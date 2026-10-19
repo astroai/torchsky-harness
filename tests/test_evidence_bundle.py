@@ -85,6 +85,38 @@ def test_bundle_reports_missing_claim(tmp_path: Path) -> None:
     assert bundle["missing_claims"] == [sorted(CLAIMS)[-1]]
 
 
+def test_undeclared_failed_run_does_not_block_release_readiness(tmp_path: Path) -> None:
+    runs = _all_claims(tmp_path)
+    extra = _run_dir(
+        tmp_path,
+        "run-extra",
+        "bench_map_compat",
+        validity="not_assessed",
+        execution="failed",
+    )
+    bundle = build_bundle([*runs, extra])
+
+    assert bundle["release_ready"] is True
+    assert bundle["incomplete_runs"] == ["bench_map_compat"]
+    assert bundle["incomplete_claims"] == []
+
+
+def test_incomplete_declared_claim_blocks_release_readiness(tmp_path: Path) -> None:
+    missing = sorted(CLAIMS)[-1]
+    runs = _all_claims(tmp_path)[:-1]
+    failed = _run_dir(
+        tmp_path,
+        "run-failed",
+        missing,
+        validity="not_established",
+        execution="failed",
+    )
+    bundle = build_bundle([*runs, failed])
+
+    assert bundle["release_ready"] is False
+    assert bundle["incomplete_claims"] == [missing]
+
+
 def test_bundle_reports_unreadable_run_directory(tmp_path: Path) -> None:
     runs = _all_claims(tmp_path)
     (tmp_path / "broken").mkdir()

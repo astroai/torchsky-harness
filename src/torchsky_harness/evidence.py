@@ -454,13 +454,18 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         for evaluation, entry in selected.items()
         if entry.get("execution") != "completed"
     )
+    incomplete_claims = sorted(
+        evaluation
+        for evaluation in CLAIMS
+        if selected.get(evaluation, {}).get("execution") != "completed"
+    )
     counts: dict[str, int] = {"established": 0, "not_established": 0, "not_assessed": 0}
     for entry in selected.values():
         key = str(entry.get("scientific_validity", "not_assessed"))
         counts[key] = counts.get(key, 0) + 1
     release_ready = (
         not missing_claims
-        and not incomplete
+        and not incomplete_claims
         and len(subjects) <= 1
         and not unreadable
     )
@@ -486,6 +491,7 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         "subject_consistent": len(subjects) <= 1,
         "harness_revisions": sorted(str(item) for item in harness_revisions),
         "incomplete_runs": incomplete,
+        "incomplete_claims": incomplete_claims,
         "unreadable_runs": unreadable,
         "superseded_runs": superseded,
         "verdict_counts": counts,

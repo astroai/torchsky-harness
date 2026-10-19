@@ -95,12 +95,12 @@ artifact. Anything else is supporting evidence, not a pass.
 
 | Field | Meaning |
 |---|---|
-| `release_ready` | every declared claim has an `established` run, no selected run is incomplete, all selected runs share one subject identity, and no run directory is unreadable |
+| `release_ready` | every declared claim has a completed and `established` run, all selected runs share one subject identity, and no run directory is unreadable. Undeclared evaluations in the runs directory are informational and do not block the readiness flag |
 | `missing_claims` | declared claims without an `established` run |
 | `extra_established` | established runs for evaluations that declare no claim (supporting evidence) |
 | `subject_identities`, `subject_consistent` | package-content SHA-256, source kind, source digest, and revision of every selected run |
 | `harness_revisions` | harness revisions observed in the bundle |
-| `incomplete_runs`, `unreadable_runs` | runs that cannot certify anything |
+| `incomplete_runs`, `incomplete_claims`, `unreadable_runs` | runs that cannot certify anything; `incomplete_claims` is the declared subset that blocks readiness |
 | `superseded_runs` | older runs that were not selected |
 | `entries` | per evaluation: verdict, claim, subject, harness, `execution.json` and report SHA-256, log SHA-256 |
 
