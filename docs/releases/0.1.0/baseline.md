@@ -395,18 +395,19 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `b2018df1b1707ecbd97b1445781f249bc4269d10e570a0ee1474a73d5826a1cc`),
-built from torchsky `f8a3c2ef` and installed into the harness environments as a
+(sha256 `f0608af6e200d44b2fbdbda920c0f2a7cf0df7504e160c26a928217614f4c8fd`),
+built from torchsky `ec607ea2` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = a68bea43682247c6bfbf772360f4dc66b2c4c8cb6cf49509bc012c68fa95dc64`,
+`package_content_sha256 = 27950a8b9417a3465c1675c1a3ecb5616724500f9df90986d916d23e5b54cd36`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
 This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`,
-`1570e1e7…`, `7da600a4…`, and `a94271ba…` artifacts; the last rebuild packs the FITS `-TAB`
+`1570e1e7…`, `7da600a4…`, `a94271ba…`, and `b2018df1…` artifacts; the last rebuild packs the FITS `-TAB`
 fixes (1-based default index vector, `torchfits.HDUList` lookup), the
-center-native rotation fix, and a lean-code pass across the native extension,
+center-native rotation fix, the AIR Newton solver (2.3x astropy, 4.1e-7 asec
+parity), the `_cpp_ext` native loader fix, and a lean-code pass across the native extension,
 WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
 compatibility shims, unused helpers, lazy `map.field` facade). No public API
 names changed.
@@ -497,7 +498,7 @@ portability check on session hardware, not a pinned-runner performance claim.
 |---|---|---|---|
 | `bench-sphere-real-map-gate` | `bench_sphere_real_map` | healpy | 106-pixel real CFHT MegaPipe map: lookup exact, rel <=1.1e-6 on SHT/smoothing, `ud_grade` abs <=7.3e-12 |
 | `bench-wcs-real-headers-gate` | `bench_wcs_real_headers` | astropy | 11 real instrument headers/images: forward angular parity 2.0e-7 asec (max), inverse pixel parity 2.6e-6 px (max); lookup-distortion fixtures SKIPPED with reasons |
-| `bench-wcs-release-gate` | `bench_wcs` | astropy | 38 cases (30 projections + 8 reference-offset): angular parity max 4.13e-5 asec (AIR formula floor; others ≤1.5e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; offset cases ≤1.9e-9 asec / ≤4.6e-10 px round trip; forward 0.46–3.81× and inverse 0.97–6.01× astropy |
+| `bench-wcs-release-gate` | `bench_wcs` | astropy | 38 cases (30 projections + 8 reference-offset): angular parity max 6.1e-7 asec (AIR 4.1e-7), pole/seam-excluded sky round trip 1.3e-6 asec, pixel round trip 1.3e-6 px, p99 sky round trip 6.3e-3 asec; offset cases ≤1.5e-8 asec / ≤4.6e-10 px round trip; forward 0.48–3.32× and inverse 0.91–5.56× astropy |
 | `bench-healpix-release-gate` | `bench_healpix` | healpy | 6 ops at nside 512: zero index mismatches, max angle 1.14e-13 deg, throughput 1.02–2.19× |
 | `bench-healpix-advanced-release-gate` | `bench_healpix_advanced` | healpy | 6 ops: zero mismatches, throughput 1.25–2.06× |
 | `bench-sphere-matrix-release-gate` | `bench_sphere_matrix` | healpy | 3 profiles at nside 512: index/angle parity gates pass; median ratios 2.00/1.54/1.27/0.98/1.43/0.98 recorded but not gated on macOS (run-to-run noise crosses the Mac-tuned threshold; pinned-runner work) |
