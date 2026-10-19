@@ -395,18 +395,21 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `7da600a46ba4f4bb90c503342acee94bded4fec355abd4f1978b4e723fd25002`),
-built from torchsky `7146afea` and installed into the harness environments as a
+(sha256 `a94271ba9fd7b0623e9d7360780cd21d4a2acfde241ea67b907261e3be9a261f`),
+built from torchsky `37e5ab0e` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = c4554ebead1c7d7a433b1ada1d90de4ace359df7ec0f789dbc00fbff4f911ba6`,
+`package_content_sha256 = 353a354fc0cc628edf474d5b45a50883d37b1da0cf1f3f7a971681f666ebf184`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
-This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`, and
-`1570e1e7…` artifacts; the last rebuild packs the FITS `-TAB` fixes
-(1-based default index vector, `torchfits.HDUList` lookup) and the API-surface
-cleanup that followed the center-native rotation fix.
+This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`,
+`1570e1e7…`, and `7da600a4…` artifacts; the last rebuild packs the FITS `-TAB`
+fixes (1-based default index vector, `torchfits.HDUList` lookup), the
+center-native rotation fix, and a lean-code pass across the native extension,
+WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
+compatibility shims, unused helpers, lazy `map.field` facade). No public API
+names changed.
 
 ### Real-data WCS parity (`bench_wcs_real_headers`)
 
