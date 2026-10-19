@@ -94,7 +94,9 @@ colour/uncertainty gate, and missing IFU non-uniform evaluator.
 `docs/releases/0.1.0/` must contain, per gate (record format:
 [evidence-verdicts.md](../../evidence-verdicts.md)):
 
-- exact command, run directory, `execution.json` hash;
+- exact command, run directory, `execution.json` hash (collect the whole set
+  with `pixi run evidence-bundle`, which emits
+  `benchmark_results/evidence_bundle.{json,md}`);
 - subject version, import path, package-content SHA-256, dirty flag;
 - harness revision;
 - comparator versions;

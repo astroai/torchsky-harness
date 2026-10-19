@@ -8,6 +8,7 @@ import sys
 import uuid
 from pathlib import Path
 
+from torchsky_harness.evidence import build_bundle, write_bundle
 from torchsky_harness.registry import domain, evaluations
 from torchsky_harness.runner import run
 from torchsky_harness.subject import identify_subject, sha256
@@ -33,6 +34,17 @@ def main(argv: list[str] | None = None) -> int:
     listing = commands.add_parser("list")
     listing.add_argument("--domain", choices=["wcs", "sphere", "map", "catalogs", "cross_domain"])
     commands.add_parser("subject")
+    bundle = commands.add_parser(
+        "evidence", help="Collect run records into a release evidence bundle."
+    )
+    bundle.add_argument("--runs-dir", type=Path, default=Path("runs"))
+    bundle.add_argument("--json-out", type=Path, default=None)
+    bundle.add_argument("--markdown-out", type=Path, default=None)
+    bundle.add_argument(
+        "--fail-on-missing",
+        action="store_true",
+        help="Exit non-zero unless every declared claim has an established run",
+    )
     commands.add_parser(
         "calibration-manifest",
         help="Build a split-safe JWST/NIRCam calibration-evidence manifest.",
@@ -55,6 +67,23 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "subject":
         print(json.dumps(identify_subject(), indent=2))
+        return 0
+    if args.command == "evidence":
+        run_dirs = (
+            sorted(path for path in args.runs_dir.iterdir() if path.is_dir())
+            if args.runs_dir.is_dir()
+            else []
+        )
+        evidence_bundle = build_bundle(run_dirs)
+        print(
+            write_bundle(
+                evidence_bundle,
+                json_out=args.json_out,
+                markdown_out=args.markdown_out,
+            )
+        )
+        if args.fail_on_missing and not evidence_bundle["release_ready"]:
+            return 1
         return 0
     wheel = None
     if args.subject_wheel:

@@ -79,3 +79,23 @@ and `package_content_sha256`), the `--json-out` report, `stdout.log`, and the
 task command. A release bundle is the set of runs whose `scientific_validity` is
 `established` for a declared claim and whose subject identity matches the release
 artifact. Anything else is supporting evidence, not a pass.
+
+## Evidence bundle
+
+`pixi run evidence-bundle` (or `torchsky-harness evidence --runs-dir runs
+--fail-on-missing`) collects the run records into a release bundle:
+
+| Field | Meaning |
+|---|---|
+| `release_ready` | every declared claim has an `established` run, no selected run is incomplete, all selected runs share one subject identity, and no run directory is unreadable |
+| `missing_claims` | declared claims without an `established` run |
+| `extra_established` | established runs for evaluations that declare no claim (supporting evidence) |
+| `subject_identities`, `subject_consistent` | package-content SHA-256 and revision of every selected run |
+| `harness_revisions` | harness revisions observed in the bundle |
+| `incomplete_runs`, `unreadable_runs` | runs that cannot certify anything |
+| `superseded_runs` | older runs that were not selected |
+| `entries` | per evaluation: verdict, claim, subject, harness, `execution.json` and report SHA-256, log SHA-256 |
+
+Selection is newest `established` run per evaluation, falling back to the newest
+run when none is established. The bundle hashes the files it names, so a bundle
+plus the run directories is self-checking; it is not a signature.
