@@ -57,7 +57,7 @@ if ! command -v canfar >/dev/null; then
   exit 1
 fi
 if [[ "${TORCHSKY_CANFAR_DRY_RUN:-0}" != "1" ]]; then
-  canfar server use production
+  canfar server use "${TORCHSKY_CANFAR_SERVER:-canfar}"
 fi
 
 launch_one() {
