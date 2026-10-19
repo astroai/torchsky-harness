@@ -70,7 +70,11 @@ runs against `reproject_interp`/`reproject_exact` after the adapters were fixed
 to hand `reproject` a real astropy `Header`; all rows are OK on the synthetic
 shifted WCS and both astropy SIP fixtures. The noisy synthetic field shows a
 0.128 RMSE interpolation-kernel disagreement, which stays open against the
-existing drizzle/swarp CI baselines.
+existing drizzle/swarp CI baselines. The existing `bench-map-compat-gate`
+  additionally reports a 1/256 (`0.00390625`) max-abs mismatch on the MEF
+  drizzle rows in the local sphere-bench env; that comparator baseline is
+  environment/drizzle-version dependent and must be regenerated on the pinned
+  runner before it can be claimed.
 
 **Current evidence is bounded and synthetic/fixture-based; no row is a
 real-data claim.** WCS, sphere, and catalog comparator rows are delivered by the
