@@ -29,6 +29,8 @@ dev = "pip install -e . --no-deps --no-build-isolation"
 build = "python -m pip wheel . --no-deps --no-build-isolation --wheel-dir dist"
 # Full tests need the `test` env (astropy/pyarrow/polars/…); see AGENTS.md.
 test = "pixi run -e test -- pytest tests -q"
+# Release suite: full harness tests without opt-in performance/benchmark/slow/integration cases.
+test-bounded = "pixi run -e test -- pytest tests -q -m 'not performance and not benchmark and not slow and not integration'"
 lint = "ruff check . && ruff format ."
 # Git pre-push hook: ruff + compileall only. Do not add pytest here.
 preflight-push = "ruff check . && python -m compileall -q src benchmarks scripts tests"

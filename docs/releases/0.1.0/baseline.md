@@ -256,6 +256,14 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `verdict_reasons`. All six gates now record `established` +
   `baseline_compared`; record format documented in `docs/evidence-verdicts.md`
   and covered by `tests/test_evidence_verdict.py`.
+- **Map module split:** extracted the spectral-cube path
+  (`_has_3d_ifu_observations`, `_coadd_ifu_3d_cube`, `coadd_cube`, 387 lines)
+  into `torchsky/map/cube.py` and the direct-to-HEALPix path
+  (`coadd_healpix`, `resample_healpix`, 305 lines) into
+  `torchsky/map/healpix_coadd.py`. `map/image_plane.py` is now 5,345 lines,
+  down from 6,037 before this split and 6,588 before the split work started;
+  `map.__init__` loads the moved entry points lazily from the new modules and
+  the frozen API manifest is unchanged.
 - **IFU spectral-axis gate and non-uniform-axis fix:** `coadd_cube` mapped
   every detector sample onto the target spectral axis with a single uniform
   `d_lambda`, so a non-uniform target axis placed samples in the wrong bins
@@ -349,3 +357,14 @@ retain the ACS campaign as evidence, not a pass.
    publish workflow, wheel install smoke, and runner verdict fields.
 7. Run the four release gates on the pinned Linux runner and record the first
    real evidence bundle.
+
+## Version bump (release candidate)
+
+torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is
+`0.1.0` with `dependencies = ["torchsky>=0.4.0"]`. Both repositories carry a
+tag-driven PyPI trusted-publishing workflow
+(`.github/workflows/publish.yml`) that verifies the tag matches `pyproject.toml`,
+checks wheel contents, and runs an install smoke before publishing; the paired
+procedure is [release-procedure.md](release-procedure.md). The recorded gate
+runs predate the version bump, so the release bundle must be regenerated against
+the `0.4.0` install before tagging.
