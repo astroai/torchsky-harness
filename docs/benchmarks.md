@@ -93,12 +93,20 @@ Reusable map truth metrics and benchmark artifact/report helpers are exposed by
 harness API directly; the torchsky runtime package has no fallback to harness
 code.
 
-On each push/PR, workflow **Map mosaic (bench extras + compat gate)** (see `.github/workflows/ci.yml`) installs **`torchsky[bench]`**, runs the full **`pytest tests/`** suite (including **`reproject`** bilinear/bicubic parity, optional **`dfreproject`** bilinear parity, and optional **`drizzle`** external-path smoke tests), then runs **`benchmarks/bench_map_compat.py`** on **`synthetic_shifted_wcs`** with **`benchmarks/baselines/map_compat_ci_gate.json`** enforcing status and comparator diff ceilings for the bilinear `reproject_interp` row. A follow-up bench step runs **`torchsky:fft_shift`** on **`upstream_drizzle_crpix_translation`** (no baseline; smoke only). The weekly **`workflow_dispatch` / schedule** in **`.github/workflows/map_compat_weekly.yml`** also builds the pinned official SWarp and Montage source revisions and requires Drizzle, SWarp, and Montage rows to satisfy the committed absolute acceptance contracts. A skipped official comparator is a failed job, not a parity pass.
-
-**Current state (2026-10-18):** the push/PR workflow
+Scientific map gates are **not** run on every push. The push/PR workflow
 `.github/workflows/ci.yml` is `Harness infrastructure` and runs preflight plus
-infrastructure contracts only; the scientific map gates above are opt-in
-local/CANFAR commands. Verify the workflow before citing a per-push map gate.
+infrastructure contracts only. The `Map mosaic bench + compat gate` workflow in
+`.github/workflows/map_compat_weekly.yml` is manual (`workflow_dispatch`, no
+scheduled trigger despite the file name):
+it installs the subject and harness, runs the map/compat test set, runs
+`benchmarks/bench_map_compat.py` on `synthetic_shifted_wcs` with
+`benchmarks/baselines/map_compat_ci_gate.json` enforcing status and comparator
+diff ceilings for the bilinear `reproject_interp` row, then builds the pinned
+official SWarp and Montage source revisions and requires Drizzle, SWarp, and
+Montage rows to satisfy the committed absolute acceptance contracts. A skipped
+official comparator is a failed job, not a parity pass. Run the same gates
+locally with the pixi tasks in this document; `pixi run ci-local` is the
+optional ruff + compileall + full pytest pass.
 
 **Optional map-compat wall-time regression:** after recording representative `time_ms` rows on a pinned runner, pass **`--time-baseline-json`** (format in **`benchmarks/baselines/map_compat_time_gate_example.json`**) and **`--time-regression-tolerance`** (default `0.35`) to fail if OK rows slow down beyond the baseline. This is intentionally **off** in default CI because wall times vary by hardware.
 
