@@ -395,19 +395,19 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `5db2315f848131739b649901ceb5ff74cf45275a4d1ff7ebda99d981ab6e3f71`),
-built from torchsky `2ca42d06` and installed into the harness environments as a
+(sha256 `e0fb1580aa2df5296880afaf5451e07194b11a67f6270234d951167f4ba6a08e`),
+built from torchsky `27f82549` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = 0c1b7494b4468fe2f8a1c68ab2abd826309923488c36bea71313cc21710d3f99`,
+`package_content_sha256 = 91618f61320463b9339a16dced2c077ea95ad4b3c6bcbb9fc0d0efb8c8379584`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
 This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`,
-`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, `f0608af6…`, `9ce6f168…`, `72fbf892…`, `24b30efb…`, `17ec7bed…`, and `66b48876…` artifacts; the last rebuild packs the FITS `-TAB`
+`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, `f0608af6…`, `9ce6f168…`, `72fbf892…`, `24b30efb…`, `17ec7bed…`, `66b48876…`, and `5db2315f…` artifacts; the last rebuild packs the FITS `-TAB`
 fixes (1-based default index vector, `torchfits.HDUList` lookup), the
 center-native rotation fix, the AIR Newton solver (2.3x astropy, 4.1e-7 asec
-parity), the `_cpp_ext` native loader fix, the WCS core, map sky-matching, map planning, field-helper, field-model, and map-calibration module splits, and a lean-code pass across the native extension,
+parity), the `_cpp_ext` native loader fix, the WCS core, map sky-matching, map planning, field-helper, field-model, map-calibration, and sphere-spectral-ops module splits, and a lean-code pass across the native extension,
 WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
 compatibility shims, unused helpers, lazy `map.field` facade). No public API
 names changed.
