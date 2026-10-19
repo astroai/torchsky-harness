@@ -90,6 +90,17 @@ local/CANFAR commands. Verify the workflow before citing a per-push map gate.
 
 **Optional map-compat wall-time regression:** after recording representative `time_ms` rows on a pinned runner, pass **`--time-baseline-json`** (format in **`benchmarks/baselines/map_compat_time_gate_example.json`**) and **`--time-regression-tolerance`** (default `0.35`) to fail if OK rows slow down beyond the baseline. This is intentionally **off** in default CI because wall times vary by hardware.
 
+## Real-data WCS parity
+
+`benchmarks/bench_wcs_real_headers.py` compares torchsky and astropy on eleven
+real instrument headers and small real images vendored from the Astropy WCS test
+suite (BSD-3; see `benchmarks/fixtures/real_wcs/PROVENANCE.md` for sources and
+descriptions): INT WFC ZPN, Spitzer IRAC SIP, PTF TPV, HST WFPC2 SIP, validation
+TPV/SIP headers, and a real HST `(RA, Dec, TIME-TAB)` product. It gates forward
+angular parity and inverse pixel parity per fixture, records `SKIPPED` rows with
+reasons for lookup-distortion products whose parity is still open, and found
+two real-data `-TAB` defects that the synthetic cases never exercised.
+
 ## Real-Data Benchmark Setup
 
 Large downloaded inputs under `data/`, generated benchmark artifacts under

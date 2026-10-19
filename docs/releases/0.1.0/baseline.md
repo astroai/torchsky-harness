@@ -395,17 +395,48 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `1570e1e7afd123c5e709f21c86edf3cf40252ea8ab117032cb38573d711ff8de`),
-built from torchsky `53e16213` and installed into the harness environments as a
+(sha256 `7da600a46ba4f4bb90c503342acee94bded4fec355abd4f1978b4e723fd25002`),
+built from torchsky `7146afea` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = 0dca88a21c93e63fec2f660860951cc9dc6b8781ee4b799ae940470264bac186`,
+`package_content_sha256 = c4554ebead1c7d7a433b1ada1d90de4ace359df7ec0f789dbc00fbff4f911ba6`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
-This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, and `8ba1e400…`
-artifacts; the last rebuild packs the API-surface cleanup (abandoned-module
-deletion, decoupled field facade) that followed the WCS fix.
+This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`, and
+`1570e1e7…` artifacts; the last rebuild packs the FITS `-TAB` fixes
+(1-based default index vector, `torchfits.HDUList` lookup) and the API-surface
+cleanup that followed the center-native rotation fix.
+
+### Real-data WCS parity (`bench_wcs_real_headers`)
+
+The harness now vendors eleven real instrument headers and small real images
+from the Astropy WCS test suite (BSD-3; provenance and per-file description in
+`benchmarks/fixtures/real_wcs/PROVENANCE.md`): INT WFC ZPN, Spitzer IRAC SIP,
+PTF/TPV, several HST WFPC2 SIP exposures, validation TPV/SIP headers, and a real
+HST `(RA, Dec, TIME-TAB)` product. Against astropy on a 17x17 pixel grid per
+fixture:
+
+- forward angular parity: max **2.0e-7 arcsec** (INT WFC ZPN), all other
+  fixtures <=6.4e-9 arcsec;
+- inverse pixel parity from astropy's world coordinates: max **2.6e-6 px**
+  (HST WFPC2 SIP), all other fixtures <=1.4e-7 px;
+- partial-sky fixtures (`zpn-hole`) validate only their finite samples.
+
+Two real-data defects were found and fixed while gating this:
+
+1. `-TAB` axes without an indexing-vector column used `0..N-1` as the default
+   index vector instead of the FITS `1..N`, shifting every tabulated coordinate
+   and dropping the last sample. On the real HST TIME-TAB product torchsky
+   returned TIME=1 where astropy returns 0.
+2. `-TAB` table resolution required a mapping or an iterable of HDUs; the
+   public `torchfits.HDUList` boundary supports integer indexing and `__len__`
+   but not `__iter__`, so real `-TAB` FITS files failed to load at all.
+
+Lookup-distortion fixtures (`dist_lookup.fits.gz`, `ie6d07ujq_wcs.fits`) are
+kept with `SKIPPED` rows while CPDIS/D2IM/WCSDVARR parity is open; the DSS
+cutout is skipped because astropy rejects its singular PC matrix. They are not
+claimed.
 Adding the reference-latitude-offset WCS cases exposed a center-native
 inverse-rotation defect in `world_to_pixel` (wrong pixels at `CRVAL2 != 0` for
 MER, CYP, AIT, HPX, SFL, BON, PAR); the fixed subject round-trips those cases at
@@ -446,6 +477,7 @@ portability check on session hardware, not a pinned-runner performance claim.
 
 | Gate | Evaluation | Comparator | Measured |
 |---|---|---|---|
+| `bench-wcs-real-headers-gate` | `bench_wcs_real_headers` | astropy | 11 real instrument headers/images: forward angular parity 2.0e-7 asec (max), inverse pixel parity 2.6e-6 px (max); lookup-distortion fixtures SKIPPED with reasons |
 | `bench-wcs-release-gate` | `bench_wcs` | astropy | 38 cases (30 projections + 8 reference-offset): angular parity max 4.13e-5 asec (AIR formula floor; others ≤1.5e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; offset cases ≤1.9e-9 asec / ≤4.6e-10 px round trip; forward 0.46–3.81× and inverse 0.97–6.01× astropy |
 | `bench-healpix-release-gate` | `bench_healpix` | healpy | 6 ops at nside 512: zero index mismatches, max angle 1.14e-13 deg, throughput 1.02–2.19× |
 | `bench-healpix-advanced-release-gate` | `bench_healpix_advanced` | healpy | 6 ops: zero mismatches, throughput 1.25–2.06× |

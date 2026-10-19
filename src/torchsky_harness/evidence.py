@@ -71,6 +71,22 @@ CLAIMS: dict[str, EvaluationClaim] = {
             " from the round-trip thresholds, not from the angular parity gate",
         ),
     ),
+    "bench_wcs_real_headers": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "int_wfc_zpn", "spitzer_irac_sip", "ptf_tpv", "sip_only",
+            "zpn_edge", "hst_wfpc2_sip", "sip_header", "sip2_header",
+            "header_newlines_sip", "validate_tan", "tabular_time",
+        ),
+        comparators=("astropy",),
+        limitations=(
+            "vendored real instrument headers from the astropy WCS test suite"
+            " (BSD-3, provenance in benchmarks/fixtures/real_wcs/PROVENANCE.md)",
+            "lookup-distortion fixtures (D2IM/CPDIS/WCSDVARR) are SKIPPED with a"
+            " recorded reason until their parity is wired; they are not claimed",
+            "the DSS cutout is skipped because astropy rejects its PC matrix",
+        ),
+    ),
     "bench_healpix": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(
