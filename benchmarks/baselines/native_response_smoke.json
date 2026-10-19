@@ -1,0 +1,20 @@
+[
+  {
+    "case": "native_gaussian_star",
+    "library": "torchsky",
+    "method": "profile_native_star",
+    "variant": "32x32",
+    "status": "OK",
+    "time_ms": 0.6449590437114239,
+    "skip_time_regression": true,
+    "true_flux": 100.0,
+    "recovered_flux": 100.09001280438329,
+    "flux_relative_error": 0.0009001280438329218,
+    "true_background": 5.0,
+    "recovered_background": 5.006705796595517,
+    "background_absolute_error": 0.006705796595516844,
+    "chi2": 223.08600712752227,
+    "degrees_of_freedom": 254,
+    "retained_response": 0.9999990818756037
+  }
+]
