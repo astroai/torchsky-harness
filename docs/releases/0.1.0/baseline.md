@@ -187,6 +187,13 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   [architecture-review.md](architecture-review.md).
 - Full torchsky suite after the scene/map consolidation: **2658 passed,
   98 skipped**; targeted scene/map/docs tests: **357 passed, 3 skipped**.
+- **Field facade and API guard:** `torchsky.field` now exposes the
+  model/fit/render/sample composition surface and diagnostics; concrete model
+  classes stay under `torchsky.map.field`. Added
+  `scripts/api_manifest.py`, `docs/api-manifest.json`, and
+  `tests/test_api_manifest.py` to freeze the public `__all__` surfaces for root,
+  WCS, sphere, map, scene, field, catalogs, coords, and encoders. Preflight and
+  API-manifest test pass.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately
