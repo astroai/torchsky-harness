@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import json
 from pathlib import Path
-from typing import Any, Literal, Sequence
+from typing import Any, Literal, Mapping, Sequence
 
 from torchsky_harness.subject import sha256
 
@@ -38,6 +38,7 @@ class EvaluationClaim:
     required_rows: tuple[str, ...]
     comparators: tuple[str, ...] = ()
     limitations: tuple[str, ...] = field(default_factory=tuple)
+    summary_failures_key: str | None = None
 
     def as_record(self) -> dict[str, Any]:
         return {
@@ -45,10 +46,87 @@ class EvaluationClaim:
             "required_rows": list(self.required_rows),
             "comparators": list(self.comparators),
             "limitations": list(self.limitations),
+            "summary_failures_key": self.summary_failures_key,
         }
 
 
 CLAIMS: dict[str, EvaluationClaim] = {
+    "bench_wcs": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "TAN", "SIN", "ARC", "ZEA", "STG", "ZPN", "AZP", "SZP", "AIR", "AIT",
+            "MOL", "HPX", "XPH", "CEA", "MER", "CAR", "SFL", "PAR", "COP", "COE",
+            "COD", "COO", "BON", "PCO", "TSC", "CSC", "QSC", "NCP", "TAN_SIP", "TPV",
+        ),
+        comparators=("astropy",),
+        limitations=(
+            "astropy reference on CPU float64, 20k samples per case",
+            "throughput ratios are same-machine, not a pinned-runner claim",
+            "AIR parity floor ~1e-8 deg comes from the shared AIR formula;"
+            " all-sky pole and quad-cube seam inverse conditioning is excluded"
+            " from the round-trip thresholds, not from the angular parity gate",
+        ),
+    ),
+    "bench_healpix": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "ang2pix_ring", "ang2pix_nested", "pix2ang_ring", "pix2ang_nested",
+            "ring2nest", "nest2ring",
+        ),
+        comparators=("healpy",),
+        limitations=(
+            "index parity and angle parity at nside 512 only",
+            "throughput is one CPU, not a pinned-runner performance claim",
+        ),
+    ),
+    "bench_healpix_advanced": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "neighbors_ring", "neighbors_nested", "interp_weights_ring",
+            "interp_weights_nested", "interp_val_ring", "interp_val_nested",
+        ),
+        comparators=("healpy",),
+        limitations=(
+            "neighbors and bilinear interpolation parity at nside 512 only",
+            "throughput is one CPU, not a pinned-runner performance claim",
+        ),
+    ),
+    "bench_sphere_matrix": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(),
+        comparators=("healpy",),
+        summary_failures_key="failed_thresholds",
+        limitations=(
+            "index and angle parity plus median throughput ratios at nside 512",
+            "throughput ratios compare one CPU with healpy; not a pinned-runner"
+            " performance claim",
+        ),
+    ),
+    "bench_spin_matrix": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(),
+        comparators=("healpy",),
+        summary_failures_key="failures",
+        limitations=(
+            "spin -2 harmonic transform accuracy and median throughput ratio",
+            "throughput is one CPU; small-bucket ratios only with the default"
+            " case set",
+        ),
+    ),
+    "bench_catalog_compat": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "synthetic_clustered", "real_astropy_votable_catalogs",
+            "real_astropy_votable_fits_roundtrip",
+        ),
+        comparators=("astropy",),
+        limitations=(
+            "synthetic and astropy-table fixtures, not real survey catalogs",
+            "separation parity and throughput only; no completeness or"
+            " false-positive claim beyond the evaluator rows",
+        ),
+    ),
+
     "bench_map_cube": EvaluationClaim(
         scope="synthetic_truth",
         required_rows=("cube_constant_bands",),
@@ -132,17 +210,30 @@ def _argument(command: Sequence[str], flag: str) -> str | None:
     return values[-1] if values else None
 
 
-def _load_rows(path: Path) -> tuple[list[dict[str, Any]], str | None]:
+def _row_identity(row: Mapping[str, Any]) -> str | None:
+    """Report-row identity: benchmark rows use ``case``, operation rows ``operation``."""
+    for key in ("case", "operation"):
+        value = row.get(key)
+        if value is not None:
+            return str(value)
+    return None
+
+
+def _load_report(path: Path) -> tuple[Any, str | None]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
-        return [], f"evidence report unreadable: {exc}"
-    if not isinstance(payload, list):
-        return [], "evidence report is not a row list"
-    rows = [row for row in payload if isinstance(row, dict)]
-    if not rows:
-        return [], "evidence report has no rows"
-    return rows, None
+        return None, f"evidence report unreadable: {exc}"
+    return payload, None
+
+
+def _report_failures(payload: Any, key: str) -> tuple[list[Any], str | None]:
+    if not isinstance(payload, dict):
+        return [], "summary evidence report is not an object"
+    failures = payload.get(key)
+    if not isinstance(failures, list):
+        return [], f"summary evidence report has no {key!r} list"
+    return failures, None
 
 
 def verdict(
@@ -176,11 +267,32 @@ def verdict(
         report_path = Path(report_argument)
         if not report_path.is_absolute():
             report_path = working_directory / report_path
-        rows, error = _load_rows(report_path)
+        payload, error = _load_report(report_path)
         if error is not None:
             reasons.append(error)
+        elif claim.summary_failures_key is not None:
+            failures, failure_error = _report_failures(
+                payload, claim.summary_failures_key
+            )
+            if failure_error is not None:
+                reasons.append(failure_error)
+            elif failures:
+                reasons.append(
+                    f"{len(failures)} reported failure(s) in"
+                    f" {claim.summary_failures_key}"
+                )
+            record["evidence_summary"] = str(report_path.resolve())
+        elif not isinstance(payload, list):
+            reasons.append("evidence report is not a row list")
         else:
-            by_case = {str(row.get("case")): row for row in rows}
+            rows = [row for row in payload if isinstance(row, dict)]
+            if not rows:
+                reasons.append("evidence report has no rows")
+            by_case = {
+                identity: row
+                for row in rows
+                if (identity := _row_identity(row)) is not None
+            }
             for required in claim.required_rows:
                 row = by_case.get(required)
                 if row is None:

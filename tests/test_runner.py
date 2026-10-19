@@ -26,13 +26,13 @@ def test_execution_state_does_not_claim_scientific_validity(tmp_path, monkeypatc
     monkeypatch.setattr(runner, "git_identity", lambda _: {"revision": "test"})
     monkeypatch.setattr(runner.subprocess, "run", lambda *a, **k: SimpleNamespace(returncode=code))
     run_dir = tmp_path / "run"
-    assert runner.run("bench_wcs", [], run_dir) == code
+    assert runner.run("bench_sphere_sparse", [], run_dir) == code
     record = json.loads((run_dir / "execution.json").read_text())
     assert record["execution"] == state
     assert record["scientific_validity"] == "not_assessed"
     assert record["comparison_eligibility"] == "not_assessed"
     with pytest.raises(FileExistsError):
-        runner.run("bench_wcs", [], run_dir)
+        runner.run("bench_sphere_sparse", [], run_dir)
 
 
 def test_interrupted_run_retains_failure_record(tmp_path, monkeypatch):
@@ -44,7 +44,7 @@ def test_interrupted_run_retains_failure_record(tmp_path, monkeypatch):
 
     monkeypatch.setattr(runner.subprocess, "run", fail)
     with pytest.raises(OSError):
-        runner.run("bench_wcs", [], tmp_path / "interrupted")
+        runner.run("bench_sphere_sparse", [], tmp_path / "interrupted")
     record = json.loads((tmp_path / "interrupted/execution.json").read_text())
     assert record["execution"] == "interrupted"
     assert record["returncode"] is None

@@ -34,6 +34,9 @@ def _write_report(tmp_path: Path, rows: list[dict]) -> None:
 
 def test_declared_claims_cover_only_release_gates() -> None:
     assert set(CLAIMS) == {
+        "bench_catalog_compat",
+        "bench_healpix",
+        "bench_healpix_advanced",
         "bench_map_cube",
         "bench_map_ifu",
         "bench_map_ifu_spectral_axis",
@@ -41,14 +44,17 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_native_likelihood",
         "bench_native_nuisance",
         "bench_native_response",
+        "bench_sphere_matrix",
+        "bench_spin_matrix",
+        "bench_wcs",
     }
 
 
 def test_undeclared_evaluation_stays_unassessed(tmp_path: Path) -> None:
     record = verdict(
-        "bench_wcs",
+        "bench_sphere_sparse",
         returncode=0,
-        command=["python", "-m", "bench_wcs"],
+        command=["python", "-m", "bench_sphere_sparse"],
         working_directory=tmp_path,
     )
     assert record["scientific_validity"] == "not_assessed"
@@ -123,6 +129,60 @@ def test_unanchored_baseline_is_reported_not_enforced(tmp_path: Path) -> None:
     ]
 
 
+def test_operation_rows_satisfy_a_comparator_claim(tmp_path: Path) -> None:
+    rows = [
+        {"operation": operation, "mismatches": 0}
+        for operation in (
+            "ang2pix_ring",
+            "ang2pix_nested",
+            "pix2ang_ring",
+            "pix2ang_nested",
+            "ring2nest",
+            "nest2ring",
+        )
+    ]
+    _write_report(tmp_path, rows)
+    record = verdict(
+        "bench_healpix",
+        returncode=0,
+        command=["python", "-m", "bench_healpix", *_write_arguments(tmp_path)],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "established"
+    assert record["claim"]["scope"] == "reference_comparison"
+    assert "healpy" in record["claim"]["comparators"]
+
+
+def test_summary_report_claim_requires_an_empty_failure_list(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    report.write_text(json.dumps({"failed_thresholds": []}), encoding="utf-8")
+    record = verdict(
+        "bench_sphere_matrix",
+        returncode=0,
+        command=["python", "-m", "bench_sphere_matrix", "--json-out", str(report)],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "established"
+    assert record["claim"]["summary_failures_key"] == "failed_thresholds"
+    assert record["evidence_summary"] == str(report.resolve())
+
+
+def test_summary_report_failures_block_validity(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    report.write_text(
+        json.dumps({"failed_thresholds": [{"operation": "ring2nest"}]}),
+        encoding="utf-8",
+    )
+    record = verdict(
+        "bench_sphere_matrix",
+        returncode=0,
+        command=["python", "-m", "bench_sphere_matrix", "--json-out", str(report)],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+    assert any("failed_thresholds" in reason for reason in record["verdict_reasons"])
+
+
 def test_runner_records_verdict_for_declared_claim(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(runner, "identify_subject", lambda: {"version": "test"})
     monkeypatch.setattr(runner, "git_identity", lambda _: {"revision": "test"})
@@ -161,6 +221,6 @@ def test_runner_marks_missing_report_as_unestablished(tmp_path: Path, monkeypatc
 @pytest.mark.parametrize("name", sorted(CLAIMS))
 def test_every_declared_claim_lists_rows_and_limitations(name: str) -> None:
     claim = CLAIMS[name]
-    assert claim.required_rows
+    assert claim.required_rows or claim.summary_failures_key
     assert claim.limitations
     assert claim.scope in {"synthetic_truth", "reference_comparison", "real_data"}

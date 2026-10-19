@@ -102,6 +102,12 @@ def main() -> int:
         type=Path,
         default=DEFAULT_OUTPUT_DIR / "sphere_matrix_latest",
     )
+    parser.add_argument(
+        "--json-out",
+        type=Path,
+        default=None,
+        help="Optional path for the summary JSON (same object as summary.json)",
+    )
     args = parser.parse_args()
 
     profiles = tuple(x.strip() for x in args.profiles.split(",") if x.strip())
@@ -210,6 +216,9 @@ def main() -> int:
     }
     summary_path = args.output_dir / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    if args.json_out is not None:
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
+        args.json_out.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"\nSummary written to {summary_path}")
 
     if failed:

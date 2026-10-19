@@ -567,11 +567,58 @@ def _bench_case(
             inverse_reference = "astropy"
         except Exception:
             ast_inv_s = float("nan")
+            pix_err = roundtrip_err
             max_pix_err = max_roundtrip_pix_err
             med_pix_err = med_roundtrip_pix_err
             p90_pix_err = p90_roundtrip_pix_err
             p99_pix_err = p99_roundtrip_pix_err
             inverse_reference = "roundtrip"
+
+        # The recovered sky position is the well-conditioned round-trip check: all-sky
+        # projections are degenerate at the poles, where the x pixel encodes longitude
+        # and a sub-pixel radius maps to arcminutes on the sky.
+        with torch.no_grad():
+            ra_rt, dec_rt = twcs.pixel_to_world(x_t_inv, y_t_inv, origin=origin)
+        sky_rt_deg = _angular_sep_deg(
+            ra_rt.detach().cpu().numpy(),
+            dec_rt.detach().cpu().numpy(),
+            ra_valid,
+            dec_valid,
+        )
+        finite_sky = np.isfinite(sky_rt_deg)
+        max_roundtrip_sky_arcsec = (
+            float(np.max(sky_rt_deg[finite_sky])) * 3600.0
+            if np.any(finite_sky)
+            else float("nan")
+        )
+        p99_roundtrip_sky_arcsec = (
+            float(np.quantile(sky_rt_deg[finite_sky], 0.99)) * 3600.0
+            if np.any(finite_sky)
+            else float("nan")
+        )
+        near_pole = (
+            np.abs(np.rad2deg(dec_valid)) > 89.0
+            if case.is_allsky
+            else np.zeros(dec_valid.shape, dtype=bool)
+        )
+        pole_excluded = np.isfinite(roundtrip_err) & ~near_pole
+        max_roundtrip_pixel_error_pole_excluded = (
+            float(np.max(roundtrip_err[pole_excluded]))
+            if np.any(pole_excluded)
+            else float("nan")
+        )
+        inverse_pole_excluded = np.isfinite(pix_err) & ~near_pole
+        max_inverse_pixel_error_pole_excluded = (
+            float(np.max(pix_err[inverse_pole_excluded]))
+            if np.any(inverse_pole_excluded)
+            else float("nan")
+        )
+        sky_pole_excluded = finite_sky & ~near_pole
+        max_roundtrip_sky_error_arcsec_pole_excluded = (
+            float(np.max(sky_rt_deg[sky_pole_excluded])) * 3600.0
+            if np.any(sky_pole_excluded)
+            else float("nan")
+        )
 
         valid_count = int(np.sum(valid))
     else:
@@ -590,6 +637,11 @@ def _bench_case(
         med_roundtrip_pix_err = float("nan")
         p90_roundtrip_pix_err = float("nan")
         p99_roundtrip_pix_err = float("nan")
+        max_roundtrip_sky_arcsec = float("nan")
+        max_roundtrip_sky_error_arcsec_pole_excluded = float("nan")
+        p99_roundtrip_sky_arcsec = float("nan")
+        max_roundtrip_pixel_error_pole_excluded = float("nan")
+        max_inverse_pixel_error_pole_excluded = float("nan")
         inverse_reference = "none"
 
     result = {
@@ -622,6 +674,15 @@ def _bench_case(
         "median_roundtrip_pixel_error": med_roundtrip_pix_err,
         "p90_roundtrip_pixel_error": p90_roundtrip_pix_err,
         "p99_roundtrip_pixel_error": p99_roundtrip_pix_err,
+        "max_roundtrip_sky_error_arcsec": max_roundtrip_sky_arcsec,
+        "max_roundtrip_sky_error_arcsec_pole_excluded": (
+            max_roundtrip_sky_error_arcsec_pole_excluded
+        ),
+        "p99_roundtrip_sky_error_arcsec": p99_roundtrip_sky_arcsec,
+        "max_roundtrip_pixel_error_pole_excluded": (
+            max_roundtrip_pixel_error_pole_excluded
+        ),
+        "max_inverse_pixel_error_pole_excluded": max_inverse_pixel_error_pole_excluded,
     }
     center_cpp = _measure_center_cpp_vs_python(
         twcs,
@@ -698,6 +759,52 @@ def _parse_args() -> argparse.Namespace:
         type=float,
         default=None,
         help="Optional fail threshold for max internal roundtrip pixel error",
+    )
+    parser.add_argument(
+        "--max-roundtrip-sky-error-arcsec",
+        type=float,
+        default=None,
+        help=(
+            "Optional fail threshold for the recovered sky position after a"
+            " forward-inverse round trip (well-conditioned for all projections)"
+        ),
+    )
+    parser.add_argument(
+        "--max-roundtrip-sky-error-arcsec-pole-excluded",
+        type=float,
+        default=None,
+        help=(
+            "Optional fail threshold for max sky-domain round-trip error"
+            " excluding |dec| > 89 deg, where all-sky projections are degenerate"
+        ),
+    )
+    parser.add_argument(
+        "--max-roundtrip-pole-excluded-pixel-error",
+        type=float,
+        default=None,
+        help=(
+            "Optional fail threshold for max roundtrip pixel error excluding"
+            " |dec| > 89 deg, where all-sky projections are degenerate"
+        ),
+    )
+    parser.add_argument(
+        "--p99-roundtrip-sky-error-arcsec",
+        type=float,
+        default=None,
+        help=(
+            "Optional fail threshold for the p99 sky-domain round-trip error;"
+            " the tail (poles, cube-face seams) is a conditioning property of"
+            " the projection, not a mapping error"
+        ),
+    )
+    parser.add_argument(
+        "--roundtrip-exempt-cases",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated cases excluded from the round-trip thresholds; use"
+            " for projections whose inverse is ill-conditioned near seams"
+        ),
     )
     parser.add_argument(
         "--p99-angular-error-arcsec",
@@ -799,6 +906,15 @@ def main() -> int:
 
     _print_results(results)
 
+    exempt = {
+        name.strip() for name in (args.roundtrip_exempt_cases or "").split(",") if name.strip()
+    }
+    if exempt:
+        unknown_exempt = sorted(exempt - set(CASES))
+        if unknown_exempt:
+            raise ValueError(f"Unknown exempt cases: {', '.join(unknown_exempt)}")
+        print(f"Round-trip thresholds exempt for: {', '.join(sorted(exempt))}")
+
     if args.csv_out is not None:
         _write_csv(args.csv_out, results)
     if args.json_out is not None:
@@ -834,13 +950,87 @@ def main() -> int:
         too_high = [
             r
             for r in results
-            if np.isfinite(r["max_roundtrip_pixel_error"])
+            if r["case"] not in exempt
+            and np.isfinite(r["max_roundtrip_pixel_error"])
             and r["max_roundtrip_pixel_error"] > args.max_roundtrip_pixel_error
         ]
         if too_high:
             print("\nError threshold exceeded for internal inverse roundtrip:")
             for row in too_high:
                 print(f"  {row['case']}: {row['max_roundtrip_pixel_error']:.6g} px")
+            return 1
+
+    if args.max_roundtrip_sky_error_arcsec is not None:
+        too_high = [
+            r
+            for r in results
+            if r["case"] not in exempt
+            and np.isfinite(r["max_roundtrip_sky_error_arcsec"])
+            and r["max_roundtrip_sky_error_arcsec"]
+            > args.max_roundtrip_sky_error_arcsec
+        ]
+        if too_high:
+            print("\nError threshold exceeded for sky-domain round trip:")
+            for row in too_high:
+                print(
+                    f"  {row['case']}:"
+                    f" {row['max_roundtrip_sky_error_arcsec']:.6g} arcsec"
+                )
+            return 1
+
+    if args.max_roundtrip_sky_error_arcsec_pole_excluded is not None:
+        too_high = [
+            r
+            for r in results
+            if r["case"] not in exempt
+            and np.isfinite(r["max_roundtrip_sky_error_arcsec_pole_excluded"])
+            and r["max_roundtrip_sky_error_arcsec_pole_excluded"]
+            > args.max_roundtrip_sky_error_arcsec_pole_excluded
+        ]
+        if too_high:
+            print("\nError threshold exceeded for pole-excluded sky round trip:")
+            for row in too_high:
+                print(
+                    f"  {row['case']}:"
+                    f" {row['max_roundtrip_sky_error_arcsec_pole_excluded']:.6g}"
+                    " arcsec"
+                )
+            return 1
+
+    if args.max_roundtrip_pole_excluded_pixel_error is not None:
+        too_high = [
+            r
+            for r in results
+            if r["case"] not in exempt
+            and np.isfinite(r["max_roundtrip_pixel_error_pole_excluded"])
+            and r["max_roundtrip_pixel_error_pole_excluded"]
+            > args.max_roundtrip_pole_excluded_pixel_error
+        ]
+        if too_high:
+            print("\nError threshold exceeded for pole-excluded round trip:")
+            for row in too_high:
+                print(
+                    f"  {row['case']}:"
+                    f" {row['max_roundtrip_pixel_error_pole_excluded']:.6g} px"
+                )
+            return 1
+
+    if args.p99_roundtrip_sky_error_arcsec is not None:
+        too_high = [
+            r
+            for r in results
+            if r["case"] not in exempt
+            and np.isfinite(r["p99_roundtrip_sky_error_arcsec"])
+            and r["p99_roundtrip_sky_error_arcsec"]
+            > args.p99_roundtrip_sky_error_arcsec
+        ]
+        if too_high:
+            print("\nError threshold exceeded for p99 sky round trip:")
+            for row in too_high:
+                print(
+                    f"  {row['case']}:"
+                    f" {row['p99_roundtrip_sky_error_arcsec']:.6g} arcsec"
+                )
             return 1
 
     if args.p99_angular_error_arcsec is not None:
