@@ -691,6 +691,18 @@ def _as_fits_header(header: dict[str, Any]) -> torchfits.Header:
     return out
 
 
+def _as_astropy_header(header: dict[str, Any]):
+    """Astropy Header for reference libraries that reject mapping-like headers.
+
+    ``reproject``/``dfreproject`` wrap a non-Header source as a high-level WCS and
+    raise for mapping-like objects, so comparator adapters hand them a real
+    astropy Header built from the same sanitized keys.
+    """
+    from astropy.io.fits import Header as AstropyHeader
+
+    return AstropyHeader(dict(_as_fits_header(header)))
+
+
 def _write_header_template(path: Path, header: dict[str, Any]) -> None:
     header_astropy = _as_fits_header(header)
     header_astropy.setdefault("SIMPLE", True)
@@ -1014,8 +1026,8 @@ def _reproject_weighted_observation(
         numer = torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight
         return numer.cpu().numpy(), weight.cpu().numpy()
 
-    source_header = _as_fits_header(dict(header))
-    target_header_astropy = _as_fits_header(target_header)
+    source_header = _as_astropy_header(dict(header))
+    target_header_astropy = _as_astropy_header(target_header)
     numer, _ = reproject_interp(
         (
             (torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight)
@@ -1061,8 +1073,8 @@ def _reproject_exact_weighted_observation(
         numer = torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight
         return numer.cpu().numpy(), weight.cpu().numpy()
 
-    source_header = _as_fits_header(dict(header))
-    target_header_astropy = _as_fits_header(target_header)
+    source_header = _as_astropy_header(dict(header))
+    target_header_astropy = _as_astropy_header(target_header)
     numer, _ = reproject_exact(
         (
             (torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight)
@@ -1109,8 +1121,8 @@ def _dfreproject_weighted_observation(
         return numer.cpu().numpy(), weight.cpu().numpy()
 
     _validate_dfreproject_headers(dict(header), target_header)
-    source_header = _as_fits_header(dict(header))
-    target_header_astropy = _as_fits_header(target_header)
+    source_header = _as_astropy_header(dict(header))
+    target_header_astropy = _as_astropy_header(target_header)
     numer = calculate_reprojection(
         (
             (torch.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0) * weight)
@@ -1502,8 +1514,8 @@ def _align_array_to_target(
         return np.asarray(array, dtype=np.float32)
     if reproject_interp is not None:
         aligned, _ = reproject_interp(
-            (np.asarray(array, dtype=np.float32), _as_fits_header(header)),
-            _as_fits_header(target_header),
+            (np.asarray(array, dtype=np.float32), _as_astropy_header(header)),
+            _as_astropy_header(target_header),
             shape_out=target_shape,
             return_footprint=True,
             order=order,

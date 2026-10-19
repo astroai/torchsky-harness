@@ -41,7 +41,8 @@ Synthetic/truth gates (`test` environment):
 | native nuisance precision | `pixi run bench-native-nuisance-gate` |
 
 Reference-comparison gates (`bench-all`/`sphere-bench` environments; install the
-release wheel and the harness there, then run):
+release wheel and the harness there, then run; `map-compat` is needed only for
+the supporting `bench-map-compat-gate` comparison):
 
 | Gate | Task |
 |---|---|

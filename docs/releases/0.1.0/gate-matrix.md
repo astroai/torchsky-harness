@@ -65,6 +65,13 @@ Shared map contract: `flux` vs `surface_brightness` area scaling, variance/weigh
 propagation, outlier rejection, spectral unit/type normalization, and CLI/Python
 parity are all part of the gate.
 
+Supporting cross-library evidence (not a declared claim): `bench_map_compat` now
+runs against `reproject_interp`/`reproject_exact` after the adapters were fixed
+to hand `reproject` a real astropy `Header`; all rows are OK on the synthetic
+shifted WCS and both astropy SIP fixtures. The noisy synthetic field shows a
+0.128 RMSE interpolation-kernel disagreement, which stays open against the
+existing drizzle/swarp CI baselines.
+
 **Current evidence is bounded and synthetic/fixture-based; no row is a
 real-data claim.** WCS, sphere, and catalog comparator rows are delivered by the
 reference-comparison gates above. Multi-band imaging exists only as smoke rows in

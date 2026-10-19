@@ -475,6 +475,17 @@ found were fixed or recorded, not hidden:
   (`test_inr_perf` and friends) that train models for tens of minutes; the
   release suite is `test-bounded`.
 
+- **Cross-library map comparison:** the map-compat reproject adapters passed
+  `torchfits` headers straight to `reproject`/`dfreproject`, which require an
+  astropy `Header`/`WCS`, so every reproject row silently reported `SKIPPED`
+  ("Input to a HighLevelWCSWrapper must be a low level WCS object"). The
+  adapters now build a sanitized astropy `Header`; reproject comparisons run
+  for the synthetic shifted WCS and both astropy SIP fixtures (all rows OK).
+  On the synthetic two-observation shift, torchsky takes 11.2 ms vs 17.7 ms for
+  `reproject_interp` and 34.9 ms for `reproject_exact`, with a 0.128 RMSE
+  disagreement on the noisy synthetic field (interpolation-kernel difference to
+  investigate against the existing drizzle/swarp CI baselines; not a release
+  claim). This is supporting evidence, not a declared gate.
 ## Version bump (release candidate)
 
 torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is

@@ -1134,3 +1134,44 @@ def test_acceptance_contracts_enforce_presence_identity_and_bounds() -> None:
         "missing required row" in error
         for error in bench_map_compat._check_acceptance_contracts([], [contract])
     )
+
+
+def _tan_header_for_adapters() -> dict:
+    return {
+        "NAXIS": 2,
+        "NAXIS1": 8,
+        "NAXIS2": 8,
+        "CTYPE1": "RA---TAN",
+        "CTYPE2": "DEC--TAN",
+        "CRPIX1": 4.5,
+        "CRPIX2": 4.5,
+        "CRVAL1": 150.0,
+        "CRVAL2": 2.0,
+        "CDELT1": -1.0e-3,
+        "CDELT2": 1.0e-3,
+    }
+
+
+def test_astropy_header_adapter_builds_a_real_header() -> None:
+    astropy = pytest.importorskip("astropy")
+    adapted = bench_map_compat._as_astropy_header(_tan_header_for_adapters())
+
+    assert isinstance(adapted, astropy.io.fits.Header)
+    assert adapted["CTYPE1"] == "RA---TAN"
+    assert adapted["CRVAL1"] == 150.0
+
+
+def test_astropy_header_adapter_accepts_reproject() -> None:
+    pytest.importorskip("astropy")
+    reproject = pytest.importorskip("reproject")
+    header = _tan_header_for_adapters()
+    adapted = bench_map_compat._as_astropy_header(header)
+    data = np.ones((8, 8), dtype=np.float32)
+    shifted = dict(header)
+    shifted["CRVAL1"] = 150.002
+    projected, _ = reproject.reproject_interp(
+        (data, adapted),
+        bench_map_compat._as_astropy_header(shifted),
+        shape_out=(8, 8),
+    )
+    assert np.isfinite(projected).any()
