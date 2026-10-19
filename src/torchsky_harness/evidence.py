@@ -57,11 +57,15 @@ CLAIMS: dict[str, EvaluationClaim] = {
             "TAN", "SIN", "ARC", "ZEA", "STG", "ZPN", "AZP", "SZP", "AIR", "AIT",
             "MOL", "HPX", "XPH", "CEA", "MER", "CAR", "SFL", "PAR", "COP", "COE",
             "COD", "COO", "BON", "PCO", "TSC", "CSC", "QSC", "NCP", "TAN_SIP", "TPV",
+            "MER_OFF", "CYP_OFF", "AIT_OFF", "HPX_OFF", "SFL_OFF", "XPH_OFF",
+            "BON_OFF", "PAR_OFF",
         ),
         comparators=("astropy",),
         limitations=(
             "astropy reference on CPU float64, 20k samples per case",
             "throughput ratios are same-machine, not a pinned-runner claim",
+            "reference-latitude-offset cases exercise the center-native rotation"
+            " for MER, CYP, AIT, HPX, SFL, XPH, BON, and PAR at CRVAL2 = 20 deg",
             "AIR parity floor ~1e-8 deg comes from the shared AIR formula;"
             " all-sky pole and quad-cube seam inverse conditioning is excluded"
             " from the round-trip thresholds, not from the angular parity gate",
@@ -448,8 +452,16 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         if evaluation not in CLAIMS
         and entry.get("scientific_validity") == "established"
     )
+    # Readiness is about the declared claims; supporting (undeclared) runs may
+    # lag the release subject without blocking it, and are still listed in
+    # subject_identities for inspection.
+    claim_entries = {
+        evaluation: entry
+        for evaluation, entry in selected.items()
+        if evaluation in CLAIMS
+    }
     subjects = {
-        entry["subject"]["package_content_sha256"] for entry in selected.values()
+        entry["subject"]["package_content_sha256"] for entry in claim_entries.values()
     }
     harness_revisions = {
         (entry.get("harness") or {}).get("source", {}).get("revision")
@@ -491,6 +503,18 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
                     entry["subject"]["revision"],
                 )
                 for entry in selected.values()
+            },
+            key=str,
+        ),
+        "claim_subject_identities": sorted(
+            {
+                (
+                    entry["subject"]["package_content_sha256"],
+                    entry["subject"]["source_kind"],
+                    entry["subject"]["source_sha256"],
+                    entry["subject"]["revision"],
+                )
+                for entry in claim_entries.values()
             },
             key=str,
         ),

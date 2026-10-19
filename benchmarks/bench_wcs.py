@@ -33,6 +33,11 @@ class CaseSpec:
     tpv: bool = False
     conic: bool = False  # COP, COE, COD, COO need theta_0 from PV2_1
     polyconic: bool = False  # BON needs theta_0 from PV2_1
+    # Shift the reference latitude away from the equator. Center-native
+    # projections (cylindrical, all-sky, pseudocylindrical, polyconic) then
+    # need a real native-frame rotation, both forward and inverse; with
+    # CRVAL2 = 0 an inverse that assumes a pure latitude shift still passes.
+    offset_reference: bool = False
 
     @property
     def is_allsky(self) -> bool:
@@ -90,6 +95,15 @@ CASES = {
     "NCP": CaseSpec("NCP", "NCP"),
     "TAN_SIP": CaseSpec("TAN_SIP", "TAN", sip=True),
     "TPV": CaseSpec("TPV", "TPV", tpv=True),
+    # Reference-latitude-offset coverage for center-native projections.
+    "MER_OFF": CaseSpec("MER_OFF", "MER", offset_reference=True),
+    "CYP_OFF": CaseSpec("CYP_OFF", "CYP", offset_reference=True),
+    "AIT_OFF": CaseSpec("AIT_OFF", "AIT", offset_reference=True),
+    "HPX_OFF": CaseSpec("HPX_OFF", "HPX", offset_reference=True),
+    "SFL_OFF": CaseSpec("SFL_OFF", "SFL", offset_reference=True),
+    "XPH_OFF": CaseSpec("XPH_OFF", "XPH", offset_reference=True),
+    "BON_OFF": CaseSpec("BON_OFF", "BON", offset_reference=True),
+    "PAR_OFF": CaseSpec("PAR_OFF", "PAR", offset_reference=True),
 }
 
 
@@ -171,6 +185,9 @@ def _make_header(case: CaseSpec) -> dict:
             header["CD1_2"] = 0.0
             header["CD2_1"] = 0.0
             header["CD2_2"] = 0.5
+
+    if case.offset_reference:
+        header["CRVAL2"] = 20.0
 
     if case.sip:
         header["A_ORDER"] = 3

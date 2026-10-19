@@ -97,7 +97,7 @@ artifact. Anything else is supporting evidence, not a pass.
 
 | Field | Meaning |
 |---|---|
-| `release_ready` | every declared claim has a completed and `established` run, all selected runs share one subject identity, and no run directory is unreadable. Undeclared evaluations in the runs directory are informational and do not block the readiness flag |
+| `release_ready` | every declared claim has a completed and `established` run, all declared-claim runs share one subject identity, and no run directory is unreadable. Undeclared supporting runs may record a different subject without blocking readiness; `claim_subject_identities` is the gated set |
 | `missing_claims` | declared claims without an `established` run |
 | `extra_established` | established runs for evaluations that declare no claim (supporting evidence) |
 | `subject_identities`, `subject_consistent` | package-content SHA-256, source kind, source digest, and revision of every selected run |

@@ -395,14 +395,20 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `f9e537dd49fdfccb17ad49774567d3e5a835af9d84132cb18cb6e560b07d6259`),
-built from torchsky `4055e819` and installed into the harness test environment as
+(sha256 `7f0862c685527d67786acc0d90b858447a16cba219d82f5cce506bad15a8466c`),
+built from torchsky `05b36dd3` and installed into the harness test environment as
 a wheel (import path `site-packages/torchsky`, not the checkout). Later
-tooling/docs commits (e.g. the pyright config fix) do not change the packaged
-content, so the wheel hash and subject identity below are unchanged. Subject
-`package_content_sha256 = 49f816de7a1daafc60b9695e34897e13b2916148c3816e781d05ab7cec63d0d6`,
+docs-only commits do not change the packaged content. Subject
+`package_content_sha256 = fefd664a6dabcd293846eba96718d85841eded5968ab9343c1e331839f98b4f5`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records the harness revision.
+
+This wheel supersedes the earlier `f9e537dd…` artifact. Adding the
+reference-latitude-offset WCS cases exposed a center-native inverse-rotation
+defect in `world_to_pixel` (wrong pixels at `CRVAL2 != 0` for MER, CYP, AIT,
+HPX, SFL, BON, PAR); the fixed subject now round-trips those cases at
+≤1.9e-9 asec. The earlier artifact's recorded WCS verdict was therefore not
+sufficient on its own, and all thirteen claims were re-run against this wheel.
 
 ### Synthetic and truth gates (baseline_compared)
 
@@ -420,7 +426,7 @@ install; the bundle records the harness revision.
 
 | Gate | Evaluation | Comparator | Measured |
 |---|---|---|---|
-| `bench-wcs-release-gate` | `bench_wcs` | astropy | 30 projections: angular parity max 4.13e-5 asec (AIR formula floor; others ≤4e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; forward 0.54–3.70× and inverse 0.86–6.90× astropy |
+| `bench-wcs-release-gate` | `bench_wcs` | astropy | 38 cases (30 projections + 8 reference-offset): angular parity max 4.13e-5 asec (AIR formula floor; others ≤1.5e-8), pole/seam-excluded sky round trip 4.13e-5 asec, pixel round trip 1.27e-6 px, p99 sky round trip 6.3e-3 asec; offset cases ≤1.9e-9 asec / ≤4.6e-10 px round trip; forward 0.46–3.81× and inverse 0.97–6.01× astropy |
 | `bench-healpix-release-gate` | `bench_healpix` | healpy | 6 ops at nside 512: zero index mismatches, max angle 1.14e-13 deg, throughput 1.02–2.19× |
 | `bench-healpix-advanced-release-gate` | `bench_healpix_advanced` | healpy | 6 ops: zero mismatches, throughput 1.25–2.06× |
 | `bench-sphere-matrix-release-gate` | `bench_sphere_matrix` | healpy | 3 profiles at nside 512: index/angle parity gates pass; median ratios 2.00/1.54/1.27/0.98/1.43/0.98 recorded but not gated on macOS (run-to-run noise crosses the Mac-tuned threshold; pinned-runner work) |
@@ -456,7 +462,8 @@ found were fixed or recorded, not hidden:
   checkout's git revision; `source.kind=archive` + wheel SHA-256 is now
   recorded instead (`tests/test_subject_source.py`).
 - **Comparator inventory:** added reference-comparison gates and claims for WCS
-  (30 projections vs astropy), HEALPix core + advanced (vs healpy), sphere
+  (30 projections plus 8 reference-latitude-offset cases vs astropy), HEALPix
+  core + advanced (vs healpy), sphere
   geometry and spin-2 SHT (vs healpy), and catalog crossmatch (vs astropy).
   `bench_wcs` now reports sky-domain round trips, pole-excluded maxima, p99
   round-trip gating, and round-trip exempt cases for quad-cube seams; the

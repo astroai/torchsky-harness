@@ -30,6 +30,7 @@ def _run_dir(
     *,
     validity: str = "established",
     execution: str = "completed",
+    subject: dict | None = None,
 ) -> Path:
     run_dir = root / name
     run_dir.mkdir(parents=True)
@@ -45,7 +46,7 @@ def _run_dir(
         "scientific_validity": validity,
         "comparison_eligibility": "baseline_compared",
         "verdict_reasons": [],
-        "subject": SUBJECT,
+        "subject": subject if subject is not None else SUBJECT,
         "harness": HARNESS,
         "evidence_report": str(report),
         "logs": [
@@ -75,6 +76,34 @@ def test_bundle_is_release_ready_when_every_claim_is_established(tmp_path: Path)
     entry = bundle["entries"]["bench_map_ifu"]
     assert entry["evidence_report"]["sha256"] is not None
     assert entry["logs"][0]["sha256"] is not None
+
+
+def test_undeclared_runs_at_another_subject_do_not_block_readiness(
+    tmp_path: Path,
+) -> None:
+    runs = _all_claims(tmp_path)
+    other = dict(SUBJECT)
+    other["package_content_sha256"] = "d" * 64
+    supporting = _run_dir(tmp_path, "run-support", "bench_map_compat", subject=other)
+    bundle = build_bundle([*runs, supporting])
+
+    assert bundle["release_ready"] is True
+    assert bundle["subject_consistent"] is True
+    assert bundle["claim_subject_identities"] == [("a" * 64, None, None, "b" * 40)]
+    assert len(bundle["subject_identities"]) == 2
+
+
+def test_a_declared_claim_at_another_subject_blocks_readiness(tmp_path: Path) -> None:
+    runs = _all_claims(tmp_path)
+    other = dict(SUBJECT)
+    other["package_content_sha256"] = "d" * 64
+    replaced = _run_dir(tmp_path, "run-other", "bench_wcs", subject=other)
+    filtered = [run for run in runs if run.name != "run-other" and "bench_wcs" not in run.name]
+    # Keep every other claim plus the replaced bench_wcs run.
+    bundle = build_bundle([*filtered, replaced])
+
+    assert bundle["release_ready"] is False
+    assert bundle["subject_consistent"] is False
 
 
 def test_bundle_reports_missing_claim(tmp_path: Path) -> None:
