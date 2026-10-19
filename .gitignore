@@ -14,3 +14,10 @@ runs/
 data/
 .DS_Store
 .local-artifacts/
+
+# Agent tooling and local research notes
+.cursor/
+.dsh/
+.freebuff/
+docs/agent-tooling.md
+campaigns/cosmos/
