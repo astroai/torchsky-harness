@@ -256,6 +256,22 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `verdict_reasons`. All six gates now record `established` +
   `baseline_compared`; record format documented in `docs/evidence-verdicts.md`
   and covered by `tests/test_evidence_verdict.py`.
+- **IFU spectral-axis gate and non-uniform-axis fix:** `coadd_cube` mapped
+  every detector sample onto the target spectral axis with a single uniform
+  `d_lambda`, so a non-uniform target axis placed samples in the wrong bins
+  (for example 5100 A landed between the 5040 and 5060 A bins of an irregular
+  axis). torchsky now uses a per-interval fractional index
+  (`map/spectral_projection._spectral_fractional_index`), with regular axes
+  unchanged, plus `tests/test_map_cube_spectral_axis.py`. The harness gate
+  `bench_map_ifu_spectral_axis` (task `bench-map-ifu-spectral-axis-gate`,
+  baseline `map_ifu_spectral_axis_smoke.json`) assembles a synthetic long-slit
+  `IFUSliceWCS` cube and gates: exact line localization on an irregular axis for
+  all kernels (zero spurious voxels), exact constant-spectrum normalization
+  (7.6e-7), regular-axis smooth-spectrum interior accuracy (6e-4 vs a 2.5e-3
+  tolerance), and a recorded 10% envelope for irregular-axis smooth spectra
+  (3.2% observed). The irregular-axis envelope is a documented limitation: the
+  kernel interpolates in index space, so strongly irregular bin widths bias
+  smooth spectra; physical wavelength-space interpolation remains open.
 - **HEALPix multi-band gate:** added
   `benchmarks/bench_map_healpix_multiband.py`, baseline
   `benchmarks/baselines/map_healpix_multiband_smoke.json`, task

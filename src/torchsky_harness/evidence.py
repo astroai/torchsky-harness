@@ -65,6 +65,22 @@ CLAIMS: dict[str, EvaluationClaim] = {
             "synthetic wavelength-map IFU, not real IFU data",
         ),
     ),
+    "bench_map_ifu_spectral_axis": EvaluationClaim(
+        scope="synthetic_truth",
+        required_rows=(
+            "ifu_nonuniform_axis_line_localization",
+            "ifu_nonuniform_axis_constant_spectrum",
+            "ifu_regular_axis_spectrum_interpolation",
+            "ifu_nonuniform_axis_interpolation_envelope",
+        ),
+        limitations=(
+            "line localization and normalization only on irregular axes; the"
+            " current kernel interpolates in index space",
+            "irregular-axis smooth-spectrum recovery is gated as a recorded"
+            " error envelope, not as dense physical interpolation",
+            "no flux-conserving spectral redistribution claim",
+        ),
+    ),
     "bench_map_healpix_multiband": EvaluationClaim(
         scope="synthetic_truth",
         required_rows=(

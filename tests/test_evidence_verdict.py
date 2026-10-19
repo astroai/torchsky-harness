@@ -36,6 +36,7 @@ def test_declared_claims_cover_only_release_gates() -> None:
     assert set(CLAIMS) == {
         "bench_map_cube",
         "bench_map_ifu",
+        "bench_map_ifu_spectral_axis",
         "bench_map_healpix_multiband",
         "bench_native_likelihood",
         "bench_native_nuisance",

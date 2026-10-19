@@ -1,0 +1,93 @@
+[
+  {
+    "case": "ifu_nonuniform_axis_line_localization",
+    "library": "torchsky",
+    "method": "coadd_cube",
+    "variant": "12 slices x 400 samples",
+    "status": "OK",
+    "skip_time_regression": true,
+    "kernels": {
+      "nearest": {
+        "line_count": 7,
+        "max_spurious_value": 0.0,
+        "spurious_bin_count": 0
+      },
+      "drizzle": {
+        "line_count": 7,
+        "max_spurious_value": 0.0,
+        "spurious_bin_count": 0
+      },
+      "linear": {
+        "line_count": 7,
+        "max_spurious_value": 0.0,
+        "spurious_bin_count": 0
+      }
+    },
+    "max_spurious_value": 0.0,
+    "reconstruction_rmse": 0.0,
+    "signal_to_residual_db": 300.0,
+    "total_flux_relative_error": 0.0
+  },
+  {
+    "case": "ifu_nonuniform_axis_constant_spectrum",
+    "library": "torchsky",
+    "method": "coadd_cube",
+    "variant": "edge-inclusive, 7 channels",
+    "status": "OK",
+    "skip_time_regression": true,
+    "per_kernel_max_relative_error": {
+      "nearest": 0.0,
+      "drizzle": 7.629394644936838e-07,
+      "linear": 7.629394644936838e-07
+    },
+    "max_relative_error": 7.629394644936838e-07,
+    "reconstruction_rmse": 3.814697322468419e-06,
+    "signal_to_residual_db": 122.35019839632378,
+    "total_flux_relative_error": 7.629394644936838e-07
+  },
+  {
+    "case": "ifu_regular_axis_spectrum_interpolation",
+    "library": "torchsky",
+    "method": "coadd_cube",
+    "variant": "regular axis, 6 channels",
+    "status": "OK",
+    "skip_time_regression": true,
+    "per_case": {
+      "sloped:drizzle": {
+        "interior_max_relative_error": 5.418604018814221e-07,
+        "interior_voxel_count": 96
+      },
+      "sloped:linear": {
+        "interior_max_relative_error": 5.418604018814221e-07,
+        "interior_voxel_count": 96
+      },
+      "curved:drizzle": {
+        "interior_max_relative_error": 0.0005980980931781232,
+        "interior_voxel_count": 96
+      },
+      "curved:linear": {
+        "interior_max_relative_error": 0.0005980980931781232,
+        "interior_voxel_count": 96
+      }
+    },
+    "max_relative_error": 0.0005980980931781232,
+    "declared_tolerance": 0.0025,
+    "reconstruction_rmse": 0.0011961961863562465,
+    "signal_to_residual_db": 64.46455164356655,
+    "total_flux_relative_error": 0.0005980980931781232
+  },
+  {
+    "case": "ifu_nonuniform_axis_interpolation_envelope",
+    "library": "torchsky",
+    "method": "coadd_cube",
+    "variant": "irregular axis, 7 channels",
+    "status": "OK",
+    "skip_time_regression": true,
+    "interior_max_relative_error": 0.031746458262205124,
+    "all_voxel_max_relative_error": 0.031746458262205124,
+    "declared_envelope": 0.1,
+    "reconstruction_rmse": 0.06349291652441025,
+    "signal_to_residual_db": 29.966094379394992,
+    "total_flux_relative_error": 0.031746458262205124
+  }
+]

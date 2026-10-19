@@ -63,6 +63,7 @@ throughput.
 |---|---|---|
 | `bench_map_cube` | `cube_constant_bands` | `bench-map-cube-gate` |
 | `bench_map_ifu` | `ifu_matched_sparse_spectrum` | `bench-map-ifu-gate` |
+| `bench_map_ifu_spectral_axis` | `ifu_nonuniform_axis_line_localization`, `ifu_nonuniform_axis_constant_spectrum`, `ifu_regular_axis_spectrum_interpolation`, `ifu_nonuniform_axis_interpolation_envelope` | `bench-map-ifu-spectral-axis-gate` |
 | `bench_map_healpix_multiband` | `healpix_multiband_flat_multiscale`, `healpix_multiband_sed_registration`, `healpix_multiband_plane_photometry`, `healpix_multiband_roundtrip_cube` | `bench-map-healpix-multiband-gate` |
 | `bench_native_response` | `native_gaussian_star` | `bench-native-response-gate` |
 | `bench_native_likelihood` | `native_gaussian_likelihood` | `bench-native-likelihood-gate` |
