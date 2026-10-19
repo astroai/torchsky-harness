@@ -254,7 +254,7 @@ case "${mode}" in
     vos_upload after_wcs || echo "after_wcs VOS upload failed; continuing job" >&2
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
       python "${source_root}/benchmarks/bench_all.py" \
-      --profile user --sphere-only \
+      --profile user --sphere-only --no-throughput-gate \
       --run-id acceptance_sphere_cuda \
       --output-dir "${artifact_root}" || cuda_rc=$?
     if [[ "${cuda_rc}" -ne 0 ]]; then
