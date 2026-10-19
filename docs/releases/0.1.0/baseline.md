@@ -395,19 +395,19 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `24b30efbac12f9e34f9f46c7eb14d311feb5ae03e5eb6c2b972cc4fa17a37af6`),
-built from torchsky `40fd37cf` and installed into the harness environments as a
+(sha256 `17ec7bedd88653260bcc92a3e70fcd318fba054ce351954714683132a776fc2e`),
+built from torchsky `894ef101` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = 3079f0daf9a7958729570c8b7034828f5a8d35a654ca688d4c0b9d2bb0dc2823`,
+`package_content_sha256 = 718525a68ffd52ade7b374617e3649d5ca6e74cdfd69dcf216fb996808fb98f2`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
 This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`,
-`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, `f0608af6…`, `9ce6f168…`, and `72fbf892…` artifacts; the last rebuild packs the FITS `-TAB`
+`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, `f0608af6…`, `9ce6f168…`, `72fbf892…`, and `24b30efb…` artifacts; the last rebuild packs the FITS `-TAB`
 fixes (1-based default index vector, `torchfits.HDUList` lookup), the
 center-native rotation fix, the AIR Newton solver (2.3x astropy, 4.1e-7 asec
-parity), the `_cpp_ext` native loader fix, the WCS core, map sky-matching, and field-helper module splits, and a lean-code pass across the native extension,
+parity), the `_cpp_ext` native loader fix, the WCS core, map sky-matching, map planning, and field-helper module splits, and a lean-code pass across the native extension,
 WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
 compatibility shims, unused helpers, lazy `map.field` facade). No public API
 names changed.
