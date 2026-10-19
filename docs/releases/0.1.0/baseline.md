@@ -410,6 +410,24 @@ HPX, SFL, BON, PAR); the fixed subject now round-trips those cases at
 ≤1.9e-9 asec. The earlier artifact's recorded WCS verdict was therefore not
 sufficient on its own, and all thirteen claims were re-run against this wheel.
 
+### GPU device check (CANFAR, 2026-10-19)
+
+Session `nuicd7md` (run id `gpu-validate-20261019-083744`) ran the
+`gpu-validate` mode on the AstroAI notebook image with one GPU against subject
+`63eb123d` and harness `4c39e97`:
+
+- Device-named package tests: 7 passed, 168 deselected.
+- `bench_wcs` on CUDA, 17 cases including `MER_OFF`, `CYP_OFF`, `AIT_OFF`,
+  `HPX_OFF`, `SFL_OFF`, `XPH_OFF`, `BON_OFF`, `PAR_OFF`: every case OK.
+- Max angular parity **8.23e-3 asec** (CUDA float64 transcendental kernels
+  differ from CPU; the CPU gate is 3.6e-3 asec), max non-seam round-trip
+  **7.11e-7 asec**.
+
+The images used for this check do not put `vcp` on `PATH`, so artifacts were
+kept on `/arc/projects/ots/torchsky-runs/gpu-validate-20261019-083744/` and the
+session log/gist; they are not a VOS-uploaded evidence bundle. This is a device
+portability check on session hardware, not a pinned-runner performance claim.
+
 ### Synthetic and truth gates (baseline_compared)
 
 | Gate | Evaluation | Verdict |
