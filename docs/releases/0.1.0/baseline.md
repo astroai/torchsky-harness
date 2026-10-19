@@ -345,18 +345,33 @@ retain the ACS campaign as evidence, not a pass.
 
 ## Next actions
 
-1. Merge/rebase `upstream/main`; record a clean candidate commit.
-2. Complete the API/evaluation decision matrix; freeze which registrations and
-   public names survive.
-3. Add the missing IFU/cube evaluator and an HEALPix multi-band gate; do not
-   claim either scope until those gates exist.
-4. Regenerate purpose-built baselines for the release gates, then enable
-   `--require-complete-baseline` there.
-5. Migrate harness imports to canonical names before deleting torchsky aliases.
-6. Bump versions to `torchsky 0.4.0` and `torchsky-harness 0.1.0`; add the
-   publish workflow, wheel install smoke, and runner verdict fields.
-7. Run the four release gates on the pinned Linux runner and record the first
-   real evidence bundle.
+Done for 0.4.0 / 0.1.0:
+
+1. IFU/cube, HEALPix multi-band, and three native synthetic gates exist with
+   committed baselines, `--require-complete-baseline`, declared claims, and a
+   release evidence bundle (`release_ready: true` against the 0.4.0 wheel).
+2. `execution.json` carries a real declared verdict, and
+   `torchsky-harness evidence` collects the bundle.
+3. Versions are `torchsky 0.4.0` / `torchsky-harness 0.1.0`; both repositories
+   carry a tag-driven PyPI trusted-publishing workflow with wheel-install
+   smoke checks, documented in [release-procedure.md](release-procedure.md).
+4. The harness bounded suite is green after migrating benchmark modules to the
+   `torchfits` I/O boundary.
+
+Open after 0.4.0 (do not claim these yet):
+
+1. Run the release gates on the pinned Linux runner and replace the local
+   macOS wheel evidence with that bundle.
+2. Physical wavelength-space spectral interpolation and flux-conserving
+   redistribution for irregular IFU axes; the current kernel is index-space.
+3. HEALPix variance/weight products, harmonic/SHT resampling, and comparator
+   throughput rows.
+4. Trim the remaining legacy `torchsky.map` exports (166 names outside
+   `map.__all__`, still reachable through the lazy export table) and finish the
+   giant-file splits: `wcs/core.py` 5,297 lines, `sphere/spectral.py` 4,701,
+   `map/field/core.py` 5,753.
+5. Real-data acceptance rows (SMACS0723 depth claims) and the experimental
+   native/scene/field surfaces remain out of the 0.1.0 claim set.
 
 - **Harness bounded suite green:** 38 harness benchmark/test/script modules
   still called the torchsky I/O aliases that the 0.4.0 boundary reset removed
