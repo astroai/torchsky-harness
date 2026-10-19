@@ -49,26 +49,29 @@ calibrated run and are not adjusted to make a failing gate pass.
 | Multi-band imaging | 3–6 band TAN/SIP/TPV synthetic exposures with distinct bandpasses, PSFs, masks, rotations; real SIP MEF fixture | analytic truth; `reproject`/SWarp per band | per-band RMSE ≤1.10× reference coadd; band flux error ≤1%; colour-ratio error ≤0.02 mag; variance coverage 0.95±0.05 | `coadd_multiband` within 10% of per-band coadd |
 | IFU / cubes | 3-axis WCS synthetic cube with lines, non-uniform/log spectral axis, masks; `plan_cube`/`coadd_cube`; `write_cube_fits` round-trip | analytic truth; astropy WCS | voxel RMSE ≤1.10× reference; line flux ≤1%; centroid ≤0.1 spectral pixel; wavelength calibration ≤0.1 pixel; flux conservation | cube coadd within 10% of slice-by-slice; peak RSS bounded by output, not exposure count |
 | Joint fields | `bench_map_field_fit` with held-out observations and sky quadrants; models: `coadd_bilinear`, `sine_implicit`, one recommended model | held-out truth; coadd baseline | noninferiority to coadd on held-out support; seeded determinism; no NaN | preregistered fit budget and peak memory |
-| HEALPix multi-band | nside 64/256 synthetic multi-band maps; `coadd_healpix`, `sample_multiband_healpix`, SHT round-trip | analytic truth; healpy | per-band RMSE and colour ratio; partial-pixel area handling; SHT rel-L2 | sampling/coadd throughput vs healpy |
+| HEALPix multi-band | 3 synthetic bands (0.04/0.08/0.16 deg pixels) at nside 2048; `coadd_healpix` per band plus `resample_healpix` band stacking | analytic constants, Gaussian source, and linear sky slope | constant recovery 1.9e-7 rel; covered solid angle within 0.82% of the pixel-centre footprint; band ratio 7.6e-8; per-pixel Gaussian residual 1.9e-7; absolute source position 0.076", cross-band 0.106"; plane residual 1.2e-6; band-stacked round trip 1.9e-7. Gate: `bench-map-healpix-multiband-gate` | not gated: no healpy throughput row, no harmonic/SHT path, no variance product |
 
 Shared map contract: `flux` vs `surface_brightness` area scaling, variance/weight
 propagation, outlier rejection, spectral unit/type normalization, and CLI/Python
 parity are all part of the gate.
 
-**Current evidence is not sufficient for any row in the table above.** Multi-band
-imaging exists only as smoke rows in `bench_map_image_plane` and
-`bench_map_multifield_truth` (no per-band/colour gate); a synthetic 2D-band cube
-assembly gate now exists (`bench_map_cube`, voxel RMSE and flux conservation),
-a matched-sampling 3D IFU gate now checks exact valid-voxel indexing and sparse
-coverage, but a dense spectral-interpolation/non-uniform-axis evaluator is still
-missing; HEALPix multi-band is only the opt-in
-`--include-spherical-inverse` path in `bench_map_multifield_truth`; the joint
-field held-out contract exists but has no committed noninferiority baseline.
+**Current evidence covers only the synthetic rows recorded below; no row is a
+real-data claim.** Multi-band imaging exists only as smoke rows in
+`bench_map_image_plane` and `bench_map_multifield_truth` (no per-band/colour
+gate); a synthetic 2D-band cube assembly gate exists (`bench_map_cube`, voxel
+RMSE and flux conservation); a matched-sampling 3D IFU gate checks exact
+valid-voxel indexing and sparse coverage, but a dense
+spectral-interpolation/non-uniform-axis evaluator is still missing; a dedicated
+HEALPix multi-band gate now covers per-band `coadd_healpix` plus band stacking
+(`bench_map_healpix_multiband`), replacing the opt-in
+`--include-spherical-inverse` path as the HEALPix evidence; the joint field
+held-out contract exists but has no committed noninferiority baseline.
 
 Open blockers: spectral flux/unit semantics, IFU non-uniform axes, unbounded
-cube/HEALPix memory, 2D-only HEALPix coadd, CLI/product path divergence,
-weight/IVAR semantics, no colour/uncertainty gate, and missing IFU/multiband
-evaluators.
+cube/HEALPix memory, `coadd_healpix` is 2D-only with centre sampling (multi-band
+means one coadd per band), no HEALPix variance/weight product, no healpy
+throughput row, CLI/product path divergence, weight/IVAR semantics, no
+colour/uncertainty gate, and missing IFU non-uniform evaluator.
 
 ## P1/P2 gates
 

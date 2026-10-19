@@ -1,0 +1,86 @@
+[
+  {
+    "case": "healpix_multiband_flat_multiscale",
+    "library": "torchsky",
+    "method": "coadd_healpix",
+    "variant": "nside=2048",
+    "status": "OK",
+    "skip_time_regression": true,
+    "nside": 2048,
+    "bands": 3,
+    "band_pixel_counts": {
+      "r": 2946,
+      "g": 2794,
+      "i": 2541
+    },
+    "constant_recovery_max_rel_error": 1.9073486328125e-07,
+    "coverage_area_max_rel_error": 0.008214293149406875,
+    "common_pixel_fraction": 0.8625254582484725,
+    "band_ratio_max_rel_error": 7.62939307841215e-08,
+    "reconstruction_rmse": 1.9073486328125e-06,
+    "signal_to_residual_db": 134.39139835231285,
+    "total_flux_relative_error": 1.9073486328125e-07
+  },
+  {
+    "case": "healpix_multiband_sed_registration",
+    "library": "torchsky",
+    "method": "coadd_healpix",
+    "variant": "nside=2048",
+    "status": "OK",
+    "skip_time_regression": true,
+    "nside": 2048,
+    "bands": 3,
+    "source_sigma_deg": 0.5,
+    "healpix_pixel_scale_deg": 0.028629053431811716,
+    "max_residual_vs_bilinear_max_rel_error": 1.8889559949553103e-07,
+    "max_residual_vs_bilinear_rms_rel_error": 3.899669903340226e-08,
+    "source_position_max_offset_arcsec": 0.07553769271063254,
+    "band_position_max_separation_arcsec": 0.10638334824958862,
+    "reconstruction_rmse": 1.8889559949553103e-07,
+    "signal_to_residual_db": 134.4755631853504,
+    "band_flux_ratio_max_rel_error": 0.007322919394230798,
+    "total_flux_relative_error": 0.007322919394230798
+  },
+  {
+    "case": "healpix_multiband_plane_photometry",
+    "library": "torchsky",
+    "method": "coadd_healpix",
+    "variant": "nside=2048",
+    "status": "OK",
+    "skip_time_regression": true,
+    "nside": 2048,
+    "bands": 3,
+    "plane_gradient_per_deg": [
+      0.3,
+      0.2
+    ],
+    "plane_max_rel_residual": 1.190085658464568e-06,
+    "common_pixel_fraction": 0.8625254582484725,
+    "band_ratio_max_rel_error": 1.3137223059400682e-07,
+    "band_flux_ratio_max_rel_error": 2.3788983838368694e-07,
+    "reconstruction_rmse": 2.3641134205831804e-06,
+    "signal_to_residual_db": 132.52663383202722,
+    "total_flux_relative_error": 2.3788983838368694e-07
+  },
+  {
+    "case": "healpix_multiband_roundtrip_cube",
+    "library": "torchsky",
+    "method": "coadd_healpix",
+    "variant": "nside=2048/48x48",
+    "status": "OK",
+    "skip_time_regression": true,
+    "nside": 2048,
+    "bands": 3,
+    "stacked_cube_shape": [
+      3,
+      48,
+      48
+    ],
+    "common_coverage_fraction": 1.0,
+    "roundtrip_max_rel_error": 1.9073486328125e-07,
+    "band_ratio_max_rel_error": 7.62939598164536e-08,
+    "reconstruction_rmse": 1.9073486328125e-06,
+    "signal_to_residual_db": 134.39139835231285,
+    "total_flux_relative_error": 1.9073486328125e-07
+  }
+]

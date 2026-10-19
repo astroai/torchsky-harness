@@ -246,6 +246,21 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `bench-map-ifu-gate` and a unit test pass. This does **not** claim dense
   spectral interpolation; an earlier unmatched 40 Å target grid produced sparse
   nearest-mapped output and is recorded as a limitation, not an accuracy gate.
+- **HEALPix multi-band gate:** added
+  `benchmarks/bench_map_healpix_multiband.py`, baseline
+  `benchmarks/baselines/map_healpix_multiband_smoke.json`, task
+  `bench-map-healpix-multiband-gate`, and a unit test. Three synthetic bands
+  (0.04/0.08/0.16 deg native pixels, same sky) are coadded with
+  `coadd_healpix` onto a common nside-2048 sparse grid and validated against
+  analytic truth: constant fields recovered to 1.9e-7 relative, covered solid
+  angle within 0.82% of the pixel-centre footprint area, band ratios exact to
+  7.6e-8, a resolved source recovered per-pixel to 1.9e-7 of peak with a 0.076"
+  absolute and 0.106" cross-band source position, a linear sky slope recovered
+  to 1.2e-6 with band and flux ratios to 2.4e-7, and a band-stacked
+  `resample_healpix` round trip to 1.9e-7. This covers per-band coaddition and
+  band stacking; it does not claim flux-conserving reprojection (the kernel
+  samples image values at HEALPix pixel centres), harmonic/SHT resampling,
+  throughput against healpy, or variance propagation.
 - The full harness test suite is opt-in and was stopped after one early failure
   while running long/external cases; this is not a release gate result. Targeted
   harness boundary and gate tests pass. Record the full-suite result separately
