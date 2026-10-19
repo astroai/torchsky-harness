@@ -20,7 +20,7 @@ case "${MODE}" in
   cpu | cuda | all | suite | many | spectral | sparse | healsparse | spin | sht | cuhpx | \
   wcs-paper2 | wcs-tpv | wcs-spectral | wcs-tabular | sht-profile | moc | catalog | \
   catalog-scale | catalog-scale-1e6 | catalog-scale-1e7 | catalog-scale-real | \
-  observed | geom-cuda | world-cuda | world | depth) ;;
+  observed | geom-cuda | world-cuda | gpu-validate | world | depth) ;;
   *)
     echo "usage: $0 [cpu|cuda|all|suite|sht|spectral|sparse|healsparse|spin|cuhpx|wcs-paper2|wcs-tpv|wcs-spectral|wcs-tabular|sht-profile|moc|catalog|catalog-scale|catalog-scale-1e6|catalog-scale-1e7|catalog-scale-real|observed|geom-cuda|world-cuda|world|depth]" >&2
     exit 2
@@ -211,6 +211,9 @@ if [[ "${MODE}" == "catalog-scale-real" ]]; then
 fi
 if [[ "${MODE}" == "observed" ]]; then
   launch_one observed "" "observed-${STAMP}"
+fi
+if [[ "${MODE}" == "gpu-validate" ]]; then
+  launch_one gpu-validate 1 "gpu-validate-${STAMP}"
 fi
 if [[ "${MODE}" == "geom-cuda" ]]; then
   launch_one geom-cuda 1 "geom-cuda-${STAMP}"

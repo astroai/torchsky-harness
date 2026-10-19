@@ -24,7 +24,7 @@ case "${mode}" in
   cpu | cuda | spectral | sphere | sparse | healsparse | spin | geometry | cuhpx | \
   wcs-paper2 | wcs-tpv | wcs-spectral | wcs-tabular | sht-profile | moc | catalog | \
   catalog-scale | catalog-scale-1e6 | catalog-scale-1e7 | catalog-scale-real | \
-  observed | geom-cuda | world-cuda) ;;
+  observed | geom-cuda | world-cuda | gpu-validate) ;;
   *)
     echo "unknown mode: ${mode} (expected cpu, cuda, spectral, sphere, sparse, healsparse, spin, geometry, cuhpx, wcs-paper2, wcs-tpv, wcs-spectral, wcs-tabular, sht-profile, moc, catalog, catalog-scale, catalog-scale-1e6, catalog-scale-1e7, catalog-scale-real, observed, geom-cuda, or world-cuda)" >&2
     exit 2
@@ -534,6 +534,41 @@ case "${mode}" in
       --device cuda --n-points 200000 --runs 3 \
       --json-out "${artifact_root}/geom_cuda.json"
     record_versions cuda-bench || true
+    ;;
+  gpu-validate)
+    install_env cuda-bench
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python -c "import torch; assert torch.cuda.is_available(), 'CUDA not available'"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python -m pip install astropy || true
+    gpu_rc=0
+    # Device-named package tests (CPU->CUDA portability of core kernels).
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      pytest \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_core.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_extended_projections.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_own_projection_matrix.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_invariants_randomized.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_science_invariants.py" \
+      -q --tb=line -k cuda \
+      --junitxml="${artifact_root}/gpu_validate_pytest.xml" || gpu_rc=$?
+    # Harness comparison gate on GPU, including the reference-offset cases
+    # that exposed the center-native inverse defect on CPU.
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python -m torchsky_harness.cli run bench_wcs -- \
+      --cases TAN,SIN,ARC,AIT,MER,MER_OFF,CYP_OFF,AIT_OFF,HPX_OFF,SFL_OFF,XPH_OFF,BON_OFF,PAR_OFF,TSC,CSC,QSC,TPV \
+      --n-points 50000 --runs 2 --device cuda \
+      --json-out "${artifact_root}/wcs_gpu_validate.json" \
+      --max-angular-error-arcsec 3.6e-3 \
+      --max-roundtrip-sky-error-arcsec-pole-excluded 1e-3 \
+      --max-roundtrip-pole-excluded-pixel-error 1e-3 \
+      --p99-roundtrip-sky-error-arcsec 1e-2 \
+      --roundtrip-exempt-cases TSC,CSC,QSC || gpu_rc=$?
+    record_versions cuda-bench || gpu_rc=$?
+    if [[ "${gpu_rc}" -ne 0 ]]; then
+      echo "gpu-validate job failures rc=${gpu_rc}"
+      exit "${gpu_rc}"
+    fi
     ;;
   world-cuda)
     install_env cuda-bench
