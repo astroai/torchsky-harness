@@ -207,6 +207,13 @@ This is a smoke record, not a performance claim (small-N launch overhead dominat
   `benchmarks/baselines/map_cube_smoke.json` and task `bench-map-cube-gate` are
   committed. Smoke and unit test pass (RMSE ≈4.9e-8). This covers 2D-band cube
   assembly, not the full 3D IFU/WCS evaluator, which remains open.
+- **Native likelihood/evidence gate:** added
+  `benchmarks/bench_native_likelihood.py` and baseline
+  `benchmarks/baselines/native_likelihood_smoke.json`. It solves a diagonal
+  native Gaussian likelihood with known truth, checks the recovered state
+  against posterior standard deviations (max standardized error 0.226), and
+  verifies that mutating bound data raises a stale-evidence error. Task
+  `bench-native-likelihood-gate` and a unit test are committed.
 - **Map spectral helper split:** extracted the spectral-axis validation,
   interval projection, Gaussian-filter projection, band-name, and band-metadata
   helpers (225 lines) from `map/image_plane.py` into

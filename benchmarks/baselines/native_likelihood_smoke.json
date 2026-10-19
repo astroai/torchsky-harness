@@ -1,0 +1,17 @@
+[
+  {
+    "case": "native_gaussian_likelihood",
+    "library": "torchsky",
+    "method": "GaussianLikelihoodSystem.solve",
+    "variant": "4-pixel-diagonal",
+    "status": "OK",
+    "runs": 1,
+    "max_standardized_error": 0.2259707701697562,
+    "stale_evidence_rejected": true,
+    "reconstruction_rmse": 0.13591856216758536,
+    "reconstruction_max_abs_err": 0.2259707701697562,
+    "signal_to_residual_db": 300.0,
+    "total_flux_relative_error": 0.0,
+    "skip_time_regression": true
+  }
+]

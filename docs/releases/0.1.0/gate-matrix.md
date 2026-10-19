@@ -76,7 +76,7 @@ evaluators.
 |---|---|
 | `catalogs` | `bench_catalog_compat` and `bench_catalog_crossmatch` with astropy `SkyCoord` reference; crossmatch separations ≤1e-9 deg and completeness 1.0; performance claim only if measured |
 | `field` | experimental; included in the map field gate above; model zoo remains non-default |
-| **native response/likelihood** | **P1 experimental gate, partially added:** `bench_native_response` injects a known pixel-integrated Gaussian star and gates recovered flux/background at a fixed centroid. Still needed: full likelihood/joint/evidence-staleness case and a poorer-data/shared-nuisance case. The real ACS campaign is supporting evidence, not a pass (`training_ready=false`). No SOTA or universal-device claim. |
+| **native response/likelihood** | **P1 experimental gates, partially added:** `bench_native_response` gates recovered flux/background for a known pixel-integrated Gaussian star; `bench_native_likelihood` solves a known Gaussian likelihood and gates standardized error plus stale-evidence rejection. Still needed: joint/shared-nuisance and poorer-data cases. The real ACS campaign is supporting evidence, not a pass (`training_ready=false`). No SOTA or universal-device claim. |
 | `scene` | experimental facade; contract/`__all__` tests only |
 | `viz` | optional extra; import/server/static security smoke |
 | `encoders` | experimental; bounded shape/device/dtype tests |
