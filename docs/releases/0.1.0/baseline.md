@@ -381,7 +381,7 @@ Open after 0.4.0 (do not claim these yet):
   sites and the `get_wcs` test were updated, and the tiled-vs-full gradient
   check in `test_smacs_sampling` now uses the float32 accumulation tolerance
   (float64 agreement is ~1e-9 relative). Added the `test-bounded` pixi task:
-  **942 passed, 152 skipped, 17 deselected** in 242 s against the 0.4.0 wheel. The default `test` task
+  **943 passed, 153 skipped, 17 deselected** in 276 s against the 0.4.0 wheel. The default `test` task
   still runs the opt-in `performance`/`benchmark`/`slow`/`integration` cases.
 
 - **Subject provenance fix:** `identify_subject()` resolved the subject's git

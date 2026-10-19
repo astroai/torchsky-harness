@@ -129,6 +129,27 @@ def test_unanchored_baseline_is_reported_not_enforced(tmp_path: Path) -> None:
     ]
 
 
+def test_every_row_for_a_required_case_must_pass(tmp_path: Path) -> None:
+    rows = [
+        {"case": "synthetic_clustered", "library": "torchsky", "status": "FAILED"},
+        {"case": "synthetic_clustered", "library": "astropy", "status": "OK"},
+        {"case": "real_astropy_votable_catalogs", "library": "torchsky", "status": "OK"},
+        {"case": "real_astropy_votable_fits_roundtrip", "library": "torchsky", "status": "OK"},
+    ]
+    _write_report(tmp_path, rows)
+    record = verdict(
+        "bench_catalog_compat",
+        returncode=0,
+        command=["python", "-m", "bench_catalog_compat", *_write_arguments(tmp_path)],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+    assert any(
+        "synthetic_clustered reported status FAILED" in reason
+        for reason in record["verdict_reasons"]
+    )
+
+
 def test_operation_rows_satisfy_a_comparator_claim(tmp_path: Path) -> None:
     rows = [
         {"operation": operation, "mismatches": 0}

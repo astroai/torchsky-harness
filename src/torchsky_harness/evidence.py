@@ -288,18 +288,24 @@ def verdict(
             rows = [row for row in payload if isinstance(row, dict)]
             if not rows:
                 reasons.append("evidence report has no rows")
-            by_case = {
-                identity: row
-                for row in rows
-                if (identity := _row_identity(row)) is not None
-            }
+            by_case: dict[str, list[dict[str, Any]]] = {}
+            for row in rows:
+                identity = _row_identity(row)
+                if identity is not None:
+                    by_case.setdefault(identity, []).append(row)
             for required in claim.required_rows:
-                row = by_case.get(required)
-                if row is None:
+                matches = by_case.get(required)
+                if not matches:
                     reasons.append(f"missing required row {required}")
-                elif str(row.get("status", "OK")) != "OK":
+                    continue
+                failed = [
+                    str(row.get("status", "OK"))
+                    for row in matches
+                    if str(row.get("status", "OK")) != "OK"
+                ]
+                if failed:
                     reasons.append(
-                        f"required row {required} reported status {row.get('status')}"
+                        f"required row {required} reported status {failed[0]}"
                     )
             record["evidence_report"] = str(report_path.resolve())
 

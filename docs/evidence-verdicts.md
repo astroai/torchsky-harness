@@ -32,8 +32,10 @@ A run never guesses. Validity is derived only from declarations in
   the run did not finish.
 * `established` — the evaluation has a declared claim, the child exited `0`, and
   every declared required row is present in the evidence report with
-  `status=OK`. Summary-report evaluations declare a `summary_failures_key`
-  instead of rows and are established when that failure list is empty.
+  `status=OK`; when several rows share a required identity (for example one row
+  per comparator library), every one of them must pass. Summary-report
+  evaluations declare a `summary_failures_key` instead of rows and are
+  established when that failure list is empty.
 * `not_established` — a declared claim exists but one of the above failed; each
   failure is listed in `verdict_reasons`.
 
