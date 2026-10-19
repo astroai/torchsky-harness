@@ -133,7 +133,7 @@ def main() -> int:
     backends = ["torch"]
     cpp_available = False
     try:
-        import torchsky.cpp as _cpp  # type: ignore
+        import torchsky._cpp as _cpp  # type: ignore
 
         cpp_available = hasattr(_cpp, "_healpix_scalar_alm2map_direct_cpu")
     except Exception:

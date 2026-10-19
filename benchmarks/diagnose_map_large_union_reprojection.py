@@ -33,10 +33,10 @@ from torchsky.map.operators import (  # noqa: E402
 import torchsky.map.image_plane as image_plane_mod  # noqa: E402
 
 try:  # noqa: E402
-    import torchsky.cpp  # noqa: F401
+    import torchsky._cpp  # noqa: F401
 except Exception as exc:  # pragma: no cover - native bench env requirement
     raise RuntimeError(
-        "diagnose_map_large_union_reprojection.py requires torchsky.cpp; "
+        "diagnose_map_large_union_reprojection.py requires torchsky._cpp; "
         "run it from a native-extension environment"
     ) from exc
 

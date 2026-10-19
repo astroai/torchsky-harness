@@ -89,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.subject_wheel:
         wheel = args.subject_wheel.resolve(strict=True)
         subprocess.run([sys.executable, "-m", "pip", "install", "--no-deps", "--force-reinstall", str(wheel)], check=True)
-        subprocess.run([sys.executable, "-c", "import torchsky; import torchsky.cpp"], check=True)
+        subprocess.run([sys.executable, "-c", "import torchsky; import torchsky._cpp"], check=True)
         print(f"Installed subject artifact {wheel.name} sha256={sha256(wheel)}")
     run_dir = args.run_dir or Path("runs") / uuid.uuid4().hex
     code = run(args.evaluation, child_args, run_dir, subject_artifact=wheel)

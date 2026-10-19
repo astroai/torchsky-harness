@@ -69,10 +69,10 @@ def _software_manifest() -> dict[str, Any]:
 from torchsky.map.operators import headers_equivalent_for_direct_copy  # noqa: E402
 
 try:  # noqa: E402
-    import torchsky.cpp  # noqa: F401
+    import torchsky._cpp  # noqa: F401
 except Exception as exc:  # pragma: no cover - native bench env requirement
     raise RuntimeError(
-        "bench_map_compat.py requires torchsky.cpp; "
+        "bench_map_compat.py requires torchsky._cpp; "
         "run it from a native-extension environment"
     ) from exc
 

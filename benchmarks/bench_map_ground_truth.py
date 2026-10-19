@@ -57,10 +57,10 @@ import torchsky_harness.benchmarks.bench_map_compat as map_compat  # noqa: E402
 from torchsky.map.operators.background import fit_background_plane  # noqa: E402
 
 try:  # noqa: E402
-    import torchsky.cpp  # noqa: F401
+    import torchsky._cpp  # noqa: F401
 except Exception as exc:  # pragma: no cover - native bench env requirement
     raise RuntimeError(
-        "bench_map_ground_truth.py requires torchsky.cpp; "
+        "bench_map_ground_truth.py requires torchsky._cpp; "
         "run it from a native-extension environment"
     ) from exc
 

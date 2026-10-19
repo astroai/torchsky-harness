@@ -45,8 +45,10 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_native_nuisance",
         "bench_native_response",
         "bench_sphere_matrix",
+        "bench_sphere_real_map",
         "bench_spin_matrix",
         "bench_wcs",
+        "bench_wcs_real_headers",
     }
 
 
