@@ -397,7 +397,9 @@ Open after 0.4.0 (do not claim these yet):
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
 (sha256 `f9e537dd49fdfccb17ad49774567d3e5a835af9d84132cb18cb6e560b07d6259`),
 built from torchsky `4055e819` and installed into the harness test environment as
-a wheel (import path `site-packages/torchsky`, not the checkout). Subject
+a wheel (import path `site-packages/torchsky`, not the checkout). Later
+tooling/docs commits (e.g. the pyright config fix) do not change the packaged
+content, so the wheel hash and subject identity below are unchanged. Subject
 `package_content_sha256 = 49f816de7a1daafc60b9695e34897e13b2916148c3816e781d05ab7cec63d0d6`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records the harness revision.
