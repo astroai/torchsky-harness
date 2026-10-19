@@ -358,6 +358,17 @@ retain the ACS campaign as evidence, not a pass.
 7. Run the four release gates on the pinned Linux runner and record the first
    real evidence bundle.
 
+- **Harness bounded suite green:** 38 harness benchmark/test/script modules
+  still called the torchsky I/O aliases that the 0.4.0 boundary reset removed
+  (`torchsky.read/write/get_header/get_wcs`), which failed 86 bounded-suite
+  tests. They now use `torchfits.read`, `torchfits.write`, and
+  `torchfits.read_header` (with `WCS(read_header(...))`), the two monkeypatch
+  sites and the `get_wcs` test were updated, and the tiled-vs-full gradient
+  check in `test_smacs_sampling` now uses the float32 accumulation tolerance
+  (float64 agreement is ~1e-9 relative). Added the `test-bounded` pixi task:
+  **923 passed, 152 skipped, 17 deselected** in 239 s. The default `test` task
+  still runs the opt-in `performance`/`benchmark`/`slow`/`integration` cases.
+
 ## Version bump (release candidate)
 
 torchsky is now `0.4.0` (pyproject, pixi, `__version__`) and torchsky-harness is

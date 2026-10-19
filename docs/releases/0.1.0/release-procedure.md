@@ -8,8 +8,10 @@ whose evidence bundle is `release_ready`.
 
 ## Prerequisites
 
-1. `pixi run preflight` and `pixi run test` pass in both repositories.
-   The torchsky suite is `pixi run test` plus the map shards
+1. `pixi run preflight` passes in both repositories. Harness:
+   `pixi run test-bounded` (the `test` task also runs the opt-in
+   `performance`/`benchmark`/`slow`/`integration` cases, which are not part of
+   the release suite). torchsky: `pixi run test` plus the map shards
    (`pixi run -e test -- pytest -n auto -q 'tests/test_map_*.py'`).
 2. Every declared gate records `scientific_validity: established` with
    `comparison_eligibility: baseline_compared`, and
