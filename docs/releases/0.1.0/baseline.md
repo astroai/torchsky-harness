@@ -395,19 +395,19 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence (2026-10-18)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `9ce6f168a99ee7ba0df80b2332275a886e2872d3b3d05303aed83995c3fe7d1d`),
-built from torchsky `10162935` and installed into the harness environments as a
+(sha256 `72fbf892864d3af07e6f7163457665b91dad1f08ed6055d0954e5b220ef500e5`),
+built from torchsky `325eea21` and installed into the harness environments as a
 wheel (import path `site-packages/torchsky`, not the checkout). Subject
-`package_content_sha256 = 7bf0cda262ce15657c1f117f05bead166a96cca3c850cc428d5c0bd3049d80ba`,
+`package_content_sha256 = 93a997136af9456f0567b8956fde89092283cc237775be91c9939ea63c95c399`,
 `source.kind = archive`. Every gate below is a `pixi run` task against that
 install; the bundle records one harness revision for all declared claims
 (`claim_harness_revisions`).
 
 This wheel supersedes the earlier `f9e537dd…`, `7f0862c6…`, `8ba1e400…`,
-`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, and `f0608af6…` artifacts; the last rebuild packs the FITS `-TAB`
+`1570e1e7…`, `7da600a4…`, `a94271ba…`, `b2018df1…`, `f0608af6…`, and `9ce6f168…` artifacts; the last rebuild packs the FITS `-TAB`
 fixes (1-based default index vector, `torchfits.HDUList` lookup), the
 center-native rotation fix, the AIR Newton solver (2.3x astropy, 4.1e-7 asec
-parity), the `_cpp_ext` native loader fix, the WCS core/mixin split, and a lean-code pass across the native extension,
+parity), the `_cpp_ext` native loader fix, the WCS core and map sky-matching module splits, and a lean-code pass across the native extension,
 WCS, sphere, and map packages (dead kernels/bindings, CFITSIO vendor tree,
 compatibility shims, unused helpers, lazy `map.field` facade). No public API
 names changed.
