@@ -321,8 +321,8 @@ API decision matrix.
 | `torchsky/map/evidence.py` | 127 | evidence snapshots and staleness guards |
 | `torchsky/map/field/native_response.py` | 503 | native source-node response |
 | `torchsky/map/field/gaussian.py` | 410 | band-grid Gaussian likelihood binding |
-| `torchsky/map/field/joint_native.py` | 328 | shared native nuisance/calibration binding |
-| `torchsky/map/field/native_physical.py` | 613 | physical integrated-read likelihood |
+| `torchsky/map/field/joint_native_likelihood.py` | 328 | shared native nuisance/calibration binding |
+| `torchsky/map/field/native_integrated_read.py` | 613 | physical integrated-read likelihood |
 | `torchsky/map/operators/continuous_response.py` | 445 | continuous source/spectral quadrature |
 | `torchsky/map/operators/detector_response.py` | 281 | detector moments and covariance |
 | `torchsky/map/operators/nuisance.py` | 330 | profiled/calibrated nuisance precision |
