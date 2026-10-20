@@ -35,6 +35,7 @@ def _write_report(tmp_path: Path, rows: list[dict]) -> None:
 def test_declared_claims_cover_only_release_gates() -> None:
     assert set(CLAIMS) == {
         "bench_catalog_compat",
+        "bench_domain_fuzz",
         "bench_healpix",
         "bench_healpix_advanced",
         "bench_map_cube",
@@ -42,6 +43,7 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_map_ifu_spectral_axis",
         "bench_map_healpix_multiband",
         "bench_map_real_cutout",
+        "bench_native_contracts",
         "bench_native_likelihood",
         "bench_native_nuisance",
         "bench_native_response",
@@ -247,4 +249,9 @@ def test_every_declared_claim_lists_rows_and_limitations(name: str) -> None:
     claim = CLAIMS[name]
     assert claim.required_rows or claim.summary_failures_key
     assert claim.limitations
-    assert claim.scope in {"synthetic_truth", "reference_comparison", "real_data"}
+    assert claim.scope in {
+        "synthetic_truth",
+        "reference_comparison",
+        "real_data",
+        "contract",
+    }
