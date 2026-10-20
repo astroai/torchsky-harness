@@ -395,11 +395,11 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence refresh (2026-10-20)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `5637f860a7c084b4077d13376a7a3627b513114636353143317c295ee0915c2c`),
-built from torchsky `78d24afa44fa3cd776fd68c12361cde9728de3ee` and installed as a
+(sha256 `b27eeaec849c55b0224682cb737d417de59dd2053599fbb3152a47f94be95798`),
+built from torchsky `a6dec52db6375eb5de5c2e9a25b9774300da7abe` and installed as a
 wheel into the harness environments (`source.kind = archive`). Subject
-`package_content_sha256 = 2f2e40832b2423dcbc4ea7a664209133e4ac2b1bbbc2eace7ad29feab6d944d8`.
-The bundle was generated at harness `a5dbe10e19848f88cf3ea1d61deabf313130f83a`.
+`package_content_sha256 = a153ab47f5758eda065cc7bb8e20218cf12adca58c2a599f628d2028aa555473`.
+The bundle was generated at harness `d4a981c2e1a86ed17a2f3e900ca8e740349dd364`.
 
 All eighteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
@@ -442,18 +442,21 @@ arcs remain finite.
 Device validation is recorded separately below; the 2026-10-18 sections are
 retained as superseded provenance.
 ### Device validation (CANFAR, 2026-10-20)
-Refresh on the reworked subject (`78d24afa` wheel, harness `43db174`):
+Final subject (`a6dec52d`/`e57f23ae` wheel `b27eeaec…`, harness `d4a981c`):
 
-- `gpu-validate` run `gpu-validate-20261020-194611` (session `wpgqtkri`):
-  17-case GPU WCS comparison clean (`bad=[]`, max angular **8.23e-3 asec**,
-  pole-excluded round-trip **7.11e-7 asec**), but the same
-  `test_paper2_cuda_matches_cpu[CSC-0.3-0.0]` device test still fails with a
-  handful of CSC samples differing by up to ~8e-7 against the 1e-10 tolerance.
-  The rework did not reconcile this test/implementation pair.
-- `cuda` run `wcs-sphere-cuda-20261020-194640` (session `qckq42t6`, rc=0):
-  WCS large-N CUDA acceptance has **0 deficits**; the sphere CUDA section
-  records 7 comparator large-N deficits and is not claimed as a throughput win.
-  VOS upload is unavailable on that image; gist/log artifacts are retained.
+- `gpu-validate` run `gpu-validate-20261020-234626` (session `daaw3n7g`, rc=0):
+  **7/7 device tests passed**; the 17-case GPU WCS comparison is clean
+  (`bad=[]`, max angular **8.23e-3 asec**, pole-excluded round-trip
+  **1.67e-8 asec**). CSC keeps a documented 1e-6 CUDA/CPU seam tolerance
+  because the WCSLIB Chan-O'Neill polynomial is evaluated in float32; TSC/QSC
+  and all other projections require 1e-10 parity.
+- Earlier `cuda` run `wcs-sphere-cuda-20261020-194640` (session `qckq42t6`,
+  rc=0): WCS large-N CUDA acceptance has **0 deficits**; the sphere CUDA
+  section records 7 comparator large-N deficits and is not claimed as a
+  throughput win.
+- CPU/CUDA acceptance sessions on the final subject are recorded in the CANFAR
+  run logs; VOS upload remains unavailable on that image, so gist/log artifacts
+  are the retained copies.
 
 
 - `gpu-validate` run `gpu-validate-20261020-153814` (session `m5x5s624`):
