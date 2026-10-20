@@ -24,6 +24,10 @@ Committed snapshots live under [`benchmarks/scorecards/`](../benchmarks/scorecar
 (`index.md` plus dated `*.json` / `*.md`). Older narrative notes remain in
 [`docs/archive/benchmark-history.md`](archive/benchmark-history.md).
 
+For adversarial contract and audit methodology (native boundary, invalid
+domains, tensor/device contracts, concurrency, packaging), see
+[adversarial-evaluation-playbook.md](adversarial-evaluation-playbook.md).
+
 Artifact roots used in this document:
 
 - `benchmarks_results/` is the default root for generic benchmark-suite outputs
