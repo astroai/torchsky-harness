@@ -74,6 +74,13 @@ Expected green: full suite, 31/31 examples, pyright 0, docs contract.
 
 ## 4. Run the eighteen declared gates
 
+Run the gates **alone**. Do not run the subject suite, another benchmark, or a
+build concurrently: performance-ratio rows are same-machine measurements and a
+loaded machine produced a false `bench-healpix-advanced-release-gate` failure in
+the 2026-10-20 validation. Re-run any failed gate on an idle machine before
+treating it as a subject regression.
+
+
 Run each task and keep the JSON outputs named in the release procedure. Do not
 overwrite the previous release artifacts; use a fresh output directory if a
 benchmark supports it.

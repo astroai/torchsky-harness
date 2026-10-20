@@ -176,6 +176,8 @@ missing contract row is a coverage failure, not a pass.
   for the installed subject (empty/layout, invalid domains, high-order SHT,
   concurrency, tiny arcs, noncontiguous input).
 - This playbook.
+- `benchmarks/bench_domain_fuzz.py` — seeded randomized differential domain
+  check for WCS projections, generalized HPX, and randomized TPV polynomials.
 - Next: wire the contract rows into `torchsky_harness.evidence` as a declared
   claim and add the release gate task; add randomized differential fuzz;
   add sanitizer/CI lanes; add packaging checks to harness evidence.
