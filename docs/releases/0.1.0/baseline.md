@@ -395,11 +395,11 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence refresh (2026-10-20)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `74a7bc304b2391a8a0d6da5e0dda45c397b3fddeb2b28e940f0506076d5660b8`),
-built from torchsky `1611fad2c4f0e2b90adb265e74fcbd3be44d81f1` and installed as a
+(sha256 `5637f860a7c084b4077d13376a7a3627b513114636353143317c295ee0915c2c`),
+built from torchsky `78d24afa44fa3cd776fd68c12361cde9728de3ee` and installed as a
 wheel into the harness environments (`source.kind = archive`). Subject
-`package_content_sha256 = 515aa316e0cd62d4c229e6cb19dad4a2e4d48ccc224ae74f0d19e685fbc35170`.
-The bundle was generated at harness `0d30d6356f5e87c8cea11dd016322f932120c07f`.
+`package_content_sha256 = 2f2e40832b2423dcbc4ea7a664209133e4ac2b1bbbc2eace7ad29feab6d944d8`.
+The bundle was generated at harness `43db174333c9dfd8b7e9ea5d8d2efb8745ff3872`.
 
 All eighteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
@@ -407,18 +407,19 @@ harness revision; `release_ready: true`, `subject_consistent: true`,
 
 - WCS: 38 cases; angular parity max **6.1e-7 asec** (AIR 4.1e-7; offsets
   ≤1.5e-8), pole/seam-excluded round trip **1.28e-6 asec**, pixel round trip
-  **1.27e-6 px**, p99 sky round trip **2.5e-8 asec**; forward 0.46–2.44× and
-  inverse 0.45–3.42× astropy. Real instrument headers: forward max
-  **1.0e-8 asec**, inverse max **2.6e-6 px**.
-- HEALPix: zero index mismatches at nside 512; max angle **1.4e-12 deg**
-  (core), throughput 0.70–1.43× core and 0.84–1.65× advanced.
-- Sphere geometry: index/angle parity passes; median ratios
-  1.49/1.25/1.07/0.70/1.15/0.61 recorded but not throughput-gated on macOS.
-- Spin-2 SHT: no failures; small-bucket median ratios 0.55/0.63 vs 0.15
-  thresholds.
+  **1.27e-6 px**, p99 sky round trip **2.5e-8 asec**. Real instrument headers:
+  forward max **1.0e-8 asec**, inverse max **2.6e-6 px**. Throughput was
+  measured on a loaded shared macOS host during this refresh; treat the ratio
+  bands as same-machine observations, not a pinned-runner claim.
+- HEALPix: zero index mismatches at nside 512; max angle at the float64 noise
+  floor; core and advanced ratios recorded in the run JSONs.
+- Sphere geometry: index/angle parity passes; median ratios recorded but not
+  throughput-gated on macOS.
+- Spin-2 SHT: no gate failures; median ratios are recorded in the run JSON and
+  are not a throughput claim.
 - Catalogs: max separation difference **1.13e-10 asec** against SkyCoord.
 - Real map cutout: interior max rel **2.4e-6**, p99 **1.2e-7**, coverage-boundary
-  fraction 4e-3; CPU 31.8 ms vs reproject 115.9 ms.
+  fraction 4e-3; timings are same-machine observations.
 - Real sphere map: interpolation max abs 3.8e-9 (rel 9.1e-14), `ud_grade` max
   abs 7.3e-12, `alm2cl` exact.
 - Domain fuzz: seeded randomized differential agreement passes for 25 WCS
@@ -441,6 +442,17 @@ arcs remain finite.
 Device validation is recorded separately below; the 2026-10-18 sections are
 retained as superseded provenance.
 ### Device validation (CANFAR, 2026-10-20)
+Refresh on the reworked subject (`78d24afa` wheel, harness `43db174`):
+
+- `gpu-validate` run `gpu-validate-20261020-194611` (session `wpgqtkri`):
+  17-case GPU WCS comparison clean (`bad=[]`, max angular **8.23e-3 asec**,
+  pole-excluded round-trip **7.11e-7 asec**), but the same
+  `test_paper2_cuda_matches_cpu[CSC-0.3-0.0]` device test still fails with a
+  handful of CSC samples differing by up to ~8e-7 against the 1e-10 tolerance.
+  The rework did not reconcile this test/implementation pair.
+- `cuda` run `wcs-sphere-cuda-20261020-194640` (session `qckq42t6`): pending at
+  the time of this note.
+
 
 - `gpu-validate` run `gpu-validate-20261020-153814` (session `m5x5s624`):
   the 17-case GPU WCS comparison is clean (`bad=[]`, max angular
