@@ -424,10 +424,10 @@ harness revision; `release_ready: true`, `subject_consistent: true`,
 - Domain fuzz: seeded randomized differential agreement passes for 25 WCS
   projections, generalized HPX H/K, and randomized TPV; no invented finite
   points, coverage ≥98%, and values within 2e-5 deg (0.01 px for HPX).
-- Contract gate: 11 subprocess-isolated probes pass (empty HEALPix layouts,
+- Contract gate: 12 subprocess-isolated probes pass (empty HEALPix layouts,
   invalid coordinates, TAN back hemisphere, MOL poles, generalized HPX H/K,
   malformed TPV, high-order scalar SHT, concurrent spin SHT, tiny arcs,
-  noncontiguous WCS). This is a fixed-counterexample contract claim, not a
+  noncontiguous WCS, registered-dispatcher parity). This is a fixed-counterexample contract claim, not a
   randomized fuzz or device claim.
 
 Native-contract probes (subprocess-isolated, timeout): empty HEALPix ring

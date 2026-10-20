@@ -189,6 +189,27 @@ hit = spherical_polygon_contains(
 assert bool(hit), hit
 print("tiny arc area:", float(area))
 """,
+    "dispatcher_healpix_contract": r"""
+import torch
+import torchsky._ops as ops
+assert ops.has_wcs_dispatcher() and ops.has_spectral_dispatcher() and ops.has_fixed_dispatcher()
+lon = torch.tensor([10.0, 20.0, 30.0, 40.0], dtype=torch.float64)
+lat = torch.tensor([-5.0, 0.0, 5.0, 85.0], dtype=torch.float64)
+direct = torch.ops.torchsky.healpix_ang2pix_ring(64, lon, lat)
+legacy = ops.healpix_ang2pix_ring(64, lon, lat)
+assert torch.equal(direct, legacy), (direct, legacy)
+strided_lon = torch.empty(8, dtype=torch.float64)[::2]
+strided_lat = torch.empty(8, dtype=torch.float64)[1::2]
+strided_lon.copy_(lon)
+strided_lat.copy_(lat)
+strided = torch.ops.torchsky.healpix_ang2pix_ring(64, strided_lon, strided_lat)
+assert torch.equal(strided, direct), (strided, direct)
+empty = torch.ops.torchsky.healpix_ang2pix_ring(
+    64, torch.empty(0, dtype=torch.float64), torch.empty(0, dtype=torch.float64)
+)
+assert tuple(empty.shape) == (0,), empty.shape
+print("dispatcher healpix contract ok")
+""",
     "noncontiguous_wcs": r"""
 import numpy as np, torch
 from torchsky.wcs import WCS

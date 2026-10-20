@@ -71,6 +71,7 @@ CLAIMS: dict[str, EvaluationClaim] = {
             "spin_sht_concurrency",
             "tiny_arc_geometry",
             "noncontiguous_wcs",
+            "dispatcher_healpix_contract",
         ),
         limitations=(
             "fixed adversarial counterexamples, each in a subprocess with a hard timeout",
