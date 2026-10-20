@@ -63,7 +63,10 @@ provenance):
 | real CFHT cutout reprojection vs astropy reproject | `pixi run bench-map-real-cutout-gate` |
 
 The bundle includes sixteen declared gates (seven synthetic/truth, six
-reference-comparison, three real-data). Then `pixi run evidence-bundle` writes
+reference-comparison, three real-data). A detailed freeze/build/install/gate/GPU/evidence checklist is in
+[validation-runbook.md](validation-runbook.md).
+
+Then `pixi run evidence-bundle` writes
 `benchmark_results/evidence_bundle.{json,md}` (git-ignored by design). Attach
 the bundle to the tag/release notes. The raw run directories stay in durable
 storage; the bundle hashes them.
