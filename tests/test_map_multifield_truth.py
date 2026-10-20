@@ -172,6 +172,8 @@ def test_multifield_truth_joint_spherical_inverse_row_is_finite_and_improves_fit
     assert row["cube_rmse_vs_truth"] >= 0.0
 
 
+
+pytestmark = pytest.mark.slow
 def test_multifield_random10_case_has_large_mixed_resolutions() -> None:
     spec = _multifield_bench._case_spec(
         "mixed_multifield_random10",

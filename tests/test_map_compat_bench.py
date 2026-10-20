@@ -1162,6 +1162,8 @@ def test_astropy_header_adapter_builds_a_real_header() -> None:
     assert adapted["CRVAL1"] == 150.0
 
 
+
+pytestmark = pytest.mark.slow
 def test_astropy_header_adapter_accepts_reproject() -> None:
     pytest.importorskip("astropy")
     reproject = pytest.importorskip("reproject")

@@ -464,6 +464,8 @@ def test_distorted_quadrature_batches_world_to_pixel_calls(tmp_path: Path) -> No
     assert call_count == 1
 
 
+
+pytestmark = pytest.mark.slow
 def test_random10_rect_tpv_headers_are_locally_invertible(tmp_path: Path) -> None:
     observations, _target_header, _truth = _truth_bench.make_case(
         tmp_path,
