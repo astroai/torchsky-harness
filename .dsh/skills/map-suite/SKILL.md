@@ -9,14 +9,13 @@ metadata:
 
 Run these evaluation commands from the torchsky-harness checkout with an
 explicitly installed torchsky subject. Record both revisions. Runtime map
-contracts remain in torchsky; the retained source instructions below describe
-the original package test policy for historical context.
+contracts remain in torchsky; scientific map evidence is owned by this repo.
 
-## Map tests are excluded from `pixi run test`
+## Map tests are part of the default suite
 
-`pixi run test` runs `pytest -n auto --ignore-glob='tests/test_map_*.py'`. A
-green default suite does NOT mean map tests pass — they run in the GitHub CI
-map matrix. Run them explicitly:
+`pixi run test` runs the full `pytest tests -q` tree in the test env, so map tests
+are included and the default suite is expensive. For focused loops run the map
+files explicitly:
 
 - `pixi run -e test -- pytest tests/test_map_*.py`
 - or via the acceptance gates below.
