@@ -226,6 +226,11 @@ def test_cli_evidence_passes_with_complete_bundle(tmp_path: Path) -> None:
 @pytest.mark.parametrize("evaluation", sorted(CLAIMS))
 def test_claim_records_scope_and_limitations(evaluation: str) -> None:
     record = CLAIMS[evaluation].as_record()
-    assert record["scope"] in {"synthetic_truth", "reference_comparison", "real_data"}
+    assert record["scope"] in {
+        "synthetic_truth",
+        "reference_comparison",
+        "real_data",
+        "contract",
+    }
     assert record["required_rows"] or record["summary_failures_key"]
     assert record["limitations"]
