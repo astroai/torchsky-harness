@@ -15,6 +15,10 @@ Claim scopes:
     implementation on the declared cases.
 ``real_data``
     The evaluation uses real observations with an explicit, checked reference.
+``contract``
+    The evaluation checks structural/domain/tensor/concurrency behaviour rather
+    than scientific parity: malformed input must be rejected, invalid physical
+    domains must stay invalid, and crashes/hangs fail the claim.
 """
 
 from __future__ import annotations
@@ -27,7 +31,9 @@ from typing import Any, Literal, Mapping, Sequence
 
 from torchsky_harness.subject import sha256
 
-ClaimScope = Literal["synthetic_truth", "reference_comparison", "real_data"]
+ClaimScope = Literal[
+    "synthetic_truth", "reference_comparison", "real_data", "contract"
+]
 
 
 @dataclass(frozen=True)
@@ -51,6 +57,30 @@ class EvaluationClaim:
 
 
 CLAIMS: dict[str, EvaluationClaim] = {
+    "bench_native_contracts": EvaluationClaim(
+        scope="contract",
+        required_rows=(
+            "empty_ring_synthesis",
+            "empty_healpix_arrays",
+            "invalid_healpix_coordinates",
+            "tan_back_hemisphere",
+            "mol_polar_roundtrip",
+            "generalized_hpx",
+            "invalid_tpv_metadata",
+            "scalar_sht_high_order",
+            "spin_sht_concurrency",
+            "tiny_arc_geometry",
+            "noncontiguous_wcs",
+        ),
+        limitations=(
+            "fixed adversarial counterexamples, each in a subprocess with a hard timeout",
+            "no randomized differential fuzz, sanitizer, or multi-device matrix yet",
+            "domain agreement is checked against WCSLIB/ERFA where applicable;"
+            " the remaining probes assert documented contracts or numerical bounds",
+            "a pass is necessary but not sufficient for release: scientific gates,"
+            " packaging, and device evidence remain separate claims",
+        ),
+    ),
     "bench_wcs": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(

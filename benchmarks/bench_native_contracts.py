@@ -25,6 +25,7 @@ import subprocess
 import sys
 import textwrap
 from datetime import datetime, timezone
+import time
 from pathlib import Path
 
 # Each entry is a self-contained child process. Keep assertions in the child so a
@@ -213,6 +214,7 @@ print("noncontiguous WCS input ok")
 
 def _run_probe(name: str, timeout: int) -> dict[str, object]:
     code = textwrap.dedent(PROBES[name])
+    started = time.perf_counter()
     try:
         proc = subprocess.run(
             [sys.executable, "-c", code],
@@ -220,20 +222,24 @@ def _run_probe(name: str, timeout: int) -> dict[str, object]:
             text=True,
             timeout=timeout,
         )
+        elapsed = time.perf_counter() - started
         return {
             "case": name,
-            "status": "pass" if proc.returncode == 0 else "fail",
+            "status": "OK" if proc.returncode == 0 else "FAIL",
             "returncode": proc.returncode,
             "signal": -proc.returncode if proc.returncode < 0 else None,
+            "elapsed_s": round(elapsed, 3),
             "stdout": proc.stdout.strip()[-4000:],
             "stderr": proc.stderr.strip()[-4000:],
         }
     except subprocess.TimeoutExpired as exc:
+        elapsed = time.perf_counter() - started
         return {
             "case": name,
-            "status": "fail",
+            "status": "FAIL",
             "returncode": None,
             "signal": None,
+            "elapsed_s": round(elapsed, 3),
             "stdout": (exc.stdout or "")[-4000:]
             if isinstance(exc.stdout, str)
             else "",
@@ -274,29 +280,41 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:  # noqa: BLE001 - provenance only
         subject = {"import_error": repr(exc)}
 
-    payload = {
-        "schema_version": 1,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "subject": subject,
-        "rows": rows,
-        "failures": [row["case"] for row in rows if row["status"] != "pass"],
-    }
+    failures = [row["case"] for row in rows if row["status"] != "OK"]
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
-    args.json_out.write_text(json.dumps(payload, indent=2) + "\n")
+    # The evidence claim evaluator expects a top-level row list with ``case``
+    # and ``status``; keep provenance in a sidecar so the contract rows remain
+    # machine-checkable.
+    args.json_out.write_text(json.dumps(rows, indent=2) + "\n")
+    sidecar = args.json_out.with_suffix(args.json_out.suffix + ".provenance.json")
+    sidecar.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "subject": subject,
+                "failures": failures,
+                "probe_count": len(rows),
+            },
+            indent=2,
+        )
+        + "\n"
+    )
 
     for row in rows:
         print(
-            f"{row['case']}: {row['status']}"
+            f"{row['case']}: {row['status']} ({row.get('elapsed_s')} s)"
             + (
                 f" rc={row['returncode']} signal={row['signal']}"
-                if row["status"] != "pass"
+                if row["status"] != "OK"
                 else ""
             )
         )
-        if row["status"] != "pass" and row["stderr"]:
-            print(textwrap.indent(row["stderr"], "  "))
+        if row["status"] != "OK" and row["stderr"]:
+            print(textwrap.indent(str(row["stderr"]), "  "))
     print(f"json: {args.json_out}")
-    return 0 if not payload["failures"] else 1
+    print(f"provenance: {sidecar}")
+    return 0 if not failures else 1
 
 
 if __name__ == "__main__":
