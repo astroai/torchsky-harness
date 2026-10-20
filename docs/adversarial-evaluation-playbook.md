@@ -170,6 +170,27 @@ missing contract row is a coverage failure, not a pass.
 7. Test-suite meta-auditing (forced path, skip audit, coverage of exports).
 8. Evidence design: claims with scope, limitations, and negative coverage.
 
+## Report-to-gate coverage
+
+The 2026-10-20 audit found defects in four families. The current layer covers
+the structural examples but not yet the full population:
+
+| Defect family | Current automated coverage | Remaining gap |
+|---|---|---|
+| Native raw buffers, empty layouts, malformed metadata | `bench_native_contracts` empty-ring/array, malformed-TPV, noncontiguous and dispatcher probes, each in a subprocess | no sanitizer/TSan lanes, no exhaustive per-export malformed matrix |
+| Concurrency and cache lifetime | concurrent spin-SHT probe; scientific spin gates | no repeated cache-eviction, mixed-parameter, or construction/destruction stress gate |
+| WCS projection domains and conventions | `bench_domain_fuzz` over 25 projections plus TAN/MOL/HPX/TPV probes; fixed scientific gate | randomized near-seam/pole population and inverse TPV fuzz; CUNIT/epoch/state-preservation fuzz |
+| Sphere/HEALPix/MOC semantics | index/angle/scientific gates, generalized H/K fuzz, tiny-arc probe | MOC/STMOC property tests, high-order SHT boundaries, distorted-pixel area sweeps |
+| Map normalization, variance, photometric scale | existing map/synthetic gates (valid-domain parity) | analytic DC/impulse FFT normalization, IFU variance, conservative overlap caps, sanitizer and variance-invariant gates |
+| Field shapes, precision, vmap, predictive variance, likelihood | existing field/native likelihood gates | scalar/empty/noncontiguous/vmap/dtype matrix and analytic likelihood invariants in harness |
+| Dispatcher/autograd/Meta/FakeTensor | dispatcher registration/strided/empty probe | Meta/FakeTensor/compile/autograd rejection contracts in harness |
+| Packaging, AVX2/CPU-only build, licenses | package-side scripts and CI | harness-visible wheel/sdist/ISA evidence gate |
+| Full-corpus test health | targeted subset passes | bounded lane still hits unmarked slow tests; force-native and skip audits not automated |
+
+The gaps are the next contract/fuzz gates. Until they exist, a green evidence
+bundle means "the listed scientific and contract rows passed", not "the audit
+families are closed".
+
 ## Current artifacts
 
 - `benchmarks/bench_native_contracts.py` — subprocess-isolated contract probes
