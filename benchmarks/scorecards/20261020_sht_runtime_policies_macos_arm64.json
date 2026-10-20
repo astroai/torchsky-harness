@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-20",
+  "host": {
+    "os": "macOS 14.8.2",
+    "machine": "arm64",
+    "cpu": "Apple M2",
+    "physical_cpus": 8,
+    "logical_cpus": 8,
+    "selected_isa": "aarch64-neon-compile-time",
+    "runtime_isa_dispatch": false
+  },
+  "subject": {
+    "torchsky_version": "0.4.0",
+    "wheel_sha256": "74a7bc304b2391a8a0d6da5e0dda45c397b3fddeb2b28e940f0506076d5660b8",
+    "native_extension_sha256": "879e2fb38f405b7133799288ae4af9dccaaf0a46b06319053bba4d06137c705e",
+    "spectral_py_sha256": "2b67babbf538e84b4e976be25ad3f662a77ab14e0ab6de0fa2472e0ff515e18e",
+    "python": "3.13.14",
+    "torch": "2.13.0",
+    "torch_cpu_capability": "DEFAULT"
+  },
+  "threads": {
+    "tested": [1, 4, 8],
+    "interop": 1,
+    "vendor_fft_threads": 1,
+    "spin_pool_workers_observed": [[1, 1], [4, 4], [8, 8]]
+  },
+  "fft": {
+    "warmups": 3,
+    "runs": 21,
+    "rows": 36,
+    "geomean_hybrid_over_aten_speedup": {
+      "analysis": 3.8951934472157776,
+      "synthesis": 2.201227524575697
+    },
+    "hybrid_regressions_over_5pct": {
+      "analysis": 1,
+      "synthesis": 3
+    },
+    "max_correctness_error": {
+      "analysis_rel_l2_vs_aten": 3.952025243471963e-17,
+      "synthesis_rel_l2_vs_aten": 1.5556161719704925e-16,
+      "adjoint_rel": 5.6125506888320234e-14
+    },
+    "peak_rss_ratio_hybrid_over_aten": {
+      "min": 0.937,
+      "median": 1.003,
+      "max": 1.536
+    },
+    "unavailable": {
+      "pocketfft_only": "no runtime selector",
+      "accelerate_only": "no runtime selector"
+    },
+    "raw_json": "benchmark_results/sht_fft_policies_macos_arm64_20261020_v3.json",
+    "raw_sha256": "e633d3c3f1109538a267d73c824e67876162b992c2e8858baf92a0cb635a73a8"
+  },
+  "spinmpool": {
+    "warmups": 2,
+    "runs": 9,
+    "rows": 18,
+    "geomean_speedup_vs_one_worker": {
+      "four_workers": {"map2alm": 0.826, "alm2map": 1.351},
+      "eight_workers": {"map2alm": 0.808, "alm2map": 0.708}
+    },
+    "max_correctness_error": {
+      "map2alm_rel_l2_vs_healpy": 9.459696329847251e-14,
+      "alm2map_rel_l2_vs_healpy": 1.5945513358390336e-14,
+      "adjoint_rel": 1.7171520171108104e-13
+    },
+    "peak_rss_mib": {"min": 254.7, "max": 345.3, "max_delta": 15.5},
+    "aten_range_status": "unavailable: no installed scheduler selector or prototype",
+    "raw_json": "benchmark_results/sht_spinmpool_macos_arm64_20261020_v3.json",
+    "raw_sha256": "d9584189600e4816543ed7c735f56ea42feb01ab5e6259dc6360a06360513597"
+  },
+  "recommendation": {
+    "fft_default": "retain hybrid",
+    "scheduler_default": "no change",
+    "runtime_changes_justified": [],
+    "next_evidence": [
+      "add benchmark-only aten-range, pocketfft-only, and accelerate-only selectors",
+      "repeat on a quiet macOS arm64 host and Linux x86-64 before default changes"
+    ]
+  }
+}
