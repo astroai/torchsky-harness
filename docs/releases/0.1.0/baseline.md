@@ -399,7 +399,7 @@ Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
 built from torchsky `78d24afa44fa3cd776fd68c12361cde9728de3ee` and installed as a
 wheel into the harness environments (`source.kind = archive`). Subject
 `package_content_sha256 = 2f2e40832b2423dcbc4ea7a664209133e4ac2b1bbbc2eace7ad29feab6d944d8`.
-The bundle was generated at harness `43db174333c9dfd8b7e9ea5d8d2efb8745ff3872`.
+The bundle was generated at harness `a5dbe10e19848f88cf3ea1d61deabf313130f83a`.
 
 All eighteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
@@ -408,9 +408,9 @@ harness revision; `release_ready: true`, `subject_consistent: true`,
 - WCS: 38 cases; angular parity max **6.1e-7 asec** (AIR 4.1e-7; offsets
   ≤1.5e-8), pole/seam-excluded round trip **1.28e-6 asec**, pixel round trip
   **1.27e-6 px**, p99 sky round trip **2.5e-8 asec**. Real instrument headers:
-  forward max **1.0e-8 asec**, inverse max **2.6e-6 px**. Throughput was
-  measured on a loaded shared macOS host during this refresh; treat the ratio
-  bands as same-machine observations, not a pinned-runner claim.
+  forward max **1.0e-8 asec**, inverse max **2.6e-6 px**. Throughput measured alone on the refresh host: forward **0.46–2.65×** and
+  inverse **0.88–4.32×** astropy (same-machine; run-to-run noise, not a
+  pinned-runner claim).
 - HEALPix: zero index mismatches at nside 512; max angle at the float64 noise
   floor; core and advanced ratios recorded in the run JSONs.
 - Sphere geometry: index/angle parity passes; median ratios recorded but not
