@@ -72,7 +72,7 @@ pixi run docs-contract
 
 Expected green: full suite, 31/31 examples, pyright 0, docs contract.
 
-## 4. Run the seventeen declared gates
+## 4. Run the eighteen declared gates
 
 Run each task and keep the JSON outputs named in the release procedure. Do not
 overwrite the previous release artifacts; use a fresh output directory if a
@@ -91,6 +91,7 @@ Synthetic/truth (`test` env):
 Contract (`test` env):
 
 - [ ] `pixi run bench-native-contracts-gate`
+- [ ] `pixi run bench-domain-fuzz-gate`
 
 Reference comparison (`bench-all` / `sphere-bench`):
 

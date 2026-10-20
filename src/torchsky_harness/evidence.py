@@ -81,6 +81,47 @@ CLAIMS: dict[str, EvaluationClaim] = {
             " packaging, and device evidence remain separate claims",
         ),
     ),
+    "bench_domain_fuzz": EvaluationClaim(
+        scope="contract",
+        required_rows=(
+            "wcs_domain_TAN",
+            "wcs_domain_SIN",
+            "wcs_domain_ARC",
+            "wcs_domain_ZEA",
+            "wcs_domain_STG",
+            "wcs_domain_ZPN",
+            "wcs_domain_AZP",
+            "wcs_domain_SZP",
+            "wcs_domain_AIR",
+            "wcs_domain_AIT",
+            "wcs_domain_MOL",
+            "wcs_domain_HPX",
+            "wcs_domain_XPH",
+            "wcs_domain_CEA",
+            "wcs_domain_MER",
+            "wcs_domain_CAR",
+            "wcs_domain_SFL",
+            "wcs_domain_PAR",
+            "wcs_domain_COP",
+            "wcs_domain_COE",
+            "wcs_domain_COD",
+            "wcs_domain_COO",
+            "wcs_domain_BON",
+            "wcs_domain_PCO",
+            "wcs_domain_NCP",
+            "hpx_generalized_hk",
+            "tpv_forward_random_polynomial",
+        ),
+        comparators=("astropy",),
+        limitations=(
+            "one seeded random header per projection plus generalized HPX and TPV;"
+            " this searches for domain leaks and systematic coverage loss, not every"
+            " parameter combination",
+            "pixels are sampled in and just outside the image footprint;"
+            " the comparison also tolerates conservative subject invalid masks",
+            "no multi-device or 32-bit floating-point fuzz yet",
+        ),
+    ),
     "bench_wcs": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(

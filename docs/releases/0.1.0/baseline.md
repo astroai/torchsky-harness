@@ -401,7 +401,7 @@ wheel into the harness environments (`source.kind = archive`). Subject
 `package_content_sha256 = 515aa316e0cd62d4c229e6cb19dad4a2e4d48ccc224ae74f0d19e685fbc35170`.
 The bundle was generated at harness `0d30d6356f5e87c8cea11dd016322f932120c07f`.
 
-All seventeen declared gates are `established` against this subject and the same
+All eighteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
 `missing_claims: []`, `incomplete_claims: []`. Measured highlights:
 
@@ -421,6 +421,9 @@ harness revision; `release_ready: true`, `subject_consistent: true`,
   fraction 4e-3; CPU 31.8 ms vs reproject 115.9 ms.
 - Real sphere map: interpolation max abs 3.8e-9 (rel 9.1e-14), `ud_grade` max
   abs 7.3e-12, `alm2cl` exact.
+- Domain fuzz: seeded randomized differential agreement passes for 25 WCS
+  projections, generalized HPX H/K, and randomized TPV; no invented finite
+  points, coverage ≥98%, and values within 2e-5 deg (0.01 px for HPX).
 - Contract gate: 11 subprocess-isolated probes pass (empty HEALPix layouts,
   invalid coordinates, TAN back hemisphere, MOL poles, generalized HPX H/K,
   malformed TPV, high-order scalar SHT, concurrent spin SHT, tiny arcs,
