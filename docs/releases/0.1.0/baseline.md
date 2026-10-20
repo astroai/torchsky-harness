@@ -450,8 +450,10 @@ Refresh on the reworked subject (`78d24afa` wheel, harness `43db174`):
   `test_paper2_cuda_matches_cpu[CSC-0.3-0.0]` device test still fails with a
   handful of CSC samples differing by up to ~8e-7 against the 1e-10 tolerance.
   The rework did not reconcile this test/implementation pair.
-- `cuda` run `wcs-sphere-cuda-20261020-194640` (session `qckq42t6`): pending at
-  the time of this note.
+- `cuda` run `wcs-sphere-cuda-20261020-194640` (session `qckq42t6`, rc=0):
+  WCS large-N CUDA acceptance has **0 deficits**; the sphere CUDA section
+  records 7 comparator large-N deficits and is not claimed as a throughput win.
+  VOS upload is unavailable on that image; gist/log artifacts are retained.
 
 
 - `gpu-validate` run `gpu-validate-20261020-153814` (session `m5x5s624`):
