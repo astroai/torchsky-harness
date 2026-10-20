@@ -66,17 +66,21 @@ Linux CPU/CUDA confirmation uses `scripts/launch_canfar_wcs_sphere.sh`. Modes:
 
 That submits AstroAI headless sessions which run `scripts/run_canfar_wcs_sphere.sh` at an exact `TORCHSKY_COMMIT`, write `/arc/projects/ots/torchsky-runs/<run_id>/`, and copy the same tree to `vos:sfabbro/torchsky-runs/<run_id>/`. Pull a finished run with `bash scripts/fetch_canfar_wcs_sphere_run.sh <run_id>` (`vcp` / `pip install vos`). Do not reuse the ADASS/SMACS runner for this domain. Local Mac smoke stays `--quick` via `pixi run wcs-sphere-acceptance`; the full oracle ingest is `pixi run wcs-sphere-acceptance-full` or the CANFAR `cpu` job. CANFAR `cpu`/`spin`/`geometry` jobs pass `--no-throughput-gate` so Mac-tuned healpy ratio thresholds do not fail the job; rel L2 and index/angle mismatch gates still apply. Mac pixi tasks (`sphere-bench-geometry-gate`, `sphere-upstream-spin-matrix-gate`) keep the ratio gates. The cuHPX scalar SHT spike is a separate CUDA-only job: `scripts/run_canfar_cuhpx_sht_spike.sh` or the `suite` `cuhpx` session. Current Linux ingest: [`benchmarks/scorecards/20260817_world_layer.md`](../benchmarks/scorecards/20260817_world_layer.md) (main WCS 87/90 CPU, 90/90 CUDA large-N) plus [`benchmarks/scorecards/20260821_world_layer.md`](../benchmarks/scorecards/20260821_world_layer.md) (Paper II / TPV / spectral / tabular / observed / moc / `world-cuda` on SHA `775762c2`). Claim-or-close ingest: [`benchmarks/scorecards/20260821_wcs_sphere_claim_close.md`](../benchmarks/scorecards/20260821_wcs_sphere_claim_close.md) on SHA `d8d706f6` stamp `20260821-1744*` plus relaunch SHA `7564070c` stamp `20260821-1852*` (`world-cuda` pytest 18/18; CUDA CSC host-copy 8.35 mas **not** claimed; `catalog_compat` vs SkyCoord 0.116× **not** claimed; N=1e6/N=1e7 still running). World-layer throughput is **not claimed** as a suite win; see that card.
 
-Latest release GPU evidence on torchsky `27f82549` / harness `4623fc3`:
+Latest release GPU evidence on torchsky `1611fad2` / harness `0d30d635`:
 
-- `gpu-validate` run `gpu-validate-20261019-162606` (session `kyl5j4tx`, rc=0):
-  7 CUDA device tests passed; the 17-case GPU WCS comparison had
-  `bad=[]`, max angular error **8.23e-3 asec**, pole-excluded round-trip max
-  **7.11e-7 asec**.
-- `cuda` run `wcs-sphere-cuda-20261019-160406` (session `oe65ds1d`, rc=0):
-  3 harness CUDA smoke tests passed, WCS large-N CUDA acceptance had **0
-  large-N deficits**; the sphere CUDA section is comparator-deficit-only and is
-  not claimed as a throughput win. VOS upload is unavailable on that image
-  (no `vcp`); the gist session log is the retained artifact.
+- `gpu-validate` run `gpu-validate-20261020-153814` (session `m5x5s624`): the
+  17-case GPU WCS comparison is clean (`bad=[]`, max angular **8.23e-3 asec**,
+  pole-excluded round-trip **7.11e-7 asec**), but the device-named package
+  tests are **6 passed / 1 failed** on
+  `test_wcs_extended_projections.py::test_paper2_cuda_matches_cpu[CSC-0.3-0.0]`
+  (CSC CUDA/CPU samples differ by up to 8.3e-7 against a 1e-10 tolerance). This
+  is known CSC seam conditioning, not a mapping regression, but the test and
+  implementation must be reconciled before the device check is claimed green.
+- `cuda` run `wcs-sphere-cuda-20261020-153833` (session `z2ilmrs7`, rc=0): WCS
+  large-N CUDA acceptance had **0 deficits**; the sphere CUDA section recorded
+  8 comparator large-N deficits and is not claimed as a throughput win. VOS
+  upload is unavailable on that image (no `vcp`); the gist session log is the
+  retained artifact.
 
 For pip-only parity benches against the HEALPix / geometry comparator stack,
 install `pip install -e ".[bench-all]"` after installing a compatible PyTorch.

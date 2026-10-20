@@ -1258,8 +1258,10 @@ def _tpv_header(
     header["PV1_5"] = -3.0e-4 * pv_scale
     header["PV1_6"] = 1.5e-4 * pv_scale
     header["PV2_0"] = 0.0
-    header["PV2_1"] = 0.0
-    header["PV2_2"] = 1.0
+    # TPV identity requires the linear v term on PV2_1; PV2_2 alone is
+    # rank-deficient and is correctly rejected as a non-invertible TPV.
+    header["PV2_1"] = 1.0
+    header["PV2_2"] = 0.0
     header["PV2_4"] = -1.0e-4 * pv_scale
     header["PV2_5"] = 2.5e-4 * pv_scale
     header["PV2_6"] = -2.0e-4 * pv_scale
