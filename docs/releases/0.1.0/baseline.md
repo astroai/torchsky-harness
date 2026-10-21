@@ -476,6 +476,7 @@ the session gists; VOS upload is unavailable on the notebook image.
 | `catalog-scale-real` | `qhmvl60e` | rc=0 |
 | `catalog-scale-1e6` | `j4fx6rdg` | rc=0 |
 | `catalog` | `jrlqea9c` | running at this writing (crossmatch/compat rows OK) |
+| `wcs-tpv`, `wcs-spectral`, `wcs-tabular`, `moc` | `uuek9x1g`, `sbnyl7zt`, `w4ll88ez`, `awhfuqtr` | all rc=0 |
 | `depth` | `k6pnotjz` | calibration-extract fixed; later real-data field-fit benchmark returns 1, so the deep-field chain remains open (not a release gate) |
 
 Harness fixes found by these runs: relative `tests/test_*.py` paths in the
