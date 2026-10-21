@@ -190,11 +190,11 @@ case "${mode}" in
     vos_upload after_sphere || echo "after_sphere VOS upload failed; continuing job" >&2
     pixi run --manifest-path "${source_root}/pixi.toml" -e bench-all -- \
       pytest \
-      tests/test_wcs_*.py \
-      tests/test_sphere_*.py \
-      tests/test_healsparse_upstream.py \
-      tests/test_healpix_*.py \
-      tests/test_spectral.py \
+      "${TORCHSKY_SUBJECT_ROOT}"/tests/test_wcs_*.py \
+      "${TORCHSKY_SUBJECT_ROOT}"/tests/test_sphere_*.py \
+      "${source_root}/tests/test_healsparse_upstream.py" \
+      "${TORCHSKY_SUBJECT_ROOT}"/tests/test_healpix_*.py \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_spectral.py" \
       -q --tb=line \
       --junitxml="${artifact_root}/cpu_pytest.xml" || cpu_rc=$?
     pixi run --manifest-path "${source_root}/pixi.toml" -e sphere-bench -- \
@@ -228,8 +228,8 @@ case "${mode}" in
     cuda_rc=0
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
       pytest \
-      tests/test_cuda_smoke.py \
-      tests/test_healpix_parity.py \
+      "${source_root}/tests/test_cuda_smoke.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_healpix_parity.py" \
       -q --tb=line -k cuda \
       --junitxml="${artifact_root}/cuda_pytest.xml" || cuda_rc=$?
     record_versions cuda-bench || cuda_rc=$?
@@ -450,8 +450,9 @@ case "${mode}" in
     record_versions test
     job_rc=0
     pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
-      pytest tests/test_catalog_covering.py tests/test_catalog_no_dataframe.py \
-      tests/test_catalogs.py -q --tb=line \
+      pytest "${TORCHSKY_SUBJECT_ROOT}/tests/test_catalog_covering.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_catalog_no_dataframe.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_catalogs.py" -q --tb=line \
       --junitxml="${artifact_root}/catalog_scale_pytest.xml" || job_rc=$?
     vos_upload after_catalog_scale_pytest || echo "after_catalog_scale_pytest VOS upload failed; continuing job" >&2
     pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
@@ -501,8 +502,10 @@ case "${mode}" in
     record_versions test
     job_rc=0
     pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
-      pytest tests/test_wcs_catalog_state.py tests/test_wcs_frames.py \
-      tests/test_wcs_observed_frames.py -q --tb=line \
+      pytest "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_catalog_state.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_frames.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_observed_frames.py" \
+      -q --tb=line \
       --junitxml="${artifact_root}/observed_pytest.xml" || job_rc=$?
     pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
       python "${source_root}/benchmarks/bench_observed_place.py" \
@@ -586,16 +589,16 @@ PY
     job_rc=0
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
       pytest \
-      tests/test_wcs_core.py \
-      tests/test_wcs_extended_projections.py \
-      tests/test_wcs_observed_frames.py \
-      tests/test_wcs_tabular.py \
-      tests/test_wcs_spectral.py \
-      tests/test_wcs_temporal.py \
-      tests/test_catalogs.py \
-      tests/test_sphere_polygons.py \
-      tests/test_sphere_sparse.py \
-      tests/test_wcs_gwcs_sampling.py \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_core.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_extended_projections.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_observed_frames.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_tabular.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_spectral.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_temporal.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_catalogs.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_sphere_polygons.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_sphere_sparse.py" \
+      "${TORCHSKY_SUBJECT_ROOT}/tests/test_wcs_gwcs_sampling.py" \
       -q --tb=line -k cuda \
       --junitxml="${artifact_root}/world_cuda_pytest.xml" || job_rc=$?
     pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
