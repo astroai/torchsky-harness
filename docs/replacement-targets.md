@@ -141,3 +141,64 @@ Non-release coverage exists for hpgeom, astropy-healpix, healsparse, mocpy,
 spherical_geometry, drizzle, dfreproject, SWarp, Montage, s2fft, cuhpx, PyAST,
 Kapteyn, ERFA, and pandas/polars/Arrow. Everything marked **gap/unit-only** is
 the next campaign list.
+
+## Functional coverage against sections 2–4 (2026-10-21)
+
+This is a capability assessment, not a test-suite count. “Core” means the
+compute path exists and is exercised; “full replacement” means a user could drop
+the peer package from a representative workflow without losing behaviour.
+
+### 2. WCS, astrometry, coordinates, time
+
+| Capability | Status | Missing for full replacement |
+|---|---|---|
+| WCS Paper II celestial projections, forward/inverse, CPU/CUDA/MPS | **core, gated** | all 30 codes covered; no known projection gap |
+| WCS Paper III spectral axes, `-TAB`, air/vacuum, rest frequency | **core** | gate covers spectral/temporal rows, not every WCSLIB alias |
+| WCS Paper IV distortions (SIP/TPV/TNX/ZPX/DSS/CPDIS/DET2IM) | **core** | lookup fixtures are partially skipped; CPDIS/DET2IM full parity not certified |
+| Tabular `-TAB` separable and coupled | **core** | coupled CUDA path now host-parity; broad randomized fuzz still missing |
+| Sky affine fitting / alignment | **partial** | no global SCAMP/tweakreg-style bundle solver; no Astrometry.net replacement |
+| `gwcs` pipeline | **partial/interop** | sampling/frozen tables and live freeze adapter, but no general GWCS transform graph or arbitrary compound mappings |
+| Astropy/ERFA geometric frames | **core, gated** | ICRS/Galactic/FK5/ecliptic now astropy-exact; full Astropy frame graph and units/time semantics are not cloned |
+| Observed place, DCR, aberration, ephemeris tracking | **core** | ERFA CIRS/TETE/AltAz parity benchmark exists but is not a release claim; jplephem/sgp4 adapters are optional and untested against live kernels |
+| PyAST arbitrary FrameSet/Mapping, AST plotting | **partial** | compound mappings and `ast.Plot` are not implemented |
+| WCSAxes/visualisation | **not replaced** | `torchsky.viz` is optional; no WCS plotting parity |
+
+Bottom line: **the WCS transform engine is close to a full replacement; the
+astrometric bundle solver and general GWCS/PyAST object model are not.**
+
+### 3. Sphere, HEALPix, MOC, harmonics
+
+| Capability | Status | Missing for full replacement |
+|---|---|---|
+| HEALPix indexing, neighbours, interpolation, `ud_grade`, ring/nest | **core, gated** | healpy class wrappers (`Alm`, `Rotator`) and a few aliases (`max_pixrad`, `isnsideok`, `isnpixok`, `pix2ring`, `pix2xyf`, `xyf2pix`) are missing |
+| Scalar/spin SHT, `anafast`, `synfast`, `alm2cl`, beam/pixwin, smoothing, rotate | **core, gated** | no `Alm`/`Rotator` object API; s2fft/ducc0 are not interchangeable backends |
+| Region queries | **core** | hpgeom vector-query variants (`query_*_vec`, `angle_to_pixel`, `pixel_to_angle`) are not exposed under those names |
+| Sparse maps / WideBitMask / SkyMaskPipe | **core** | `HealSparseCoverage`, `WIDE_MASK` constant, and complete `.hs` cross-open parity |
+| MOC / BMOC / STMOC | **core** | no `FrequencyMOC`, `SFMOC`, or `TimeMOC` equivalents; STMOC covers space-time |
+| Exact spherical geometry/regions | **core** | no full `spherical_geometry` plotting/convex-hull API; boolean-region coverage is partial |
+| Multi-order maps (`mhealpy`) | **gap** | no multi-order map type |
+| `cdshealpix` range algebra | **partial** | range/uniq helpers exist; bit-interleaving (`spread_bits`/`compact_bits`) is not public |
+| `pixell`/`enmap`, `NaMaster`, `ducc0`, `s2fft` | **gap/optional** | no CAR-native SHT, mode-coupling, or interchangeable SHT backend |
+
+Bottom line: **the HEALPix geometry/harmonic core and main sparse/MOC surfaces
+are largely covered; the compatibility-class API, multi-order maps, and CMB
+post-processing layers are not.**
+
+### 4. Mapmaking, reprojection, coaddition
+
+| Capability | Status | Missing for full replacement |
+|---|---|---|
+| Reprojection kernels (nearest/bilinear/bicubic/Lanczos/Mitchell/FFT/polygon) | **core, gated for reproject real cutout** | adaptive reprojection and every reproject kernel are not separately certified |
+| Drizzle kernels, `pixfrac`, blot, context bitplane, outlier rejection | **core** | no full AstroDrizzle/stcal DQ/CR parameter matrix or external comparator certification |
+| SWarp kernels, combine modes, sky mesh, `.head` sidecars | **core** | pinned-source comparator could not be built locally; acceptance task not passed on this host |
+| Montage exact spherical overlap/planar sky matching | **core** | `MontagePy` is x86_64-only here; exact comparator not certified locally |
+| Multi-band/cube/HEALPix coadds, variance propagation, tiling | **core** | stcal/JWST full variance contracts and real IFU cube-build comparison remain open |
+| casutools/imcore compatibility | **gap** | no comparator implementation |
+| T-PHOT/SCARLET/Tractor deblending/forward photometry | **gap** | these are catalog/forward-model surfaces, not yet implemented |
+| MaxiMask/WeightWatcher defect masks | **gap** | `torchsky.quality` is a target, no comparator |
+| Source detection/photometry/PSF (SExtractor/SEP/photutils/PSFEx/stpsf) | **gap** | adjacent to mapmaking but required for an end-to-end replacement |
+
+Bottom line: **the resampling/coadd engine is close to a full replacement for
+reproject/drizzle/SWarp/Montage core paths; end-to-end mapmaking (calibration,
+detection, photometry, PSF, deblending) is not.** Those gaps are sections 5–8 of
+the inventory, not the map engine itself.
