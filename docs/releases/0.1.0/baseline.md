@@ -458,6 +458,33 @@ Final subject (`a6dec52d`/`e57f23ae` wheel `b27eeaec…`, harness `d4a981c`):
   run logs; VOS upload remains unavailable on that image, so gist/log artifacts
   are the retained copies.
 
+### CANFAR headless coverage (final subject `e57f23ae`/`a6dec52d` code)
+
+All runs evaluate the installed subject at the pinned commit and write logs to
+the session gists; VOS upload is unavailable on the notebook image.
+
+| Mode | Session | Result |
+|---|---|---|
+| `gpu-validate` | `daaw3n7g` | rc=0: 7/7 device tests, clean 17-case GPU WCS comparison |
+| `cpu` (full WCS+sphere acceptance, package tests, spin, spectral) | `qftkgxrm` | rc=0: WCS sphere suites complete, **1034 passed / 62 skipped** |
+| `cuda` (WCS+sphere CUDA acceptance) | `cpz67d0s` | rc=0: WCS large-N **0 deficits**, sphere 7 comparator deficits (not claimed) |
+| `sht` spectral / sparse / spin | `i3xgez1v`, `vfk4jqkz`, `nxdx2jqy` | all rc=0 |
+| `geom-cuda` | `ik2jhm5e` | rc=0 |
+| `world-cuda` | `vslh8pdp` | rc=0: 20 passed, full WCS/catalog/observed/sparse/polygon CUDA comparison |
+| `wcs-paper2` | `aqhzrmbk` | rc=0 after removing the removed-binding probe |
+| `observed` | `iysqryg7` | rc=0: 38 passed / 3 skipped |
+| `catalog-scale-real` | `qhmvl60e` | rc=0 |
+| `catalog-scale-1e6` | `j4fx6rdg` | rc=0 |
+| `catalog` | `jrlqea9c` | running at this writing (crossmatch/compat rows OK) |
+| `depth` | `k6pnotjz` | calibration-extract fixed; later real-data field-fit benchmark returns 1, so the deep-field chain remains open (not a release gate) |
+
+Harness fixes found by these runs: relative `tests/test_*.py` paths in the
+CANFAR runner now resolve from `TORCHSKY_SUBJECT_ROOT`; the removed
+`torchsky._cpp` CSC binding probe is gone; the catalog benchmark follows the
+new `_choose_default_coarse_nside(radius_arcsec=...)` signature; the depth
+pipeline calls `torchsky-harness calibration-extract`; and the CUDA coupled-TAB
+test now uses the 1-based FITS index domain.
+
 
 - `gpu-validate` run `gpu-validate-20261020-153814` (session `m5x5s624`):
   the 17-case GPU WCS comparison is clean (`bad=[]`, max angular
