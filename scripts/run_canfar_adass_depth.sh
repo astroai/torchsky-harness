@@ -355,8 +355,7 @@ case "${mode}" in
     test "${exposure_count}" = "${expected_exposure_count}"
     ensure_native_build
     pixi_run default \
-      python -c 'from torchsky.cli import main; raise SystemExit(main())' \
-      calibration-extract \
+      python -m torchsky_harness.cli calibration-extract \
       "${calibration_input_root}/${calibration_pattern}" \
       --output-dir "${artifact_root}/evidence"
     gate "${artifact_root}/evidence/calibration_evidence_manifest.json"
