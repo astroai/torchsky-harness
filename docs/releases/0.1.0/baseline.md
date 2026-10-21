@@ -395,11 +395,11 @@ Open after 0.4.0 (do not claim these yet):
 ## Release candidate evidence refresh (2026-10-20)
 
 Subject artifact: `torchsky-0.4.0-cp313-cp313-macosx_11_0_arm64.whl`
-(sha256 `b27eeaec849c55b0224682cb737d417de59dd2053599fbb3152a47f94be95798`),
-built from torchsky `a6dec52db6375eb5de5c2e9a25b9774300da7abe` and installed as a
+(sha256 `dca9a08ea429ec85b865aa1e951b0fbfeadee0e9a79b3156c1f93a25ba264426`),
+built from torchsky `10923c9b` (final frame-bias fix) and installed as a
 wheel into the harness environments (`source.kind = archive`). Subject
-`package_content_sha256 = a153ab47f5758eda065cc7bb8e20218cf12adca58c2a599f628d2028aa555473`.
-The bundle was generated at harness `d4a981c2e1a86ed17a2f3e900ca8e740349dd364`.
+`package_content_sha256 = 41d7e49e7fdd89018f7bc9c9d10d8b4098e04e254dfb83fb2cdc9700a98dd85f`.
+The bundle was generated at harness `8088f889064ee6974a810f3e2869fbb17853f3bb`.
 
 All nineteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
