@@ -24,6 +24,8 @@ Committed snapshots live under [`benchmarks/scorecards/`](../benchmarks/scorecar
 (`index.md` plus dated `*.json` / `*.md`). Older narrative notes remain in
 [`docs/archive/benchmark-history.md`](archive/benchmark-history.md).
 
+The external packages torchsky replaces, compares against, or merely coexists with are tracked in [replacement-targets.md](replacement-targets.md).
+
 For adversarial contract and audit methodology (native boundary, invalid
 domains, tensor/device contracts, concurrency, packaging), see
 [adversarial-evaluation-playbook.md](adversarial-evaluation-playbook.md).

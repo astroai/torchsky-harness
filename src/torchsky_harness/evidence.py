@@ -123,6 +123,22 @@ CLAIMS: dict[str, EvaluationClaim] = {
             "no multi-device or 32-bit floating-point fuzz yet",
         ),
     ),
+    "bench_coords_astropy": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=(
+            "icrs_to_galactic",
+            "icrs_to_fk5_j2000",
+            "icrs_to_barycentric_mean_ecliptic_j2000",
+        ),
+        comparators=("astropy",),
+        limitations=(
+            "geometric frame graph only (ICRS, FK5 J2000, Galactic, mean"
+            " ecliptic of J2000); observed-place frames are covered separately"
+            " by the ERFA comparison benchmark",
+            "random finite-sky points; no all-sky pole/seam stress in this row",
+            "tolerance 1e-6 asec; astropy is the oracle",
+        ),
+    ),
     "bench_wcs": EvaluationClaim(
         scope="reference_comparison",
         required_rows=(

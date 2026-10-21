@@ -35,6 +35,7 @@ def _write_report(tmp_path: Path, rows: list[dict]) -> None:
 def test_declared_claims_cover_only_release_gates() -> None:
     assert set(CLAIMS) == {
         "bench_catalog_compat",
+        "bench_coords_astropy",
         "bench_domain_fuzz",
         "bench_healpix",
         "bench_healpix_advanced",

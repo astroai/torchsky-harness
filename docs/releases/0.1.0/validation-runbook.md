@@ -72,7 +72,7 @@ pixi run docs-contract
 
 Expected green: full suite, 31/31 examples, pyright 0, docs contract.
 
-## 4. Run the eighteen declared gates
+## 4. Run the nineteen declared gates
 
 Run the gates **alone**. Do not run the subject suite, another benchmark, or a
 build concurrently: performance-ratio rows are same-machine measurements and a
@@ -99,6 +99,7 @@ Contract (`test` env):
 
 - [ ] `pixi run bench-native-contracts-gate`
 - [ ] `pixi run bench-domain-fuzz-gate`
+- [ ] `pixi run bench-coords-astropy-gate`
 
 Reference comparison (`bench-all` / `sphere-bench`):
 

@@ -59,6 +59,7 @@ Contract gate (`test` environment):
 |---|---|
 | native/WCS/sphere structural and domain contracts | `pixi run bench-native-contracts-gate` |
 | randomized WCS/HPX/TPV domain fuzz | `pixi run bench-domain-fuzz-gate` |
+| ICRS/FK5/Galactic/ecliptic frames vs astropy | `pixi run bench-coords-astropy-gate` |
 
 Real-data gates (`bench-all` environment; vendored fixtures with recorded
 provenance):
@@ -69,7 +70,7 @@ provenance):
 | real-sky HEALPix map vs healpy | `pixi run bench-sphere-real-map-gate` |
 | real CFHT cutout reprojection vs astropy reproject | `pixi run bench-map-real-cutout-gate` |
 
-The bundle includes eighteen declared gates (seven synthetic/truth, six
+The bundle includes nineteen declared gates (seven synthetic/truth, seven
 reference-comparison, three real-data, two contract). A detailed freeze/build/install/gate/GPU/evidence checklist is in
 [validation-runbook.md](validation-runbook.md).
 

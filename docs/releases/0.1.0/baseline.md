@@ -401,7 +401,7 @@ wheel into the harness environments (`source.kind = archive`). Subject
 `package_content_sha256 = a153ab47f5758eda065cc7bb8e20218cf12adca58c2a599f628d2028aa555473`.
 The bundle was generated at harness `d4a981c2e1a86ed17a2f3e900ca8e740349dd364`.
 
-All eighteen declared gates are `established` against this subject and the same
+All nineteen declared gates are `established` against this subject and the same
 harness revision; `release_ready: true`, `subject_consistent: true`,
 `missing_claims: []`, `incomplete_claims: []`. Measured highlights:
 
@@ -425,6 +425,9 @@ harness revision; `release_ready: true`, `subject_consistent: true`,
 - Domain fuzz: seeded randomized differential agreement passes for 25 WCS
   projections, generalized HPX H/K, and randomized TPV; no invented finite
   points, coverage ≥98%, and values within 2e-5 deg (0.01 px for HPX).
+- Coordinate frames: ICRS to Galactic/FK5/ecliptic matches astropy to
+  **<1e-6 asec** over 10k random points, including round trip (the ICRS frame
+  bias was added in this round).
 - Contract gate: 12 subprocess-isolated probes pass (empty HEALPix layouts,
   invalid coordinates, TAN back hemisphere, MOL poles, generalized HPX H/K,
   malformed TPV, high-order scalar SHT, concurrent spin SHT, tiny arcs,
