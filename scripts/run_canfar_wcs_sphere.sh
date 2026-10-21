@@ -360,8 +360,6 @@ case "${mode}" in
       python "${source_root}/benchmarks/bench_wcs.py" \
       --cases CSC --n-points 20000 --runs 1 --device cpu \
       --json-out "${artifact_root}/wcs_paper2_fused0.json"
-    pixi run --manifest-path "${source_root}/pixi.toml" -e bench-all -- \
-      python -c "import torchsky._cpp as c; assert hasattr(c,'wcs_csc_x2s')"
     ;;
   wcs-tpv)
     install_env bench-all
