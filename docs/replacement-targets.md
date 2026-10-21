@@ -1,4 +1,6 @@
 # Replacement and parity targets
+The execution plan derived from this inventory is [0.4.0-completion-plan.md](0.4.0-completion-plan.md).
+
 
 This is the working inventory of external packages whose user-facing
 functionality torchsky (or its sibling `torchfits`) is intended to replace,
