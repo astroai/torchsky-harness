@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:torchsky-harness:external-asset-manifest:v1",
+  "title": "Torchsky external certification asset manifest",
+  "type": "object",
+  "required": ["schema_version", "id", "family", "availability", "asset_env", "asset_sha256", "required_identity_fields", "identity"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "minLength": 1},
+    "family": {"enum": ["astrometry-v1", "sphere-v1", "deblend-v1"]},
+    "availability": {"enum": ["available", "unavailable"]},
+    "reason": {"type": "string", "minLength": 1},
+    "asset_env": {"type": "string", "minLength": 1},
+    "asset_sha256": {"type": "string", "pattern": "^(UNAVAILABLE|[0-9a-f]{64})$"},
+    "required_identity_fields": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "identity": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"availability": {"const": "unavailable"}}},
+      "then": {"required": ["reason"]}
+    }
+  ],
+  "additionalProperties": false
+}

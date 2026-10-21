@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "lsst-astrometry-external-v1",
+  "family": "astrometry-v1",
+  "availability": "unavailable",
+  "reason": "LSST astrometry inputs remain external and no reviewed bounded artifact is configured",
+  "asset_env": "TORCHSKY_LSST_ASTROMETRY_ASSET",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["survey", "data_release", "pipeline_version", "catalog_sha256", "split_sha256"],
+  "identity": {"survey": "LSST", "data_release": "UNAVAILABLE", "pipeline_version": "UNAVAILABLE", "catalog_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

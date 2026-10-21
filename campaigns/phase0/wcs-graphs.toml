@@ -1,0 +1,14 @@
+schema_version = 1
+id = "phase0-wcs-graphs"
+domain = "wcs"
+status = "stub"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-wcs"]
+required_peers = ["gwcs", "pyast"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+
+[[datasets]]
+id = "wcs-compound-graph-fixtures-v1"
+role = "synthetic and real-instrument transform graph fixtures"

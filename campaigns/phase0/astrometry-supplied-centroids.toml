@@ -1,0 +1,18 @@
+schema_version = 1
+id = "phase0-astrometry-supplied-centroids"
+domain = "astrometry"
+status = "stub"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-astrometry-net"]
+required_peers = ["astrometry-net"]
+optional_peers = []
+required_identities = ["subject", "peer", "data", "index"]
+comparator_config = "comparators/astrometry-net-supplied-centroids-v1.toml"
+input_contract = "caller-supplied x/y with optional flux and covariance; no detection"
+verification_contract = "reserved supplied centroids unseen by bootstrap"
+runtime_index_downloads = false
+
+[[datasets]]
+id = "astrometry-supplied-centroid-holdout-fixtures-v1"
+role = "supplied centroid lists with disjoint bootstrap and verification rows"

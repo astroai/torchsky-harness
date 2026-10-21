@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "id": "sphere-v1",
+  "campaign_id": "sphere-v1",
+  "cases": [
+    {
+      "id": "existing-healpix-index-bruteforce",
+      "kind": "sphere_existing_index",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["sphere_existing_index_mismatch_count", "sphere_existing_index_candidate_fraction"],
+      "gates": {"sphere_existing_index_mismatch_count": {"equals": 0}},
+      "parameters": {"source_count": 2048, "seed": 91, "nside": 64, "radius_deg": 2.0}
+    },
+    {
+      "id": "mhealpy-nested-index-parity",
+      "kind": "sphere_mhealpy_parity",
+      "certification": "peer",
+      "required_peers": ["mhealpy"],
+      "required_metrics": ["sphere_mhealpy_index_mismatch_count"],
+      "gates": {"sphere_mhealpy_index_mismatch_count": {"equals": 0}},
+      "parameters": {"sample_count": 512, "nside": 64}
+    },
+    {
+      "id": "healsparse-value-parity",
+      "kind": "sphere_healsparse_parity",
+      "certification": "peer",
+      "required_peers": ["healsparse"],
+      "required_metrics": ["sphere_healsparse_max_abs_error", "sphere_healsparse_support_mismatch_count"],
+      "gates": {"sphere_healsparse_max_abs_error": {"max": 1e-12}, "sphere_healsparse_support_mismatch_count": {"equals": 0}},
+      "parameters": {"nside": 32, "nside_coverage": 4}
+    },
+    {
+      "id": "car-scalar-spin-analytic",
+      "kind": "sphere_car_internal",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["car_scalar_rmse", "car_scalar_max_abs_error", "car_scalar_runtime_seconds", "car_scalar_peak_bytes", "car_spin_rmse", "car_spin_max_abs_error", "car_spin_runtime_seconds", "car_spin_peak_bytes"],
+      "gates": {"car_scalar_max_abs_error": {"max": 1e-9}, "car_spin_max_abs_error": {"max": 1e-9}},
+      "parameters": {"lmax": 5}
+    },
+    {
+      "id": "torch-harmonics-car-adapter",
+      "kind": "sphere_car_peer_product",
+      "certification": "peer",
+      "required_peers": ["torch-harmonics"],
+      "required_metrics": ["sphere_peer_rmse", "sphere_peer_max_abs_error", "sphere_peer_runtime_seconds", "sphere_peer_peak_bytes"],
+      "gates": {"sphere_peer_max_abs_error": {"max": 1e-8}},
+      "parameters": {"peer": "torch-harmonics", "asset_manifest": "campaigns/phase0/external/sphere-torch-harmonics-v1.json"}
+    },
+    {
+      "id": "ducc0-car-adapter",
+      "kind": "sphere_car_peer_product",
+      "certification": "peer",
+      "required_peers": ["ducc0"],
+      "required_metrics": ["sphere_peer_rmse", "sphere_peer_max_abs_error", "sphere_peer_runtime_seconds", "sphere_peer_peak_bytes"],
+      "gates": {"sphere_peer_max_abs_error": {"max": 1e-8}},
+      "parameters": {"peer": "ducc0", "asset_manifest": "campaigns/phase0/external/sphere-ducc0-v1.json"}
+    },
+    {
+      "id": "s2fft-car-adapter",
+      "kind": "sphere_car_peer_product",
+      "certification": "peer",
+      "required_peers": ["s2fft"],
+      "required_metrics": ["sphere_peer_rmse", "sphere_peer_max_abs_error", "sphere_peer_runtime_seconds", "sphere_peer_peak_bytes"],
+      "gates": {"sphere_peer_max_abs_error": {"max": 1e-8}},
+      "parameters": {"peer": "s2fft", "asset_manifest": "campaigns/phase0/external/sphere-s2fft-v1.json"}
+    },
+    {
+      "id": "pixell-car-adapter",
+      "kind": "sphere_car_peer_product",
+      "certification": "peer",
+      "required_peers": ["pixell"],
+      "required_metrics": ["sphere_peer_rmse", "sphere_peer_max_abs_error", "sphere_peer_runtime_seconds", "sphere_peer_peak_bytes"],
+      "gates": {"sphere_peer_max_abs_error": {"max": 1e-8}},
+      "parameters": {"peer": "pixell", "asset_manifest": "campaigns/phase0/external/sphere-pixell-v1.json"}
+    },
+    {
+      "id": "pseudocl-pure-eb-low-l-monte-carlo",
+      "kind": "sphere_pseudocl_internal",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["pseudocl_rmse", "pseudocl_max_abs_error", "pseudocl_pure_b_leakage_ratio", "pseudocl_monte_carlo_coverage"],
+      "gates": {"pseudocl_max_abs_error": {"max": 0.2}, "pseudocl_pure_b_leakage_ratio": {"max": 0.05}, "pseudocl_monte_carlo_coverage": {"min": 0.5}},
+      "parameters": {"lmax": 5, "monte_carlo_samples": 96}
+    },
+    {
+      "id": "namaster-pseudocl-adapter",
+      "kind": "sphere_car_peer_product",
+      "certification": "peer",
+      "required_peers": ["namaster"],
+      "required_metrics": ["sphere_peer_rmse", "sphere_peer_max_abs_error", "sphere_peer_runtime_seconds", "sphere_peer_peak_bytes"],
+      "gates": {"sphere_peer_max_abs_error": {"max": 1e-8}},
+      "parameters": {"peer": "namaster", "asset_manifest": "campaigns/phase0/external/sphere-namaster-v1.json"}
+    }
+  ]
+}

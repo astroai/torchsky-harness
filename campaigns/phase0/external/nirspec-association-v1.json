@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "nirspec-ifucube-association-v1",
+  "instrument": "NIRSPEC",
+  "availability": "unavailable",
+  "reason": "No redistributable calibrated NIRSpec association and pinned CRDS cache are present in this repository. Set a reviewed external manifest to available only with association and member sha256 identities.",
+  "association_env": "TORCHSKY_NIRSPEC_ASN",
+  "association_sha256": null,
+  "crds_context": null,
+  "members": []
+}

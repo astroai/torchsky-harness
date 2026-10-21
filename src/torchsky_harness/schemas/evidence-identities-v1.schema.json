@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:torchsky-harness:evidence-identities:v1",
+  "title": "Torchsky harness evidence identities",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "subject": {
+      "type": "object",
+      "required": ["identity_type", "status", "distribution"],
+      "properties": {
+        "identity_type": {"const": "subject"},
+        "status": {"enum": ["available", "missing", "unsupported"]},
+        "distribution": {"type": "string", "minLength": 1},
+        "version": {"type": "string"},
+        "import_path": {"type": ["string", "null"]},
+        "package_content_sha256": {"$ref": "#/$defs/sha256"},
+        "source": {"type": "object"},
+        "reason": {"type": "string"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "available"}}},
+          "then": {
+            "required": ["version", "import_path", "package_content_sha256"]
+          }
+        }
+      ],
+      "additionalProperties": true
+    },
+    "peer": {
+      "type": "object",
+      "required": ["identity_type", "id", "kind", "status"],
+      "properties": {
+        "identity_type": {"const": "peer"},
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["python", "binary", "source"]},
+        "status": {"enum": ["available", "missing", "unsupported"]},
+        "distribution": {"type": "string"},
+        "import_name": {"type": "string"},
+        "command": {"type": "string"},
+        "version": {"type": "string"},
+        "path": {"type": ["string", "null"]},
+        "record_sha256": {"$ref": "#/$defs/sha256"},
+        "executable_sha256": {"$ref": "#/$defs/sha256"},
+        "revision": {"type": ["string", "null"]},
+        "dirty": {"type": ["boolean", "null"]},
+        "direct_url": {"type": ["object", "null"]},
+        "reason": {"type": "string"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "available"}}},
+          "then": {"required": ["version", "path"]}
+        }
+      ],
+      "additionalProperties": true
+    },
+    "data": {
+      "type": "object",
+      "required": ["identity_type", "id", "role", "uri", "sha256"],
+      "properties": {
+        "identity_type": {"const": "data"},
+        "id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "uri": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "license": {"type": "string"},
+        "provenance": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "crds": {
+      "type": "object",
+      "required": ["identity_type", "observatory", "context"],
+      "properties": {
+        "identity_type": {"const": "crds"},
+        "observatory": {"type": "string", "minLength": 1},
+        "context": {"type": "string", "minLength": 1},
+        "server_url": {"type": ["string", "null"]},
+        "cache_path": {"type": ["string", "null"]},
+        "mapping_path": {"type": "string"},
+        "mapping_sha256": {"$ref": "#/$defs/sha256"},
+        "reference_files": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/data"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "index": {
+      "type": "object",
+      "required": ["identity_type", "id", "format", "version", "manifest_sha256"],
+      "properties": {
+        "identity_type": {"const": "index"},
+        "id": {"type": "string", "minLength": 1},
+        "format": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "manifest_path": {"type": "string"},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "shards": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/data"}
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

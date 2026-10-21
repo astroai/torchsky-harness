@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "turbo-gp-external-v1",
+  "family": "astrometry-v1",
+  "availability": "unavailable",
+  "reason": "TURBO-GP comparison data and fitted products remain external",
+  "asset_env": "TORCHSKY_TURBO_GP_ASTROMETRY_ASSET",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["method", "revision", "environment_sha256", "input_manifest_sha256", "split_sha256"],
+  "identity": {"method": "TURBO-GP", "revision": "UNAVAILABLE", "environment_sha256": "UNAVAILABLE", "input_manifest_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "astrometry-megapipe-v1",
+  "origin": "reusable bounded synthetic centroid fixture shaped after CFHT MegaPipe exposure overlaps",
+  "seed": 147,
+  "source_count": 24,
+  "tangent_center_deg": [150.116321, 2.20583],
+  "field_radius_arcsec": 45.0,
+  "exposure_shifts_arcsec": [[0.8, -0.4], [-1.2, 0.6], [0.3, 1.1], [-0.5, -0.7]],
+  "dcr_coefficient_arcsec_per_color": 0.35,
+  "split_contract": {
+    "heldout_exposure": "last exposure",
+    "heldout_source": "source_id modulo 5 equals zero",
+    "heldout_epoch": "alternating epochs"
+  }
+}

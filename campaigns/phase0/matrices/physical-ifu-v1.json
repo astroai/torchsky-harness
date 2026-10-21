@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "physical-ifu-v1",
+  "campaign_id": "phase0-jwst-ifu",
+  "cases": [
+    {
+      "id": "synthetic-line-cube-drizzle",
+      "kind": "ifu_synthetic",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": [
+        "ifu_voxel_support_jaccard",
+        "ifu_line_flux_relative_error",
+        "ifu_line_centroid_error",
+        "ifu_line_fwhm_error",
+        "ifu_continuum_absolute_error",
+        "ifu_dq_mismatch_count",
+        "ifu_covariance_relative_error"
+      ],
+      "gates": {
+        "ifu_voxel_support_jaccard": {"min": 0.999},
+        "ifu_line_flux_relative_error": {"max": 0.003},
+        "ifu_line_centroid_error": {"max": 0.05},
+        "ifu_line_fwhm_error": {"max": 0.25},
+        "ifu_continuum_absolute_error": {"max": 0.002},
+        "ifu_dq_mismatch_count": {"equals": 0},
+        "ifu_covariance_relative_error": {"max": 1e-12}
+      },
+      "parameters": {
+        "spectral_bins": 41,
+        "wavelength_start": 4960.0,
+        "wavelength_step": 2.0,
+        "line_center": 5000.0,
+        "line_sigma": 6.0,
+        "line_amplitude": 10.0,
+        "continuum": 2.0
+      }
+    },
+    {
+      "id": "external-nirspec-cube-build-drizzle",
+      "kind": "jwst_cube_build_external",
+      "certification": "peer",
+      "required_peers": ["jwst-ifu", "crds"],
+      "required_metrics": [
+        "jwst_cube_science_finite_fraction",
+        "jwst_cube_voxel_support_fraction",
+        "jwst_cube_has_dq",
+        "jwst_cube_has_weight"
+      ],
+      "gates": {
+        "jwst_cube_science_finite_fraction": {"min": 0.5},
+        "jwst_cube_voxel_support_fraction": {"min": 0.000001},
+        "jwst_cube_has_dq": {"equals": true},
+        "jwst_cube_has_weight": {"equals": true}
+      },
+      "parameters": {
+        "association_manifest": "campaigns/phase0/external/nirspec-association-v1.json",
+        "weighting": "drizzle"
+      }
+    },
+    {
+      "id": "external-miri-cube-build-emsm",
+      "kind": "jwst_cube_build_external",
+      "certification": "peer",
+      "required_peers": ["jwst-ifu", "crds"],
+      "required_metrics": [
+        "jwst_cube_science_finite_fraction",
+        "jwst_cube_voxel_support_fraction",
+        "jwst_cube_has_dq",
+        "jwst_cube_has_weight"
+      ],
+      "gates": {
+        "jwst_cube_science_finite_fraction": {"min": 0.5},
+        "jwst_cube_voxel_support_fraction": {"min": 0.000001},
+        "jwst_cube_has_dq": {"equals": true},
+        "jwst_cube_has_weight": {"equals": true}
+      },
+      "parameters": {
+        "association_manifest": "campaigns/phase0/external/miri-association-v1.json",
+        "weighting": "emsm"
+      }
+    }
+  ]
+}

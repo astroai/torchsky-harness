@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "deblend-cosmos-external-v1",
+  "family": "deblend-v1",
+  "availability": "unavailable",
+  "reason": "COSMOS multiband images and supplied source catalog remain in durable external storage",
+  "asset_env": "TORCHSKY_COSMOS_DEBLEND_ASSET",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["field", "data_release", "image_manifest_sha256", "catalog_sha256", "psf_manifest_sha256", "split_sha256"],
+  "identity": {"field": "COSMOS", "data_release": "UNAVAILABLE", "image_manifest_sha256": "UNAVAILABLE", "catalog_sha256": "UNAVAILABLE", "psf_manifest_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

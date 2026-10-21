@@ -1,0 +1,28 @@
+schema_version = 1
+id = "phase0-adaptive-reprojection"
+domain = "map"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-adaptive"]
+required_peers = ["reproject-adaptive"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+matrix = "matrices/adaptive-reprojection-v1.json"
+data_manifests = ["data/adaptive-v1.json"]
+max_cases = 3
+required_metrics = [
+  "adaptive_peer_rmse",
+  "adaptive_peer_max_abs_error",
+  "adaptive_adjoint_relative_error",
+  "flux_relative_error",
+  "centroid_error_px",
+]
+
+[[datasets]]
+id = "adaptive-reprojection-matrix-v1"
+role = "bounded synthetic adaptive reprojection matrix"
+
+[[datasets]]
+id = "cfht-megapipe-g-cutout-256-v1"
+role = "current real CFHT MegaPipe g-band cutout"

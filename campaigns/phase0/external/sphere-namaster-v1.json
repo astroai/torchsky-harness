@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "sphere-namaster-pseudocl-v1",
+  "family": "sphere-v1",
+  "availability": "unavailable",
+  "reason": "No reviewed NaMaster pseudo-Cl and pure E/B artifact is present",
+  "asset_env": "TORCHSKY_NAMASTER_RESULT",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["peer", "version", "geometry", "spin_convention", "fixture_sha256", "workspace_sha256"],
+  "identity": {"peer": "namaster", "version": "UNAVAILABLE", "geometry": "CAR", "spin_convention": "iau", "fixture_sha256": "UNAVAILABLE", "workspace_sha256": "UNAVAILABLE"}
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "astrometry-scamp-supplied-centroids-v1",
+  "family": "astrometry-v1",
+  "availability": "unavailable",
+  "reason": "No reviewed SCAMP supplied-centroid result artifact is present",
+  "asset_env": "TORCHSKY_SCAMP_ASTROMETRY_RESULT",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["peer", "version", "centroid_source", "detection", "fixture_sha256", "split_sha256"],
+  "identity": {"peer": "scamp", "version": "UNAVAILABLE", "centroid_source": "supplied", "detection": false, "fixture_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

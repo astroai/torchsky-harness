@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "deblend-v1",
+  "campaign_id": "deblend-v1",
+  "cases": [
+    {
+      "id": "deterministic-crowded-fixed-template-no-detection",
+      "kind": "deblend_synthetic_v1",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["deblend_flux_median_relative_error", "deblend_flux_max_relative_error", "deblend_color_max_abs_error_mag", "deblend_astrometry_max_error_arcsec", "deblend_covariance_rmse", "deblend_covariance_max_abs_error", "deblend_catastrophic_swap_count", "deblend_heldout_log_likelihood", "deblend_source_detection", "deblend_source_birth_death", "deblend_component_count"],
+      "gates": {"deblend_flux_max_relative_error": {"max": 0.02}, "deblend_color_max_abs_error_mag": {"max": 0.02}, "deblend_astrometry_max_error_arcsec": {"max": 1e-10}, "deblend_covariance_max_abs_error": {"max": 1e-12}, "deblend_catastrophic_swap_count": {"equals": 0}, "deblend_source_detection": {"equals": false}, "deblend_source_birth_death": {"equals": false}, "deblend_component_count": {"equals": 3}},
+      "parameters": {"fixture": "benchmarks/fixtures/certification/deblend_crowded_v1.json"}
+    },
+    {
+      "id": "tractor-supplied-source",
+      "kind": "deblend_supplied_source_peer",
+      "certification": "peer",
+      "required_peers": ["the-tractor"],
+      "required_metrics": ["deblend_flux_max_relative_error", "deblend_color_max_abs_error_mag", "deblend_astrometry_max_error_arcsec", "deblend_covariance_max_abs_error", "deblend_catastrophic_swap_count", "deblend_heldout_log_likelihood", "deblend_source_detection"],
+      "gates": {"deblend_source_detection": {"equals": false}},
+      "parameters": {"peer": "the-tractor", "asset_manifest": "campaigns/phase0/external/deblend-tractor-v1.json"}
+    },
+    {
+      "id": "scarlet-supplied-source",
+      "kind": "deblend_supplied_source_peer",
+      "certification": "peer",
+      "required_peers": ["scarlet"],
+      "required_metrics": ["deblend_flux_max_relative_error", "deblend_color_max_abs_error_mag", "deblend_astrometry_max_error_arcsec", "deblend_covariance_max_abs_error", "deblend_catastrophic_swap_count", "deblend_heldout_log_likelihood", "deblend_source_detection"],
+      "gates": {"deblend_source_detection": {"equals": false}},
+      "parameters": {"peer": "scarlet", "asset_manifest": "campaigns/phase0/external/deblend-scarlet-v1.json"}
+    },
+    {
+      "id": "tphot-supplied-source",
+      "kind": "deblend_supplied_source_peer",
+      "certification": "peer",
+      "required_peers": ["tphot"],
+      "required_metrics": ["deblend_flux_max_relative_error", "deblend_color_max_abs_error_mag", "deblend_astrometry_max_error_arcsec", "deblend_covariance_max_abs_error", "deblend_catastrophic_swap_count", "deblend_heldout_log_likelihood", "deblend_source_detection"],
+      "gates": {"deblend_source_detection": {"equals": false}},
+      "parameters": {"peer": "tphot", "asset_manifest": "campaigns/phase0/external/deblend-tphot-v1.json"}
+    },
+    {
+      "id": "smacs0723-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "deblend-v1", "asset_manifest": "campaigns/phase0/external/deblend-smacs-v1.json"}
+    },
+    {
+      "id": "cosmos-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "deblend-v1", "asset_manifest": "campaigns/phase0/external/deblend-cosmos-v1.json"}
+    }
+  ]
+}

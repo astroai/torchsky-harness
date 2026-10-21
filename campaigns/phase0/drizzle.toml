@@ -1,0 +1,40 @@
+schema_version = 1
+id = "phase0-drizzle"
+domain = "map"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-drizzle"]
+required_peers = ["astrodrizzle", "stcal"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+matrix = "matrices/drizzle-dq-v1.json"
+data_manifests = ["data/drizzle-v1.json"]
+max_cases = 3
+required_metrics = [
+  "science_rmse",
+  "weight_rmse",
+  "variance_var_poisson_rmse",
+  "variance_var_rnoise_rmse",
+  "variance_var_flat_rmse",
+  "dq_mismatch_count",
+  "context_mismatch_count",
+  "nexp_mismatch_count",
+  "rejection_mismatch_count",
+  "cosmic_ray_recall",
+  "clean_false_positive_rate",
+  "flux_relative_error",
+  "centroid_error_px",
+  "astrodrizzle_science_finite_fraction",
+  "astrodrizzle_has_weight",
+  "astrodrizzle_has_context",
+  "astrodrizzle_rejection_count",
+]
+
+[[datasets]]
+id = "drizzle-dq-cr-variance-fixtures-v1"
+role = "DQ, cosmic-ray, variance, context, and blot fixtures"
+
+[[datasets]]
+id = "hst-wfc3-ir-sample-ipppssoot-v1"
+role = "bounded real HST WFC3/IR AstroDrizzle input"

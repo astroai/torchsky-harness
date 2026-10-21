@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "sphere-ducc0-car-v1",
+  "family": "sphere-v1",
+  "availability": "unavailable",
+  "reason": "No reviewed ducc0 CAR scalar/spin artifact is present",
+  "asset_env": "TORCHSKY_DUCC0_RESULT",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["peer", "version", "geometry", "spin_convention", "fixture_sha256"],
+  "identity": {"peer": "ducc0", "version": "UNAVAILABLE", "geometry": "CAR", "spin_convention": "iau", "fixture_sha256": "UNAVAILABLE"}
+}

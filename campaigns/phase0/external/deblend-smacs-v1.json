@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "deblend-smacs0723-external-v1",
+  "family": "deblend-v1",
+  "availability": "unavailable",
+  "reason": "SMACS0723 calibrated exposures and supplied source catalog remain in durable external storage",
+  "asset_env": "TORCHSKY_SMACS_DEBLEND_ASSET",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["field", "program", "calibration_context", "exposure_manifest_sha256", "catalog_sha256", "psf_manifest_sha256", "split_sha256"],
+  "identity": {"field": "SMACS0723", "program": "UNAVAILABLE", "calibration_context": "UNAVAILABLE", "exposure_manifest_sha256": "UNAVAILABLE", "catalog_sha256": "UNAVAILABLE", "psf_manifest_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

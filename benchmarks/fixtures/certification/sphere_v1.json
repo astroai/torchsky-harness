@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "sphere-v1-analytic-low-l-monte-carlo",
+  "geometry": "CAR",
+  "spin_convention": "iau",
+  "lmax": 5,
+  "monte_carlo_samples": 96,
+  "seeds": {"scalar": 17, "spin": 23, "pseudocl": 31, "pure_eb": 41}
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "drizzle-dq-v1",
+  "campaign_id": "phase0-drizzle",
+  "cases": [
+    {
+      "id": "synthetic-dq-context-variance-33",
+      "kind": "synthetic_product_matrix",
+      "certification": "peer",
+      "required_peers": ["stcal"],
+      "required_metrics": [
+        "science_rmse",
+        "weight_rmse",
+        "variance_var_poisson_rmse",
+        "variance_var_rnoise_rmse",
+        "variance_var_flat_rmse",
+        "dq_mismatch_count",
+        "context_mismatch_count",
+        "nexp_mismatch_count"
+      ],
+      "gates": {
+        "science_rmse": {"max": 1e-14},
+        "weight_rmse": {"max": 0.0},
+        "variance_var_poisson_rmse": {"max": 1e-14},
+        "variance_var_rnoise_rmse": {"max": 1e-14},
+        "variance_var_flat_rmse": {"max": 1e-14},
+        "dq_mismatch_count": {"equals": 0},
+        "context_mismatch_count": {"equals": 0},
+        "nexp_mismatch_count": {"equals": 0}
+      },
+      "parameters": {
+        "contributors": 33,
+        "shape": [1],
+        "chunk_size": 7
+      }
+    },
+    {
+      "id": "synthetic-stcal-cr-outlier-8x16",
+      "kind": "stcal_outlier",
+      "certification": "peer",
+      "required_peers": ["stcal"],
+      "required_metrics": [
+        "rejection_mismatch_count",
+        "cosmic_ray_recall",
+        "clean_false_positive_rate",
+        "flux_relative_error",
+        "centroid_error_px"
+      ],
+      "gates": {
+        "rejection_mismatch_count": {"max": 16},
+        "cosmic_ray_recall": {"min": 0.995},
+        "clean_false_positive_rate": {"max": 0.001},
+        "flux_relative_error": {"max": 0.002},
+        "centroid_error_px": {"max": 0.01}
+      },
+      "parameters": {
+        "exposures": 8,
+        "shape": [16, 16],
+        "snr": [5.0, 3.0],
+        "scale": [1.2, 0.7],
+        "seed": 90210
+      }
+    },
+    {
+      "id": "real-hst-wfc3-ir-astrodrizzle",
+      "kind": "astrodrizzle_real",
+      "certification": "peer",
+      "required_peers": ["astrodrizzle"],
+      "required_metrics": [
+        "astrodrizzle_science_finite_fraction",
+        "astrodrizzle_has_weight",
+        "astrodrizzle_has_context",
+        "astrodrizzle_rejection_count"
+      ],
+      "gates": {
+        "astrodrizzle_science_finite_fraction": {"min": 0.5},
+        "astrodrizzle_has_weight": {"equals": true},
+        "astrodrizzle_has_context": {"equals": true},
+        "astrodrizzle_rejection_count": {"min": 0}
+      },
+      "parameters": {
+        "fixture": "benchmarks/fixtures/real_wcs/sample_ipppssoot_flt.fits",
+        "output_name": "sample_ipppssoot_bounded"
+      }
+    }
+  ]
+}

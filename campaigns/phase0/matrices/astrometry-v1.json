@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "astrometry-v1",
+  "campaign_id": "astrometry-v1",
+  "cases": [
+    {
+      "id": "synthetic-global-local-color-dcr-pm-parallax-robust-learned",
+      "kind": "astrometry_synthetic_v1",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": [
+        "astrometry_pose_max_abs_error_arcsec",
+        "astrometry_local_grid_control_norm",
+        "astrometry_dcr_abs_error",
+        "astrometry_pm_max_abs_error_mas_per_year",
+        "astrometry_parallax_max_abs_error_mas",
+        "astrometry_robust_improvement_ratio",
+        "astrometry_learned_improvement_ratio",
+        "astrometry_heldout_exposure_rmse_arcsec",
+        "astrometry_heldout_source_rmse_arcsec",
+        "astrometry_heldout_epoch_rmse_arcsec",
+        "astrometry_covariance_95_coverage",
+        "astrometry_spatial_residual_map_max_bias_arcsec",
+        "astrometry_color_residual_map_max_bias_arcsec",
+        "astrometry_time_residual_map_max_bias_arcsec",
+        "astrometry_gauge_residual_norm",
+        "astrometry_gauge_count",
+        "astrometry_runtime_seconds",
+        "astrometry_peak_bytes"
+      ],
+      "gates": {
+        "astrometry_pose_max_abs_error_arcsec": {"max": 0.001},
+        "astrometry_dcr_abs_error": {"max": 0.001},
+        "astrometry_pm_max_abs_error_mas_per_year": {"max": 0.01},
+        "astrometry_parallax_max_abs_error_mas": {"max": 0.01},
+        "astrometry_robust_improvement_ratio": {"min": 2.0},
+        "astrometry_learned_improvement_ratio": {"min": 1.0},
+        "astrometry_heldout_exposure_rmse_arcsec": {"max": 0.001},
+        "astrometry_heldout_source_rmse_arcsec": {"max": 0.001},
+        "astrometry_heldout_epoch_rmse_arcsec": {"max": 0.001},
+        "astrometry_covariance_95_coverage": {"min": 0.9},
+        "astrometry_spatial_residual_map_max_bias_arcsec": {"max": 0.001},
+        "astrometry_color_residual_map_max_bias_arcsec": {"max": 0.001},
+        "astrometry_time_residual_map_max_bias_arcsec": {"max": 0.001},
+        "astrometry_gauge_residual_norm": {"max": 1e-12},
+        "astrometry_gauge_count": {"equals": 2}
+      },
+      "parameters": {"fixture": "benchmarks/fixtures/certification/astrometry_megapipe_v1.json"}
+    },
+    {
+      "id": "scamp-supplied-centroids",
+      "kind": "astrometry_supplied_centroid_peer",
+      "certification": "peer",
+      "required_peers": ["scamp"],
+      "required_metrics": ["astrometry_peer_residual_rmse_arcsec", "astrometry_peer_row_count", "astrometry_peer_detection"],
+      "gates": {"astrometry_peer_residual_rmse_arcsec": {"max": 0.05}, "astrometry_peer_detection": {"equals": false}},
+      "parameters": {"peer": "scamp", "asset_manifest": "campaigns/phase0/external/astrometry-scamp-v1.json"}
+    },
+    {
+      "id": "tweakreg-supplied-centroids",
+      "kind": "astrometry_supplied_centroid_peer",
+      "certification": "peer",
+      "required_peers": ["tweakreg"],
+      "required_metrics": ["astrometry_peer_residual_rmse_arcsec", "astrometry_peer_row_count", "astrometry_peer_detection"],
+      "gates": {"astrometry_peer_residual_rmse_arcsec": {"max": 0.05}, "astrometry_peer_detection": {"equals": false}},
+      "parameters": {"peer": "tweakreg", "asset_manifest": "campaigns/phase0/external/astrometry-tweakreg-v1.json"}
+    },
+    {
+      "id": "astrometry-net-supplied-centroids",
+      "kind": "astrometry_supplied_centroid_peer",
+      "certification": "peer",
+      "required_peers": ["astrometry-net"],
+      "required_metrics": ["astrometry_peer_residual_rmse_arcsec", "astrometry_peer_row_count", "astrometry_peer_detection"],
+      "gates": {"astrometry_peer_residual_rmse_arcsec": {"max": 0.05}, "astrometry_peer_detection": {"equals": false}},
+      "parameters": {"peer": "astrometry-net", "asset_manifest": "campaigns/phase0/external/astrometry-net-v1.json"}
+    },
+    {
+      "id": "des-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "astrometry-v1", "asset_manifest": "campaigns/phase0/external/astrometry-des-v1.json"}
+    },
+    {
+      "id": "lsst-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "astrometry-v1", "asset_manifest": "campaigns/phase0/external/astrometry-lsst-v1.json"}
+    },
+    {
+      "id": "gbdes-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "astrometry-v1", "asset_manifest": "campaigns/phase0/external/astrometry-gbdes-v1.json"}
+    },
+    {
+      "id": "turbo-gp-external-identity",
+      "kind": "external_asset_identity",
+      "certification": "internal",
+      "required_peers": [],
+      "required_metrics": ["external_asset_identity_complete", "external_asset_size_bytes"],
+      "gates": {"external_asset_identity_complete": {"equals": true}},
+      "parameters": {"family": "astrometry-v1", "asset_manifest": "campaigns/phase0/external/astrometry-turbo-gp-v1.json"}
+    }
+  ]
+}

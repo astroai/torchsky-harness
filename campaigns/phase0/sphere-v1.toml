@@ -1,0 +1,58 @@
+schema_version = 1
+id = "sphere-v1"
+domain = "sphere"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-sparse-sphere", "phase0-harmonics-portable", "phase0-harmonics"]
+required_peers = ["mhealpy", "healsparse", "torch-harmonics", "ducc0", "s2fft", "pixell", "namaster"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+matrix = "matrices/sphere-v1.json"
+data_manifests = ["data/sphere-v1.json"]
+max_cases = 10
+required_metrics = [
+  "sphere_existing_index_mismatch_count",
+  "sphere_mhealpy_index_mismatch_count",
+  "sphere_healsparse_max_abs_error",
+  "car_scalar_rmse",
+  "car_scalar_max_abs_error",
+  "car_scalar_runtime_seconds",
+  "car_scalar_peak_bytes",
+  "car_spin_rmse",
+  "car_spin_max_abs_error",
+  "car_spin_runtime_seconds",
+  "car_spin_peak_bytes",
+  "pseudocl_rmse",
+  "pseudocl_max_abs_error",
+  "pseudocl_pure_b_leakage_ratio",
+  "pseudocl_monte_carlo_coverage",
+]
+
+[[datasets]]
+id = "sphere-v1-matrix"
+role = "frozen bounded sphere certification matrix"
+
+[[datasets]]
+id = "sphere-v1-fixture"
+role = "analytic low-L and Monte Carlo fixture contract"
+
+[[datasets]]
+id = "sphere-torch-harmonics-v1"
+role = "torch-harmonics CAR scalar and spin result manifest"
+
+[[datasets]]
+id = "sphere-ducc0-v1"
+role = "ducc0 CAR scalar and spin result manifest"
+
+[[datasets]]
+id = "sphere-s2fft-v1"
+role = "s2fft CAR scalar and spin result manifest"
+
+[[datasets]]
+id = "sphere-pixell-v1"
+role = "pixell CAR scalar and spin result manifest"
+
+[[datasets]]
+id = "sphere-namaster-v1"
+role = "NaMaster pseudo-Cl and pure E/B result manifest"

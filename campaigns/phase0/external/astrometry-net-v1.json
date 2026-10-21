@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "astrometry-net-supplied-centroids-result-v1",
+  "family": "astrometry-v1",
+  "availability": "unavailable",
+  "reason": "No reviewed astrometry.net supplied-centroid verification artifact or pinned index set is present",
+  "asset_env": "TORCHSKY_ASTROMETRY_NET_RESULT",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["peer", "version", "centroid_source", "detection", "executable_sha256", "index_manifest_sha256", "fixture_sha256", "split_sha256"],
+  "identity": {"peer": "astrometry-net", "version": "0.97", "centroid_source": "supplied", "detection": false, "executable_sha256": "UNAVAILABLE", "index_manifest_sha256": "UNAVAILABLE", "fixture_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

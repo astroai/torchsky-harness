@@ -1,0 +1,167 @@
+schema_version = 1
+
+[[peers]]
+id = "gwcs"
+kind = "python"
+distribution = "gwcs"
+import_name = "gwcs"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "gwcs==1.0.3" }
+
+[[peers]]
+id = "pyast"
+kind = "python"
+distribution = "starlink-pyast"
+import_name = "starlink.Ast"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "starlink-pyast>=4.1,<5" }
+
+[[peers]]
+id = "scamp"
+kind = "binary"
+command = "scamp"
+version_args = ["-d"]
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "astromatic-scamp==2.15.0" }
+
+[[peers]]
+id = "tweakreg"
+kind = "python"
+distribution = "drizzlepac"
+import_name = "drizzlepac.tweakreg"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "drizzlepac==3.11.0" }
+
+[[peers]]
+id = "astrometry-net"
+kind = "binary"
+command = "solve-field"
+version_args = ["--help"]
+platforms = ["linux-64"]
+bootstrap = { manager = "pixi", spec = "astrometry==0.97" }
+
+[[peers]]
+id = "mhealpy"
+kind = "python"
+distribution = "mhealpy"
+import_name = "mhealpy"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "mhealpy==0.3.7" }
+
+[[peers]]
+id = "healsparse"
+kind = "python"
+distribution = "healsparse"
+import_name = "healsparse"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "healsparse==1.15.0" }
+
+[[peers]]
+id = "mocpy"
+kind = "python"
+distribution = "mocpy"
+import_name = "mocpy"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "mocpy==0.20.0" }
+
+[[peers]]
+id = "torch-harmonics"
+kind = "python"
+distribution = "torch-harmonics"
+import_name = "torch_harmonics"
+platforms = ["linux-64"]
+bootstrap = { manager = "pixi", spec = "torch-harmonics==0.9.3" }
+
+[[peers]]
+id = "ducc0"
+kind = "python"
+distribution = "ducc0"
+import_name = "ducc0"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "ducc0==0.42.0" }
+
+[[peers]]
+id = "s2fft"
+kind = "python"
+distribution = "s2fft"
+import_name = "s2fft"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "s2fft>=1,<2" }
+
+[[peers]]
+id = "pixell"
+kind = "python"
+distribution = "pixell"
+import_name = "pixell"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "pixell==0.32.7" }
+
+[[peers]]
+id = "namaster"
+kind = "python"
+distribution = "pymaster"
+import_name = "pymaster"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "namaster==3.0.1" }
+
+[[peers]]
+id = "astrodrizzle"
+kind = "python"
+distribution = "drizzlepac"
+import_name = "drizzlepac.astrodrizzle"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "drizzlepac==3.11.0" }
+
+[[peers]]
+id = "stcal"
+kind = "python"
+distribution = "stcal"
+import_name = "stcal"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "stcal>=1,<2" }
+
+[[peers]]
+id = "reproject-adaptive"
+kind = "python"
+distribution = "reproject"
+import_name = "reproject.adaptive"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pixi", spec = "reproject==0.21.0" }
+
+[[peers]]
+id = "jwst-ifu"
+kind = "python"
+distribution = "jwst"
+import_name = "jwst.cube_build"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "jwst==3.0.0" }
+
+[[peers]]
+id = "crds"
+kind = "python"
+distribution = "crds"
+import_name = "crds"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "crds>=13,<14" }
+
+[[peers]]
+id = "tphot"
+kind = "source"
+path_env = "TPHOT_SOURCE"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "manual", spec = "official T-PHOT source release" }
+
+[[peers]]
+id = "the-tractor"
+kind = "source"
+path_env = "THE_TRACTOR_SOURCE"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "manual", spec = "official The Tractor source checkout" }
+
+[[peers]]
+id = "scarlet"
+kind = "python"
+distribution = "scarlet2"
+import_name = "scarlet2"
+platforms = ["osx-arm64", "linux-64"]
+bootstrap = { manager = "pip", spec = "scarlet2==0.5.1" }

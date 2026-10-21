@@ -9,6 +9,13 @@ without a network dependency.
 - License: BSD-3-Clause (Astropy); see <https://github.com/astropy/astropy/blob/main/LICENSE.rst>
 - Fetched: 2026-10-19 from `main`.
 
+The bounded AstroDrizzle campaign also vendors
+`sample_ipppssoot_flt.fits` from
+`spacetelescope/drizzlepac@635834581ea2b226a3f3028b6ac54efb5e180dfc`
+(`tests/hap/sample_ipppssoot_flt.fits`, blob
+`6ed6fb53ce2c8fb3039465a7f22dca7df4a6051e`). It is an unmodified compact
+HST/WFC3-IR FLT sample distributed under DrizzlePac's BSD-3-Clause license.
+
 | File | What it is |
 |---|---|
 | `2wcses.hdr` | Isaac Newton Telescope WFC mosaic header with ZPN projection (2048x4096). |
@@ -17,6 +24,7 @@ without a network dependency.
 | `siponly.hdr` | JWST/HST-style TAN-SIP header. |
 | `zpn-hole.hdr` | ZPN header whose sky coverage has a hole (partial validity). |
 | `j94f05bgq_flt.fits` | Real HST WFPC2 FLT exposure with SCI extension, SIP + distortion tables. |
+| `sample_ipppssoot_flt.fits` | Compact real HST WFC3/IR FLT sample for bounded AstroDrizzle execution. |
 | `ie6d07ujq_wcs.fits` | Real HST WFC3-style WCS header with D2IM lookup extensions. |
 | `dist_lookup.fits.gz` | SIP + CPDIS/D2IM/WCSDVARR lookup-distortion exposure. |
 | `dist.fits` | Paper-IV distortion lookup arrays (D2IMARR extension, no celestial WCS). |

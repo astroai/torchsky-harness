@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "deblend-tphot-supplied-source-v1",
+  "family": "deblend-v1",
+  "availability": "unavailable",
+  "reason": "No reviewed T-PHOT supplied-source result artifact is present",
+  "asset_env": "TORCHSKY_TPHOT_DEBLEND_RESULT",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["peer", "revision", "source_selection", "detection", "fixture_sha256", "split_sha256"],
+  "identity": {"peer": "tphot", "revision": "UNAVAILABLE", "source_selection": "supplied", "detection": false, "fixture_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

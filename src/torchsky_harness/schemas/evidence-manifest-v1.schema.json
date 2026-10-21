@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:torchsky-harness:evidence-manifest:v1",
+  "title": "Torchsky harness Phase-0 evidence manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "campaign_id",
+    "generated_at",
+    "platform",
+    "python",
+    "subject",
+    "peers",
+    "data",
+    "crds",
+    "indices",
+    "coverage"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "campaign_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "platform": {"type": "string", "minLength": 1},
+    "python": {"type": "string", "minLength": 1},
+    "subject": {
+      "$ref": "evidence-identities-v1.schema.json#/$defs/subject"
+    },
+    "peers": {
+      "type": "array",
+      "items": {"$ref": "evidence-identities-v1.schema.json#/$defs/peer"}
+    },
+    "data": {
+      "type": "array",
+      "items": {"$ref": "evidence-identities-v1.schema.json#/$defs/data"}
+    },
+    "crds": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "evidence-identities-v1.schema.json#/$defs/crds"}
+      ]
+    },
+    "indices": {
+      "type": "array",
+      "items": {"$ref": "evidence-identities-v1.schema.json#/$defs/index"}
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["status", "failures"],
+      "properties": {
+        "status": {"enum": ["pass", "fail"]},
+        "failures": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

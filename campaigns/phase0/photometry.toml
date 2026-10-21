@@ -1,0 +1,14 @@
+schema_version = 1
+id = "phase0-photometry"
+domain = "catalogs"
+status = "stub"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-photometry"]
+required_peers = ["tphot", "the-tractor", "scarlet"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+
+[[datasets]]
+id = "fixed-component-photometry-fixtures-v1"
+role = "identical positions, components, templates, PSFs, and multiband images"

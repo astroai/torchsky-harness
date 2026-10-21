@@ -1,0 +1,38 @@
+schema_version = 1
+id = "phase0-jwst-ifu"
+domain = "map"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-jwst-ifu"]
+required_peers = ["jwst-ifu", "crds"]
+optional_peers = []
+required_identities = ["subject", "peer", "data", "crds"]
+matrix = "matrices/physical-ifu-v1.json"
+data_manifests = ["data/physical-ifu-v1.json"]
+max_cases = 3
+required_metrics = [
+  "ifu_voxel_support_jaccard",
+  "ifu_line_flux_relative_error",
+  "ifu_line_centroid_error",
+  "ifu_line_fwhm_error",
+  "ifu_continuum_absolute_error",
+  "ifu_dq_mismatch_count",
+  "ifu_covariance_relative_error",
+  "jwst_cube_science_finite_fraction",
+  "jwst_cube_voxel_support_fraction",
+  "jwst_cube_has_dq",
+  "jwst_cube_has_weight",
+]
+
+[[datasets]]
+id = "jwst-ifu-calibrated-fixtures-v1"
+role = "calibrated IFU exposures and reference cube products"
+
+[[datasets]]
+id = "nirspec-external-association-manifest-v1"
+role = "external NIRSpec association with pinned CRDS identity"
+
+[[datasets]]
+id = "miri-external-association-manifest-v1"
+role = "external MIRI association with pinned CRDS identity"

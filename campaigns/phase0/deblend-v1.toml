@@ -1,0 +1,54 @@
+schema_version = 1
+id = "deblend-v1"
+domain = "catalogs"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-photometry"]
+required_peers = ["the-tractor", "scarlet", "tphot"]
+optional_peers = []
+required_identities = ["subject", "peer", "data"]
+matrix = "matrices/deblend-v1.json"
+data_manifests = ["data/deblend-v1.json"]
+max_cases = 6
+required_metrics = [
+  "deblend_flux_median_relative_error",
+  "deblend_flux_max_relative_error",
+  "deblend_color_max_abs_error_mag",
+  "deblend_astrometry_max_error_arcsec",
+  "deblend_covariance_rmse",
+  "deblend_covariance_max_abs_error",
+  "deblend_catastrophic_swap_count",
+  "deblend_heldout_log_likelihood",
+  "deblend_source_detection",
+  "deblend_source_birth_death",
+  "deblend_component_count",
+]
+
+[[datasets]]
+id = "deblend-v1-matrix"
+role = "frozen bounded deblend certification matrix"
+
+[[datasets]]
+id = "deblend-crowded-v1"
+role = "deterministic crowded fixed-template supplied-source fixture"
+
+[[datasets]]
+id = "deblend-tractor-v1"
+role = "Tractor supplied-source external result manifest"
+
+[[datasets]]
+id = "deblend-scarlet-v1"
+role = "SCARLET supplied-source external result manifest"
+
+[[datasets]]
+id = "deblend-tphot-v1"
+role = "T-PHOT supplied-source external result manifest"
+
+[[datasets]]
+id = "deblend-smacs-v1"
+role = "SMACS0723 external data identity stub"
+
+[[datasets]]
+id = "deblend-cosmos-v1"
+role = "COSMOS external data identity stub"

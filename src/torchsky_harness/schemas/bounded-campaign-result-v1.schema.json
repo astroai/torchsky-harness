@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:torchsky-harness:bounded-campaign-result:v1",
+  "title": "Torchsky bounded comparator campaign result",
+  "type": "object",
+  "required": ["schema_version", "campaign_id", "generated_at", "matrix", "provenance", "cases", "certification"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "campaign_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "matrix": {
+      "type": "object",
+      "required": ["id", "path", "sha256", "case_count"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "case_count": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "provenance": {"$ref": "evidence-manifest-v1.schema.json"},
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "status", "metrics", "failures"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "unavailable"]},
+          "metrics": {"type": "object", "additionalProperties": {"type": ["number", "integer", "boolean", "string", "null"]}},
+          "metadata": {"type": "object"},
+          "failures": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "certification": {
+      "type": "object",
+      "required": ["status", "failures"],
+      "properties": {
+        "status": {"enum": ["pass", "fail"]},
+        "failures": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "des-astrometry-external-v1",
+  "family": "astrometry-v1",
+  "availability": "unavailable",
+  "reason": "DES astrometry inputs remain external and no reviewed bounded artifact is configured",
+  "asset_env": "TORCHSKY_DES_ASTROMETRY_ASSET",
+  "asset_sha256": "UNAVAILABLE",
+  "required_identity_fields": ["survey", "data_release", "catalog_sha256", "exposure_manifest_sha256", "split_sha256"],
+  "identity": {"survey": "DES", "data_release": "UNAVAILABLE", "catalog_sha256": "UNAVAILABLE", "exposure_manifest_sha256": "UNAVAILABLE", "split_sha256": "UNAVAILABLE"}
+}

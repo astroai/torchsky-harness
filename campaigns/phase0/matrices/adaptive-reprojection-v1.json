@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "adaptive-reprojection-v1",
+  "campaign_id": "phase0-adaptive-reprojection",
+  "cases": [
+    {
+      "id": "synthetic-tan-shift-surface-brightness",
+      "kind": "adaptive_synthetic",
+      "certification": "peer",
+      "required_peers": ["reproject-adaptive"],
+      "required_metrics": [
+        "adaptive_peer_rmse",
+        "adaptive_peer_max_abs_error",
+        "adaptive_adjoint_relative_error",
+        "flux_relative_error",
+        "centroid_error_px"
+      ],
+      "gates": {
+        "adaptive_peer_relative_l1_error": {"max": 0.08},
+        "adaptive_adjoint_relative_error": {"max": 1e-12},
+        "flux_relative_error": {"max": 0.05},
+        "centroid_error_px": {"max": 0.2}
+      },
+      "parameters": {
+        "shape": [32, 32],
+        "target_shift_px": [0.35, -0.2],
+        "target_scale_ratio": 1.0,
+        "value_semantics": "surface_brightness"
+      }
+    },
+    {
+      "id": "synthetic-tan-downsample-integrated-flux",
+      "kind": "adaptive_synthetic",
+      "certification": "peer",
+      "required_peers": ["reproject-adaptive"],
+      "required_metrics": [
+        "adaptive_peer_rmse",
+        "adaptive_peer_max_abs_error",
+        "adaptive_adjoint_relative_error",
+        "flux_relative_error",
+        "centroid_error_px"
+      ],
+      "gates": {
+        "adaptive_peer_relative_l1_error": {"max": 0.12},
+        "adaptive_adjoint_relative_error": {"max": 1e-12},
+        "flux_relative_error": {"max": 0.08},
+        "centroid_error_px": {"max": 0.25}
+      },
+      "parameters": {
+        "shape": [32, 32],
+        "target_shape": [24, 24],
+        "target_shift_px": [0.0, 0.0],
+        "target_scale_ratio": 1.3333333333333333,
+        "value_semantics": "integrated_flux"
+      }
+    },
+    {
+      "id": "real-cfht-g-cutout-adaptive",
+      "kind": "adaptive_cfht",
+      "certification": "peer",
+      "required_peers": ["reproject-adaptive"],
+      "required_metrics": [
+        "adaptive_peer_rmse",
+        "adaptive_peer_max_abs_error",
+        "adaptive_adjoint_relative_error",
+        "flux_relative_error",
+        "centroid_error_px"
+      ],
+      "gates": {
+        "adaptive_peer_relative_l1_error": {"max": 0.12},
+        "adaptive_adjoint_relative_error": {"max": 1e-12},
+        "flux_relative_error": {"max": 0.08},
+        "centroid_error_px": {"max": 0.3}
+      },
+      "parameters": {
+        "fixture": "benchmarks/fixtures/real_map/cfht_g_cutout_256.npz",
+        "bounded_shape": [64, 64],
+        "target_shift_px": [0.25, 0.25],
+        "value_semantics": "surface_brightness"
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+schema_version = 1
+id = "astrometry-v1"
+domain = "astrometry"
+status = "bounded"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-astrometry-portable", "phase0-astrometry", "phase0-astrometry-net"]
+required_peers = ["scamp", "tweakreg", "astrometry-net"]
+optional_peers = []
+required_identities = ["subject", "peer", "data", "index"]
+matrix = "matrices/astrometry-v1.json"
+data_manifests = ["data/astrometry-v1.json"]
+max_cases = 8
+required_metrics = [
+  "astrometry_pose_max_abs_error_arcsec",
+  "astrometry_dcr_abs_error",
+  "astrometry_pm_max_abs_error_mas_per_year",
+  "astrometry_parallax_max_abs_error_mas",
+  "astrometry_robust_improvement_ratio",
+  "astrometry_learned_improvement_ratio",
+  "astrometry_heldout_exposure_rmse_arcsec",
+  "astrometry_heldout_source_rmse_arcsec",
+  "astrometry_heldout_epoch_rmse_arcsec",
+  "astrometry_covariance_95_coverage",
+  "astrometry_spatial_residual_map_max_bias_arcsec",
+  "astrometry_color_residual_map_max_bias_arcsec",
+  "astrometry_time_residual_map_max_bias_arcsec",
+  "astrometry_gauge_residual_norm",
+  "astrometry_gauge_count",
+  "astrometry_runtime_seconds",
+  "astrometry_peak_bytes",
+]
+
+[[datasets]]
+id = "astrometry-v1-matrix"
+role = "frozen bounded astrometry certification matrix"
+
+[[datasets]]
+id = "astrometry-megapipe-v1"
+role = "reusable bounded MegaPipe-shaped centroid fixture and held-out split contract"
+
+[[datasets]]
+id = "astrometry-scamp-v1"
+role = "SCAMP supplied-centroid external result manifest"
+
+[[datasets]]
+id = "astrometry-tweakreg-v1"
+role = "TweakReg supplied-centroid external result manifest"
+
+[[datasets]]
+id = "astrometry-net-v1"
+role = "astrometry.net supplied-centroid external result and index contract"
+
+[[datasets]]
+id = "astrometry-des-v1"
+role = "DES external data identity stub"
+
+[[datasets]]
+id = "astrometry-lsst-v1"
+role = "LSST external data identity stub"
+
+[[datasets]]
+id = "astrometry-gbdes-v1"
+role = "gbdes external comparison identity stub"
+
+[[datasets]]
+id = "astrometry-turbo-gp-v1"
+role = "TURBO-GP external comparison identity stub"

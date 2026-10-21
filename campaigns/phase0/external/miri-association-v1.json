@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "miri-mrs-ifucube-association-v1",
+  "instrument": "MIRI",
+  "availability": "unavailable",
+  "reason": "No redistributable calibrated MIRI MRS association and pinned CRDS cache are present in this repository. Set a reviewed external manifest to available only with association and member sha256 identities.",
+  "association_env": "TORCHSKY_MIRI_ASN",
+  "association_sha256": null,
+  "crds_context": null,
+  "members": []
+}

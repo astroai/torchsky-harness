@@ -135,6 +135,40 @@ bench-comparator-versions = "pixi run -e bench-all python -m torchsky_harness.sc
 bench-comparator-versions-sphere = "pixi run -e sphere-bench python -m torchsky_harness.scripts.print_benchmark_comparator_versions --json-out benchmarks_results/VERSIONS_comparators_sphere-bench.json"
 bench-comparator-versions-legacy = "pixi run -e bench-legacy python -m torchsky_harness.scripts.print_benchmark_comparator_versions --json-out benchmarks_results/VERSIONS_comparators_bench-legacy.json"
 bench-comparator-versions-all = "pixi run bench-comparator-versions && pixi run bench-comparator-versions-sphere && pixi run bench-comparator-versions-legacy"
+phase0-config-check = "pixi run -e test -- python -m torchsky_harness.phase0 validate-configs"
+phase0-bootstrap-wcs = "pixi run -e phase0-wcs -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-wcs -- python -m torchsky_harness.phase0 bootstrap wcs-graphs"
+phase0-bootstrap-astrometry = "pixi run -e phase0-astrometry -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-astrometry -- python -m torchsky_harness.phase0 bootstrap astrometry"
+phase0-bootstrap-sparse-sphere = "pixi run -e phase0-sparse-sphere -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-sparse-sphere -- python -m torchsky_harness.phase0 bootstrap sparse-sphere"
+phase0-bootstrap-harmonics = "pixi run -e phase0-harmonics -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-harmonics -- python -m torchsky_harness.phase0 bootstrap harmonics"
+phase0-bootstrap-drizzle = "pixi run -e phase0-drizzle -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-drizzle -- python -m torchsky_harness.phase0 bootstrap drizzle"
+phase0-bootstrap-adaptive = "pixi run -e phase0-adaptive -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-adaptive -- python -m torchsky_harness.phase0 bootstrap adaptive-reprojection"
+phase0-bootstrap-jwst-ifu = "pixi run -e phase0-jwst-ifu -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-jwst-ifu -- python -m torchsky_harness.phase0 bootstrap jwst-ifu"
+phase0-bootstrap-photometry = "pixi run -e phase0-photometry -- python -m pip install -e . --no-deps --no-build-isolation && pixi run -e phase0-photometry -- python -m torchsky_harness.phase0 bootstrap photometry"
+phase0-versions-wcs = { cmd = "pixi run -e phase0-wcs -- python -m torchsky_harness.phase0 provenance wcs-graphs --json-out benchmark_results/phase0/wcs-graphs-peers.json", depends-on = ["phase0-bootstrap-wcs"] }
+phase0-versions-astrometry = { cmd = "pixi run -e phase0-astrometry -- python -m torchsky_harness.phase0 provenance astrometry --json-out benchmark_results/phase0/astrometry-peers.json", depends-on = ["phase0-bootstrap-astrometry"] }
+phase0-versions-sparse-sphere = { cmd = "pixi run -e phase0-sparse-sphere -- python -m torchsky_harness.phase0 provenance sparse-sphere --json-out benchmark_results/phase0/sparse-sphere-peers.json", depends-on = ["phase0-bootstrap-sparse-sphere"] }
+phase0-versions-harmonics = { cmd = "pixi run -e phase0-harmonics -- python -m torchsky_harness.phase0 provenance harmonics --json-out benchmark_results/phase0/harmonics-peers.json", depends-on = ["phase0-bootstrap-harmonics"] }
+phase0-versions-drizzle = { cmd = "pixi run -e phase0-drizzle -- python -m torchsky_harness.phase0 provenance drizzle --data-manifest campaigns/phase0/data/drizzle-v1.json --json-out benchmark_results/phase0/drizzle-peers.json", depends-on = ["phase0-bootstrap-drizzle"] }
+phase0-versions-adaptive = { cmd = "pixi run -e phase0-adaptive -- python -m torchsky_harness.phase0 provenance adaptive-reprojection --data-manifest campaigns/phase0/data/adaptive-v1.json --json-out benchmark_results/phase0/adaptive-reprojection-peers.json", depends-on = ["phase0-bootstrap-adaptive"] }
+phase0-versions-jwst-ifu = { cmd = "pixi run -e phase0-jwst-ifu -- python -m torchsky_harness.phase0 provenance jwst-ifu --data-manifest campaigns/phase0/data/physical-ifu-v1.json --json-out benchmark_results/phase0/jwst-ifu-peers.json", depends-on = ["phase0-bootstrap-jwst-ifu"] }
+phase0-versions-photometry = { cmd = "pixi run -e phase0-photometry -- python -m torchsky_harness.phase0 provenance photometry --json-out benchmark_results/phase0/photometry-peers.json", depends-on = ["phase0-bootstrap-photometry"] }
+phase0-provenance-all = "pixi run phase0-versions-wcs && pixi run phase0-versions-astrometry && pixi run phase0-versions-sparse-sphere && pixi run phase0-versions-harmonics && pixi run phase0-versions-drizzle && pixi run phase0-versions-adaptive && pixi run phase0-versions-jwst-ifu && pixi run phase0-versions-photometry"
+phase0-certify-wcs = { cmd = "pixi run -e phase0-wcs -- python -m torchsky_harness.phase0 certify wcs-graphs --json-out benchmark_results/phase0/wcs-graphs-certification.json", depends-on = ["phase0-bootstrap-wcs"] }
+phase0-certify-astrometry = { cmd = "pixi run -e phase0-astrometry -- python -m torchsky_harness.phase0 certify astrometry --json-out benchmark_results/phase0/astrometry-certification.json", depends-on = ["phase0-bootstrap-astrometry"] }
+phase0-certify-sparse-sphere = { cmd = "pixi run -e phase0-sparse-sphere -- python -m torchsky_harness.phase0 certify sparse-sphere --json-out benchmark_results/phase0/sparse-sphere-certification.json", depends-on = ["phase0-bootstrap-sparse-sphere"] }
+phase0-certify-harmonics = { cmd = "pixi run -e phase0-harmonics -- python -m torchsky_harness.phase0 certify harmonics --json-out benchmark_results/phase0/harmonics-certification.json", depends-on = ["phase0-bootstrap-harmonics"] }
+phase0-certify-drizzle = { cmd = "pixi run -e phase0-drizzle -- python -m torchsky_harness.bounded_campaigns drizzle --certify --json-out benchmark_results/phase0/drizzle-certification.json", depends-on = ["phase0-bootstrap-drizzle"] }
+phase0-certify-adaptive = { cmd = "pixi run -e phase0-adaptive -- python -m torchsky_harness.bounded_campaigns adaptive-reprojection --certify --json-out benchmark_results/phase0/adaptive-reprojection-certification.json", depends-on = ["phase0-bootstrap-adaptive"] }
+phase0-certify-jwst-ifu = { cmd = "pixi run -e phase0-jwst-ifu -- python -m torchsky_harness.bounded_campaigns jwst-ifu --certify --json-out benchmark_results/phase0/jwst-ifu-certification.json", depends-on = ["phase0-bootstrap-jwst-ifu"] }
+phase0-certify-photometry = { cmd = "pixi run -e phase0-photometry -- python -m torchsky_harness.phase0 certify photometry --json-out benchmark_results/phase0/photometry-certification.json", depends-on = ["phase0-bootstrap-photometry"] }
+phase0-certify-all = "pixi run phase0-certify-wcs && pixi run phase0-certify-astrometry && pixi run phase0-certify-sparse-sphere && pixi run phase0-certify-harmonics && pixi run phase0-certify-drizzle && pixi run phase0-certify-adaptive && pixi run phase0-certify-jwst-ifu && pixi run phase0-certify-photometry"
+phase0-run-drizzle = { cmd = "pixi run -e phase0-drizzle -- python -m torchsky_harness.bounded_campaigns drizzle --json-out benchmark_results/phase0/drizzle-run.json", depends-on = ["phase0-bootstrap-drizzle"] }
+phase0-run-adaptive = { cmd = "pixi run -e phase0-adaptive -- python -m torchsky_harness.bounded_campaigns adaptive-reprojection --json-out benchmark_results/phase0/adaptive-reprojection-run.json", depends-on = ["phase0-bootstrap-adaptive"] }
+phase0-run-jwst-ifu = { cmd = "pixi run -e phase0-jwst-ifu -- python -m torchsky_harness.bounded_campaigns jwst-ifu --json-out benchmark_results/phase0/jwst-ifu-run.json", depends-on = ["phase0-bootstrap-jwst-ifu"] }
+certify-astrometry-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns astrometry-v1 --certify --json-out benchmark_results/certification/astrometry-v1.json"
+certify-sphere-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns sphere-v1 --certify --json-out benchmark_results/certification/sphere-v1.json"
+certify-deblend-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns deblend-v1 --certify --json-out benchmark_results/certification/deblend-v1.json"
+run-certification-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns astrometry-v1 --json-out benchmark_results/certification/astrometry-v1.json && pixi run -e test -- python -m torchsky_harness.bounded_campaigns sphere-v1 --json-out benchmark_results/certification/sphere-v1.json && pixi run -e test -- python -m torchsky_harness.bounded_campaigns deblend-v1 --json-out benchmark_results/certification/deblend-v1.json"
 # WCS suite with every in-process + legacy-bridge comparator (needs bench-legacy env + kapteyn/pyast).
 bench-wcs-ecosystem = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --legacy-wcs --run-id wcs_ecosystem --output-dir benchmarks_results"
 
@@ -316,6 +350,189 @@ astromatic-source-extractor = ">=2.28"
 astropy = ">=5.0"
 numpy = ">=1.20"
 
+[feature.phase0-wcs]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-wcs.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+gwcs = "==1.0.3"
+starlink-pyast = ">=4.1,<5"
+
+[feature.phase0-astrometry]
+platforms = ["linux-64"]
+
+[feature.phase0-astrometry.dependencies]
+python = "3.11.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+astromatic-scamp = "==2.15.0"
+astromatic-source-extractor = "==2.28.2"
+astrometry = "==0.97"
+
+[feature.phase0-astrometry.pypi-dependencies]
+drizzlepac = "==3.11.0"
+
+[feature.phase0-astrometry-net]
+platforms = ["linux-64"]
+
+[feature.phase0-astrometry-net.dependencies]
+python = "3.11.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+astrometry = "==0.97"
+
+[feature.phase0-astrometry-portable]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-astrometry-portable.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+scikit-build-core = ">=1.0.0"
+cmake = ">=3.21"
+ninja = ">=1.10"
+nanobind = ">=2.10.2"
+astromatic-scamp = "==2.15.0"
+
+[feature.phase0-astrometry-portable.pypi-dependencies]
+drizzlepac = "==3.11.0"
+torchfits = "==1.0.0"
+
+[feature.phase0-sparse-sphere]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-sparse-sphere.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+scikit-build-core = ">=1.0.0"
+cmake = ">=3.21"
+ninja = ">=1.10"
+nanobind = ">=2.10.2"
+mhealpy = "==0.3.7"
+healsparse = "==1.15.0"
+mocpy = "==0.20.0"
+
+[feature.phase0-sparse-sphere.pypi-dependencies]
+torchfits = "==1.0.0"
+
+[feature.phase0-harmonics]
+platforms = ["linux-64"]
+
+[feature.phase0-harmonics.dependencies]
+python = "3.11.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+torch-harmonics = "==0.9.3"
+ducc0 = "==0.42.0"
+pixell = "==0.32.7"
+namaster = "==3.0.1"
+
+[feature.phase0-harmonics.pypi-dependencies]
+s2fft = ">=1,<2"
+
+[feature.phase0-harmonics-portable]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-harmonics-portable.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+scikit-build-core = ">=1.0.0"
+cmake = ">=3.21"
+ninja = ">=1.10"
+nanobind = ">=2.10.2"
+ducc0 = "==0.42.0"
+pixell = "==0.32.7"
+namaster = "==3.0.1"
+
+[feature.phase0-harmonics-portable.pypi-dependencies]
+s2fft = ">=1,<2"
+torchfits = "==1.0.0"
+
+[feature.phase0-drizzle]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-drizzle.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+
+[feature.phase0-drizzle.pypi-dependencies]
+drizzlepac = "==3.11.0"
+stcal = ">=1,<2"
+torchfits = "==1.0.0"
+
+[feature.phase0-adaptive]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-adaptive.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+astropy = "==8.0.2"
+reproject = "==0.21.0"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+
+[feature.phase0-adaptive.pypi-dependencies]
+torchfits = "==1.0.0"
+
+[feature.phase0-jwst-ifu]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-jwst-ifu.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+
+[feature.phase0-jwst-ifu.pypi-dependencies]
+jwst = "==3.0.0"
+crds = ">=13,<14"
+torchfits = "==1.0.0"
+
+[feature.phase0-photometry]
+platforms = ["osx-arm64", "linux-64"]
+
+[feature.phase0-photometry.dependencies]
+python = "3.13.*"
+pip = ">=24"
+setuptools = ">=77"
+wheel = ">=0.45"
+pytorch = "==2.13.0"
+numpy = ">=1.20"
+scikit-build-core = ">=1.0.0"
+cmake = ">=3.21"
+ninja = ">=1.10"
+nanobind = ">=2.10.2"
+
+[feature.phase0-photometry.pypi-dependencies]
+scarlet2 = "==0.5.1"
+torchfits = "==1.0.0"
+
 # Environment definitions
 [environments]
 default = { features = ["prod"], solve-group = "default" }
@@ -333,3 +550,14 @@ map-compat = { features = ["prod", "bench", "sphere-bench", "map-compat"], solve
 map-compat-cuda = { features = ["cuda", "map-compat"], no-default-feature = true, solve-group = "map-compat-cuda" }
 bench-legacy = { features = ["bench-legacy"], solve-group = "bench-legacy" }
 astrometry = { features = ["prod", "astrometry"], solve-group = "default" }
+phase0-wcs = { features = ["phase0-wcs"], no-default-feature = true, solve-group = "phase0-wcs" }
+phase0-astrometry = { features = ["phase0-astrometry"], no-default-feature = true, solve-group = "phase0-astrometry" }
+phase0-astrometry-net = { features = ["phase0-astrometry-net"], no-default-feature = true, solve-group = "phase0-astrometry-net" }
+phase0-astrometry-portable = { features = ["phase0-astrometry-portable"], no-default-feature = true, solve-group = "phase0-astrometry-portable" }
+phase0-sparse-sphere = { features = ["phase0-sparse-sphere"], no-default-feature = true, solve-group = "phase0-sparse-sphere" }
+phase0-harmonics = { features = ["phase0-harmonics"], no-default-feature = true, solve-group = "phase0-harmonics" }
+phase0-harmonics-portable = { features = ["phase0-harmonics-portable"], no-default-feature = true, solve-group = "phase0-harmonics-portable" }
+phase0-drizzle = { features = ["phase0-drizzle"], no-default-feature = true, solve-group = "phase0-drizzle" }
+phase0-adaptive = { features = ["phase0-adaptive"], no-default-feature = true, solve-group = "phase0-adaptive" }
+phase0-jwst-ifu = { features = ["phase0-jwst-ifu"], no-default-feature = true, solve-group = "phase0-jwst-ifu" }
+phase0-photometry = { features = ["phase0-photometry"], no-default-feature = true, solve-group = "phase0-photometry" }

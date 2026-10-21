@@ -1,0 +1,14 @@
+schema_version = 1
+id = "phase0-astrometry"
+domain = "astrometry"
+status = "stub"
+scheduled_certification = true
+runs_large_peers = false
+environments = ["phase0-astrometry", "phase0-astrometry-net"]
+required_peers = ["scamp", "tweakreg", "astrometry-net"]
+optional_peers = []
+required_identities = ["subject", "peer", "data", "index"]
+
+[[datasets]]
+id = "astrometry-centroid-reference-fixtures-v1"
+role = "identical centroids and held-out reference catalog"
