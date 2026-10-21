@@ -242,7 +242,7 @@ def main() -> int:
         left_ra, left_dec, right_ra, right_dec, **match_kwargs
     )
     coarse_nside = catalogs_core._choose_default_coarse_nside(
-        left_ra, left_dec, right_ra, right_dec, radius_arcsec=args.radius_arcsec
+        radius_arcsec=args.radius_arcsec
     )
     _assert_same_matches(indexed_result, coarse_result)
     _assert_same_matches(public_result, indexed_result)
