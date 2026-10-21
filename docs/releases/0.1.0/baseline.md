@@ -477,6 +477,9 @@ the session gists; VOS upload is unavailable on the notebook image.
 | `catalog-scale-1e6` | `j4fx6rdg` | rc=0 |
 | `catalog` | `jrlqea9c` | stalled after the crossmatch/compat rows (N=1e6/1e7 stage); deleted to free quota. Catalog-scale modes completed rc=0. |
 | `wcs-tpv`, `wcs-spectral`, `wcs-tabular`, `moc` | `uuek9x1g`, `sbnyl7zt`, `w4ll88ez`, `awhfuqtr` | all rc=0 |
+| `sht-profile` | `ldei5141` | rc=0 |
+| `cuhpx` (CUDA scalar SHT spike) | `zf5iiy80` | rc=0 |
+| `catalog-scale-1e7` | `nq2edc9c` | rc=0 (10 min) |
 | `depth` | `k6pnotjz` | calibration-extract fixed; later real-data field-fit benchmark returns 1, so the deep-field chain remains open (not a release gate) |
 
 Subject-side verification on the final tree: full suite **3584 passed, 105 skipped** (`-m 'not performance'`, 6m47s); examples **32/32**; docs contract **102 passed** with a clean site build; typecheck **0 errors**.
