@@ -475,9 +475,11 @@ the session gists; VOS upload is unavailable on the notebook image.
 | `observed` | `iysqryg7` | rc=0: 38 passed / 3 skipped |
 | `catalog-scale-real` | `qhmvl60e` | rc=0 |
 | `catalog-scale-1e6` | `j4fx6rdg` | rc=0 |
-| `catalog` | `jrlqea9c` | running at this writing (crossmatch/compat rows OK) |
+| `catalog` | `jrlqea9c` | stalled after the crossmatch/compat rows (N=1e6/1e7 stage); deleted to free quota. Catalog-scale modes completed rc=0. |
 | `wcs-tpv`, `wcs-spectral`, `wcs-tabular`, `moc` | `uuek9x1g`, `sbnyl7zt`, `w4ll88ez`, `awhfuqtr` | all rc=0 |
 | `depth` | `k6pnotjz` | calibration-extract fixed; later real-data field-fit benchmark returns 1, so the deep-field chain remains open (not a release gate) |
+
+Subject-side verification on the final tree: full suite **3584 passed, 105 skipped** (`-m 'not performance'`, 6m47s); examples **32/32**; docs contract **102 passed** with a clean site build; typecheck **0 errors**.
 
 Harness fixes found by these runs: relative `tests/test_*.py` paths in the
 CANFAR runner now resolve from `TORCHSKY_SUBJECT_ROOT`; the removed
