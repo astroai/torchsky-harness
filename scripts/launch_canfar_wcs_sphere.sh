@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Launch CANFAR headless CPU and/or CUDA jobs for torchsky WCS + sphere.
-# Usage: launch_canfar_wcs_sphere.sh [cpu|cuda|all|suite|sht|spectral|sparse|healsparse|spin|cuhpx|wcs-paper2|wcs-tpv|wcs-spectral|wcs-tabular|sht-profile|moc|catalog|catalog-scale|catalog-scale-1e6|catalog-scale-1e7|catalog-scale-real|observed|geom-cuda|world-cuda|world|depth]
+# Usage: launch_canfar_wcs_sphere.sh [cpu|cuda|all|optimization|optimization-cpu|optimization-cuda|suite|sht|spectral|sparse|healsparse|spin|cuhpx|wcs-paper2|wcs-tpv|wcs-spectral|wcs-tabular|sht-profile|moc|catalog|catalog-scale|catalog-scale-1e6|catalog-scale-1e7|catalog-scale-real|observed|geom-cuda|world-cuda|world|depth]
 #
 # Jobs clone TORCHSKY_COMMIT from GitHub (must already be pushed), run
 # scripts/run_canfar_wcs_sphere.sh from that clone, write
@@ -17,12 +17,12 @@ cd "${ROOT_DIR}"
 
 MODE="${1:-all}"
 case "${MODE}" in
-  cpu | cuda | all | suite | many | spectral | sparse | healsparse | spin | sht | cuhpx | \
+  cpu | cuda | all | optimization | optimization-cpu | optimization-cuda | suite | many | spectral | sparse | healsparse | spin | sht | cuhpx | \
   wcs-paper2 | wcs-tpv | wcs-spectral | wcs-tabular | sht-profile | moc | catalog | \
   catalog-scale | catalog-scale-1e6 | catalog-scale-1e7 | catalog-scale-real | \
   observed | geom-cuda | world-cuda | gpu-validate | world | depth) ;;
   *)
-    echo "usage: $0 [cpu|cuda|all|suite|sht|spectral|sparse|healsparse|spin|cuhpx|wcs-paper2|wcs-tpv|wcs-spectral|wcs-tabular|sht-profile|moc|catalog|catalog-scale|catalog-scale-1e6|catalog-scale-1e7|catalog-scale-real|observed|geom-cuda|world-cuda|world|depth]" >&2
+    echo "usage: $0 [cpu|cuda|all|optimization|optimization-cpu|optimization-cuda|suite|sht|spectral|sparse|healsparse|spin|cuhpx|wcs-paper2|wcs-tpv|wcs-spectral|wcs-tabular|sht-profile|moc|catalog|catalog-scale|catalog-scale-1e6|catalog-scale-1e7|catalog-scale-real|observed|geom-cuda|world-cuda|world|depth]" >&2
     exit 2
     ;;
 esac
@@ -46,7 +46,7 @@ if ! git branch -r --contains "${COMMIT}" | grep -q 'origin/'; then
   echo "TORCHSKY_COMMIT=${COMMIT} is not on origin; git push before launching CANFAR" >&2
   exit 2
 fi
-IMAGE="${CONTAINER_IMAGE:-astroai/notebook:latest}"
+IMAGE="${CONTAINER_IMAGE:-images.canfar.net/astroai/notebook:latest}"
 if [[ "${MODE}" == "depth" ]]; then
   IMAGE="${CONTAINER_IMAGE:-astroai/improc:latest}"
 fi
@@ -159,6 +159,12 @@ if [[ "${MODE}" == "cpu" || "${MODE}" == "all" ]]; then
 fi
 if [[ "${MODE}" == "cuda" || "${MODE}" == "all" ]]; then
   launch_one cuda 1
+fi
+if [[ "${MODE}" == "optimization-cpu" || "${MODE}" == "optimization" ]]; then
+  launch_one optimization-cpu "" "optimization-cpu-${STAMP}"
+fi
+if [[ "${MODE}" == "optimization-cuda" || "${MODE}" == "optimization" ]]; then
+  launch_one optimization-cuda 1 "optimization-cuda-${STAMP}"
 fi
 if [[ "${MODE}" == "suite" || "${MODE}" == "many" ]]; then
   launch_one spectral "" "sphere-spectral-${STAMP}"

@@ -32,6 +32,10 @@ def test_canfar_wcs_sphere_runner_contract() -> None:
     assert "cpu_rc" in runner
     assert "cuda job failures" in runner
     assert "cpu job failures" in runner
+    assert "optimization-cpu)" in runner
+    assert "optimization-cuda)" in runner
+    assert "optimization_solver_pcg_cuda.json" in runner
+    assert "optimization_triplane_cpu.json" in runner
     assert runner.index("-k cuda") < runner.index("acceptance_wcs_cuda")
     assert runner.index("--no-legacy-wcs-bridge") < runner.index("acceptance_wcs_cuda")
     assert "vos_upload after_wcs" in runner
@@ -97,6 +101,9 @@ def test_canfar_wcs_sphere_launcher_payload_has_no_shell_vars() -> None:
     assert "gh repo clone astroai/torchsky-harness" in launcher
     assert launcher.count("gh auth setup-git") == 2
     assert "git push before launching CANFAR" in launcher
+    assert "optimization-cpu" in launcher
+    assert "optimization-cuda" in launcher
+    assert "images.canfar.net/astroai/notebook:latest" in launcher
     assert "RUNNER_VOS_URI" not in launcher
     assert "suite" in launcher
     assert "cuhpx" in launcher

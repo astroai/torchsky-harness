@@ -21,12 +21,12 @@ case "${container_image}" in
 esac
 
 case "${mode}" in
-  cpu | cuda | spectral | sphere | sparse | healsparse | spin | geometry | cuhpx | \
+  cpu | cuda | optimization-cpu | optimization-cuda | spectral | sphere | sparse | healsparse | spin | geometry | cuhpx | \
   wcs-paper2 | wcs-tpv | wcs-spectral | wcs-tabular | sht-profile | moc | catalog | \
   catalog-scale | catalog-scale-1e6 | catalog-scale-1e7 | catalog-scale-real | \
   observed | geom-cuda | world-cuda | gpu-validate) ;;
   *)
-    echo "unknown mode: ${mode} (expected cpu, cuda, spectral, sphere, sparse, healsparse, spin, geometry, cuhpx, wcs-paper2, wcs-tpv, wcs-spectral, wcs-tabular, sht-profile, moc, catalog, catalog-scale, catalog-scale-1e6, catalog-scale-1e7, catalog-scale-real, observed, geom-cuda, or world-cuda)" >&2
+    echo "unknown mode: ${mode} (expected cpu, cuda, optimization-cpu, optimization-cuda, spectral, sphere, sparse, healsparse, spin, geometry, cuhpx, wcs-paper2, wcs-tpv, wcs-spectral, wcs-tabular, sht-profile, moc, catalog, catalog-scale, catalog-scale-1e6, catalog-scale-1e7, catalog-scale-real, observed, geom-cuda, or world-cuda)" >&2
     exit 2
     ;;
 esac
@@ -168,6 +168,63 @@ record_versions() {
 }
 
 case "${mode}" in
+  optimization-cpu)
+    install_env test
+    install_env sphere-bench
+    pixi run --manifest-path "${source_root}/pixi.toml" -e sphere-bench -- \
+      python "${source_root}/benchmarks/bench_map_image_plane.py" \
+      --profile target-preparation-quick --size 512 --runs 5 --warmups 2 \
+      --tile-sizes 128,256 --exposure-counts 1,4,24 --cache-capacities 0,1,4 \
+      --device cpu --json-out "${artifact_root}/optimization_map_target_preparation_cpu.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
+      python "${source_root}/benchmarks/bench_solver_pcg.py" \
+      --profile full --device cpu --runs 7 \
+      --json-out "${artifact_root}/optimization_solver_pcg_cpu.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
+      python "${source_root}/benchmarks/bench_wcs_coupled_calibration.py" \
+      --profile full --runs 5 \
+      --json-out "${artifact_root}/optimization_calibration_graph_cpu.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e sphere-bench -- \
+      python "${source_root}/benchmarks/bench_sphere_core.py" \
+      --moc-only --sampling-profile full --device cpu --runs 7 \
+      --json-out "${artifact_root}/optimization_random_moc_cpu.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e sphere-bench -- \
+      python "${source_root}/benchmarks/bench_sphere_sparse.py" \
+      --nside 512 --coverage-frac 0.1 --n-queries 200000 --sampling-profile full \
+      --device cpu --runs 7 --json-out "${artifact_root}/optimization_random_sparse_cpu.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
+      python "${source_root}/benchmarks/bench_field_triplane_sampling.py" \
+      --profile full --devices cpu --warmup 3 --runs 10 \
+      --json-out "${artifact_root}/optimization_triplane_cpu.json"
+    ;;
+  optimization-cuda)
+    install_env cuda-bench
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python -c "import torch; assert torch.cuda.is_available(), 'CUDA not available'"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python -m pip install astropy
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python "${source_root}/benchmarks/bench_map_image_plane.py" \
+      --profile target-preparation-quick --size 1024 --runs 7 --warmups 3 \
+      --tile-sizes 128,256,512 --exposure-counts 1,4,24 --cache-capacities 0,1,4 \
+      --device cuda --json-out "${artifact_root}/optimization_map_target_preparation_cuda.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python "${source_root}/benchmarks/bench_solver_pcg.py" \
+      --profile full --device cuda --runs 10 \
+      --json-out "${artifact_root}/optimization_solver_pcg_cuda.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python "${source_root}/benchmarks/bench_sphere_core.py" \
+      --moc-only --sampling-profile full --device cuda --runs 10 \
+      --json-out "${artifact_root}/optimization_random_moc_cuda.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python "${source_root}/benchmarks/bench_sphere_sparse.py" \
+      --nside 512 --coverage-frac 0.1 --n-queries 200000 --sampling-profile full \
+      --device cuda --runs 10 --json-out "${artifact_root}/optimization_random_sparse_cuda.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e cuda-bench -- \
+      python "${source_root}/benchmarks/bench_field_triplane_sampling.py" \
+      --profile full --devices cuda --warmup 3 --runs 10 \
+      --json-out "${artifact_root}/optimization_triplane_cuda.json"
+    ;;
   cpu)
     # ponytail: do not call wcs-sphere-acceptance-full here. That task's WCS
     # path auto-spawns pixi -e bench-legacy (pyast/kapteyn). The last CPU job

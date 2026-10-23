@@ -23,6 +23,7 @@ BENCHMARKS = ROOT / "benchmarks"
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_field_fit as field_fit_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
+import torchsky_harness.benchmarks.bench_map_image_plane as image_plane_bench  # noqa: E402
 from torchsky.map import stack_product
 from torchsky.map.field import (
     FieldObservation,
@@ -442,6 +443,9 @@ def _format_table(rows: list[dict[str, object]], *, headers: list[str]) -> str:
 
 
 def _format_markdown(rows: list[dict[str, object]], *, profile: str) -> str:
+    target_preparation_rows = [
+        row for row in rows if row.get("suite") == "target_preparation"
+    ]
     truth_rows = [row for row in rows if row.get("suite") == "projection_truth"]
     equal_psf_rows = [row for row in rows if row.get("suite") == "projection_equal_psf"]
     method_rows = [
@@ -571,10 +575,38 @@ def _format_markdown(rows: list[dict[str, object]], *, profile: str) -> str:
         "coverage_fraction",
         "reason",
     ]
+    target_preparation_headers = [
+        "suite",
+        "case",
+        "projection",
+        "n_obs",
+        "tile_size",
+        "value_semantics",
+        "footprint_order",
+        "status",
+        "target_width",
+        "target_height",
+        "total_time_ms",
+        "target_preparation_calls",
+        "target_preparation_time_ms",
+        "projection_calls",
+        "projection_time_ms",
+        "projection_excluding_target_preparation_time_ms",
+        "mpix_s",
+        "cache_capacity_requested",
+        "cache_metrics_available",
+        "cache_metrics_unavailable_reason",
+    ]
     parts = [
         "# Projection And Mosaicking Scoreboard",
         "",
         f"Profile: `{profile}`",
+        "",
+        "## Target Preparation Quick Profile",
+        "",
+        _format_table(
+            target_preparation_rows, headers=target_preparation_headers
+        ).rstrip(),
         "",
         "## Projection Truth",
         "",
@@ -796,6 +828,89 @@ def _prepare_projection_truth_case(
         observations, target_header=target_header
     )
     return observations, target_header, truth, case_spec, region_masks
+
+
+def _run_target_preparation_suite(
+    tmpdir: Path,
+    *,
+    cases: list[_ProjectionCase],
+    tile_sizes: list[int],
+    exposure_counts: list[int],
+    cache_capacities: list[int],
+    runs: int,
+    warmups: int,
+    seed: int,
+    device: str,
+    footprint_order: int | None,
+) -> list[dict[str, object]]:
+    environment = image_plane_bench._benchmark_environment(device)
+    capacities: list[int | None] = (
+        cache_capacities
+        if image_plane_bench._cache_capacity_argument() is not None
+        else [None]
+    )
+    rows: list[dict[str, object]] = []
+    for case_item in cases:
+        case_tmpdir = (
+            tmpdir
+            / f"target_preparation_{case_item.projection.lower()}_{case_item.source_case}"
+        )
+        case_tmpdir.mkdir(parents=True, exist_ok=True)
+        observations, target_header, _truth, case_spec, _region_masks = (
+            _prepare_projection_truth_case(
+                case_tmpdir,
+                projection_case=case_item,
+                seed=seed,
+            )
+        )
+        obs_list = [item.observation for item in observations]
+        case_label = _case_label(
+            case_item.projection,
+            case_item.source_case,
+            size=case_item.size,
+            width=case_item.width,
+            height=case_item.height,
+        )
+        for tile_size in tile_sizes:
+            for exposure_count in exposure_counts:
+                for capacity in capacities:
+                    row = image_plane_bench._profile_target_preparation_workload(
+                        case=case_label,
+                        projection=case_item.projection,
+                        observations=obs_list,
+                        target_header=target_header,
+                        tile_size=tile_size,
+                        exposure_count=exposure_count,
+                        value_semantics=case_spec.value_semantics,
+                        footprint_order=None,
+                        runs=runs,
+                        warmups=warmups,
+                        device=device,
+                        cache_capacity=capacity,
+                        environment=environment,
+                    )
+                    row["source_case"] = case_item.source_case
+                    rows.append(row)
+        if footprint_order is not None:
+            for capacity in capacities:
+                row = image_plane_bench._profile_target_preparation_workload(
+                    case=case_label,
+                    projection=case_item.projection,
+                    observations=obs_list,
+                    target_header=target_header,
+                    tile_size=None,
+                    exposure_count=max(exposure_counts),
+                    value_semantics=case_spec.value_semantics,
+                    footprint_order=footprint_order,
+                    runs=runs,
+                    warmups=warmups,
+                    device=device,
+                    cache_capacity=capacity,
+                    environment=environment,
+                )
+                row["source_case"] = case_item.source_case
+                rows.append(row)
+    return rows
 
 
 def _run_projection_truth_suite(
@@ -1684,6 +1799,22 @@ def main() -> int:
     parser.add_argument("--field-runs", type=int, default=None)
     parser.add_argument("--seed", type=int, default=1234)
     parser.add_argument(
+        "--target-preparation-profile",
+        choices=("off", "quick"),
+        default="off",
+    )
+    parser.add_argument("--target-preparation-only", action="store_true")
+    parser.add_argument(
+        "--target-preparation-cases",
+        default="SIN:tan_aligned_low_noise@256,CEA:tan_low_overlap_exptime_transmission@256x192",
+    )
+    parser.add_argument("--target-preparation-tile-sizes", default="128,256")
+    parser.add_argument("--target-preparation-exposure-counts", default="1,4")
+    parser.add_argument("--target-preparation-cache-capacities", default="0,1,4")
+    parser.add_argument("--target-preparation-warmups", type=int, default=1)
+    parser.add_argument("--target-preparation-device", default="cpu")
+    parser.add_argument("--target-preparation-footprint-order", type=int, default=8)
+    parser.add_argument(
         "--json-out",
         type=Path,
         default=Path("benchmark_results/map_projection_mosaic_suite.json"),
@@ -1694,6 +1825,60 @@ def main() -> int:
         default=Path("benchmark_results/map_projection_mosaic_suite.md"),
     )
     args = parser.parse_args()
+
+    if args.target_preparation_only and args.target_preparation_profile == "off":
+        parser.error(
+            "--target-preparation-only requires --target-preparation-profile quick"
+        )
+
+    target_preparation_cases = _parse_projection_case_specs(
+        args.target_preparation_cases
+    )
+    target_preparation_tile_sizes = image_plane_bench._parse_positive_ints(
+        args.target_preparation_tile_sizes, label="target-preparation tile sizes"
+    )
+    target_preparation_exposure_counts = image_plane_bench._parse_positive_ints(
+        args.target_preparation_exposure_counts,
+        label="target-preparation exposure counts",
+    )
+    target_preparation_cache_capacities = [
+        int(item.strip())
+        for item in args.target_preparation_cache_capacities.split(",")
+        if item.strip()
+    ]
+    if not target_preparation_cache_capacities or any(
+        value < 0 for value in target_preparation_cache_capacities
+    ):
+        parser.error(
+            "target-preparation cache capacities must contain nonnegative integers"
+        )
+
+    if args.target_preparation_only:
+        with tempfile.TemporaryDirectory(
+            prefix="torchsky_projection_target_preparation_"
+        ) as tmp:
+            rows = _run_target_preparation_suite(
+                Path(tmp),
+                cases=target_preparation_cases,
+                tile_sizes=target_preparation_tile_sizes,
+                exposure_counts=target_preparation_exposure_counts,
+                cache_capacities=target_preparation_cache_capacities,
+                runs=1 if args.runs is None else int(args.runs),
+                warmups=args.target_preparation_warmups,
+                seed=args.seed,
+                device=args.target_preparation_device,
+                footprint_order=args.target_preparation_footprint_order,
+            )
+        _write_outputs(
+            rows,
+            profile="target-preparation-quick",
+            json_out=args.json_out,
+            markdown_out=args.markdown_out,
+        )
+        print(args.markdown_out.read_text(encoding="utf-8"))
+        print(f"JSON: {args.json_out}")
+        print(f"Markdown: {args.markdown_out}")
+        return 0
 
     profile = _resolve_profile(args.profile)
     truth_cases = (
@@ -1766,6 +1951,21 @@ def main() -> int:
     rows: list[dict[str, object]] = []
     with tempfile.TemporaryDirectory(prefix="torchsky_projection_mosaic_suite_") as tmp:
         tmpdir = Path(tmp)
+        if args.target_preparation_profile == "quick":
+            rows.extend(
+                _run_target_preparation_suite(
+                    tmpdir,
+                    cases=target_preparation_cases,
+                    tile_sizes=target_preparation_tile_sizes,
+                    exposure_counts=target_preparation_exposure_counts,
+                    cache_capacities=target_preparation_cache_capacities,
+                    runs=1 if args.runs is None else int(args.runs),
+                    warmups=args.target_preparation_warmups,
+                    seed=args.seed,
+                    device=args.target_preparation_device,
+                    footprint_order=args.target_preparation_footprint_order,
+                )
+            )
         rows.extend(
             _run_projection_truth_suite(
                 tmpdir,
@@ -1820,7 +2020,11 @@ def main() -> int:
 
     _write_outputs(
         rows,
-        profile=args.profile,
+        profile=(
+            f"{args.profile}+target-preparation-quick"
+            if args.target_preparation_profile == "quick"
+            else args.profile
+        ),
         json_out=args.json_out,
         markdown_out=args.markdown_out,
     )

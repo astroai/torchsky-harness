@@ -4,7 +4,11 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
+import hashlib
+import inspect
 import json
+import statistics
 import tempfile
 import time
 from pathlib import Path
@@ -19,6 +23,7 @@ SRC = ROOT / "src"
 import astropy  # noqa: E402
 
 import torchsky  # noqa: E402
+import torchsky.map.image_plane as image_plane_mod  # noqa: E402
 from torchsky.map.image_plane import (
     coadd_image_plane,
     coadd_image_plane_cube,
@@ -27,6 +32,7 @@ from torchsky.map.image_plane import (
     plan_image_plane_target,
 )
 from torchsky.map.observation import ImageObservation
+from torchsky_harness.subject import git_identity, identify_subject
 
 try:  # noqa: E402
     import torchsky._cpp  # noqa: F401
@@ -248,6 +254,374 @@ def _time_many(fn, runs: int) -> float:
         samples.append(time.perf_counter() - t0)
     samples.sort()
     return float(samples[len(samples) // 2])
+
+
+_CACHE_CAPACITY_ARGUMENTS = (
+    "target_tile_cache_capacity",
+    "prepared_target_cache_capacity",
+    "target_cache_capacity",
+)
+_CACHE_COUNTER_KEYS = (
+    "hits",
+    "misses",
+    "evictions",
+    "live_entries",
+    "peak_bytes",
+)
+
+
+def _synchronize(device: torch.device) -> None:
+    if device.type == "cuda" and torch.cuda.is_available():
+        torch.cuda.synchronize(device)
+    elif device.type == "mps" and hasattr(torch, "mps"):
+        torch.mps.synchronize()
+
+
+def _tensor_checksum(value: torch.Tensor | None) -> str | None:
+    if value is None:
+        return None
+    tensor = value.detach().contiguous().cpu()
+    digest = hashlib.sha256()
+    digest.update(str(tensor.dtype).encode())
+    digest.update(str(tuple(tensor.shape)).encode())
+    digest.update(tensor.numpy().tobytes())
+    return digest.hexdigest()
+
+
+def _footprint_checksum(result: Any) -> str | None:
+    footprint = getattr(result, "coverage_moc", None)
+    if footprint is None:
+        return None
+    payload = footprint.to_json()
+    if not isinstance(payload, str):
+        payload = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def _output_checksums(result: Any) -> dict[str, str | None]:
+    variance = getattr(result, "inverse_variance", None)
+    return {
+        "data": _tensor_checksum(getattr(result, "data", None)),
+        "weight": _tensor_checksum(getattr(result, "weight", None)),
+        "variance": _tensor_checksum(variance),
+        "context": _tensor_checksum(getattr(result, "context", None)),
+        "overlap": _tensor_checksum(getattr(result, "overlap_count", None)),
+        "footprint": _footprint_checksum(result),
+    }
+
+
+def _output_differences(reference: Any, result: Any) -> dict[str, float | None]:
+    differences: dict[str, float | None] = {}
+    for name, attribute in (
+        ("data", "data"),
+        ("weight", "weight"),
+        ("variance", "inverse_variance"),
+        ("context", "context"),
+        ("overlap", "overlap_count"),
+    ):
+        expected = getattr(reference, attribute, None)
+        actual = getattr(result, attribute, None)
+        if expected is None or actual is None:
+            differences[name] = None
+        elif expected.shape != actual.shape:
+            differences[name] = float("inf")
+        elif expected.numel() == 0:
+            differences[name] = 0.0
+        else:
+            differences[name] = float(
+                (actual.to(dtype=torch.float64) - expected.to(dtype=torch.float64))
+                .abs()
+                .max()
+                .item()
+            )
+    differences["footprint"] = (
+        0.0 if _footprint_checksum(reference) == _footprint_checksum(result) else 1.0
+    )
+    return differences
+
+
+def _cache_capacity_argument() -> str | None:
+    parameters = inspect.signature(coadd_image_plane).parameters
+    return next(
+        (name for name in _CACHE_CAPACITY_ARGUMENTS if name in parameters), None
+    )
+
+
+def _find_cache_counters(value: Any) -> dict[str, int] | None:
+    candidates: list[Any] = [value]
+    provenance = getattr(value, "provenance", None)
+    if provenance is not None:
+        candidates.append(provenance)
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        nested = [candidate]
+        nested.extend(item for item in candidate.values() if isinstance(item, dict))
+        for item in nested:
+            matched = {
+                key: int(item[key])
+                for key in _CACHE_COUNTER_KEYS
+                if key in item and item[key] is not None
+            }
+            if matched:
+                return matched
+    return None
+
+
+@contextmanager
+def _instrument_target_preparation(device: torch.device):
+    metrics = {
+        "target_preparation_calls": 0,
+        "target_preparation_time_s": 0.0,
+        "projection_calls": 0,
+        "projection_time_s": 0.0,
+    }
+    implementation_module = inspect.getmodule(coadd_image_plane)
+    modules = [image_plane_mod]
+    if (
+        implementation_module is not None
+        and implementation_module is not image_plane_mod
+    ):
+        modules.append(implementation_module)
+    originals: list[tuple[Any, str, Any]] = []
+    for module in modules:
+        original_prepare = getattr(module, "_prepare_target", None)
+        if original_prepare is not None:
+
+            def measured_prepare(*args, _original=original_prepare, **kwargs):
+                _synchronize(device)
+                started = time.perf_counter()
+                try:
+                    return _original(*args, **kwargs)
+                finally:
+                    _synchronize(device)
+                    metrics["target_preparation_calls"] += 1
+                    metrics["target_preparation_time_s"] += (
+                        time.perf_counter() - started
+                    )
+
+            originals.append((module, "_prepare_target", original_prepare))
+            setattr(module, "_prepare_target", measured_prepare)
+        for project_name in (
+            "_project_observation_to_target",
+            "_project_observation_to_target_chunk",
+        ):
+            original_project = getattr(module, project_name, None)
+            if original_project is None:
+                continue
+
+            def measured_project(*args, _original=original_project, **kwargs):
+                _synchronize(device)
+                started = time.perf_counter()
+                try:
+                    return _original(*args, **kwargs)
+                finally:
+                    _synchronize(device)
+                    metrics["projection_calls"] += 1
+                    metrics["projection_time_s"] += time.perf_counter() - started
+
+            originals.append((module, project_name, original_project))
+            setattr(module, project_name, measured_project)
+    try:
+        yield metrics
+    finally:
+        for module, name, original in reversed(originals):
+            setattr(module, name, original)
+
+
+def _median(values: list[float]) -> float:
+    return float(statistics.median(values))
+
+
+def _profile_target_preparation_workload(
+    *,
+    case: str,
+    projection: str,
+    observations: list[ImageObservation],
+    target_header: dict[str, Any],
+    tile_size: int | None,
+    exposure_count: int,
+    value_semantics: str,
+    footprint_order: int | None,
+    runs: int,
+    warmups: int,
+    device: str,
+    cache_capacity: int | None = None,
+    environment: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not observations:
+        raise ValueError("target-preparation profiling requires observations")
+    selected = [
+        observations[index % len(observations)] for index in range(exposure_count)
+    ]
+    cache_argument = _cache_capacity_argument()
+    kwargs: dict[str, Any] = {
+        "target_header": dict(target_header),
+        "footprint_order": footprint_order,
+        "value_semantics": value_semantics,
+        "device": device,
+    }
+    if tile_size is not None:
+        kwargs["spatial_tile_hw"] = (tile_size, tile_size)
+    if cache_argument is not None and cache_capacity is not None:
+        kwargs[cache_argument] = cache_capacity
+    resolved_device = torch.device(device)
+    for _ in range(max(0, warmups)):
+        coadd_image_plane(selected, **kwargs)
+    total_samples: list[float] = []
+    prepare_samples: list[float] = []
+    prepare_call_samples: list[float] = []
+    projection_samples: list[float] = []
+    projection_call_samples: list[float] = []
+    result = None
+    reference_kwargs = dict(kwargs)
+    if cache_argument is not None:
+        reference_kwargs[cache_argument] = 0
+    reference = coadd_image_plane(selected, **reference_kwargs)
+    for _ in range(max(1, runs)):
+        with _instrument_target_preparation(resolved_device) as metrics:
+            _synchronize(resolved_device)
+            started = time.perf_counter()
+            result = coadd_image_plane(selected, **kwargs)
+            _synchronize(resolved_device)
+            total_samples.append(time.perf_counter() - started)
+        prepare_samples.append(float(metrics["target_preparation_time_s"]))
+        prepare_call_samples.append(float(metrics["target_preparation_calls"]))
+        projection_samples.append(float(metrics["projection_time_s"]))
+        projection_call_samples.append(float(metrics["projection_calls"]))
+    assert result is not None
+    total_median = _median(total_samples)
+    counters = _find_cache_counters(result)
+    cache_available = cache_argument is not None
+    cache_reason = None
+    if not cache_available:
+        cache_reason = (
+            "installed subject exposes no supported target-cache capacity argument"
+        )
+    elif counters is None:
+        cache_reason = "installed subject exposes cache capacity but no cache counters"
+    cache = {key: None for key in _CACHE_COUNTER_KEYS}
+    if counters is not None:
+        cache.update(counters)
+    return {
+        "suite": "target_preparation",
+        "case": case,
+        "projection": projection,
+        "status": "OK",
+        "device": str(resolved_device),
+        "dtype": str(result.data.dtype).removeprefix("torch."),
+        "value_semantics": value_semantics,
+        "footprint_order": footprint_order,
+        "tile_size": tile_size,
+        "n_obs": exposure_count,
+        "target_width": int(target_header["NAXIS1"]),
+        "target_height": int(target_header["NAXIS2"]),
+        "warmup_count": max(0, warmups),
+        "repeat_count": max(1, runs),
+        "total_time_ms": total_median * 1000.0,
+        "total_time_min_ms": min(total_samples) * 1000.0,
+        "total_time_max_ms": max(total_samples) * 1000.0,
+        "target_preparation_calls": _median(prepare_call_samples),
+        "target_preparation_time_ms": _median(prepare_samples) * 1000.0,
+        "projection_calls": _median(projection_call_samples),
+        "projection_time_ms": _median(projection_samples) * 1000.0,
+        "projection_excluding_target_preparation_time_ms": max(
+            0.0, _median(projection_samples) - _median(prepare_samples)
+        )
+        * 1000.0,
+        "mpix_s": (float(result.data.numel()) * exposure_count / total_median) / 1e6,
+        "cache_capacity_argument": cache_argument,
+        "cache_capacity_requested": cache_capacity,
+        "cache_metrics_available": counters is not None,
+        "cache_metrics_unavailable_reason": cache_reason,
+        "cache": cache,
+        "checksums": _output_checksums(result),
+        "max_abs_difference_from_uncached": _output_differences(reference, result),
+        "environment": environment,
+    }
+
+
+def _benchmark_environment(device: str) -> dict[str, Any]:
+    return {
+        "subject": identify_subject(),
+        "harness": git_identity(ROOT),
+        "torch_version": torch.__version__,
+        "device": device,
+        "torch_num_threads": torch.get_num_threads(),
+        "torch_num_interop_threads": torch.get_num_interop_threads(),
+    }
+
+
+def _parse_positive_ints(text: str, *, label: str) -> list[int]:
+    values = [int(item.strip()) for item in text.split(",") if item.strip()]
+    if not values or any(value <= 0 for value in values):
+        raise ValueError(f"{label} must contain positive integers")
+    return values
+
+
+def _run_target_preparation_quick(
+    tmpdir: Path,
+    *,
+    size: int,
+    tile_sizes: list[int],
+    exposure_counts: list[int],
+    cache_capacities: list[int],
+    runs: int,
+    warmups: int,
+    device: str,
+    footprint_order: int,
+) -> list[dict[str, Any]]:
+    for name in ("tan", "sip", "tpv"):
+        (tmpdir / name).mkdir(parents=True, exist_ok=True)
+    tan_observations, _ = _prepare_synthetic_case(
+        tmpdir / "tan", size=size, n_obs=max(exposure_counts), shifted=True
+    )
+    sip_observations, _ = _prepare_real_shifted_sip_case(tmpdir / "sip")
+    tpv_observations, _ = _prepare_synthetic_tpv_mef_case(tmpdir / "tpv", size=size)
+    cases = {
+        "TAN": (tan_observations, "surface_brightness", None, "dense"),
+        "SIP": (sip_observations, "surface_brightness", footprint_order, "dense"),
+        "TPV": (tpv_observations, "flux", footprint_order, "sparse"),
+    }
+    targets = {
+        projection: dict(
+            plan_image_plane_target(observations, reference_index=0).header
+        )
+        for projection, (observations, _, _, _) in cases.items()
+    }
+    capacities: list[int | None] = (
+        cache_capacities if _cache_capacity_argument() is not None else [None]
+    )
+    environment = _benchmark_environment(device)
+    rows: list[dict[str, Any]] = []
+    for projection, (observations, semantics, footprint, density) in cases.items():
+        projection_tiles: list[int | None] = (
+            tile_sizes if projection == "TAN" else [None]
+        )
+        projection_exposures = (
+            exposure_counts if projection == "TAN" else [max(exposure_counts)]
+        )
+        for tile_size in projection_tiles:
+            for exposure_count in projection_exposures:
+                for capacity in capacities:
+                    row = _profile_target_preparation_workload(
+                        case=f"{projection.lower()}_target_preparation_quick",
+                        projection=projection,
+                        observations=observations,
+                        target_header=targets[projection],
+                        tile_size=tile_size,
+                        exposure_count=exposure_count,
+                        value_semantics=semantics,
+                        footprint_order=footprint,
+                        runs=runs,
+                        warmups=warmups,
+                        device=device,
+                        cache_capacity=capacity,
+                        environment=environment,
+                    )
+                    row["footprint_density"] = density
+                    rows.append(row)
+    return rows
 
 
 def _prepare_synthetic_case(
@@ -518,16 +892,59 @@ def _bench_cube_case(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--profile",
+        choices=("standard", "target-preparation-quick"),
+        default="standard",
+    )
     parser.add_argument("--size", type=int, default=512)
     parser.add_argument("--n-obs", type=int, default=4)
     parser.add_argument("--runs", type=int, default=5)
+    parser.add_argument("--warmups", type=int, default=1)
+    parser.add_argument("--tile-sizes", default="256,512")
+    parser.add_argument("--exposure-counts", default="1,4")
+    parser.add_argument("--cache-capacities", default="0,1,4")
+    parser.add_argument("--device", default="cpu")
     parser.add_argument("--footprint-order", type=int, default=8)
     parser.add_argument("--json-out", type=Path, default=None)
     args = parser.parse_args()
+    cache_capacities = [
+        int(item.strip()) for item in args.cache_capacities.split(",") if item.strip()
+    ]
+    if not cache_capacities or any(value < 0 for value in cache_capacities):
+        parser.error("cache capacities must contain nonnegative integers")
 
     rows: list[dict[str, Any]] = []
     with tempfile.TemporaryDirectory(prefix="torchsky_map_bench_") as tmp:
         tmpdir = Path(tmp)
+        if args.profile == "target-preparation-quick":
+            rows = _run_target_preparation_quick(
+                tmpdir,
+                size=args.size,
+                tile_sizes=_parse_positive_ints(args.tile_sizes, label="tile sizes"),
+                exposure_counts=_parse_positive_ints(
+                    args.exposure_counts, label="exposure counts"
+                ),
+                cache_capacities=cache_capacities,
+                runs=args.runs,
+                warmups=args.warmups,
+                device=args.device,
+                footprint_order=args.footprint_order,
+            )
+            for row in rows:
+                print(
+                    f"{row['case']:>36s}"
+                    f"  tile={str(row['tile_size']):>4s}"
+                    f"  n_obs={row['n_obs']:>3d}"
+                    f"  total_ms={row['total_time_ms']:.3f}"
+                    f"  prepare_calls={row['target_preparation_calls']:.0f}"
+                    f"  prepare_ms={row['target_preparation_time_ms']:.3f}"
+                    f"  projection_ms={row['projection_time_ms']:.3f}"
+                )
+            if args.json_out is not None:
+                args.json_out.parent.mkdir(parents=True, exist_ok=True)
+                args.json_out.write_text(json.dumps(rows, indent=2), encoding="utf-8")
+            return 0
         synth_obs, synth_shape = _prepare_synthetic_case(
             tmpdir, size=args.size, n_obs=args.n_obs, shifted=False
         )

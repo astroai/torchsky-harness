@@ -16,7 +16,7 @@ def domain(name: str) -> str:
         return "sphere"
     if any(part in name for part in ("wcs", "observed_place", "transforms")):
         return "wcs"
-    if any(part in name for part in ("map", "smacs", "depth", "field", "inr", "strainer", "operator", "updec", "ground_truth")):
+    if any(part in name for part in ("map", "smacs", "depth", "field", "inr", "solver", "strainer", "operator", "updec", "ground_truth")):
         return "map"
     return "cross_domain"
 

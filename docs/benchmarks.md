@@ -6,6 +6,29 @@
 
 torchsky is benchmarked for both **correctness** and **throughput** against upstream libraries across WCS, sphere, catalog, map, and field workloads. This page documents the methodology, comparator environments, real-data benchmark setup, and how to reproduce the results.
 
+## Optimization evidence program
+
+The harness-first optimization program is defined in
+[optimization-evidence-plan.md](optimization-evidence-plan.md). Its quick local
+entry point is:
+
+```bash
+export TORCHSKY_EXPECTED_COMMIT=<full-subject-sha>
+pixi run bench-optimization-evidence-quick
+```
+
+Focused tasks cover prepared map targets, PCG synchronization, calibration
+graph scaling, MOC/sparse random sampling, and triplane batching. They emit raw
+JSON under `benchmark_results/` and durable execution records under `runs/`
+when invoked through the harness CLI. The shared
+`torchsky-harness.optimization-evidence.v1` contract records installed-subject
+identity, runtime/device information, repeated timing distributions, checksums,
+and explicit limitations. Baseline and candidate runs must use the same
+workload and hardware; a microbenchmark improvement is descriptive until its
+representative end-to-end row also passes.
+The aggregate task refuses dirty subjects and verifies
+`TORCHSKY_EXPECTED_COMMIT` (or the CANFAR `TORCHSKY_COMMIT`) before execution.
+
 Record installed comparator versions with `pixi run bench-comparator-versions-all` (writes under `benchmarks_results/`).
 
 ### Scorecard history (committed)

@@ -5,7 +5,7 @@ import pytest
 
 from torchsky_harness import runner
 from torchsky_harness.benchmarks.config import benchmark_subprocess_env
-from torchsky_harness.registry import resolve
+from torchsky_harness.registry import domain, resolve
 
 
 def test_subprocess_cannot_inject_subject_checkout(monkeypatch):
@@ -18,6 +18,12 @@ def test_subprocess_cannot_inject_subject_checkout(monkeypatch):
 def test_unknown_evaluation_fails_closed():
     with pytest.raises(ValueError):
         resolve("../../src/torchsky/wcs/core")
+
+
+def test_optimization_benchmarks_have_owned_domains():
+    assert domain("bench_solver_pcg") == "map"
+    assert domain("bench_field_triplane_sampling") == "map"
+    assert domain("bench_wcs_coupled_calibration") == "wcs"
 
 
 @pytest.mark.parametrize("code,state", [(0, "completed"), (2, "failed")])
