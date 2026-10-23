@@ -36,6 +36,10 @@ def test_canfar_wcs_sphere_runner_contract() -> None:
     assert "optimization-cuda)" in runner
     assert "optimization_solver_pcg_cuda.json" in runner
     assert "optimization_triplane_cpu.json" in runner
+    assert "real-data-gates)" in runner
+    assert "map_real_cutout.json" in runner
+    assert "sphere_real_map.json" in runner
+    assert "wcs_real_headers.json" in runner
     assert runner.index("-k cuda") < runner.index("acceptance_wcs_cuda")
     assert runner.index("--no-legacy-wcs-bridge") < runner.index("acceptance_wcs_cuda")
     assert "vos_upload after_wcs" in runner
@@ -103,6 +107,7 @@ def test_canfar_wcs_sphere_launcher_payload_has_no_shell_vars() -> None:
     assert "git push before launching CANFAR" in launcher
     assert "optimization-cpu" in launcher
     assert "optimization-cuda" in launcher
+    assert "real-data-gates" in launcher
     assert "images.canfar.net/astroai/notebook:latest" in launcher
     assert "RUNNER_VOS_URI" not in launcher
     assert "suite" in launcher
@@ -123,6 +128,23 @@ def test_canfar_wcs_sphere_launcher_payload_has_no_shell_vars() -> None:
     )
     assert "vos:sfabbro/torchsky-runs" in fetch
     assert "vcp" in fetch
+
+
+def test_real_data_fleet_is_safe_by_default() -> None:
+    script = (
+        Path(__file__).parents[1] / "scripts" / "launch_canfar_real_data_fleet.sh"
+    ).read_text()
+    assert "SUBMIT=0" in script
+    assert "TORCHSKY_CANFAR_DRY_RUN=$((1 - SUBMIT))" in script
+    assert "git -C \"${repository}\" status --porcelain" in script
+    assert "real-data-gates catalog-scale-real" in script
+    assert "MODES+=(observed optimization gpu-validate depth)" in script
+    assert "status --porcelain" in script
+    assert "git ls-remote" in script
+    assert "TORCHSKY_SUBJECT_REPO=$(" in script
+    assert "export CONTAINER_IMAGE" not in script
+    assert 'dirname "${BASH_SOURCE[0]}"' in script
+    assert "HARNESS_REPO=astroai/torchsky-harness" in script
 
 
 def test_catalog_compat_fits_tables_write_numeric_columns(tmp_path) -> None:

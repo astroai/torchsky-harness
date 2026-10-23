@@ -21,12 +21,12 @@ case "${container_image}" in
 esac
 
 case "${mode}" in
-  cpu | cuda | optimization-cpu | optimization-cuda | spectral | sphere | sparse | healsparse | spin | geometry | cuhpx | \
+  cpu | cuda | optimization-cpu | optimization-cuda | real-data-gates | spectral | sphere | sparse | healsparse | spin | geometry | cuhpx | \
   wcs-paper2 | wcs-tpv | wcs-spectral | wcs-tabular | sht-profile | moc | catalog | \
   catalog-scale | catalog-scale-1e6 | catalog-scale-1e7 | catalog-scale-real | \
   observed | geom-cuda | world-cuda | gpu-validate) ;;
   *)
-    echo "unknown mode: ${mode} (expected cpu, cuda, optimization-cpu, optimization-cuda, spectral, sphere, sparse, healsparse, spin, geometry, cuhpx, wcs-paper2, wcs-tpv, wcs-spectral, wcs-tabular, sht-profile, moc, catalog, catalog-scale, catalog-scale-1e6, catalog-scale-1e7, catalog-scale-real, observed, geom-cuda, or world-cuda)" >&2
+    echo "unknown mode: ${mode} (expected cpu, cuda, optimization-cpu, optimization-cuda, real-data-gates, spectral, sphere, sparse, healsparse, spin, geometry, cuhpx, wcs-paper2, wcs-tpv, wcs-spectral, wcs-tabular, sht-profile, moc, catalog, catalog-scale, catalog-scale-1e6, catalog-scale-1e7, catalog-scale-real, observed, geom-cuda, or world-cuda)" >&2
     exit 2
     ;;
 esac
@@ -168,6 +168,38 @@ record_versions() {
 }
 
 case "${mode}" in
+  real-data-gates)
+    install_env bench-all
+    install_env sphere-bench
+    record_versions bench-all
+    job_rc=0
+    pixi run --manifest-path "${source_root}/pixi.toml" -e bench-all -- \
+      python -m torchsky_harness.cli run bench_map_real_cutout -- \
+      --json-out "${artifact_root}/map_real_cutout.json" \
+      --max-relative-error 1e-5 --max-p99-relative-error 1e-6 || job_rc=$?
+    pixi run --manifest-path "${source_root}/pixi.toml" -e bench-all -- \
+      python -m torchsky_harness.cli run bench_sphere_real_map -- \
+      --lmax 64 --fwhm-deg 1.0 \
+      --json-out "${artifact_root}/sphere_real_map.json" \
+      --max-relative-error 1e-4 --max-ud-grade-absolute-error 1e-9 || job_rc=$?
+    pixi run --manifest-path "${source_root}/pixi.toml" -e bench-all -- \
+      python -m torchsky_harness.cli run bench_wcs_real_headers -- \
+      --grid 17 --json-out "${artifact_root}/wcs_real_headers.json" \
+      --max-angular-error-arcsec 1e-6 --max-inverse-pixel-error 1e-5 || job_rc=$?
+    pixi run --manifest-path "${source_root}/pixi.toml" -e sphere-bench -- \
+      python -m torchsky_harness.scripts.run_local_sphere_bench \
+      "${source_root}/benchmarks/bench_map_compat.py" \
+      --size 32 --n-obs 2 --runs 1 \
+      --cases real_astropy_sip_fixture,real_astropy_sip_shifted_wcs,real_astropy_sip_mef,real_astropy_sip_mef_shifted_wcs \
+      --torchsky-kernels bilinear --reproject-kernels bilinear \
+      --drizzle-kernels point --swarp-kernels bilinear \
+      --json-out "${artifact_root}/map_compat_real.json" \
+      --baseline-json "${source_root}/benchmarks/baselines/map_compat_real_smoke.json" || job_rc=$?
+    if [[ "${job_rc}" -ne 0 ]]; then
+      echo "real-data gate failures rc=${job_rc}"
+      exit "${job_rc}"
+    fi
+    ;;
   optimization-cpu)
     install_env test
     install_env sphere-bench
@@ -551,6 +583,16 @@ case "${mode}" in
     pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
       python "${source_root}/scripts/run_catalog_scale_real.py" \
       --json-out "${artifact_root}/catalog_scale_real.json"
+    pixi run --manifest-path "${source_root}/pixi.toml" -e test -- \
+      python - "${artifact_root}/catalog_scale_real.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text())
+if payload.get("skipped"):
+    raise SystemExit(f"real catalog data unavailable: {payload.get('reason', 'unknown')}")
+PY
     ;;
   observed)
     install_env test
