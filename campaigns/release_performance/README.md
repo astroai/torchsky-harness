@@ -21,7 +21,7 @@ Replace either `--baseline-sha` or `--candidate-sha` with the corresponding `--b
 
 ## Exact CANFAR submission template
 
-The launcher is a dry run unless `--submit` is present. CANFAR launches the versioned `base:26.10` tag, and the runner verifies that tag's live Harbor digest against the immutable campaign digest before executing; there is no operator-supplied digest field.
+The launcher is a dry run unless `--submit` is present. CANFAR launches the public `base:latest` tag, and the runner verifies that tag's live Harbor digest against the immutable campaign digest before executing; there is no operator-supplied digest field.
 
 ```sh
 bash campaigns/release_performance/launch_canfar.sh \

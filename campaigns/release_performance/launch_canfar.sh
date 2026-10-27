@@ -47,7 +47,7 @@ done
 [[ ! -e ${output_root} ]] || { printf '%s\n' "refusing existing destination: ${output_root}" >&2; exit 2; }
 [[ ${harness_sha} =~ ^[0-9a-f]{40}$ ]]
 [[ -n ${baseline_kind} && -n ${candidate_kind} ]]
-[[ ${image} == images.canfar.net/astroai/base:26.10 ]]
+[[ ${image} == images.canfar.net/astroai/base:latest ]]
 [[ ${container_digest} =~ ^sha256:[0-9a-f]{64}$ ]]
 for value in "${output_root}" "${harness_sha}" "${baseline_kind}" "${baseline_value}" "${candidate_kind}" "${candidate_value}" "${image}"; do
   [[ ${value} =~ ^[A-Za-z0-9_./:@-]+$ ]] || { printf '%s\n' "argument contains unsupported characters: ${value}" >&2; exit 2; }

@@ -26,7 +26,7 @@ container_digest=$8
 [[ ! -e ${persistent_dest} ]] || { printf '%s\n' "refusing existing destination: ${persistent_dest}" >&2; exit 2; }
 [[ ${harness_sha} =~ ^[0-9a-f]{40}$ ]] || { printf '%s\n' "HARNESS_SHA must be exact" >&2; exit 2; }
 [[ ${container_image} == "${TORCHSKY_RELEASE_PERFORMANCE_IMAGE}" ]] || { printf '%s\n' "PINNED_IMAGE does not match campaign policy" >&2; exit 2; }
-[[ ${container_image} == images.canfar.net/astroai/base:26.10 ]] || { printf '%s\n' "PINNED_IMAGE must use the immutable campaign tag" >&2; exit 2; }
+[[ ${container_image} == images.canfar.net/astroai/base:latest ]] || { printf '%s\n' "PINNED_IMAGE must use the public campaign tag" >&2; exit 2; }
 [[ ${container_digest} == "${TORCHSKY_RELEASE_PERFORMANCE_IMAGE_DIGEST}" ]] || { printf '%s\n' "PINNED_DIGEST does not match campaign policy" >&2; exit 2; }
 [[ ${container_digest} =~ ^sha256:[0-9a-f]{64}$ ]] || { printf '%s\n' "PINNED_IMAGE must contain an immutable digest" >&2; exit 2; }
 [[ ${baseline_kind} == sha || ${baseline_kind} == wheel ]] || { printf '%s\n' "invalid baseline kind" >&2; exit 2; }
@@ -34,7 +34,7 @@ container_digest=$8
 
 export PYTHONNOUSERSITE=1
 unset PYTHONPATH
-resolved_digest=$(python3 -c 'import json,urllib.request; print(json.load(urllib.request.urlopen("https://images.canfar.net/api/v2.0/projects/astroai/repositories/base/artifacts/26.10"))["digest"])')
+resolved_digest=$(python3 -c 'import json,urllib.request; print(json.load(urllib.request.urlopen("https://images.canfar.net/api/v2.0/projects/astroai/repositories/base/artifacts/latest"))["digest"])')
 [[ ${resolved_digest} == "${container_digest}" ]] || { printf '%s\n' "container tag digest drift: ${resolved_digest}" >&2; exit 2; }
 export PIXI_HOME=/scratch/env/pixi
 export PIXI_CACHE_DIR=/scratch/env/pixi-cache
