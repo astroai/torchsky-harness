@@ -62,7 +62,7 @@ from torchsky.map.field import (  # noqa: E402
     make_field_model,
     render_field_observation,
 )
-from torchsky.map.image_plane import coadd_image_plane  # noqa: E402
+from torchsky.map import coadd as coadd_image_plane  # noqa: E402
 from torchsky.map.observation import ImageObservation  # noqa: E402
 
 
@@ -220,10 +220,10 @@ def main() -> int:
 
         coadd_reference = coadd_image_plane(
             image_observations,
-            target_header=dict(target_header),
-            resampling_kernel="bilinear",
-            value_semantics="flux",
-            stacking_method="weighted_mean",
+            target=dict(target_header),
+            kernel="bilinear",
+            semantics="flux",
+            method="weighted_mean",
         )
         support_mask = coadd_reference.weight.cpu().numpy() > 0
         target_observation = _field_target_observation(

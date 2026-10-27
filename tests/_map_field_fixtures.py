@@ -65,7 +65,15 @@ class Scene(nn.Module):
         super().__init__()
         self.net = nn.Sequential(nn.Linear(3, 32), nn.Tanh(), nn.Linear(32, 1))
 
-    def forward(self, ra: torch.Tensor, dec: torch.Tensor, wavelength: torch.Tensor):
+    def forward(
+        self,
+        ra: torch.Tensor,
+        dec: torch.Tensor,
+        wavelength: torch.Tensor,
+        *,
+        forward_context=None,
+    ):
+        del forward_context
         wavelength = torch.broadcast_to(wavelength, ra.shape)
         coords = torch.stack(
             ((ra - 1) * 10, dec * 10, wavelength / 2), -1

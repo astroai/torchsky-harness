@@ -92,12 +92,15 @@ artifact. Anything else is supporting evidence, not a pass.
 
 ## Evidence bundle
 
-`pixi run evidence-bundle` (or `torchsky-harness evidence --runs-dir runs
---fail-on-missing`) collects the run records into a release bundle:
+`pixi run release-readiness` collects the run records and applies the mandatory
+paired performance verdict. `pixi run evidence-bundle` is its bundle step and
+also fails closed when the performance artifacts are absent or invalid:
 
 | Field | Meaning |
 |---|---|
-| `release_ready` | every declared claim has a completed and `established` run, all declared-claim runs share one subject identity, and no run directory is unreadable. Undeclared supporting runs may record a different subject without blocking readiness; `claim_subject_identities` is the gated set |
+| `release_ready` | `scientific_release_ready` is true and the finite paired performance contract is ready |
+| `scientific_release_ready` | every declared claim has a completed and `established` run, all declared-claim runs share one subject identity, and no run directory is unreadable. Undeclared supporting runs may record a different subject without blocking readiness; `claim_subject_identities` is the gated set |
+| `performance` | fail-closed paired candidate/baseline verdict, per-row ratios, fingerprints, and blockers |
 | `missing_claims` | declared claims without an `established` run |
 | `extra_established` | established runs for evaluations that declare no claim (supporting evidence) |
 | `subject_identities`, `subject_consistent` | package-content SHA-256, source kind, source digest, and revision of every selected run |

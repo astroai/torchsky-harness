@@ -5,6 +5,7 @@ import pytest
 
 from torchsky_harness import runner
 from torchsky_harness.evidence import CLAIMS, verdict
+from torchsky_harness.registry import evaluations
 
 IFU_ROWS = [
     {
@@ -43,6 +44,7 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_map_ifu",
         "bench_map_ifu_spectral_axis",
         "bench_map_healpix_multiband",
+        "bench_map_drizzle_required",
         "bench_map_real_cutout",
         "bench_native_contracts",
         "bench_native_likelihood",
@@ -54,6 +56,12 @@ def test_declared_claims_cover_only_release_gates() -> None:
         "bench_wcs",
         "bench_wcs_real_headers",
     }
+
+
+def test_bounded_drizzle_evaluation_has_a_distinct_registry_entry() -> None:
+    assert evaluations()["bench_map_drizzle_required"] == (
+        "torchsky_harness.benchmarks.bench_map_drizzle_required"
+    )
 
 
 def test_undeclared_evaluation_stays_unassessed(tmp_path: Path) -> None:
@@ -178,6 +186,166 @@ def test_operation_rows_satisfy_a_comparator_claim(tmp_path: Path) -> None:
     assert record["scientific_validity"] == "established"
     assert record["claim"]["scope"] == "reference_comparison"
     assert "healpy" in record["claim"]["comparators"]
+
+
+def test_bounded_drizzle_claim_uses_distinct_evaluation_name(tmp_path: Path) -> None:
+    _write_report(
+        tmp_path,
+        [
+            {
+                "case": "upstream_drizzle_crpix_translation",
+                "library": "drizzle",
+                "variant": variant,
+                "status": "OK",
+            }
+            for variant in ("point", "square")
+        ],
+    )
+    record = verdict(
+        "bench_map_drizzle_required",
+        returncode=0,
+        command=[
+            "python",
+            "-m",
+            "bench_map_drizzle_required",
+            "--acceptance-json",
+            "benchmarks/baselines/map_drizzle_acceptance.json",
+            "--require-comparators",
+            "drizzle",
+            *_write_arguments(tmp_path, baseline=False),
+        ],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "established"
+    assert record["claim"]["required_rows"] == [
+        "upstream_drizzle_crpix_translation"
+    ]
+    assert record["claim"]["comparators"] == ["drizzle"]
+    assert record["claim"]["required_row_selectors"] == [
+        {
+            "case": "upstream_drizzle_crpix_translation",
+            "library": "drizzle",
+            "variant": "point",
+        },
+        {
+            "case": "upstream_drizzle_crpix_translation",
+            "library": "drizzle",
+            "variant": "square",
+        },
+    ]
+    assert any(
+        "not real-data replacement parity" in limitation
+        for limitation in record["claim"]["limitations"]
+    )
+
+
+def test_bounded_drizzle_claim_requires_the_acceptance_contract(tmp_path: Path) -> None:
+    _write_report(
+        tmp_path,
+        [
+            {
+                "case": "upstream_drizzle_crpix_translation",
+                "library": "drizzle",
+                "variant": variant,
+                "status": "OK",
+            }
+            for variant in ("point", "square")
+        ],
+    )
+    record = verdict(
+        "bench_map_drizzle_required",
+        returncode=0,
+        command=["python", "-m", "bench_map_drizzle_required", *_write_arguments(tmp_path, baseline=False)],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+    assert "evaluation requires --acceptance-json" in record["verdict_reasons"][0]
+
+
+@pytest.mark.parametrize("status", [pytest.param(None, id="null"), pytest.param("FAILED", id="failing")])
+def test_bounded_drizzle_claim_requires_explicit_ok_status(
+    tmp_path: Path, status: str | None
+) -> None:
+    rows = [
+        {
+            "case": "upstream_drizzle_crpix_translation",
+            "library": "drizzle",
+            "variant": variant,
+            "status": "OK",
+        }
+        for variant in ("point", "square")
+    ]
+    rows[0]["status"] = status
+    _write_report(tmp_path, rows)
+    record = verdict(
+        "bench_map_drizzle_required",
+        returncode=0,
+        command=[
+            "--acceptance-json",
+            "benchmarks/baselines/map_drizzle_acceptance.json",
+            "--require-comparators",
+            "drizzle",
+            *_write_arguments(tmp_path, baseline=False),
+        ],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+    assert any("reported status" in reason for reason in record["verdict_reasons"])
+
+
+def test_bounded_drizzle_claim_rejects_missing_status(tmp_path: Path) -> None:
+    rows = [
+        {
+            "case": "upstream_drizzle_crpix_translation",
+            "library": "drizzle",
+            "variant": variant,
+            "status": "OK",
+        }
+        for variant in ("point", "square")
+    ]
+    rows[0].pop("status")
+    _write_report(tmp_path, rows)
+    record = verdict(
+        "bench_map_drizzle_required",
+        returncode=0,
+        command=[
+            "--acceptance-json",
+            "benchmarks/baselines/map_drizzle_acceptance.json",
+            "--require-comparators",
+            "drizzle",
+            *_write_arguments(tmp_path, baseline=False),
+        ],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+
+
+def test_bounded_drizzle_claim_rejects_missing_required_variant(tmp_path: Path) -> None:
+    _write_report(
+        tmp_path,
+        [
+            {
+                "case": "upstream_drizzle_crpix_translation",
+                "library": "drizzle",
+                "variant": "point",
+                "status": "OK",
+            }
+        ],
+    )
+    record = verdict(
+        "bench_map_drizzle_required",
+        returncode=0,
+        command=[
+            "--acceptance-json",
+            "benchmarks/baselines/map_drizzle_acceptance.json",
+            "--require-comparators",
+            "drizzle",
+            *_write_arguments(tmp_path, baseline=False),
+        ],
+        working_directory=tmp_path,
+    )
+    assert record["scientific_validity"] == "not_established"
+    assert any("variant=square" in reason for reason in record["verdict_reasons"])
 
 
 def test_summary_report_claim_requires_an_empty_failure_list(tmp_path: Path) -> None:

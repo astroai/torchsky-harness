@@ -30,7 +30,8 @@ from torchsky.map.operators import (  # noqa: E402
     target_shape_from_header,
     validate_image_plane_2d,
 )
-import torchsky.map.image_plane as image_plane_mod  # noqa: E402
+from torchsky.map import image_plane_projection as image_plane_projection_mod  # noqa: E402
+from torchsky.map import windowing as image_grid_mod  # noqa: E402
 
 try:  # noqa: E402
     import torchsky._cpp  # noqa: F401
@@ -54,12 +55,12 @@ def _time_many(fn, runs: int) -> float:
 
 def _target_setup(
     target_header: dict[str, Any], device: torch.device
-) -> tuple[tuple[int, int], image_plane_mod._PreparedImagePlaneTarget]:
+) -> tuple[tuple[int, int], image_grid_mod._PreparedImagePlaneTarget]:
     target_shape = target_shape_from_header(
         target_header,
         fallback=(int(target_header["NAXIS2"]), int(target_header["NAXIS1"])),
     )
-    prepared_target = image_plane_mod._prepare_target(
+    prepared_target = image_grid_mod._prepare_target(
         header=target_header,
         target_wcs=WCS(target_header),
         target_shape=target_shape,
@@ -74,7 +75,7 @@ def _torchsky_weighted_observation(
     obs: truth_bench.SimulatedObservation,
     *,
     target_header: dict[str, Any],
-    prepared_target: image_plane_mod._PreparedImagePlaneTarget,
+    prepared_target: image_grid_mod._PreparedImagePlaneTarget,
     target_shape: tuple[int, int],
     kernel: str,
 ) -> tuple[torch.Tensor, torch.Tensor]:
@@ -90,7 +91,7 @@ def _torchsky_weighted_observation(
         and tuple(int(v) for v in image.shape) == target_shape
     ):
         source_wcs = WCS(header_dict_obs)
-    numer, weight, _, _ = image_plane_mod._project_observation_to_target(
+    numer, weight, _, _ = image_plane_projection_mod._project_observation_to_target(
         observation,
         image=image,
         header_dict_obs=header_dict_obs,

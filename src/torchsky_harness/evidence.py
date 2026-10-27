@@ -43,6 +43,8 @@ class EvaluationClaim:
     scope: ClaimScope
     required_rows: tuple[str, ...]
     comparators: tuple[str, ...] = ()
+    required_row_selectors: tuple[tuple[tuple[str, str], ...], ...] = ()
+    required_arguments: tuple[tuple[str, str], ...] = ()
     limitations: tuple[str, ...] = field(default_factory=tuple)
     summary_failures_key: str | None = None
 
@@ -51,6 +53,8 @@ class EvaluationClaim:
             "scope": self.scope,
             "required_rows": list(self.required_rows),
             "comparators": list(self.comparators),
+            "required_row_selectors": [dict(selector) for selector in self.required_row_selectors],
+            "required_arguments": dict(self.required_arguments),
             "limitations": list(self.limitations),
             "summary_failures_key": self.summary_failures_key,
         }
@@ -168,6 +172,34 @@ CLAIMS: dict[str, EvaluationClaim] = {
             " TAN WCS; raw survey pixels beyond this cutout are not redistributed",
             "interior of the shared footprint is compared (edge erosion); the"
             " coverage-boundary convention is recorded, not gated",
+        ),
+    ),
+    "bench_map_drizzle_required": EvaluationClaim(
+        scope="reference_comparison",
+        required_rows=("upstream_drizzle_crpix_translation",),
+        comparators=("drizzle",),
+        required_row_selectors=(
+            (
+                ("case", "upstream_drizzle_crpix_translation"),
+                ("library", "drizzle"),
+                ("variant", "point"),
+            ),
+            (
+                ("case", "upstream_drizzle_crpix_translation"),
+                ("library", "drizzle"),
+                ("variant", "square"),
+            ),
+        ),
+        required_arguments=(
+            ("--acceptance-json", "benchmarks/baselines/map_drizzle_acceptance.json"),
+            ("--require-comparators", "drizzle"),
+        ),
+        limitations=(
+            "tiny synthetic 32x32 CRPIX translation with two inputs only",
+            "point and square low-level kernels are checked against drizzle 2.2.0"
+            " using the committed absolute acceptance contract",
+            "not real-data replacement parity and not rejection, DQ, context,"
+            " variance, rotation, scale, or general distortion parity",
         ),
     ),
     "bench_sphere_real_map": EvaluationClaim(
@@ -376,6 +408,58 @@ def _report_failures(payload: Any, key: str) -> tuple[list[Any], str | None]:
     return failures, None
 
 
+def _claim_report_errors(claim: EvaluationClaim, payload: Any) -> list[str]:
+    errors: list[str] = []
+    if claim.summary_failures_key is not None:
+        failures, failure_error = _report_failures(payload, claim.summary_failures_key)
+        if failure_error is not None:
+            errors.append(failure_error)
+        elif failures:
+            errors.append(
+                f"{len(failures)} reported failure(s) in {claim.summary_failures_key}"
+            )
+        return errors
+    if not isinstance(payload, list):
+        return ["evidence report is not a row list"]
+    rows = [row for row in payload if isinstance(row, dict)]
+    if not rows:
+        errors.append("evidence report has no rows")
+    by_case: dict[str, list[dict[str, Any]]] = {}
+    for row in rows:
+        identity = _row_identity(row)
+        if identity is not None:
+            by_case.setdefault(identity, []).append(row)
+    for required in claim.required_rows:
+        matches = by_case.get(required)
+        if not matches:
+            errors.append(f"missing required row {required}")
+            continue
+        failed = [
+            str(row.get("status", "OK"))
+            for row in matches
+            if str(row.get("status", "OK")) != "OK"
+        ]
+        if failed:
+            errors.append(f"required row {required} reported status {failed[0]}")
+    for selector_items in claim.required_row_selectors:
+        selector = dict(selector_items)
+        matches = [
+            row
+            for row in rows
+            if all(str(row.get(key)) == value for key, value in selector.items())
+        ]
+        label = ", ".join(f"{key}={value}" for key, value in selector.items())
+        if not matches:
+            errors.append(f"missing required row selector {label}")
+            continue
+        failed = [
+            str(row.get("status")) for row in matches if row.get("status") != "OK"
+        ]
+        if failed:
+            errors.append(f"required row selector {label} reported status {failed[0]}")
+    return errors
+
+
 def verdict(
     name: str,
     *,
@@ -399,6 +483,10 @@ def verdict(
     }
     if returncode != 0:
         reasons.append(f"evaluation exited with return code {returncode}")
+    for flag, expected in claim.required_arguments:
+        actual = _argument(command, flag)
+        if actual != expected:
+            reasons.append(f"evaluation requires {flag} {expected}")
 
     report_argument = _argument(command, "--json-out")
     if report_argument is None:
@@ -410,44 +498,14 @@ def verdict(
         payload, error = _load_report(report_path)
         if error is not None:
             reasons.append(error)
-        elif claim.summary_failures_key is not None:
-            failures, failure_error = _report_failures(
-                payload, claim.summary_failures_key
-            )
-            if failure_error is not None:
-                reasons.append(failure_error)
-            elif failures:
-                reasons.append(
-                    f"{len(failures)} reported failure(s) in"
-                    f" {claim.summary_failures_key}"
-                )
-            record["evidence_summary"] = str(report_path.resolve())
-        elif not isinstance(payload, list):
-            reasons.append("evidence report is not a row list")
         else:
-            rows = [row for row in payload if isinstance(row, dict)]
-            if not rows:
-                reasons.append("evidence report has no rows")
-            by_case: dict[str, list[dict[str, Any]]] = {}
-            for row in rows:
-                identity = _row_identity(row)
-                if identity is not None:
-                    by_case.setdefault(identity, []).append(row)
-            for required in claim.required_rows:
-                matches = by_case.get(required)
-                if not matches:
-                    reasons.append(f"missing required row {required}")
-                    continue
-                failed = [
-                    str(row.get("status", "OK"))
-                    for row in matches
-                    if str(row.get("status", "OK")) != "OK"
-                ]
-                if failed:
-                    reasons.append(
-                        f"required row {required} reported status {failed[0]}"
-                    )
-            record["evidence_report"] = str(report_path.resolve())
+            reasons.extend(_claim_report_errors(claim, payload))
+            report_key = (
+                "evidence_summary"
+                if claim.summary_failures_key is not None
+                else "evidence_report"
+            )
+            record[report_key] = str(report_path.resolve())
 
     comparison = "suite_owned"
     baseline_argument = _argument(command, "--baseline-json")
@@ -482,12 +540,27 @@ def _read_record(run_dir: Path) -> dict[str, Any] | None:
 def _digest(path: Path | None) -> str | None:
     if path is None or not path.is_file():
         return None
-    return sha256(path)
+    try:
+        return sha256(path)
+    except OSError:
+        return None
+
+
+def _record_report_path(run_dir: Path, record: Mapping[str, Any]) -> Path | None:
+    report_value = record.get("evidence_report") or record.get("evidence_summary")
+    if not isinstance(report_value, str):
+        return None
+    report_path = Path(report_value)
+    if report_path.is_absolute():
+        return report_path
+    working_directory = record.get("working_directory")
+    if isinstance(working_directory, str):
+        return Path(working_directory) / report_path
+    return run_dir / report_path
 
 
 def _run_entry(run_dir: Path, record: dict[str, Any]) -> dict[str, Any]:
-    report_value = record.get("evidence_report")
-    report_path = Path(report_value) if isinstance(report_value, str) else None
+    report_path = _record_report_path(run_dir, record)
     subject = record.get("subject") if isinstance(record.get("subject"), dict) else {}
     source = subject.get("source") if isinstance(subject.get("source"), dict) else {}
     logs = record.get("logs") if isinstance(record.get("logs"), list) else []
@@ -596,6 +669,28 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         for evaluation, entry in selected.items()
         if evaluation in CLAIMS
     }
+    invalid_reports: dict[str, list[str]] = {}
+    for evaluation, entry in claim_entries.items():
+        report = entry["evidence_report"]
+        report_path_value = report.get("path")
+        report_path = (
+            Path(report_path_value) if isinstance(report_path_value, str) else None
+        )
+        errors: list[str] = []
+        if report_path is None:
+            errors.append("evidence report path missing")
+        elif report.get("sha256") is None:
+            errors.append("evidence report SHA-256 unavailable")
+        if report_path is not None:
+            payload, load_error = _load_report(report_path)
+            if load_error is not None:
+                errors.append(load_error)
+            else:
+                errors.extend(_claim_report_errors(CLAIMS[evaluation], payload))
+        report["revalidated"] = not errors
+        report["validation_errors"] = errors
+        if errors:
+            invalid_reports[evaluation] = errors
     subjects = {
         entry["subject"]["package_content_sha256"] for entry in claim_entries.values()
     }
@@ -626,6 +721,7 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         and not incomplete_claims
         and len(subjects) <= 1
         and not unreadable
+        and not invalid_reports
     )
     return {
         "schema_version": BUNDLE_SCHEMA_VERSION,
@@ -666,6 +762,7 @@ def build_bundle(run_dirs: Sequence[Path]) -> dict[str, Any]:
         "incomplete_runs": incomplete,
         "incomplete_claims": incomplete_claims,
         "unreadable_runs": unreadable,
+        "invalid_reports": invalid_reports,
         "superseded_runs": superseded,
         "verdict_counts": counts,
         "entries": selected,
@@ -681,6 +778,18 @@ def render_bundle_markdown(bundle: dict[str, Any]) -> str:
         f"- subject consistent: {bundle['subject_consistent']}",
         f"- verdicts: {bundle['verdict_counts']}",
     ]
+    performance = bundle.get("performance")
+    if isinstance(performance, dict):
+        lines.append(
+            f"- scientific release ready: **{bundle.get('scientific_release_ready')}**"
+        )
+        lines.append(
+            "- performance ready:"
+            f" **{performance.get('release_performance_ready', False)}**"
+        )
+        performance_errors = performance.get("errors")
+        if isinstance(performance_errors, list) and performance_errors:
+            lines.append(f"- performance blockers: {len(performance_errors)}")
     if bundle["missing_claims"]:
         lines.append(f"- missing claims: {', '.join(bundle['missing_claims'])}")
     if bundle["incomplete_runs"]:

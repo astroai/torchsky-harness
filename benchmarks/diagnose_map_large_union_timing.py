@@ -10,13 +10,19 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
+import torch
+import torchfits
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
-import torchsky.map.image_plane as image_plane_mod  # noqa: E402
+from torchsky.map import calibration as calibration_mod  # noqa: E402
+from torchsky.map import image_plane_projection as image_plane_projection_mod  # noqa: E402
+from torchsky.map import windowing as image_grid_mod  # noqa: E402
 import torchsky.map.operators.resampling as resampling_mod  # noqa: E402
+from torchsky import WCS  # noqa: E402
 from torchsky.map.observation import ImageObservation
 from torchsky.map.operators import (  # noqa: E402
     headers_equivalent_for_direct_copy,
@@ -75,9 +81,9 @@ def _strip_observation(
 
 
 def _source_bbox_on_target(
-    source_wcs: image_plane_mod.WCS,
+    source_wcs: WCS,
     source_shape: tuple[int, int],
-    target_wcs: image_plane_mod.WCS,
+    target_wcs: WCS,
     target_shape: tuple[int, int],
     *,
     margin: int,
@@ -85,25 +91,25 @@ def _source_bbox_on_target(
 ) -> tuple[int, int, int, int] | None:
     h_src, w_src = int(source_shape[0]), int(source_shape[1])
     edge_samples = max(int(edge_samples), 2)
-    xs = image_plane_mod.torch.linspace(
-        0.0, float(w_src - 1), steps=edge_samples, dtype=image_plane_mod.torch.float64
+    xs = torch.linspace(
+        0.0, float(w_src - 1), steps=edge_samples, dtype=torch.float64
     )
-    ys = image_plane_mod.torch.linspace(
-        0.0, float(h_src - 1), steps=edge_samples, dtype=image_plane_mod.torch.float64
+    ys = torch.linspace(
+        0.0, float(h_src - 1), steps=edge_samples, dtype=torch.float64
     )
     top_x = xs
-    top_y = image_plane_mod.torch.zeros_like(xs)
+    top_y = torch.zeros_like(xs)
     bottom_x = xs
-    bottom_y = image_plane_mod.torch.full_like(xs, float(h_src - 1))
-    left_x = image_plane_mod.torch.zeros_like(ys)
+    bottom_y = torch.full_like(xs, float(h_src - 1))
+    left_x = torch.zeros_like(ys)
     left_y = ys
-    right_x = image_plane_mod.torch.full_like(ys, float(w_src - 1))
+    right_x = torch.full_like(ys, float(w_src - 1))
     right_y = ys
-    x_src = image_plane_mod.torch.cat([top_x, bottom_x, left_x, right_x], dim=0)
-    y_src = image_plane_mod.torch.cat([top_y, bottom_y, left_y, right_y], dim=0)
+    x_src = torch.cat([top_x, bottom_x, left_x, right_x], dim=0)
+    y_src = torch.cat([top_y, bottom_y, left_y, right_y], dim=0)
     ra, dec = source_wcs.pixel_to_world(x_src, y_src)
     x_tgt, y_tgt = target_wcs.world_to_pixel(ra, dec)
-    finite = image_plane_mod.torch.isfinite(x_tgt) & image_plane_mod.torch.isfinite(
+    finite = torch.isfinite(x_tgt) & torch.isfinite(
         y_tgt
     )
     if not bool(finite.any()):
@@ -112,23 +118,23 @@ def _source_bbox_on_target(
     y_good = y_tgt[finite]
     width = int(target_shape[1])
     height = int(target_shape[0])
-    x0 = max(int(image_plane_mod.torch.floor(x_good.min()).item()) - margin, 0)
-    x1 = min(int(image_plane_mod.torch.ceil(x_good.max()).item()) + margin + 1, width)
-    y0 = max(int(image_plane_mod.torch.floor(y_good.min()).item()) - margin, 0)
-    y1 = min(int(image_plane_mod.torch.ceil(y_good.max()).item()) + margin + 1, height)
+    x0 = max(int(torch.floor(x_good.min()).item()) - margin, 0)
+    x1 = min(int(torch.ceil(x_good.max()).item()) + margin + 1, width)
+    y0 = max(int(torch.floor(y_good.min()).item()) - margin, 0)
+    y1 = min(int(torch.ceil(y_good.max()).item()) + margin + 1, height)
     if x0 >= x1 or y0 >= y1:
         return None
     return y0, y1, x0, x1
 
 
 def _slice_prepared_target(
-    target: image_plane_mod._PreparedImagePlaneTarget,
+    target: image_grid_mod._PreparedImagePlaneTarget,
     *,
     y0: int,
     y1: int,
     x0: int,
     x1: int,
-) -> image_plane_mod._PreparedImagePlaneTarget:
+) -> image_grid_mod._PreparedImagePlaneTarget:
     quadrature = None
     if target.quadrature_world_grids is not None:
         quadrature = tuple(
@@ -138,7 +144,7 @@ def _slice_prepared_target(
     pixel_area = (
         None if target.pixel_area_sr is None else target.pixel_area_sr[y0:y1, x0:x1]
     )
-    return image_plane_mod._PreparedImagePlaneTarget(
+    return image_grid_mod._PreparedImagePlaneTarget(
         header=target.header,
         wcs=target.wcs,
         shape=(y1 - y0, x1 - x0),
@@ -221,7 +227,7 @@ def main() -> int:
         t_total0 = time.perf_counter()
         t0 = time.perf_counter()
         first = obs_list[0]
-        first_image, first_header = image_plane_mod.read(
+        first_image, first_header = torchfits.read(
             first.path, hdu=first.hdu, return_header=True
         )
         stage_totals_ms["first_image_read"] = (time.perf_counter() - t0) * 1000.0
@@ -236,15 +242,15 @@ def main() -> int:
             fallback=tuple(int(v) for v in first_image.shape[-2:]),
         )
         device = first_image.device
-        prepared_target: image_plane_mod._PreparedImagePlaneTarget | None = None
+        prepared_target: image_grid_mod._PreparedImagePlaneTarget | None = None
 
-        def ensure_prepared_target() -> image_plane_mod._PreparedImagePlaneTarget:
+        def ensure_prepared_target() -> image_grid_mod._PreparedImagePlaneTarget:
             nonlocal prepared_target
             if prepared_target is None:
                 prep0 = time.perf_counter()
-                prepared_target = image_plane_mod._prepare_target(
+                prepared_target = image_grid_mod._prepare_target(
                     header=header_dict,
-                    target_wcs=image_plane_mod.WCS(header_dict),
+                    target_wcs=WCS(header_dict),
                     target_shape=target_shape,
                     device=device,
                     include_pixel_area=False,
@@ -255,14 +261,14 @@ def main() -> int:
                 ) * 1000.0
             return prepared_target
 
-        numer = image_plane_mod.torch.zeros(
-            target_shape, dtype=image_plane_mod.torch.float32, device=device
+        numer = torch.zeros(
+            target_shape, dtype=torch.float32, device=device
         )
-        denom = image_plane_mod.torch.zeros(
-            target_shape, dtype=image_plane_mod.torch.float32, device=device
+        denom = torch.zeros(
+            target_shape, dtype=torch.float32, device=device
         )
-        overlap_count = image_plane_mod.torch.zeros(
-            target_shape, dtype=image_plane_mod.torch.int32, device=device
+        overlap_count = torch.zeros(
+            target_shape, dtype=torch.int32, device=device
         )
 
         for obs_idx, obs in enumerate(obs_list):
@@ -272,7 +278,7 @@ def main() -> int:
                 image_read_ms = 0.0
             else:
                 read0 = time.perf_counter()
-                image, header = image_plane_mod.read(
+                image, header = torchfits.read(
                     obs.path, hdu=obs.hdu, return_header=True
                 )
                 image_read_ms = (time.perf_counter() - read0) * 1000.0
@@ -299,19 +305,19 @@ def main() -> int:
             wcs_init_ms = 0.0
             if need_prepared_target and not direct_copy:
                 wcs0 = time.perf_counter()
-                source_wcs = image_plane_mod.WCS(header_dict_obs)
+                source_wcs = WCS(header_dict_obs)
                 wcs_init_ms = (time.perf_counter() - wcs0) * 1000.0
                 stage_totals_ms["wcs_init"] += wcs_init_ms
 
             load0 = time.perf_counter()
-            source_weight = image_plane_mod._load_observation_weight_map(
+            source_weight = calibration_mod._load_observation_weight_map(
                 obs, image, device=device
             )
             load_ms = (time.perf_counter() - load0) * 1000.0
             stage_totals_ms["weight_load"] += load_ms
 
             cal0 = time.perf_counter()
-            image_cal, source_weight = image_plane_mod._apply_observation_calibration(
+            image_cal, source_weight = calibration_mod._apply_observation_calibration(
                 obs, image, source_weight
             )
             cal_ms = (time.perf_counter() - cal0) * 1000.0
@@ -324,9 +330,9 @@ def main() -> int:
             window_fraction = 1.0
             window_shape = list(target_shape)
             if direct_copy:
-                sampled_weight = source_weight.to(dtype=image_plane_mod.torch.float32)
+                sampled_weight = source_weight.to(dtype=torch.float32)
                 sampled_numer = (
-                    image_cal.to(dtype=image_plane_mod.torch.float32) * sampled_weight
+                    image_cal.to(dtype=torch.float32) * sampled_weight
                 )
             else:
                 target = ensure_prepared_target()
@@ -371,7 +377,7 @@ def main() -> int:
                         sampling_calls,
                     ):
                         sampled_numer, sampled_weight = (
-                            image_plane_mod._resample_weighted_to_target(
+                            image_plane_projection_mod._resample_weighted_to_target(
                                 image_cal,
                                 source_weight,
                                 source_wcs,
@@ -386,10 +392,10 @@ def main() -> int:
                 stage_totals_ms["resample_total"] += resample_ms
                 stage_totals_ms["world_to_pixel"] += world_to_pixel_ms
                 stage_totals_ms["sampling"] += sampling_ms
-                full_sampled_numer = image_plane_mod.torch.zeros(
+                full_sampled_numer = torch.zeros(
                     target_shape, dtype=sampled_numer.dtype, device=device
                 )
-                full_sampled_weight = image_plane_mod.torch.zeros(
+                full_sampled_weight = torch.zeros(
                     target_shape, dtype=sampled_weight.dtype, device=device
                 )
                 full_sampled_numer[y0:y1, x0:x1] = sampled_numer
@@ -397,7 +403,7 @@ def main() -> int:
                 sampled_numer = full_sampled_numer
                 sampled_weight = full_sampled_weight
 
-            overlap = (sampled_weight > 0.0).to(image_plane_mod.torch.int32)
+            overlap = (sampled_weight > 0.0).to(torch.int32)
             acc0 = time.perf_counter()
             numer = numer + sampled_numer
             denom = denom + sampled_weight
@@ -407,7 +413,7 @@ def main() -> int:
 
             coverage_fraction = float(
                 (sampled_weight > 0.0)
-                .to(dtype=image_plane_mod.torch.float32)
+                .to(dtype=torch.float32)
                 .mean()
                 .item()
             )
@@ -440,10 +446,10 @@ def main() -> int:
                 }
             )
 
-        coadd = image_plane_mod.torch.where(
+        coadd = torch.where(
             denom > 0.0,
             numer / denom,
-            image_plane_mod.torch.zeros_like(numer),
+            torch.zeros_like(numer),
         )
         total_ms = (time.perf_counter() - t_total0) * 1000.0
 
@@ -463,7 +469,7 @@ def main() -> int:
         "stage_totals_ms": stage_totals_ms,
         "output_mean_weight": float(denom.mean().item()),
         "output_overlap_fraction": float(
-            (denom > 0.0).to(dtype=image_plane_mod.torch.float32).mean().item()
+            (denom > 0.0).to(dtype=torch.float32).mean().item()
         ),
         "output_mean_data": float(coadd.mean().item()),
         "per_observation": rows,

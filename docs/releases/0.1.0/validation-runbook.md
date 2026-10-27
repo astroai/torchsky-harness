@@ -72,7 +72,7 @@ pixi run docs-contract
 
 Expected green: full suite, 31/31 examples, pyright 0, docs contract.
 
-## 4. Run the nineteen declared gates
+## 4. Run the twenty declared gates
 
 Run the gates **alone**. Do not run the subject suite, another benchmark, or a
 build concurrently: performance-ratio rows are same-machine measurements and a
@@ -99,9 +99,8 @@ Contract (`test` env):
 
 - [ ] `pixi run bench-native-contracts-gate`
 - [ ] `pixi run bench-domain-fuzz-gate`
-- [ ] `pixi run bench-coords-astropy-gate`
 
-Reference comparison (`bench-all` / `sphere-bench`):
+Reference comparison (`bench-all` / `sphere-bench` / `map-compat`):
 
 - [ ] `pixi run bench-wcs-release-gate`
 - [ ] `pixi run bench-healpix-release-gate`
@@ -109,6 +108,8 @@ Reference comparison (`bench-all` / `sphere-bench`):
 - [ ] `pixi run bench-sphere-matrix-release-gate`
 - [ ] `pixi run bench-spin-matrix-release-gate`
 - [ ] `pixi run bench-catalog-release-gate`
+- [ ] `pixi run bench-coords-astropy-gate`
+- [ ] `pixi run bench-map-drizzle-required`
 
 Real data (`bench-all`):
 
@@ -116,7 +117,7 @@ Real data (`bench-all`):
 - [ ] `pixi run bench-sphere-real-map-gate`
 - [ ] `pixi run bench-map-real-cutout-gate`
 
-Expected: 16/16 `established`; any failure is a finding, not a threshold to
+Expected: 20/20 `established`; any failure is a finding, not a threshold to
 relax. Record the exact comparison rows and limits.
 
 ## 5. Native-contract probes for the reworked C++
@@ -161,11 +162,11 @@ is reported, not claimed as a win.
 
 ```bash
 cd /Users/fabbros/src/astroai/torchsky-harness
-pixi run evidence-bundle
+pixi run release-readiness
 ```
 
 - [ ] `release_ready: true`, `subject_consistent: true`.
-- [ ] `verdict_counts` has 16 established, no missing/incomplete claims.
+- [ ] `verdict_counts` has 20 established, no missing/incomplete claims.
 - [ ] Update `docs/releases/0.1.0/gate-matrix.md`,
       `docs/releases/0.1.0/release-procedure.md`, and
       `docs/benchmarks.md` with the new measured numbers and session ids.
@@ -187,5 +188,7 @@ pixi run evidence-bundle
 Resolved during earlier validation (recheck after rework): stale harness import
 of `torchsky.field.frequency_adaptive`; removed `max_entries` option; removed
 `torchsky[catalog-qa]` hints. Still open elsewhere: publishing-workflow overlap
-(`build_wheels.yml` vs `publish.yml`), CLI `--inr-*` flag rename, and the
-native-contract gate family (design in `torchsky/notes/native-contract-gate-plan.md`).
+(`torchsky/.github/workflows/build_wheels.yml` for the subject and
+`torchsky-harness/.github/workflows/publish.yml` for the harness), CLI
+`--inr-*` flag rename, and the native-contract gate family (design in
+`torchsky/notes/native-contract-gate-plan.md`).

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "claims": [
+    {
+      "row_id": "wcs.tan.forward.cpu-f64.n20000",
+      "task": "bench-wcs-release-gate",
+      "evaluation": "bench_wcs",
+      "row_selector": {"case": "TAN"},
+      "timing_field": "torch_forward_ms",
+      "correctness_source": {"type": "evidence_claim", "claim": "bench_wcs", "required_row": "TAN"},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/wcs_tan_forward_cpu_f64_n20000.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/wcs_tan_forward_cpu_f64_n20000.json",
+      "task_artifact": "benchmark_results/release_wcs.json",
+      "task_command_sha256": "34f29cb47294396bb3a34305c4549539c531e482ed4342e7794466afac045653",
+      "effective_arguments": ["--cases", "TAN,SIN,ARC,ZEA,STG,ZPN,AZP,SZP,AIR,AIT,MOL,HPX,XPH,CEA,MER,CAR,SFL,PAR,COP,COE,COD,COO,BON,PCO,TSC,CSC,QSC,NCP,TAN_SIP,TPV,MER_OFF,CYP_OFF,AIT_OFF,HPX_OFF,SFL_OFF,XPH_OFF,BON_OFF,PAR_OFF", "--n-points", "20000", "--runs", "5", "--device", "cpu", "--json-out", "benchmark_results/release_wcs.json", "--max-angular-error-arcsec", "3.6e-3", "--max-roundtrip-sky-error-arcsec-pole-excluded", "1e-3", "--max-roundtrip-pole-excluded-pixel-error", "1e-3", "--p99-roundtrip-sky-error-arcsec", "1e-2", "--roundtrip-exempt-cases", "TSC,CSC,QSC", "--p99-inverse-pixel-error", "1e-3"],
+      "dtype": "float64",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    },
+    {
+      "row_id": "wcs.tan.inverse.cpu-f64.n20000",
+      "task": "bench-wcs-release-gate",
+      "evaluation": "bench_wcs",
+      "row_selector": {"case": "TAN"},
+      "timing_field": "torch_inverse_ms",
+      "correctness_source": {"type": "evidence_claim", "claim": "bench_wcs", "required_row": "TAN"},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/wcs_tan_inverse_cpu_f64_n20000.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/wcs_tan_inverse_cpu_f64_n20000.json",
+      "task_artifact": "benchmark_results/release_wcs.json",
+      "task_command_sha256": "34f29cb47294396bb3a34305c4549539c531e482ed4342e7794466afac045653",
+      "effective_arguments": ["--cases", "TAN,SIN,ARC,ZEA,STG,ZPN,AZP,SZP,AIR,AIT,MOL,HPX,XPH,CEA,MER,CAR,SFL,PAR,COP,COE,COD,COO,BON,PCO,TSC,CSC,QSC,NCP,TAN_SIP,TPV,MER_OFF,CYP_OFF,AIT_OFF,HPX_OFF,SFL_OFF,XPH_OFF,BON_OFF,PAR_OFF", "--n-points", "20000", "--runs", "5", "--device", "cpu", "--json-out", "benchmark_results/release_wcs.json", "--max-angular-error-arcsec", "3.6e-3", "--max-roundtrip-sky-error-arcsec-pole-excluded", "1e-3", "--max-roundtrip-pole-excluded-pixel-error", "1e-3", "--p99-roundtrip-sky-error-arcsec", "1e-2", "--roundtrip-exempt-cases", "TSC,CSC,QSC", "--p99-inverse-pixel-error", "1e-3"],
+      "dtype": "float64",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    },
+    {
+      "row_id": "healpix.ang2pix-ring.cpu-f64.n100000.nside512",
+      "task": "bench-healpix-release-gate",
+      "evaluation": "bench_healpix",
+      "row_selector": {"operation": "ang2pix_ring"},
+      "timing_field": "torch_ms",
+      "correctness_source": {"type": "evidence_claim", "claim": "bench_healpix", "required_row": "ang2pix_ring"},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/healpix_ang2pix_ring_cpu_f64_n100000_nside512.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/healpix_ang2pix_ring_cpu_f64_n100000_nside512.json",
+      "task_artifact": "benchmark_results/release_healpix.json",
+      "task_command_sha256": "5aec28cf599bbd5b85a19a5bd04b7b44e67f48e81cdfef599bb7b7035bce1e3d",
+      "effective_arguments": ["--nside", "512", "--n-points", "100000", "--runs", "5", "--device", "cpu", "--json-out", "benchmark_results/release_healpix.json", "--max-index-mismatches", "0", "--max-pix2ang-dra-deg", "1e-10", "--max-pix2ang-ddec-deg", "1e-10"],
+      "dtype": "float64",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    },
+    {
+      "row_id": "healpix.pix2ang-ring.cpu-f64.n100000.nside512",
+      "task": "bench-healpix-release-gate",
+      "evaluation": "bench_healpix",
+      "row_selector": {"operation": "pix2ang_ring"},
+      "timing_field": "torch_ms",
+      "correctness_source": {"type": "evidence_claim", "claim": "bench_healpix", "required_row": "pix2ang_ring"},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/healpix_pix2ang_ring_cpu_f64_n100000_nside512.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/healpix_pix2ang_ring_cpu_f64_n100000_nside512.json",
+      "task_artifact": "benchmark_results/release_healpix.json",
+      "task_command_sha256": "5aec28cf599bbd5b85a19a5bd04b7b44e67f48e81cdfef599bb7b7035bce1e3d",
+      "effective_arguments": ["--nside", "512", "--n-points", "100000", "--runs", "5", "--device", "cpu", "--json-out", "benchmark_results/release_healpix.json", "--max-index-mismatches", "0", "--max-pix2ang-dra-deg", "1e-10", "--max-pix2ang-ddec-deg", "1e-10"],
+      "dtype": "float64",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    },
+    {
+      "row_id": "drizzle.point.crpix-translation.cpu-f32.32x32",
+      "task": "bench-map-drizzle-required",
+      "evaluation": "bench_map_drizzle_required",
+      "row_selector": {"case": "upstream_drizzle_crpix_translation", "library": "torchsky", "variant": "drizzle_point"},
+      "timing_field": "time_ms",
+      "correctness_source": {"type": "acceptance_artifact", "artifact": "benchmarks/baselines/map_drizzle_acceptance.json", "selector": {"case": "upstream_drizzle_crpix_translation", "library": "drizzle", "variant": "point"}},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/drizzle_point_crpix_translation_cpu_f32_32x32.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/drizzle_point_crpix_translation_cpu_f32_32x32.json",
+      "task_artifact": "benchmark_results/map_drizzle_required.json",
+      "task_command_sha256": "69dba872f5025ef89697fe50823d2c4ec0f79a9fccd956f27f9947786cb385b4",
+      "effective_arguments": ["--size", "32", "--n-obs", "2", "--runs", "5", "--cases", "upstream_drizzle_crpix_translation", "--torchsky-kernels", "drizzle_point,drizzle_square", "--comparators", "drizzle", "--drizzle-kernels", "point,square", "--require-comparators", "drizzle", "--acceptance-json", "benchmarks/baselines/map_drizzle_acceptance.json", "--json-out", "benchmark_results/map_drizzle_required.json"],
+      "dtype": "float32",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    },
+    {
+      "row_id": "drizzle.square.crpix-translation.cpu-f32.32x32",
+      "task": "bench-map-drizzle-required",
+      "evaluation": "bench_map_drizzle_required",
+      "row_selector": {"case": "upstream_drizzle_crpix_translation", "library": "torchsky", "variant": "drizzle_square"},
+      "timing_field": "time_ms",
+      "correctness_source": {"type": "acceptance_artifact", "artifact": "benchmarks/baselines/map_drizzle_acceptance.json", "selector": {"case": "upstream_drizzle_crpix_translation", "library": "drizzle", "variant": "square"}},
+      "baseline_artifact": "benchmark_results/release_performance_baselines/drizzle_square_crpix_translation_cpu_f32_32x32.json",
+      "candidate_artifact": "benchmark_results/release_performance_candidates/drizzle_square_crpix_translation_cpu_f32_32x32.json",
+      "task_artifact": "benchmark_results/map_drizzle_required.json",
+      "task_command_sha256": "69dba872f5025ef89697fe50823d2c4ec0f79a9fccd956f27f9947786cb385b4",
+      "effective_arguments": ["--size", "32", "--n-obs", "2", "--runs", "5", "--cases", "upstream_drizzle_crpix_translation", "--torchsky-kernels", "drizzle_point,drizzle_square", "--comparators", "drizzle", "--drizzle-kernels", "point,square", "--require-comparators", "drizzle", "--acceptance-json", "benchmarks/baselines/map_drizzle_acceptance.json", "--json-out", "benchmark_results/map_drizzle_required.json"],
+      "dtype": "float32",
+      "device": "cpu",
+      "paired_sampling_policy": {
+        "mode": "same_runner_alternating",
+        "minimum_pairs": 5,
+        "order": "seeded_alternating",
+        "statistic": "median_paired_ratio",
+        "pairing_keys": ["runner", "cpu", "os", "python", "torch", "dtype", "device", "task_command_sha256", "task_arguments"]
+      },
+      "max_regression_fraction": 0.05,
+      "absolute_timing_floor_ms": 0.05
+    }
+  ]
+}

@@ -70,8 +70,8 @@ Status vocabulary:
 | User-facing package | Current torchsky surface | Status | Evidence / gap |
 |---|---|---|---|
 | `reproject` | `torchsky.map.resample/coadd` | **gated** | real CFHT cutout gate |
-| `drizzle` (LSST) | `ResampleConfig(kernel="drizzle*")` | covered | `bench-map-drizzle-required`; not release-gated |
-| `drizzlepac` / AstroDrizzle | drizzle/blot/outlier/context paths | gap | no comparator gate; package present in some envs |
+| `drizzle` (LSST) | `ResampleConfig(kernel="drizzle*")` | **gated (bounded)** | `bench-map-drizzle-required`; tiny synthetic CRPIX translation only, not real-data replacement or rejection parity |
+| `drizzlepac` / AstroDrizzle | drizzle/blot/outlier/context paths | diagnostic | Phase-0 compares one compact real WFC3/IR exposure with exact square drizzle on AstroDrizzle's output grid in identical `ELECTRONS/S` units. It reports shared-support science, flux, centroid, support, and finite-fraction metrics without certifying tolerances; raw weight, DQ/rejection, blot, background, and context parity remain unavailable. |
 | `dfreproject` | DEIMOS-style reprojection | covered | `bench_map_compat`/bench env; not release-gated |
 | Montage (`MontagePy`, `mProject`, `mFitplane`) | exact spherical overlap + sky matching | covered | `bench-map-montage-required`; `MontagePy` missing locally |
 | SWarp | resampling/coadd/background/`.head` | covered | `bench-map-swarp-required`, clipped variant; not release-gated |

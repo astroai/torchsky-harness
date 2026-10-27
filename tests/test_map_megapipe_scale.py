@@ -10,7 +10,7 @@ import torch
 
 pytest.importorskip("torchsky._cpp")
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -74,8 +74,8 @@ def test_megapipe_scale_torchsky_beats_swarp_on_speed(tmp_path: Path) -> None:
     t0 = time.perf_counter()
     ts = coadd_image_plane(
         obs_list,
-        target_header=target_header,
-        resampling_kernel="bilinear",
+        target=target_header,
+        kernel="bilinear",
     )
     t_torchsky = time.perf_counter() - t0
 
@@ -139,8 +139,8 @@ def test_megapipe_scale_torchsky_no_oom(tmp_path: Path) -> None:
     target_header = dict(_cfht_scale_header(h, w))
     result = coadd_image_plane(
         obs_list,
-        target_header=target_header,
-        resampling_kernel="bilinear",
+        target=target_header,
+        kernel="bilinear",
     )
     assert result.data.shape == (h, w)
     assert result.weight.shape == (h, w)

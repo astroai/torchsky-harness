@@ -42,7 +42,7 @@ from torchsky.map.field import (
     make_field_model,
     render_field_observation,
 )
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 from torchsky.map.field.types import FieldModelKind  # noqa: E402
 
@@ -611,12 +611,12 @@ def measure_render_quality(
                 coadd_library = "swarp:bilinear"
             except Exception:
                 native = coadd_image_plane(
-                    obs_list, target_header=truth_header, device=dev
+                    obs_list, target=truth_header, device=dev
                 )
                 coadd_image = native.data
                 coadd_library = "torchsky:bilinear"
         else:
-            native = coadd_image_plane(obs_list, target_header=truth_header, device=dev)
+            native = coadd_image_plane(obs_list, target=truth_header, device=dev)
             coadd_image = native.data
             coadd_library = "torchsky:bilinear"
         if dev.type == "cuda":

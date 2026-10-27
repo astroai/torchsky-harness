@@ -135,7 +135,14 @@ def test_inspection_rejected_rows_remain_exposure_scoped() -> None:
                   "band": band, "detector": "NRCB4", "patt_num": 1, "split": "test",
                   "timing": {"midpoint_mjd_utc": 60000}}
                  for name, band in (("a", "F150W"), ("b", "F150W"), ("c", "F200W"))]
-    rejected = [{"exposure": exposure["path"], "role": "background"} for exposure in exposures]
+    rejected = [
+        {
+            "exposure": exposure["path"],
+            "exposure_id": exposure["path"],
+            "role": "background",
+        }
+        for exposure in exposures
+    ]
     payload = {"exposures": exposures, "extraction": {"rejected": rejected}}
     rows = inspection._rejected_rows(payload, detector="NRCB4", exposure_id="a", band="F150W")
     assert len(rows) == 1

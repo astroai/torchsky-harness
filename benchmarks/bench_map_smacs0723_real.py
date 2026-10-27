@@ -43,7 +43,7 @@ DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_real_smoke.md"
 
 import torchsky  # noqa: E402
 from torchsky.instrument import NIRCAM_UPDEC_BANDS, nircam_imaging_band  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -517,10 +517,10 @@ def _best_overlap_cutout_from_observations(
     coarse_header = _downsample_header(target_header, coarse_step)
     overlap_probe = coadd_image_plane(
         observations,
-        target_header=dict(coarse_header),
-        resampling_kernel=resampling_kernel,
-        value_semantics=value_semantics,
-        stacking_method=stacking_method,
+        target=dict(coarse_header),
+        kernel=resampling_kernel,
+        semantics=value_semantics,
+        method=stacking_method,
     )
     overlap_grid = overlap_probe.overlap_count.cpu().numpy().astype(np.float32)
     ref_coarse = reference[::coarse_step, ::coarse_step]
@@ -731,21 +731,21 @@ def main() -> int:
         dt = _time_many(
             lambda: coadd_image_plane(
                 observations,
-                target_header=dict(target_header),
-                resampling_kernel=args.resampling_kernel,
-                value_semantics=args.value_semantics,
-                stacking_method=args.stacking_method,
-                drizzle_pixfrac=args.drizzle_pixfrac,
+                target=dict(target_header),
+                kernel=args.resampling_kernel,
+                semantics=args.value_semantics,
+                method=args.stacking_method,
+                pixfrac=args.drizzle_pixfrac,
             ),
             args.runs,
         )
         result = coadd_image_plane(
             observations,
-            target_header=dict(target_header),
-            resampling_kernel=args.resampling_kernel,
-            value_semantics=args.value_semantics,
-            stacking_method=args.stacking_method,
-            drizzle_pixfrac=args.drizzle_pixfrac,
+            target=dict(target_header),
+            kernel=args.resampling_kernel,
+            semantics=args.value_semantics,
+            method=args.stacking_method,
+            pixfrac=args.drizzle_pixfrac,
         )
         pred = result.data.cpu().numpy().astype(np.float32)
         support = result.weight.cpu().numpy() > 0

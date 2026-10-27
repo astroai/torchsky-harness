@@ -42,7 +42,7 @@ DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_field_fit_band_sw
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 from torchsky.map.field import FieldObservation, estimate_field_domain, make_field_model, render_field_observation
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -220,10 +220,10 @@ def main() -> int:
 
                 coadd_reference = coadd_image_plane(
                     image_observations,
-                    target_header=dict(target_header),
-                    resampling_kernel="bilinear",
-                    value_semantics="flux",
-                    stacking_method="weighted_mean",
+                    target=dict(target_header),
+                    kernel="bilinear",
+                    semantics="flux",
+                    method="weighted_mean",
                 )
                 coadd_weight = coadd_reference.weight.cpu().numpy()
                 coadd_data = coadd_reference.data.cpu().numpy()

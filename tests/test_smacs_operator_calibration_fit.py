@@ -32,6 +32,7 @@ def test_exposure_selection_preserves_independent_splits_and_provenance(
             for role in ("background", "psf"):
                 row = {
                     "exposure": exposure,
+                    "exposure_id": exposure,
                     "band": band,
                     "detector": "NRCALONG",
                     "role": role,
@@ -154,7 +155,7 @@ def test_exposure_selection_preserves_independent_splits_and_provenance(
         benchmark._calibration_groups(
             {"evidence": [r for r in rows if r["split"] == "train"]}, "exposure"
         )
-    with pytest.raises(ValueError, match="exposure_id or exposure provenance"):
+    with pytest.raises(ValueError, match="nonempty exposure_id"):
         benchmark._calibration_groups(
             {"evidence": [{"detector": "NRCALONG", "band": "F277W"}]}, "exposure"
         )

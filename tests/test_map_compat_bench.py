@@ -18,7 +18,7 @@ import torchsky_harness.benchmarks.bench_map_projection_mosaic_suite as projecti
 import torchsky_harness.benchmarks.bench_map_tan_sip_suite as tan_sip_suite  # noqa: E402
 import torchsky_harness.benchmarks.run_ground_truth_competitive_large_union as competitive_runner  # noqa: E402
 
-from torchsky.map.image_plane import plan_image_plane_target
+from torchsky.map import coadd, plan as plan_image_plane_target
 from torchsky.map.observation import ImageObservation
 
 
@@ -868,11 +868,11 @@ def test_known_large_union_boundary_hotspot_reproduces_against_swarp(
     source_wcs = bench_map_ground_truth.WCS(hotspot_item.header)
     x_src, y_src = source_wcs.world_to_pixel(ra, dec)
 
-    torchsky_result = bench_map_ground_truth.image_plane_mod.coadd_image_plane(
+    torchsky_result = coadd(
         [stripped],
-        target_header=target_header,
-        resampling_kernel="bilinear",
-        value_semantics="surface_brightness",
+        target=target_header,
+        kernel="bilinear",
+        semantics="surface_brightness",
     )
     swarp_data_np, swarp_weight_np = bench_map_compat._coadd_with_swarp(
         [stripped],

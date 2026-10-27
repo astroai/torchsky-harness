@@ -25,10 +25,12 @@ required_metrics = [
   "clean_false_positive_rate",
   "flux_relative_error",
   "centroid_error_px",
-  "astrodrizzle_science_finite_fraction",
-  "astrodrizzle_has_weight",
-  "astrodrizzle_has_context",
-  "astrodrizzle_rejection_count",
+  "real_hst_shared_support_rmse",
+  "real_hst_shared_support_relative_error",
+  "real_hst_support_iou",
+  "real_hst_torchsky_finite_fraction",
+  "real_hst_astrodrizzle_finite_fraction",
+  "real_hst_shared_support_fraction",
 ]
 
 [[datasets]]
@@ -37,4 +39,4 @@ role = "DQ, cosmic-ray, variance, context, and blot fixtures"
 
 [[datasets]]
 id = "hst-wfc3-ir-sample-ipppssoot-v1"
-role = "bounded real HST WFC3/IR AstroDrizzle input"
+role = "bounded real HST WFC3/IR Torchsky-vs-AstroDrizzle input"

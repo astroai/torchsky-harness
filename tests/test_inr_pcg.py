@@ -274,7 +274,6 @@ def test_neural_pcg_refines_native_detector_likelihood(
                 observation,
                 num_spectral_samples=1,
                 spatial_sampling="gauss_legendre_2x2",
-                forward_context=context,
                 operator_bundle=bundle,
             )
         )
@@ -289,7 +288,17 @@ def test_neural_pcg_refines_native_detector_likelihood(
         "observation_forward_contexts": (context,),
         "observation_operator_bundles": (bundle,),
     }
-    fitted = fit_field_model([observation], model, steps=1, lr=1.0e-3, **fit_kwargs)
+    fitted = fit_field_model(
+        [observation],
+        model,
+        steps=1,
+        lr=1.0e-3,
+        **{
+            key: value
+            for key, value in fit_kwargs.items()
+            if key != "observation_forward_contexts"
+        },
+    )
     before = {name: value.clone() for name, value in model.state_dict().items()}
     refined = _refine_neural_scene_pcg(
         fitted,
@@ -309,7 +318,6 @@ def test_neural_pcg_refines_native_detector_likelihood(
         observation,
         num_spectral_samples=1,
         spatial_sampling="gauss_legendre_2x2",
-        forward_context=context,
         operator_bundle=bundle,
     )
     support = mask > 0

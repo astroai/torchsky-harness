@@ -32,7 +32,8 @@ from torchsky_harness.metrics import (  # noqa: E402
     evaluate_map_product,
     write_map_benchmark_artifacts,
 )
-import torchsky.map.image_plane as image_plane_mod  # noqa: E402
+from torchsky.map import image_plane_projection as image_plane_projection_mod  # noqa: E402
+from torchsky.map import windowing as image_grid_mod  # noqa: E402
 from torchsky.map.operators import pixel_area_sr_map  # noqa: E402
 from torchsky.map.product import render_scene_product  # noqa: E402
 from torchsky.map.target import TargetRenderSpec  # noqa: E402
@@ -1272,7 +1273,7 @@ def _target_mask_region_masks(
 
     target_shape = (int(target_header["NAXIS2"]), int(target_header["NAXIS1"]))
     device = torch.device("cpu")
-    prepared_target = image_plane_mod._prepare_target(
+    prepared_target = image_grid_mod._prepare_target(
         header=target_header,
         target_wcs=WCS(target_header),
         target_shape=target_shape,
@@ -1300,7 +1301,7 @@ def _target_mask_region_masks(
         ):
             source_wcs = WCS(header_dict_obs)
         _numer_masked, weight_masked, _overlap_masked, _moc_masked = (
-            image_plane_mod._project_observation_to_target(
+            image_plane_projection_mod._project_observation_to_target(
                 obs_with_mask,
                 image=image,
                 header_dict_obs=header_dict_obs,
@@ -1315,7 +1316,7 @@ def _target_mask_region_masks(
             )
         )
         _numer_nomask, weight_nomask, _overlap_nomask, _moc_nomask = (
-            image_plane_mod._project_observation_to_target(
+            image_plane_projection_mod._project_observation_to_target(
                 obs_without_mask,
                 image=image,
                 header_dict_obs=header_dict_obs,

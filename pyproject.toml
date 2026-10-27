@@ -20,7 +20,7 @@ package-dir = { torchsky_harness = "src/torchsky_harness", "torchsky_harness.ben
 include-package-data = true
 
 [tool.setuptools.package-data]
-torchsky_harness = ["fixtures/upstream_astropy_catalogs/*.xml", "fixtures/upstream_astropy_catalogs/*.md", "fixtures/*.fits", "schemas/*.json"]
+torchsky_harness = ["fixtures/upstream_astropy_catalogs/*.xml", "fixtures/upstream_astropy_catalogs/*.md", "fixtures/*.fits", "schemas/*.json", "release_performance_claims.json"]
 "torchsky_harness.benchmarks" = ["baselines/*.json", "baselines/*.md", "scorecards/*.json", "scorecards/*.md", "*.md"]
 "torchsky_harness.benchmarks.replays" = ["*.json"]
 "torchsky_harness.benchmarks.updc" = ["*.md"]

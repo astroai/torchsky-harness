@@ -1,11 +1,10 @@
 # Release gate matrix — torchsky 0.4.0 / harness 0.1.0
 
-Status: **active**. Nineteen declared gates pass with
-`scientific_validity: established` in the release bundle (seven
-synthetic/truth gates with `comparison_eligibility: baseline_compared`, ten
-suite-owned scientific gates, three of which compare against real data, and two
-contract gates). Rows below that are
-still marked open are not claimed. Tolerances are frozen after the first
+Status: **active**. Twenty gates are declared (seven synthetic/truth, eight
+reference-comparison, three real-data, and two contract). The prior 19-gate
+bundle is historical evidence; the newly distinct bounded Drizzle gate must be
+executed against the release subject before the current bundle can be ready.
+Rows below that are still marked open are not claimed. Tolerances are frozen after the first
 calibrated run and are not adjusted to make a failing gate pass. Release steps:
 [release-procedure.md](release-procedure.md).
 
@@ -68,6 +67,7 @@ calibrated run and are not adjusted to make a failing gate pass. Release steps:
 | IFU / cubes | 3-axis WCS synthetic cube with lines, non-uniform/log spectral axis, masks; `plan_cube`/`coadd_cube`; `write_cube_fits` round-trip. Delivered: matched-sampling cube gate, and an IFU spectral-axis gate over a synthetic long-slit `IFUSliceWCS` | analytic truth; astropy WCS | matched sampling: exact valid-voxel indexing. Spectral axis: exact line localization and exact constant-spectrum normalization on an irregular axis (all kernels); regular-axis smooth-spectrum interior ≤2.5e-3 (observed 6e-4); irregular-axis smooth spectrum gated as a recorded ≤10% envelope (observed 3.2%) because the kernel interpolates in index space. Still open: physical wavelength-space interpolation, flux-conserving redistribution, line-flux/centroid metrics, `write_cube_fits` round-trip gate | cube coadd within 10% of slice-by-slice; peak RSS bounded by output, not exposure count |
 | Joint fields | `bench_map_field_fit` with held-out observations and sky quadrants; models: `coadd_bilinear`, `sine_implicit`, one recommended model. Gate `bench-map-field-fit-gate` passes a re-baselined smoke contract (`sine_implicit` RMSE 0.0013, `coadd_bilinear` 0.0148) | held-out truth; coadd baseline | noninferiority to coadd on held-out support; seeded determinism; no NaN. Still open: held-out noninferiority baseline and preregistered budget | preregistered fit budget and peak memory |
 | HEALPix multi-band | 3 synthetic bands (0.04/0.08/0.16 deg pixels) at nside 2048; `coadd_healpix` per band plus `resample_healpix` band stacking | analytic constants, Gaussian source, and linear sky slope | constant recovery 1.9e-7 rel; covered solid angle within 0.82% of the pixel-centre footprint; band ratio 7.6e-8; per-pixel Gaussian residual 1.9e-7; absolute source position 0.076", cross-band 0.106"; plane residual 1.2e-6; band-stacked round trip 1.9e-7. Gate: `bench-map-healpix-multiband-gate` | not gated: no healpy throughput row, no harmonic/SHT path, no variance product |
+| Low-level Drizzle acceptance | two synthetic 32x32 inputs with a CRPIX translation; point and square kernels | `drizzle==2.2.0`; committed `map_drizzle_acceptance.json` bounds | `bench-map-drizzle-required` requires explicit `OK` point and square comparator rows, ≤1e-7 data/weight difference, and ≥0.99 common support | only the separately paired, hardware-fingerprinted release-performance contract; not real-data replacement, rejection, DQ, context, variance, rotation, scale, or general-distortion parity |
 
 Shared map contract: `flux` vs `surface_brightness` area scaling, variance/weight
 propagation, outlier rejection, spectral unit/type normalization, and CLI/Python
@@ -122,8 +122,8 @@ colour/uncertainty gate, and missing IFU non-uniform evaluator.
 `docs/releases/0.1.0/` must contain, per gate (record format:
 [evidence-verdicts.md](../../evidence-verdicts.md)):
 
-- exact command, run directory, `execution.json` hash (collect the whole set
-  with `pixi run evidence-bundle`, which emits
+- exact command, run directory, `execution.json` hash (collect and gate the whole
+  set with `pixi run release-readiness`; its evidence step emits
   `benchmark_results/evidence_bundle.{json,md}`);
 - subject version, import path, package-content SHA-256, dirty flag;
 - harness revision;

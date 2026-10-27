@@ -471,10 +471,7 @@ def test_csc_aten_cpu_is_not_the_wcslib_floor(
     CUDA/MPS CSC without autograd host-copies to ``wcs_csc_x2s``. Do not claim
     CUDA CSC throughput; mixed Linux CPU is still 8.4 mas vs astropy.
     """
-    import torchsky.wcs.quadcube as quadcube
-
     monkeypatch.setenv("TORCHSKY_WCS_FUSED", "0")
-    monkeypatch.setattr(quadcube, "_cpp", None)
     header = _make_header("CSC", cd_scale=0.3)
     awcs = AstropyWCS(header)
     x, y = _sample_pixels(header, n_side=15)

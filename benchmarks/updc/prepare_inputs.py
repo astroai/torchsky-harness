@@ -39,7 +39,7 @@ BENCH_DIR = Path(__file__).resolve().parents[1]
 
 from torchsky_harness.benchmarks.bench_map_smacs0723_real import _discover_exposure_paths  # noqa: E402
 from torchsky.map import TargetRenderSpec
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 from torchsky.map.operators import bind_image_plane_target_operator  # noqa: E402
 
@@ -138,10 +138,10 @@ def _aligned_stack(
                     mask_hdu=0,
                 )
             ],
-            target_header=target_header,
-            resampling_kernel="bilinear",
-            value_semantics="surface_brightness",
-            stacking_method="weighted_mean",
+            target=target_header,
+            kernel="bilinear",
+            semantics="surface_brightness",
+            method="weighted_mean",
             surface_brightness_area_scaling=False,
             device=device,
         )

@@ -18,7 +18,7 @@ BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map import coadd as coadd_image_plane, plan as plan_image_plane_target
 from torchsky.map.observation import ImageObservation
 
 
@@ -688,19 +688,19 @@ def _run_tan_stack_method_suite(
             dt = truth_bench._time_many(
                 lambda: coadd_image_plane(
                     obs_list,
-                    target_header=target_header,
-                    resampling_kernel=kernel,
-                    value_semantics=case_spec.value_semantics,
-                    stacking_method=stacking_method,
+                    target=target_header,
+                    kernel=kernel,
+                    semantics=case_spec.value_semantics,
+                    method=stacking_method,
                 ),
                 max(runs, torchsky_runs),
             )
             result = coadd_image_plane(
                 obs_list,
-                target_header=target_header,
-                resampling_kernel=kernel,
-                value_semantics=case_spec.value_semantics,
-                stacking_method=stacking_method,
+                target=target_header,
+                kernel=kernel,
+                semantics=case_spec.value_semantics,
+                method=stacking_method,
             )
             row = {
                 "library": "torchsky",

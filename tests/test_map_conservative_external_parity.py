@@ -11,7 +11,7 @@ import pytest
 from astropy.wcs import WCS
 import torch
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 pytest.importorskip("torchsky._cpp")
@@ -138,10 +138,10 @@ def test_conservative_polygon_parity_matches_reproject_exact_data_and_support(
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],
-        target_header=dict(target_header),
-        resampling_kernel="conservative_polygon",
-        value_semantics="surface_brightness",
-        stacking_method="weighted_mean",
+        target=dict(target_header),
+        kernel="conservative_polygon",
+        semantics="surface_brightness",
+        method="weighted_mean",
     )
     reference_weight, reference_data = _external_reference(
         image,
@@ -181,10 +181,10 @@ def test_conservative_polygon_parity_respects_weight_and_mask_maps(
     )
     native = coadd_image_plane(
         [obs],
-        target_header=dict(target_header),
-        resampling_kernel="conservative_polygon",
-        value_semantics="surface_brightness",
-        stacking_method="weighted_mean",
+        target=dict(target_header),
+        kernel="conservative_polygon",
+        semantics="surface_brightness",
+        method="weighted_mean",
     )
     source_weight = (
         torch.where(mask > 0.0, weight_map, torch.zeros_like(weight_map)) * 2.0

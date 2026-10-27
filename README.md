@@ -28,7 +28,8 @@ does not certify scientific validity by itself: the record declares
 `scientific_validity` only for the release gates whose claims are declared in
 `torchsky_harness.evidence`, and every other evaluation stays `not_assessed`.
 See [docs/evidence-verdicts.md](docs/evidence-verdicts.md). Collect a release
-bundle with `pixi run evidence-bundle`. Do not reuse run IDs.
+bundle and mandatory paired-performance verdict with `pixi run release-readiness`.
+Do not reuse run IDs.
 
 The `benchmarks/` and `scripts/` trees install under the `torchsky_harness`
 namespace, preserving existing file names and colocated baselines. Use

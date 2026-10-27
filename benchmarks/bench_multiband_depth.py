@@ -26,7 +26,7 @@ import torch
 import torch.nn.functional as F
 
 import torchsky
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 from torchsky.map.field import (
     bounded_power_pixel_operator,
@@ -1263,11 +1263,11 @@ def coadd_synthetic_exposures(
                 )
             result = coadd_image_plane(
                 observations,
-                target_header=exposures.target_header,
-                resampling_kernel=resampling_kernel,
-                value_semantics="surface_brightness",
-                stacking_method="weighted_mean",
-                drizzle_pixfrac=drizzle_pixfrac,
+                target=exposures.target_header,
+                kernel=resampling_kernel,
+                semantics="surface_brightness",
+                method="weighted_mean",
+                pixfrac=drizzle_pixfrac,
                 device=device,
             )
             products.append(result.data)

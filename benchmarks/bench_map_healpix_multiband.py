@@ -168,7 +168,7 @@ def _coadd(band: Band, image: torch.Tensor, nside: int):
 
 
 def _sparse_pixels_and_values(result) -> tuple[torch.Tensor, torch.Tensor]:
-    pixels = result.data.valid_pixels().to(torch.int64)
+    pixels = result.data.valid_pixels.to(torch.int64)
     return pixels, result.data.get_values(pixels).to(torch.float64)
 
 

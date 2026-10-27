@@ -155,6 +155,34 @@ def _read_optional_plane(path: Path, names: Sequence[str]) -> np.ndarray | None:
     return None
 
 
+def _serializable_header(header: Mapping[str, Any]) -> dict[str, Any]:
+    serialized: dict[str, Any] = {}
+    for key in header:
+        value = header[key]
+        if isinstance(value, np.generic):
+            value = value.item()
+        if value is None or isinstance(value, (bool, int, float, str)):
+            serialized[str(key)] = value
+        elif isinstance(value, (list, tuple)):
+            serialized[str(key)] = [
+                item.item() if isinstance(item, np.generic) else item for item in value
+            ]
+        else:
+            serialized[str(key)] = str(value)
+    return serialized
+
+
+def _read_product_header(path: Path) -> dict[str, Any]:
+    import torchfits
+
+    for hdu in ("SCI", 0):
+        try:
+            return _serializable_header(dict(torchfits.read_header(str(path), hdu)))
+        except Exception:
+            continue
+    raise UnavailableEvidence(f"AstroDrizzle product has no readable header: {path}")
+
+
 def adapt_astrodrizzle_product(path: Path) -> ComparatorProducts:
     science = _read_optional_plane(path, ("SCI", "PRIMARY"))
     if science is None:
@@ -163,13 +191,20 @@ def adapt_astrodrizzle_product(path: Path) -> ComparatorProducts:
     context = _read_optional_plane(path, ("CTX", "CON"))
     dq = _read_optional_plane(path, ("DQ",))
     nexp = _read_optional_plane(path, ("NEXP",))
+    output_header = _read_product_header(path)
     return ComparatorProducts(
         science=science,
         weight=weight,
         dq=dq,
         context=context,
         nexp=nexp,
-        metadata={"adapter": "drizzlepac.astrodrizzle", "product": path.name},
+        metadata={
+            "adapter": "drizzlepac.astrodrizzle",
+            "product": path.name,
+            "output_header": output_header,
+            "target_wcs": output_header,
+            "target_shape": [int(science.shape[-2]), int(science.shape[-1])],
+        },
     )
 
 
@@ -249,6 +284,7 @@ def run_astrodrizzle_adapter(
         rejection=np.stack(rejection_planes) if rejection_planes else None,
         metadata={
             **dict(result.metadata),
+            "parameters": _serializable_header(parameters),
             "removed_external_distortion_references": removed_reference_keywords,
             "normalized_numeric_header_keyword_count": {
                 name: len(values)

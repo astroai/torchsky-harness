@@ -22,7 +22,7 @@ from astropy.wcs import WCS as AstropyWCS  # noqa: E402
 from drizzle.resample import Drizzle as DrizzleResampler  # noqa: E402
 from drizzle.utils import calc_pixmap, estimate_pixel_scale_ratio  # noqa: E402
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -187,11 +187,11 @@ def test_external_drizzle_parity_across_affine_cases(
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],
-        target_header=dict(target_header),
-        resampling_kernel=kernel,
-        value_semantics=value_semantics,
-        drizzle_pixfrac=pixfrac,
-        stacking_method="weighted_mean",
+        target=dict(target_header),
+        kernel=kernel,
+        semantics=value_semantics,
+        pixfrac=pixfrac,
+        method="weighted_mean",
     )
     _, reference_weight, reference_data = _stsci_drizzle_reference(
         image,
@@ -241,11 +241,11 @@ def test_external_drizzle_parity_respects_weight_and_mask_maps(
     )
     native = coadd_image_plane(
         [obs],
-        target_header=dict(target_header),
-        resampling_kernel=kernel,
-        value_semantics="surface_brightness",
-        drizzle_pixfrac=0.9,
-        stacking_method="weighted_mean",
+        target=dict(target_header),
+        kernel=kernel,
+        semantics="surface_brightness",
+        pixfrac=0.9,
+        method="weighted_mean",
     )
     source_weight = (
         torch.where(mask > 0.0, weight_map, torch.zeros_like(weight_map)) * 2.0
@@ -280,11 +280,11 @@ def test_external_drizzle_parity_square_support_matches_weighted_uniform_field(
 
     native = coadd_image_plane(
         [ImageObservation(str(path))],
-        target_header=dict(target_header),
-        resampling_kernel="drizzle_square",
-        value_semantics="surface_brightness",
-        drizzle_pixfrac=1.0,
-        stacking_method="weighted_mean",
+        target=dict(target_header),
+        kernel="drizzle_square",
+        semantics="surface_brightness",
+        pixfrac=1.0,
+        method="weighted_mean",
     )
     _, reference_weight, reference_data = _stsci_drizzle_reference(
         image,

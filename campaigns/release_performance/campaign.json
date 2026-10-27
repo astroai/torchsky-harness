@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "container_image_source": "campaigns/release_performance/image.sh:TORCHSKY_RELEASE_PERFORMANCE_IMAGE",
+  "resources": {
+    "cpu": 8,
+    "memory_gb": 32,
+    "gpu": 0,
+    "walltime_hours": 6
+  },
+  "concurrency": {
+    "jobs": 1,
+    "benchmark_processes": 1,
+    "subjects_per_process": 1
+  },
+  "retry": {
+    "max_attempts": 1,
+    "unit": "complete_campaign",
+    "reuse_partial_pairs": false
+  },
+  "scratch": {
+    "code": "/scratch/code",
+    "environments": "/scratch/env",
+    "data": "/scratch/data"
+  },
+  "persistent_destination_prefix": "/arc/projects"
+}

@@ -23,7 +23,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 
 from torchsky.instrument import NIRCAM_UPDEC_BANDS, nircam_imaging_band  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane_cube  # noqa: E402
+from torchsky.map import coadd_cube as coadd_image_plane_cube  # noqa: E402
 from torchsky.map.observation import ImageObservation  # noqa: E402
 
 FILTER_BANDPASS_ANGSTROM: dict[str, tuple[float, float, float]] = {}
@@ -161,8 +161,8 @@ def main() -> int:
         raise SystemExit(str(exc)) from exc
     result = coadd_image_plane_cube(
         observations,
-        resampling_kernel=args.resampling_kernel,
-        drizzle_pixfrac=float(args.drizzle_pixfrac),
+        kernel=args.resampling_kernel,
+        pixfrac=float(args.drizzle_pixfrac),
         device=args.device,
     )
     output = args.output or (manifest_path.parent / "smacs0723_stack_baseline.fits")

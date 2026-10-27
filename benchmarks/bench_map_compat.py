@@ -28,7 +28,7 @@ import astropy  # noqa: E402
 from astropy.wcs import WCS  # noqa: E402
 
 import torchsky  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map import coadd as coadd_image_plane, plan as plan_image_plane_target
 from torchsky.map.observation import ImageObservation
 
 
@@ -1534,10 +1534,10 @@ def _align_array_to_target(
         )
         result = coadd_image_plane(
             [ImageObservation(str(image_path), hdu=1)],
-            target_header=dict(target_header),
-            resampling_kernel=kernel,
-            value_semantics="surface_brightness",
-            stacking_method="weighted_mean",
+            target=dict(target_header),
+            kernel=kernel,
+            semantics="surface_brightness",
+            method="weighted_mean",
         )
         aligned = result.data.cpu().numpy()
     return np.nan_to_num(
@@ -2365,8 +2365,8 @@ def _torchsky_row(
     def _run():
         return coadd_image_plane(
             observations,
-            target_header=target_header,
-            resampling_kernel=resampling_kernel,
+            target=target_header,
+            kernel=resampling_kernel,
         )
 
     if resampling_kernel in {
@@ -2902,9 +2902,9 @@ def _swarp_clipped_row(
     def _run_torchsky():
         return coadd_image_plane(
             observations,
-            target_header=target_header,
-            resampling_kernel="bilinear",
-            stacking_method="sigma_clipped",
+            target=target_header,
+            kernel="bilinear",
+            method="sigma_clipped",
             clip_sigma=4.0,
             clip_iterations=3,
         )

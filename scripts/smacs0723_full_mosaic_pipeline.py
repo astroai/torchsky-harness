@@ -52,7 +52,7 @@ from torchsky_harness.scripts.download_smacs0723_multiband_public import ALL_BAN
 from torchsky_harness.scripts.download_updec_webb import download_spec as download_updec_spec  # noqa: E402
 from torchsky_harness.scripts.download_updec_webb import resolve_specs  # noqa: E402
 from torchsky.map.field import FieldObservation, estimate_field_domain, make_field_model, render_field_observation  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane  # noqa: E402
+from torchsky.map import coadd as coadd_image_plane  # noqa: E402
 from torchsky.map.observation import ImageObservation  # noqa: E402
 
 
@@ -202,11 +202,11 @@ def _coadd_full_band(
             )
         result = coadd_image_plane(
             observations,
-            target_header=target_header,
-            resampling_kernel="drizzle_square",
-            value_semantics="surface_brightness",
-            stacking_method="weighted_mean",
-            drizzle_pixfrac=1.0,
+            target=target_header,
+            kernel="drizzle_square",
+            semantics="surface_brightness",
+            method="weighted_mean",
+            pixfrac=1.0,
         )
 
     pred = result.data.detach().cpu().numpy().astype(np.float32)
@@ -337,10 +337,10 @@ def _fit_full_band(
 
         coadd_reference = coadd_image_plane(
             image_observations,
-            target_header=target_header,
-            resampling_kernel="bilinear",
-            value_semantics="flux",
-            stacking_method="weighted_mean",
+            target=target_header,
+            kernel="bilinear",
+            semantics="flux",
+            method="weighted_mean",
         )
         support_mask = coadd_reference.weight.detach().cpu().numpy() > 0
 

@@ -18,7 +18,7 @@ pytest.importorskip("torchsky._cpp")
 pytest.importorskip("dfreproject")
 import torchfits  # noqa: E402
 
-from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map import coadd as coadd_image_plane, plan as plan_image_plane_target
 from torchsky.map.observation import ImageObservation
 
 
@@ -97,8 +97,8 @@ def test_torchsky_bilinear_close_to_dfreproject_on_shifted_grid() -> None:
         plan = plan_image_plane_target(obs, header_overrides=tgt_hdr)
         ts = coadd_image_plane(
             obs,
-            target_header=plan.header,
-            resampling_kernel="bilinear",
+            target=plan.header,
+            kernel="bilinear",
         )
         ts_np = ts.data.detach().cpu().numpy()
 

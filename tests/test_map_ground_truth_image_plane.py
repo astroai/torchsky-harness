@@ -8,7 +8,7 @@ import torch
 
 pytest.importorskip("torchsky._cpp")
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky_harness.metrics import evaluate_map_product
 from torchsky_harness.benchmarks.bench_map_ground_truth import make_case
 
@@ -27,8 +27,8 @@ def test_coadd_image_plane_clamps_negative_resampled_weights_for_high_order_kern
 
     result = coadd_image_plane(
         [item.observation for item in observations],
-        target_header=target_header,
-        resampling_kernel="bicubic",
+        target=target_header,
+        kernel="bicubic",
     )
     metrics = evaluate_map_product(
         result.data,

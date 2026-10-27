@@ -10,7 +10,7 @@ import torch
 
 pytest.importorskip("torchsky._cpp")
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,8 +57,8 @@ def test_swarp_bilinear_stack_near_torchsky_on_tiny_shifted_pair(
     target_header = dict(base)
     ts = coadd_image_plane(
         obs,
-        target_header=target_header,
-        resampling_kernel="bilinear",
+        target=target_header,
+        kernel="bilinear",
     )
     sw_data, sw_w = bench_map_compat._coadd_with_swarp(
         obs,

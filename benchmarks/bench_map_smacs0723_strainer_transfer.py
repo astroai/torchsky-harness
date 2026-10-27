@@ -60,7 +60,7 @@ from torchsky.map.field import (
     pretrain_strainer_trunk_synthetic,
     render_field_observation,
 )
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -236,10 +236,10 @@ def main() -> int:
 
         coadd_reference = coadd_image_plane(
             image_observations,
-            target_header=dict(target_header),
-            resampling_kernel="bilinear",
-            value_semantics="flux",
-            stacking_method="weighted_mean",
+            target=dict(target_header),
+            kernel="bilinear",
+            semantics="flux",
+            method="weighted_mean",
         )
         support_mask = coadd_reference.weight.cpu().numpy() > 0
         target_observation = _field_target_observation(

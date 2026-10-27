@@ -16,8 +16,8 @@ BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
-import torchsky.map.image_plane as image_plane_mod  # noqa: E402
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
+from torchsky.map import image_plane_projection as image_plane_projection_mod  # noqa: E402
 from torchsky.map.observation import ImageObservation
 import torchsky.map.operators.resampling as resampling_mod  # noqa: E402
 from torchsky.map.operators import validate_image_plane_2d  # noqa: E402
@@ -67,7 +67,7 @@ def _parse_values(text: str) -> list[float]:
 
 
 def _make_boundary_gate_wrapper(margin: float):
-    original = image_plane_mod._resample_weighted_to_target
+    original = image_plane_projection_mod._resample_weighted_to_target
 
     def wrapped(
         image,
@@ -147,7 +147,7 @@ def _make_boundary_gate_wrapper(margin: float):
 
 
 def _make_coverage_gate_wrapper(min_coverage: float):
-    original = image_plane_mod._resample_weighted_to_target
+    original = image_plane_projection_mod._resample_weighted_to_target
 
     def wrapped(
         image,
@@ -286,7 +286,7 @@ def main() -> int:
             values = [0.0, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999]
     else:
         values = _parse_values(args.values)
-    original = image_plane_mod._resample_weighted_to_target
+    original = image_plane_projection_mod._resample_weighted_to_target
 
     with tempfile.TemporaryDirectory(prefix="torchsky_boundary_support_") as tmp:
         tmpdir = Path(tmp)
@@ -326,22 +326,22 @@ def main() -> int:
         rows: list[dict[str, object]] = []
         for value in values:
             if args.policy == "margin":
-                image_plane_mod._resample_weighted_to_target = (
+                image_plane_projection_mod._resample_weighted_to_target = (
                     _make_boundary_gate_wrapper(value)
                 )
             else:
-                image_plane_mod._resample_weighted_to_target = (
+                image_plane_projection_mod._resample_weighted_to_target = (
                     _make_coverage_gate_wrapper(value)
                 )
             try:
                 result = coadd_image_plane(
                     obs_list,
-                    target_header=target_header,
-                    resampling_kernel="bilinear",
-                    value_semantics="surface_brightness",
+                    target=target_header,
+                    kernel="bilinear",
+                    semantics="surface_brightness",
                 )
             finally:
-                image_plane_mod._resample_weighted_to_target = original
+                image_plane_projection_mod._resample_weighted_to_target = original
             metrics = truth_bench._truth_metrics(
                 result.data.to(dtype=torch.float32),
                 result.weight.to(dtype=torch.float32),

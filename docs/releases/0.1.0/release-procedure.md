@@ -16,7 +16,7 @@ whose evidence bundle is `release_ready`.
 2. Every declared gate records `scientific_validity: established`; the
    synthetic/truth gates additionally record
    `comparison_eligibility: baseline_compared`, and
-   `pixi run evidence-bundle --fail-on-missing` reports `release_ready: true`
+   `pixi run release-readiness` reports `release_ready: true`
    with a single subject identity.
 3. The subject identity in the bundle is the artifact being published: rebuild
    the gates against the release commit and compare
@@ -52,6 +52,8 @@ the supporting `bench-map-compat-gate` comparison):
 | sphere geometry vs healpy | `pixi run bench-sphere-matrix-release-gate` |
 | spin-2 SHT vs healpy | `pixi run bench-spin-matrix-release-gate` |
 | catalog crossmatch vs astropy | `pixi run bench-catalog-release-gate` |
+| ICRS/FK5/Galactic/ecliptic frames vs astropy | `pixi run bench-coords-astropy-gate` |
+| bounded low-level Drizzle point/square parity | `pixi run bench-map-drizzle-required` |
 
 Contract gate (`test` environment):
 
@@ -59,7 +61,6 @@ Contract gate (`test` environment):
 |---|---|
 | native/WCS/sphere structural and domain contracts | `pixi run bench-native-contracts-gate` |
 | randomized WCS/HPX/TPV domain fuzz | `pixi run bench-domain-fuzz-gate` |
-| ICRS/FK5/Galactic/ecliptic frames vs astropy | `pixi run bench-coords-astropy-gate` |
 
 Real-data gates (`bench-all` environment; vendored fixtures with recorded
 provenance):
@@ -70,14 +71,31 @@ provenance):
 | real-sky HEALPix map vs healpy | `pixi run bench-sphere-real-map-gate` |
 | real CFHT cutout reprojection vs astropy reproject | `pixi run bench-map-real-cutout-gate` |
 
-The bundle includes nineteen declared gates (seven synthetic/truth, seven
-reference-comparison, three real-data, two contract). A detailed freeze/build/install/gate/GPU/evidence checklist is in
+The bundle includes twenty declared gates (seven synthetic/truth, eight
+reference-comparison, three real-data, two contract). The Drizzle claim is a
+tiny synthetic CRPIX translation only, not real-data replacement or rejection
+parity. A detailed freeze/build/install/gate/GPU/evidence checklist is in
 [validation-runbook.md](validation-runbook.md).
 
-Then `pixi run evidence-bundle` writes
+Then `pixi run release-readiness` runs the scientific bundle and mandatory
+performance verdict. The evidence step writes
 `benchmark_results/evidence_bundle.{json,md}` (git-ignored by design). Attach
 the bundle to the tag/release notes. The raw run directories stay in durable
 storage; the bundle hashes them.
+
+The finite performance-claim contract is
+`src/torchsky_harness/release_performance_claims.json`. Its six WCS, HEALPix,
+and bounded Drizzle rows require same-runner paired sampling, a 5% regression
+budget, and an absolute timing floor. Each configured benchmark task uses five
+internal timing repetitions. Run each task five separate times for each frozen
+subject, retain each task JSON, and build the baseline and candidate artifacts
+with the paired campaign runner in
+`campaigns/release_performance/README.md`. It measures baseline and candidate
+environment fingerprints independently, binds each claim's frozen task command,
+arguments, device, and dtype, and stores raw reports under the portable artifact
+root. Performance readiness reopens and hashes every raw report and fails closed
+until both artifacts have five matching pair IDs and measured pairing fields; no
+baseline result is supplied by this release procedure.
 
 ## Version and tag
 
@@ -92,7 +110,7 @@ Versions live in `pyproject.toml`, `pixi.toml` (torchsky), and the package
 
 ## Publish order
 
-1. **torchsky 0.4.0** — `.github/workflows/publish.yml` builds sdist+wheel,
+1. **torchsky 0.4.0** — `.github/workflows/build_wheels.yml` builds sdist+wheel,
    checks the compiled extension is present, installs the wheel in a clean
    environment with CPU torch, and runs a WCS + `coadd` smoke before publishing
    through PyPI trusted publishing (`environment: pypi`).
@@ -102,8 +120,10 @@ Versions live in `pyproject.toml`, `pixi.toml` (torchsky), and the package
    `torchsky-harness list` and `torchsky-harness subject` before publishing.
 
 PyPI trusted publishing requires, for each repository, an `environment: pypi`
-configured on PyPI as a trusted publisher for the workflow
-`.github/workflows/publish.yml`. No API tokens are stored in the repository.
+configured on PyPI as a trusted publisher for the repository's release
+workflow: `torchsky/.github/workflows/build_wheels.yml` and
+`torchsky-harness/.github/workflows/publish.yml`. No API tokens are stored in
+the repository.
 
 ## Post-release verification
 

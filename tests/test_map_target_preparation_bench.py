@@ -25,18 +25,18 @@ def _result(*, provenance=None):
 
 def test_target_preparation_row_is_complete_without_cache_api(monkeypatch) -> None:
     monkeypatch.setattr(
-        image_plane_bench.image_plane_mod, "_prepare_target", lambda: None
+        image_plane_bench.image_plane_coadd_mod, "_prepare_target", lambda: None
     )
     monkeypatch.setattr(
-        image_plane_bench.image_plane_mod,
+        image_plane_bench.image_plane_coadd_mod,
         "_project_observation_to_target",
         lambda: None,
     )
 
     def fake_coadd(observations, **kwargs):
-        image_plane_bench.image_plane_mod._prepare_target()
+        image_plane_bench.image_plane_coadd_mod._prepare_target()
         for _ in observations:
-            image_plane_bench.image_plane_mod._project_observation_to_target()
+            image_plane_bench.image_plane_coadd_mod._project_observation_to_target()
         return _result()
 
     monkeypatch.setattr(image_plane_bench, "coadd_image_plane", fake_coadd)
@@ -82,10 +82,10 @@ def test_target_preparation_row_is_complete_without_cache_api(monkeypatch) -> No
 
 def test_target_preparation_row_records_optional_cache_counters(monkeypatch) -> None:
     monkeypatch.setattr(
-        image_plane_bench.image_plane_mod, "_prepare_target", lambda: None
+        image_plane_bench.image_plane_coadd_mod, "_prepare_target", lambda: None
     )
     monkeypatch.setattr(
-        image_plane_bench.image_plane_mod,
+        image_plane_bench.image_plane_coadd_mod,
         "_project_observation_to_target",
         lambda: None,
     )
@@ -94,9 +94,9 @@ def test_target_preparation_row_records_optional_cache_counters(monkeypatch) -> 
 
     def fake_coadd(observations, *, target_cache_capacity=None, **kwargs):
         capacities.append(target_cache_capacity)
-        image_plane_bench.image_plane_mod._prepare_target()
+        image_plane_bench.image_plane_coadd_mod._prepare_target()
         for _ in observations:
-            image_plane_bench.image_plane_mod._project_observation_to_target()
+            image_plane_bench.image_plane_coadd_mod._project_observation_to_target()
         return _result(
             provenance={
                 "target_cache": {

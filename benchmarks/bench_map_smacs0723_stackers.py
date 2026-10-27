@@ -110,7 +110,7 @@ from torchsky.map.field import (
     make_field_model,
     render_field_observation,
 )
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -1027,11 +1027,11 @@ def _run_coadd_method(
 ) -> tuple[np.ndarray, np.ndarray, dict[str, Any]]:
     result = coadd_image_plane(
         observations,
-        target_header=dict(target_header),
-        resampling_kernel=str(spec["kernel"]),
-        value_semantics=str(spec["value_semantics"]),
-        stacking_method=str(spec["stacking_method"]),
-        drizzle_pixfrac=float(spec.get("drizzle_pixfrac", 1.0)),
+        target=dict(target_header),
+        kernel=str(spec["kernel"]),
+        semantics=str(spec["value_semantics"]),
+        method=str(spec["stacking_method"]),
+        pixfrac=float(spec.get("drizzle_pixfrac", 1.0)),
         spatial_tile_hw=spec.get("spatial_tile_hw"),
     )
     extra = {

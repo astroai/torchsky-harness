@@ -25,7 +25,7 @@ from torchsky.sphere.geom import SphericalPolygon, spherical_polygon_contains  #
 from torchsky.sphere.healpix import (  # noqa: E402
     ang2pix as hp_ang2pix,
     get_all_neighbours as hp_get_all_neighbours,
-    max_pixrad as hp_max_pixrad,
+    max_pixel_radius as hp_max_pixrad,
     nest_children as hp_nest_children,
     nside2pixarea as hp_nside2pixarea,
     pix2ang as hp_pix2ang,

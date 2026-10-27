@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+import torchsky_harness.cli as cli_module
 from torchsky_harness.cli import main
 from torchsky_harness.evidence import (
     CLAIMS,
@@ -35,7 +36,21 @@ def _run_dir(
     run_dir = root / name
     run_dir.mkdir(parents=True)
     report = run_dir / "report.json"
-    report.write_text(json.dumps([{"case": "row", "status": "OK"}]), encoding="utf-8")
+    claim = CLAIMS.get(evaluation)
+    if claim is not None and claim.summary_failures_key is not None:
+        payload: object = {claim.summary_failures_key: []}
+    elif claim is not None:
+        rows = [
+            {"case": required, "status": "OK"} for required in claim.required_rows
+        ]
+        rows.extend(
+            {**dict(selector), "status": "OK"}
+            for selector in claim.required_row_selectors
+        )
+        payload = rows
+    else:
+        payload = [{"case": "row", "status": "OK"}]
+    report.write_text(json.dumps(payload), encoding="utf-8")
     (run_dir / "stdout.log").write_text("ok\n", encoding="utf-8")
     (run_dir / "stderr.log").write_text("", encoding="utf-8")
     record = {
@@ -73,9 +88,57 @@ def test_bundle_is_release_ready_when_every_claim_is_established(tmp_path: Path)
     assert bundle["verdict_counts"]["established"] == len(CLAIMS)
     assert bundle["subject_consistent"] is True
     assert bundle["unreadable_runs"] == []
-    entry = bundle["entries"]["bench_map_ifu"]
-    assert entry["evidence_report"]["sha256"] is not None
-    assert entry["logs"][0]["sha256"] is not None
+    assert bundle["invalid_reports"] == {}
+    for evaluation in CLAIMS:
+        entry = bundle["entries"][evaluation]
+        assert entry["evidence_report"]["sha256"] is not None
+        assert entry["evidence_report"]["revalidated"] is True
+        assert entry["evidence_report"]["validation_errors"] == []
+        assert entry["logs"][0]["sha256"] is not None
+
+
+def test_deleted_declared_claim_report_blocks_release_readiness(tmp_path: Path) -> None:
+    runs = _all_claims(tmp_path)
+    report = runs[0] / "report.json"
+    report.unlink()
+
+    bundle = build_bundle(runs)
+
+    evaluation = sorted(CLAIMS)[0]
+    assert bundle["release_ready"] is False
+    assert "SHA-256 unavailable" in " ".join(bundle["invalid_reports"][evaluation])
+    assert bundle["entries"][evaluation]["evidence_report"]["sha256"] is None
+
+
+def test_missing_declared_claim_report_path_blocks_release_readiness(
+    tmp_path: Path,
+) -> None:
+    runs = _all_claims(tmp_path)
+    record_path = runs[0] / "execution.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    record.pop("evidence_report")
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+
+    bundle = build_bundle(runs)
+
+    evaluation = sorted(CLAIMS)[0]
+    assert bundle["release_ready"] is False
+    assert bundle["invalid_reports"][evaluation] == ["evidence report path missing"]
+
+
+def test_corrupted_declared_claim_report_blocks_release_readiness(tmp_path: Path) -> None:
+    runs = _all_claims(tmp_path)
+    (runs[0] / "report.json").write_text("{not json", encoding="utf-8")
+
+    bundle = build_bundle(runs)
+
+    evaluation = sorted(CLAIMS)[0]
+    assert bundle["release_ready"] is False
+    assert bundle["entries"][evaluation]["evidence_report"]["sha256"] is not None
+    assert any(
+        "evidence report unreadable" in reason
+        for reason in bundle["invalid_reports"][evaluation]
+    )
 
 
 def test_undeclared_runs_at_another_subject_do_not_block_readiness(
@@ -212,15 +275,51 @@ def test_cli_evidence_fails_on_missing_claim(tmp_path: Path) -> None:
     )
 
 
-def test_cli_evidence_passes_with_complete_bundle(tmp_path: Path) -> None:
+def test_cli_evidence_fails_with_complete_science_but_missing_performance(
+    tmp_path: Path,
+) -> None:
     runs_dir = tmp_path / "runs"
     runs_dir.mkdir()
     for path in _all_claims(runs_dir):
         assert path.is_dir()
 
+    output = tmp_path / "bundle.json"
     assert (
-        main(["evidence", "--runs-dir", str(runs_dir), "--fail-on-missing"]) == 0
+        main(
+            [
+                "evidence",
+                "--runs-dir",
+                str(runs_dir),
+                "--json-out",
+                str(output),
+                "--fail-on-missing",
+            ]
+        )
+        == 1
     )
+    bundle = json.loads(output.read_text(encoding="utf-8"))
+    assert bundle["scientific_release_ready"] is True
+    assert bundle["performance"]["release_performance_ready"] is False
+    assert bundle["release_ready"] is False
+
+
+def test_cli_evidence_passes_only_with_science_and_performance_ready(
+    tmp_path: Path, monkeypatch
+) -> None:
+    runs_dir = tmp_path / "runs"
+    runs_dir.mkdir()
+    for path in _all_claims(runs_dir):
+        assert path.is_dir()
+    monkeypatch.setattr(
+        cli_module,
+        "assess_claims",
+        lambda *_args, **_kwargs: {
+            "release_performance_ready": True,
+            "errors": [],
+            "claims": [],
+        },
+    )
+    assert main(["evidence", "--runs-dir", str(runs_dir), "--fail-on-missing"]) == 0
 
 
 @pytest.mark.parametrize("evaluation", sorted(CLAIMS))

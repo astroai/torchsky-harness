@@ -27,7 +27,7 @@ pytest.importorskip("torchsky._cpp")
 pytest.importorskip("reproject")
 import torchfits  # noqa: E402
 
-from torchsky.map.image_plane import coadd_image_plane, plan_image_plane_target
+from torchsky.map import coadd as coadd_image_plane, plan as plan_image_plane_target
 from torchsky.map.observation import ImageObservation
 
 
@@ -71,8 +71,8 @@ def test_torchsky_bilinear_matches_reproject_interp_on_shifted_grid() -> None:
         plan = plan_image_plane_target(obs, header_overrides=tgt_hdr)
         ts = coadd_image_plane(
             obs,
-            target_header=plan.header,
-            resampling_kernel="bilinear",
+            target=plan.header,
+            kernel="bilinear",
         )
         ts_np = ts.data.detach().cpu().numpy()
 
@@ -103,8 +103,8 @@ def test_torchsky_bicubic_reasonably_close_to_reproject_interp_on_shifted_grid()
         plan = plan_image_plane_target(obs, header_overrides=tgt_hdr)
         ts = coadd_image_plane(
             obs,
-            target_header=plan.header,
-            resampling_kernel="bicubic",
+            target=plan.header,
+            kernel="bicubic",
         )
         ts_np = ts.data.detach().cpu().numpy()
 

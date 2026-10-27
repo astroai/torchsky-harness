@@ -12,7 +12,7 @@ from torchsky.sphere.healpix import (
     get_interp_weights,
     isnpixok,
     isnsideok,
-    max_pixrad,
+    max_pixel_radius as max_pixrad,
     nside2order,
     ud_grade,
     query_disc,

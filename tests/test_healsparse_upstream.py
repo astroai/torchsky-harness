@@ -1,6 +1,6 @@
 """Upstream parity tests for healsparse compatibility layer.
 
-These tests compare torchsky.sphere.HealSparseMap against the
+These tests compare torchsky.sphere.SparseHealpixMap against the
 healsparse reference implementation.
 """
 
@@ -15,7 +15,7 @@ import torch
 
 healsparse = pytest.importorskip("healsparse")
 
-from torchsky.sphere import HealSparseMap, MOC, compat, sum_intersection, sum_union  # noqa: E402
+from torchsky.sphere import MOC, SparseHealpixMap, compat, sum_intersection, sum_union  # noqa: E402
 
 
 def _make_sparse_pair(dtype=np.float64):
@@ -27,7 +27,7 @@ def _make_sparse_pair(dtype=np.float64):
     hs_map = healsparse.HealSparseMap.make_empty(nside_coverage, nside_map, dtype)
     hs_map.update_values_pix(pixels, values)
 
-    tf_map = HealSparseMap.from_pixels(
+    tf_map = SparseHealpixMap.from_pixels(
         torch.from_numpy(pixels),
         torch.from_numpy(values),
         nside_sparse=nside_map,
@@ -61,7 +61,7 @@ def test_healsparse_write_read_partial_and_header_roundtrip() -> None:
 
     try:
         tf_map.write_fits(path.as_posix(), overwrite=True)
-        roundtrip = HealSparseMap.read_fits(path.as_posix())
+        roundtrip = SparseHealpixMap.read_fits(path.as_posix())
         np.testing.assert_array_equal(roundtrip.pixels.cpu().numpy(), pixels)
         np.testing.assert_allclose(
             roundtrip.values.cpu().numpy(), values, atol=0.0, rtol=0.0
@@ -80,7 +80,7 @@ def test_healsparse_reads_upstream_written_fits(tmp_path) -> None:
     hs_map, _tf_map, pixels, values = _make_sparse_pair()
     path = tmp_path / "upstream.hs"
     hs_map.write(path.as_posix(), clobber=True)
-    roundtrip = HealSparseMap.read_fits(path.as_posix())
+    roundtrip = SparseHealpixMap.read_fits(path.as_posix())
     np.testing.assert_array_equal(roundtrip.pixels.cpu().numpy(), pixels)
     np.testing.assert_allclose(
         roundtrip.values.cpu().numpy(), values, atol=0.0, rtol=0.0
@@ -129,7 +129,7 @@ def test_healsparse_bool_degrade_matches_upstream_dense_behavior() -> None:
     hs_map = healsparse.HealSparseMap.make_empty(nside_coverage, nside_map, np.bool_)
     hs_map[pixels] = True
 
-    tf_map = HealSparseMap.from_pixels(
+    tf_map = SparseHealpixMap.from_pixels(
         torch.from_numpy(pixels),
         torch.ones(len(pixels), dtype=torch.bool),
         nside_sparse=nside_map,
@@ -217,7 +217,9 @@ def test_healsparse_geom_circle_coverage_matches_upstream_sparse_mask() -> None:
     hs_map.update_values_pix(pixels, np.ones(pixels.size, dtype=np.int32))
 
     moc = MOC.from_circle(lon, lat, radius, max_order=int(np.log2(nside_map)))
-    tf_map = HealSparseMap.from_moc(moc, nside=nside_map, nside_coverage=nside_coverage)
+    tf_map = SparseHealpixMap.from_moc(
+        moc, nside=nside_map, nside_coverage=nside_coverage
+    )
 
     tf_pixels = tf_map.pixels.cpu().numpy()
     hs_pixels = hs_map.valid_pixels

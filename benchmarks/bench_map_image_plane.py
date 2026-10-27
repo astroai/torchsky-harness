@@ -23,13 +23,13 @@ SRC = ROOT / "src"
 import astropy  # noqa: E402
 
 import torchsky  # noqa: E402
-import torchsky.map.image_plane as image_plane_mod  # noqa: E402
-from torchsky.map.image_plane import (
-    coadd_image_plane,
-    coadd_image_plane_cube,
-    coadd_image_plane_multiband,
-    plan_image_plane_cube_target_from_header,
-    plan_image_plane_target,
+from torchsky.map import (
+    coadd as coadd_image_plane,
+    coadd_cube as coadd_image_plane_cube,
+    coadd_multiband as coadd_image_plane_multiband,
+    image_plane_coadd as image_plane_coadd_mod,
+    plan as plan_image_plane_target,
+    plan_cube as plan_image_plane_cube_target_from_header,
 )
 from torchsky.map.observation import ImageObservation
 from torchsky_harness.subject import git_identity, identify_subject
@@ -377,10 +377,10 @@ def _instrument_target_preparation(device: torch.device):
         "projection_time_s": 0.0,
     }
     implementation_module = inspect.getmodule(coadd_image_plane)
-    modules = [image_plane_mod]
+    modules = [image_plane_coadd_mod]
     if (
         implementation_module is not None
-        and implementation_module is not image_plane_mod
+        and implementation_module is not image_plane_coadd_mod
     ):
         modules.append(implementation_module)
     originals: list[tuple[Any, str, Any]] = []
@@ -456,9 +456,9 @@ def _profile_target_preparation_workload(
     ]
     cache_argument = _cache_capacity_argument()
     kwargs: dict[str, Any] = {
-        "target_header": dict(target_header),
+        "target": dict(target_header),
         "footprint_order": footprint_order,
-        "value_semantics": value_semantics,
+        "semantics": value_semantics,
         "device": device,
     }
     if tile_size is not None:
@@ -799,14 +799,14 @@ def _bench_multiband_case(
     dt = _time_many(
         lambda: coadd_image_plane_multiband(
             observations,
-            target_header=planned.header,
+            target=planned.header,
             footprint_order=footprint_order,
         ),
         runs,
     )
     result = coadd_image_plane_multiband(
         observations,
-        target_header=planned.header,
+        target=planned.header,
         footprint_order=footprint_order,
     )
     pixels = float(result.data.shape[0] * result.data.shape[1] * result.data.shape[2])
@@ -845,7 +845,7 @@ def _bench_cube_case(
 ) -> dict[str, Any]:
     planned = plan_image_plane_cube_target_from_header(
         observations,
-        spectral_header,
+        spectral_header=spectral_header,
         reference_index=0,
     )
     dt = _time_many(

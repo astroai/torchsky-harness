@@ -31,7 +31,7 @@ Out of this program: ducc0 internals, lsst.sphgeom, wcslib/pyast/Kapteyn (option
 
 | Area | Typical references | torchsky entry / notes |
 |------|-------------------|-------------------------|
-| HEALPix pixel + harmonic API | **healpy**, **hpgeom** (strict queries), **astropy-healpix** | `torchsky.sphere.healpix`, `torchsky.sphere.compat`, `torchsky.sphere.healpy` (alias); spectral transforms are torch-native—compare to healpy in tests/benchmarks only |
+| HEALPix pixel + harmonic API | **healpy**, **hpgeom** (strict queries), **astropy-healpix** | `torchsky.sphere.healpix`, `torchsky.sphere.compat`; spectral transforms are torch-native—compare to healpy in tests/benchmarks only |
 | WCS / projections | **Astropy** `astropy.wcs`, FITS WCS | `torchsky.wcs.WCS`, C++/fused paths; parity tests vs Astropy where scoped |
 | FITS I/O & tables | **torchfits** | `torchfits` only; torchsky has no I/O or table namespace; never `astropy.io.fits` or Python `fitsio` |
 | Spherical geometry / polygons | **spherical_geometry**, **astropy-healpix** (where applicable) | `torchsky.sphere` and `torchsky.sphere.geom`; exact regions and benchmarks vs upstream fixtures |
@@ -40,7 +40,7 @@ Out of this program: ducc0 internals, lsst.sphgeom, wcslib/pyast/Kapteyn (option
 ## Where compatibility lives
 
 - **HEALPix native pixel API** — `torchsky.sphere.healpix` owns indexing, neighbors, interpolation, range helpers, and query primitives.
-- **HEALPix / healpy-shaped API** — [`torchsky.sphere.compat`](https://github.com/astroai/torchsky/blob/main/docs/sphere.md#compatibility) and [`torchsky.sphere.healpy`](https://github.com/astroai/torchsky/blob/main/docs/sphere.md#compatibility) (same symbols; use `import torchsky.sphere.healpy as hp` if you prefer healpy naming).
+- **HEALPix / healpy-shaped API** — [`torchsky.sphere.compat`](https://github.com/astroai/torchsky/blob/main/docs/sphere.md#compatibility); use `import torchsky.sphere.compat as hp` when porting healpy-shaped code.
 - **Sphere native + extended geometry** — `torchsky.sphere` (regions, MOC, sparse maps, etc.), often compared to healpy/hpgeom/spherical_geometry in tests and benchmarks.
 - **WCS** — `torchsky.wcs` (see tests and WCS-related benchmarks).
 - **FITS / tables** — `torchfits`; torchsky accepts decoded tensors, headers,

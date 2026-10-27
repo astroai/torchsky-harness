@@ -1,0 +1,4 @@
+-rw-rw---- sgwyn cfis-read cfis-write 400006080 Aug 24 2025 CFIS.000.229.u.fits
+-rw-rw---- sgwyn cfis-read cfis-write 400006080 Jul 02 2025 vos:cfis/tiles_DR6/CFIS.000.229.r.fits
+-rw-rw---- sgwyn cfis-read cfis-write 2847854 Aug 29 2025 CFIS.000.229.u.expcxy
+-rw-rw---- sgwyn cfis-read cfis-write 17368118 Jul 03 2025 vos:cfis/tiles_DR6/CFIS.000.229.r.expcxy

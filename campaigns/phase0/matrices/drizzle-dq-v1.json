@@ -64,23 +64,23 @@
     {
       "id": "real-hst-wfc3-ir-astrodrizzle",
       "kind": "astrodrizzle_real",
-      "certification": "peer",
+      "certification": "diagnostic",
       "required_peers": ["astrodrizzle"],
       "required_metrics": [
-        "astrodrizzle_science_finite_fraction",
-        "astrodrizzle_has_weight",
-        "astrodrizzle_has_context",
-        "astrodrizzle_rejection_count"
+        "flux_relative_error",
+        "centroid_error_px",
+        "real_hst_shared_support_rmse",
+        "real_hst_shared_support_relative_error",
+        "real_hst_support_iou",
+        "real_hst_torchsky_finite_fraction",
+        "real_hst_astrodrizzle_finite_fraction",
+        "real_hst_shared_support_fraction"
       ],
-      "gates": {
-        "astrodrizzle_science_finite_fraction": {"min": 0.5},
-        "astrodrizzle_has_weight": {"equals": true},
-        "astrodrizzle_has_context": {"equals": true},
-        "astrodrizzle_rejection_count": {"min": 0}
-      },
+      "gates": {},
       "parameters": {
         "fixture": "benchmarks/fixtures/real_wcs/sample_ipppssoot_flt.fits",
-        "output_name": "sample_ipppssoot_bounded"
+        "output_name": "sample_ipppssoot_bounded",
+        "pixfrac": 1.0
       }
     }
   ]

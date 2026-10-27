@@ -79,7 +79,7 @@ from torchsky.map.field import (
     render_field_observation,
     render_spectral_power_foam_observation_exact,
 )
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 from torchsky.map.field import (  # noqa: E402
     FieldFitResult,
@@ -99,6 +99,7 @@ from torchsky.map.field import (  # noqa: E402
     spectral_basis_whitening_transform,
 )
 from torchsky.map.field.bandpass import bandpass_quadrature  # noqa: E402
+from torchsky.map.field.forwarding import type_method_accepts_kwarg  # noqa: E402
 from torchsky.instrument import nircam_imaging_band  # noqa: E402
 from torchsky.map.operators import (  # noqa: E402
     apply_learned_psf_spec_adjoint,
@@ -137,6 +138,21 @@ REAL_JOINT_CASE = "tpv_field_fit_deep_multiband_broad"
 FOAM_FOOTPRINT_EXTENT = 0.55
 FOAM_MAX_SMOOTH_PAIRS = 64 * 1024 * 1024
 FOAM_TEMPERATURE_START_CELL_UNITS = 1.0
+
+
+def _contexts_consumed_by_model(
+    model: torch.nn.Module,
+    contexts: Sequence[ForwardContext | None],
+) -> tuple[ForwardContext | None, ...]:
+    methods = ["forward"]
+    if callable(getattr(model, "render_bandpass", None)):
+        methods.append("render_bandpass")
+    if all(
+        type_method_accepts_kwarg(type(model), method, "forward_context")
+        for method in methods
+    ):
+        return tuple(contexts)
+    return (None,) * len(contexts)
 FOAM_TEMPERATURE_END_CELL_UNITS = 16.0
 SCENE_INITIALIZATION_MODEL_KINDS = frozenset({
     "gaussian_basis",
@@ -198,6 +214,7 @@ def _refine_neural_scene_pcg(
         raise ValueError("neural PCG observations, contexts, poses and bundles must align")
     if any(context is not None and context.extra.get("split", "train") != "train" for context in contexts):
         raise ValueError("neural PCG refinement accepts training observations only")
+    render_contexts = _contexts_consumed_by_model(result.model, contexts)
     for bundle in bundles:
         if isinstance(bundle.noise, StructuredNoiseOp):
             raise ValueError("neural PCG does not provide structured-noise whitening")
@@ -242,7 +259,7 @@ def _refine_neural_scene_pcg(
         def forward(self, observation_index: int) -> torch.Tensor:
             return render_field_observation(
                 self.scene, render_observations[observation_index],
-                forward_context=contexts[observation_index],
+                forward_context=render_contexts[observation_index],
                 exposure_pose=poses[observation_index],
                 operator_bundle=bundles[observation_index],
                 **render_kwargs,
@@ -306,7 +323,7 @@ def _refine_neural_scene_pcg(
         for (_, parameter), value in zip(scene_parameters, state.split(lengths), strict=True):
             parameter.copy_(value.reshape_as(parameter))
         final_loss = _compute_full_observation_losses(
-            observations, result.model, contexts, poses, bundles,
+            observations, result.model, render_contexts, poses, bundles,
             num_spectral_samples=render_kwargs["num_spectral_samples"],
             loss_kind="mse", charbonnier_eps=float(fit_kwargs.get("charbonnier_eps", 1.0e-3)),
             huber_delta=float(fit_kwargs.get("huber_delta", 1.0)), loss_reduction="global",
@@ -634,7 +651,15 @@ class _ZeroScene(torch.nn.Module):
         super().__init__()
         self.anchor = torch.nn.Parameter(torch.zeros((), device=device), requires_grad=False)
 
-    def forward(self, ra: torch.Tensor, dec: torch.Tensor, wavelength: Any) -> torch.Tensor:
+    def forward(
+        self,
+        ra: torch.Tensor,
+        dec: torch.Tensor,
+        wavelength: Any,
+        *,
+        forward_context: ForwardContext | None = None,
+    ) -> torch.Tensor:
+        del dec, wavelength, forward_context
         return torch.zeros_like(ra) + self.anchor
 
 
@@ -1052,6 +1077,7 @@ def _fit_training_scene_initialization_product(
         spectral_resolution=max(seed.n_bands, 2),
     )
     model.initialize_from_product(seed)
+    model_contexts = _contexts_consumed_by_model(model, ordered_contexts)
     parameter_states = []
     seen_parameters = set()
     for bundle in ordered_bundles:
@@ -1079,7 +1105,7 @@ def _fit_training_scene_initialization_product(
             observations_per_step=len(ordered_observations),
             training_patch_size=None,
             pixel_samples_per_observation=None,
-            observation_forward_contexts=ordered_contexts,
+            observation_forward_contexts=model_contexts,
             observation_operator_bundles=ordered_bundles,
             render_spatial_tile_hw=fit_kwargs.get("render_spatial_tile_hw"),
         )
@@ -4748,10 +4774,10 @@ def main() -> int:
             validation_contexts.extend(band_validation_contexts)
             coadd_reference = coadd_image_plane(
                 image_observations,
-                target_header=dict(target_header),
-                resampling_kernel="bilinear",
-                value_semantics="surface_brightness",
-                stacking_method="weighted_mean",
+                target=dict(target_header),
+                kernel="bilinear",
+                semantics="surface_brightness",
+                method="weighted_mean",
             )
             coadd_weight = coadd_reference.weight.cpu().numpy()
             coadd_data = (

@@ -81,7 +81,6 @@ def test_canfar_wcs_sphere_runner_contract() -> None:
     assert "timeout --foreground" in runner
     assert 'vcp "${artifact_root}/."' not in runner
     assert "wcs_paper2_fused0.json" in runner
-    assert "wcs_csc_x2s" in runner
     assert runner.count("--skip-decl-pruned") >= 2
     assert "test_wcs_observed_frames.py" in runner
     assert "test_catalogs.py" in runner

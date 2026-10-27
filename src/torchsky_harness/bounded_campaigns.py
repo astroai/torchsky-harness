@@ -238,22 +238,189 @@ def _run_drizzle_outlier(case: Mapping[str, Any]) -> dict[str, Any]:
 def _run_astrodrizzle_real(case: Mapping[str, Any]) -> dict[str, Any]:
     parameters = case["parameters"]
     fixture = ROOT / str(parameters["fixture"])
+    pixfrac = float(parameters["pixfrac"])
+    astrodrizzle_options = {
+        "context": False,
+        "static": False,
+        "skysub": False,
+        "median": False,
+        "blot": False,
+        "driz_cr": False,
+        "final_bits": 0,
+        "final_kernel": "square",
+        "final_pixfrac": pixfrac,
+        "final_units": "cps",
+        "final_wht_type": "EXP",
+    }
     with tempfile.TemporaryDirectory(prefix="torchsky-hst-drizzle-") as directory:
-        product = run_astrodrizzle_adapter(
+        reference = run_astrodrizzle_adapter(
             [fixture],
             Path(directory),
             output_name=str(parameters["output_name"]),
+            options=astrodrizzle_options,
         )
-    finite = np.isfinite(product.science)
-    metrics = {
-        "astrodrizzle_science_finite_fraction": float(finite.mean()),
-        "astrodrizzle_has_weight": product.weight is not None,
-        "astrodrizzle_has_context": product.context is not None,
-        "astrodrizzle_rejection_count": int(
-            np.count_nonzero(product.rejection) if product.rejection is not None else 0
-        ),
+    actual = _run_torchsky_hst_product(
+        fixture,
+        reference,
+        pixfrac=pixfrac,
+    )
+    metrics = _real_hst_drizzle_metrics(actual, reference)
+    return {
+        "metrics": metrics,
+        "metadata": {
+            **dict(reference.metadata),
+            "scientific_claim": (
+                "diagnostic single-exposure HST/WFC3-IR square-drizzle science "
+                "comparison on the exact AstroDrizzle output grid, restricted to "
+                "shared finite support"
+            ),
+            "science_units": str(reference.metadata["output_header"]["BUNIT"]),
+            "matched_controls": {
+                "kernel": "square",
+                "pixfrac": pixfrac,
+                "output_units": "cps",
+                "weight_input": "exposure-time support",
+                "dq_mask": "DQ == 0",
+                "background_subtraction": False,
+                "static_masking": False,
+                "cosmic_ray_rejection": False,
+                "context": False,
+            },
+            "unavailable_metrics": {
+                "weight_plane_parity": (
+                    "AstroDrizzle EXP weight includes drizzle/geometric scaling not "
+                    "encoded as an equivalent Torchsky product-plane contract"
+                ),
+                "dq_rejection_context_parity": (
+                    "disabled for this one-exposure bounded science/support comparison"
+                ),
+            },
+            "limitations": [
+                "one compact 10x10 WFC3/IR exposure; not a mosaic or survey-scale claim",
+                "no sky matching, static-mask, cosmic-ray, blot, rejection, DQ-product, or context parity claim",
+                "support compares positive accumulated weights only; raw weight values are not compared",
+                "metrics are diagnostic and have no certifying numerical tolerance until independently repeated",
+            ],
+        },
     }
-    return {"metrics": metrics, "metadata": dict(product.metadata)}
+
+
+def _numeric_header(header: Mapping[str, Any]) -> dict[str, Any]:
+    normalized = dict(header)
+    for key, value in tuple(normalized.items()):
+        if not isinstance(value, str):
+            continue
+        stripped = value.strip()
+        try:
+            normalized[key] = int(stripped)
+            continue
+        except ValueError:
+            pass
+        try:
+            normalized[key] = float(stripped)
+        except ValueError:
+            pass
+    return normalized
+
+
+def _run_torchsky_hst_product(
+    fixture: Path,
+    reference: ComparatorProducts,
+    *,
+    pixfrac: float,
+) -> ComparatorProducts:
+    import torch
+    import torchfits
+
+    try:
+        from torchsky.map import coadd
+        from torchsky.map.observation import ImageObservation
+    except Exception as exc:
+        raise UnavailableEvidence(f"installed Torchsky subject unavailable: {exc}") from exc
+
+    target_header = reference.metadata.get("target_wcs")
+    if not isinstance(target_header, Mapping):
+        raise UnavailableEvidence("AstroDrizzle target WCS metadata is unavailable")
+    source, source_header = torchfits.read(
+        str(fixture), hdu="SCI", mmap=False, return_header=True
+    )
+    dq = torchfits.read(str(fixture), hdu="DQ", mmap=False)
+    primary_header = torchfits.read_header(str(fixture), 0)
+    source_header = _numeric_header(dict(source_header))
+    target_header = _numeric_header(target_header)
+    source_unit = str(source_header.get("BUNIT", "")).strip().upper()
+    target_unit = str(target_header.get("BUNIT", "")).strip().upper()
+    if source_unit != "ELECTRONS/S" or target_unit != source_unit:
+        raise UnavailableEvidence(
+            f"science units are not identical: source={source_unit!r}, target={target_unit!r}"
+        )
+    exposure_time = float(primary_header["EXPTIME"])
+    source = source.to(dtype=torch.float64)
+    valid = torch.isfinite(source) & (dq == 0)
+    observation = ImageObservation(
+        data=source,
+        header=source_header,
+        wcs=source_header,
+        weight_map=valid.to(dtype=source.dtype) * exposure_time,
+        mask=valid,
+        weight_is_inverse_variance=False,
+    )
+    result = coadd(
+        [observation],
+        target=target_header,
+        kernel="drizzle_square",
+        semantics="surface_brightness",
+        method="weighted_mean",
+        pixfrac=pixfrac,
+        surface_brightness_area_scaling=False,
+        device="cpu",
+    )
+    return ComparatorProducts(
+        science=result.data.detach().cpu().numpy(),
+        weight=result.weight.detach().cpu().numpy(),
+        metadata={
+            "adapter": "torchsky.map.coadd",
+            "source_unit": source_unit,
+            "exposure_time_seconds": exposure_time,
+        },
+    )
+
+
+def _real_hst_drizzle_metrics(
+    actual: ComparatorProducts, reference: ComparatorProducts
+) -> dict[str, Any]:
+    if actual.weight is None or reference.weight is None:
+        raise UnavailableEvidence("science support requires both accumulated weight planes")
+    left = np.asarray(actual.science, dtype=np.float64)
+    right = np.asarray(reference.science, dtype=np.float64)
+    if left.shape != right.shape:
+        raise UnavailableEvidence(
+            f"Torchsky/AstroDrizzle output shapes differ: {left.shape} != {right.shape}"
+        )
+    actual_support = np.isfinite(left) & (np.asarray(actual.weight) > 0)
+    reference_support = np.isfinite(right) & (np.asarray(reference.weight) > 0)
+    shared = actual_support & reference_support
+    if not bool(shared.any()):
+        raise UnavailableEvidence("Torchsky and AstroDrizzle have no shared finite support")
+    residual = left[shared] - right[shared]
+    reference_rms = max(
+        float(np.sqrt(np.mean(np.square(right[shared])))),
+        np.finfo(np.float64).tiny,
+    )
+    union = int(np.count_nonzero(actual_support | reference_support))
+    intersection = int(np.count_nonzero(shared))
+    metrics: dict[str, Any] = {
+        "real_hst_shared_support_rmse": float(np.sqrt(np.mean(np.square(residual)))),
+        "real_hst_shared_support_relative_error": float(
+            np.sqrt(np.mean(np.square(residual))) / reference_rms
+        ),
+        "real_hst_support_iou": float(intersection / union) if union else 1.0,
+        "real_hst_torchsky_finite_fraction": float(np.isfinite(left).mean()),
+        "real_hst_astrodrizzle_finite_fraction": float(np.isfinite(right).mean()),
+        "real_hst_shared_support_fraction": float(shared.mean()),
+    }
+    metrics.update(flux_centroid_metrics(left, right, support=shared))
+    return metrics
 
 
 def _synthetic_adaptive_input(shape: tuple[int, int]) -> np.ndarray:

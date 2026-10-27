@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "campaign": "cfht-union-pitcairn-bounded-smoke",
+  "claims": [],
+  "container_image": "images.canfar.net/astroai/base@sha256:91bca9dde0d54892a05be1629942d96577f2a1e81656fd680453a3d86aff3558",
+  "container_digest": "sha256:91bca9dde0d54892a05be1629942d96577f2a1e81656fd680453a3d86aff3558",
+  "required_environment": {
+    "CFHT_PERSISTENT_DEST": "/arc/projects/<project>/<run-id>",
+    "PYTHONNOUSERSITE": "1",
+    "TORCHSKY_COMMIT": "<exact-subject-sha>",
+    "TORCHSKY_HARNESS_COMMIT": "<exact-harness-sha>",
+    "PYTHONPATH": null
+  },
+  "command": [
+    "bash",
+    "campaigns/cfht_union_pitcairn/run_canfar.sh",
+    "<run-id>"
+  ],
+  "network_inputs": [
+    "vos:cfis/tiles_DR6/CFIS.000.229.u.fits",
+    "vos:cfis/tiles_DR6/CFIS.000.229.r.fits",
+    "vos:cfis/pitcairn/1833406p.fits.fz",
+    "vos:cfis/pitcairn/1833429p.fits.fz",
+    "vos:cfis/pitcairn/1833624p.fits.fz",
+    "vos:cfis/pitcairn/2513912p.fits.fz",
+    "vos:cfis/pitcairn/2513914p.fits.fz",
+    "vos:cfis/pitcairn/2513915p.fits.fz",
+    "vos:cfis/pitcairn/2784453p.fits.fz",
+    "vos:cfis/pitcairn/2784455p.fits.fz",
+    "vos:cfis/pitcairn/2784458p.fits.fz",
+    "vos:cfis/pitcairn/2785688p.fits.fz",
+    "vos:cfis/pitcairn/2785690p.fits.fz",
+    "vos:cfis/pitcairn/2785692p.fits.fz"
+  ],
+  "scratch_only_downloads": true,
+  "persistent_artifacts": ["logs", "results", "manifests", "products"]
+}

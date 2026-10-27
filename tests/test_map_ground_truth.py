@@ -4,7 +4,11 @@ from pathlib import Path
 
 import pytest
 import torch
+import torchfits
 
+from torchsky.map import calibration as calibration_mod
+from torchsky.map import image_plane_projection as image_plane_projection_mod
+from torchsky.map import windowing as image_grid_mod
 from torchsky.map.operators import validate_image_plane_2d
 
 pytest.importorskip("torchsky._cpp")
@@ -294,7 +298,6 @@ def test_tpv_roundtrip_validity_mask_bypasses_filtering_for_tpv(tmp_path: Path) 
     tpv_obs = next(
         item for item in observations if "TPV" in str(item.header.get("CTYPE1", ""))
     )
-    image_plane_mod = _truth_bench.image_plane_mod
     target_wcs = _truth_bench.WCS(target_header)
     y, x = torch.meshgrid(
         torch.arange(target_header["NAXIS2"], dtype=torch.float64),
@@ -308,7 +311,7 @@ def test_tpv_roundtrip_validity_mask_bypasses_filtering_for_tpv(tmp_path: Path) 
     x_src, y_src = source_wcs.world_to_pixel(flat_ra, flat_dec)
     x_src = x_src.reshape_as(ra)
     y_src = y_src.reshape_as(dec)
-    valid = image_plane_mod._roundtrip_validity_mask(
+    valid = image_plane_projection_mod._roundtrip_validity_mask(
         source_wcs,
         x_src=x_src,
         y_src=y_src,
@@ -333,7 +336,7 @@ def test_tpv_roundtrip_validity_gate_not_enabled_by_default(tmp_path: Path) -> N
         item for item in observations if "TPV" in str(item.header.get("CTYPE1", ""))
     )
     source_wcs = _truth_bench.WCS(tpv_obs.header)
-    assert not _truth_bench.image_plane_mod._requires_roundtrip_validity_check(
+    assert not image_plane_projection_mod._requires_roundtrip_validity_check(
         source_wcs
     )
 
@@ -353,16 +356,15 @@ def test_distorted_sources_enable_target_pixel_quadrature(tmp_path: Path) -> Non
     tan_obs = next(
         item for item in observations if "TAN" in str(item.header.get("CTYPE1", ""))
     )
-    image_plane_mod = _truth_bench.image_plane_mod
-    assert image_plane_mod._requires_target_pixel_quadrature(
+    assert image_plane_projection_mod._requires_target_pixel_quadrature(
         _truth_bench.WCS(tpv_obs.header),
         value_semantics="flux",
     )
-    assert not image_plane_mod._requires_target_pixel_quadrature(
+    assert not image_plane_projection_mod._requires_target_pixel_quadrature(
         _truth_bench.WCS(tpv_obs.header),
         value_semantics="surface_brightness",
     )
-    assert not image_plane_mod._requires_target_pixel_quadrature(
+    assert not image_plane_projection_mod._requires_target_pixel_quadrature(
         _truth_bench.WCS(tan_obs.header),
         value_semantics="flux",
     )
@@ -377,7 +379,7 @@ def test_prepare_target_caches_quadrature_world_grids(tmp_path: Path) -> None:
         height=192,
         seed=1234,
     )
-    target = _truth_bench.image_plane_mod._prepare_target(
+    target = image_grid_mod._prepare_target(
         header=target_header,
         target_wcs=_truth_bench.WCS(target_header),
         target_shape=(int(target_header["NAXIS2"]), int(target_header["NAXIS1"])),
@@ -400,7 +402,7 @@ def test_prepare_target_skips_quadrature_world_grids_by_default(tmp_path: Path) 
         height=192,
         seed=1234,
     )
-    target = _truth_bench.image_plane_mod._prepare_target(
+    target = image_grid_mod._prepare_target(
         header=target_header,
         target_wcs=_truth_bench.WCS(target_header),
         target_shape=(int(target_header["NAXIS2"]), int(target_header["NAXIS1"])),
@@ -421,20 +423,20 @@ def test_distorted_quadrature_batches_world_to_pixel_calls(tmp_path: Path) -> No
     tpv_obs = next(
         item for item in observations if "TPV" in str(item.header.get("CTYPE1", ""))
     )
-    image, _header = _truth_bench.image_plane_mod.read(
+    image, _header = torchfits.read(
         tpv_obs.observation.path,
         hdu=tpv_obs.observation.hdu,
         return_header=True,
     )
     image = validate_image_plane_2d(image).to(dtype=torch.float32)
     source_wcs = _truth_bench.WCS(tpv_obs.header)
-    prepared_target = _truth_bench.image_plane_mod._prepare_target(
+    prepared_target = image_grid_mod._prepare_target(
         header=target_header,
         target_wcs=_truth_bench.WCS(target_header),
         target_shape=(int(target_header["NAXIS2"]), int(target_header["NAXIS1"])),
         device=torch.device("cpu"),
     )
-    source_weight = _truth_bench.image_plane_mod._load_observation_weight_map(
+    source_weight = calibration_mod._load_observation_weight_map(
         tpv_obs.observation,
         image,
         device=torch.device("cpu"),
@@ -450,7 +452,7 @@ def test_distorted_quadrature_batches_world_to_pixel_calls(tmp_path: Path) -> No
 
     source_wcs.world_to_pixel = _counted_world_to_pixel
     try:
-        _truth_bench.image_plane_mod._resample_weighted_to_target(
+        image_plane_projection_mod._resample_weighted_to_target(
             image,
             source_weight,
             source_wcs,

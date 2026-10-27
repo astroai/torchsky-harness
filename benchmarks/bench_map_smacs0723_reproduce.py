@@ -35,7 +35,7 @@ DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.md"
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 try:  # noqa: E402
@@ -381,11 +381,11 @@ def main() -> int:
                 dt = _time_many(
                     lambda: coadd_image_plane(
                         observations,
-                        target_header=dict(target_header),
-                        resampling_kernel=str(spec["kernel"]),
-                        value_semantics=str(spec["value_semantics"]),
-                        stacking_method=str(spec["stacking_method"]),
-                        drizzle_pixfrac=float(
+                        target=dict(target_header),
+                        kernel=str(spec["kernel"]),
+                        semantics=str(spec["value_semantics"]),
+                        method=str(spec["stacking_method"]),
+                        pixfrac=float(
                             spec.get("drizzle_pixfrac", drizzle_pixfrac)
                         ),
                     ),
@@ -393,11 +393,11 @@ def main() -> int:
                 )
                 result = coadd_image_plane(
                     observations,
-                    target_header=dict(target_header),
-                    resampling_kernel=str(spec["kernel"]),
-                    value_semantics=str(spec["value_semantics"]),
-                    stacking_method=str(spec["stacking_method"]),
-                    drizzle_pixfrac=float(spec.get("drizzle_pixfrac", drizzle_pixfrac)),
+                    target=dict(target_header),
+                    kernel=str(spec["kernel"]),
+                    semantics=str(spec["value_semantics"]),
+                    method=str(spec["stacking_method"]),
+                    pixfrac=float(spec.get("drizzle_pixfrac", drizzle_pixfrac)),
                 )
                 pred = result.data.cpu().numpy().astype(np.float32)
                 support = result.weight.cpu().numpy() > 0

@@ -34,7 +34,7 @@ DEFAULT_EXPOSURE_GLOB = str(DATA / "jwst_smacs0723" / "*_crf.fits")
 DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_ladder.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_ladder.md"
 
-from torchsky.map.image_plane import coadd_image_plane
+from torchsky.map import coadd as coadd_image_plane
 from torchsky.map.observation import ImageObservation
 
 
@@ -169,19 +169,19 @@ def main() -> int:
             dt = _time_many(
                 lambda: coadd_image_plane(
                     observations,
-                    target_header=dict(target_header),
-                    resampling_kernel=args.resampling_kernel,
-                    value_semantics=args.value_semantics,
-                    stacking_method=args.stacking_method,
+                    target=dict(target_header),
+                    kernel=args.resampling_kernel,
+                    semantics=args.value_semantics,
+                    method=args.stacking_method,
                 ),
                 args.runs,
             )
             result = coadd_image_plane(
                 observations,
-                target_header=dict(target_header),
-                resampling_kernel=args.resampling_kernel,
-                value_semantics=args.value_semantics,
-                stacking_method=args.stacking_method,
+                target=dict(target_header),
+                kernel=args.resampling_kernel,
+                semantics=args.value_semantics,
+                method=args.stacking_method,
             )
             pred = result.data.cpu().numpy().astype(np.float32)
             support = result.weight.cpu().numpy() > 0

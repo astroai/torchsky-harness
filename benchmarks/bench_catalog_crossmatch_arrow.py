@@ -142,7 +142,7 @@ def _collect_arrow_stats(
     from torchsky.sphere import healpix as _hp
 
     radius_deg = radius_arcsec / 3600.0
-    candidate_radius_rad = math.radians(radius_deg) + (2.0 * _hp.max_pixrad(nside, degrees=False))
+    candidate_radius_rad = math.radians(radius_deg) + (2.0 * _hp.max_pixel_radius(nside, degrees=False))
 
     left_source = pa.ipc.open_file(pa.memory_map(str(left_path), "r")).read_all()
     right_source = pa.ipc.open_file(pa.memory_map(str(right_path), "r")).read_all()
