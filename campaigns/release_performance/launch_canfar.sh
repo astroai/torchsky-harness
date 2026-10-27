@@ -57,5 +57,5 @@ remote="git clone --filter=blob:none --no-checkout https://github.com/astroai/to
 create=(create headless "${image}" --name "${name}" --cpu "${cpu}" --memory "${memory}" --env PYTHONNOUSERSITE=1 -- bash -lc "${remote}")
 printf '%s\n' "image=${image}" "container_digest=${container_digest}" "cpu=${cpu}" "memory_gb=${memory}" "gpu=0" "concurrency=1" "max_attempts=1" "submission=canfar ${create[*]}"
 if [[ ${submit} -eq 1 ]]; then
-  canfar "${create[@]}"
+  CANFAR_TIMEOUT=180 canfar "${create[@]}"
 fi
