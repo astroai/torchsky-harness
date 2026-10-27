@@ -8,7 +8,7 @@ cpu=8
 memory=32
 name=release-performance
 image=${TORCHSKY_RELEASE_PERFORMANCE_IMAGE}
-container_digest=${image##*@}
+container_digest=${TORCHSKY_RELEASE_PERFORMANCE_IMAGE_DIGEST}
 
 usage() {
   printf '%s\n' "Usage: launch_canfar.sh [--submit] --output-root /arc/projects/... --harness-sha SHA --baseline-sha SHA|--baseline-wheel PATH --candidate-sha SHA|--candidate-wheel PATH [--name NAME]"
@@ -47,13 +47,13 @@ done
 [[ ! -e ${output_root} ]] || { printf '%s\n' "refusing existing destination: ${output_root}" >&2; exit 2; }
 [[ ${harness_sha} =~ ^[0-9a-f]{40}$ ]]
 [[ -n ${baseline_kind} && -n ${candidate_kind} ]]
-[[ ${image} == images.canfar.net/astroai/base@${container_digest} ]]
+[[ ${image} == images.canfar.net/astroai/base:26.10 ]]
 [[ ${container_digest} =~ ^sha256:[0-9a-f]{64}$ ]]
 for value in "${output_root}" "${harness_sha}" "${baseline_kind}" "${baseline_value}" "${candidate_kind}" "${candidate_value}" "${image}"; do
   [[ ${value} =~ ^[A-Za-z0-9_./:@-]+$ ]] || { printf '%s\n' "argument contains unsupported characters: ${value}" >&2; exit 2; }
 done
 
-remote="git clone --filter=blob:none --no-checkout https://github.com/astroai/torchsky-harness.git /scratch/code-launcher && git -C /scratch/code-launcher checkout --detach ${harness_sha} && bash /scratch/code-launcher/campaigns/release_performance/run_canfar.sh ${output_root} ${harness_sha} ${baseline_kind} ${baseline_value} ${candidate_kind} ${candidate_value} ${image}"
+remote="git clone --filter=blob:none --no-checkout https://github.com/astroai/torchsky-harness.git /scratch/code-launcher && git -C /scratch/code-launcher checkout --detach ${harness_sha} && bash /scratch/code-launcher/campaigns/release_performance/run_canfar.sh ${output_root} ${harness_sha} ${baseline_kind} ${baseline_value} ${candidate_kind} ${candidate_value} ${image} ${container_digest}"
 create=(create headless "${image}" --name "${name}" --cpu "${cpu}" --memory "${memory}" --env PYTHONNOUSERSITE=1 -- bash -lc "${remote}")
 printf '%s\n' "image=${image}" "container_digest=${container_digest}" "cpu=${cpu}" "memory_gb=${memory}" "gpu=0" "concurrency=1" "max_attempts=1" "submission=canfar ${create[*]}"
 if [[ ${submit} -eq 1 ]]; then

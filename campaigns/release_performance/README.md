@@ -21,7 +21,7 @@ Replace either `--baseline-sha` or `--candidate-sha` with the corresponding `--b
 
 ## Exact CANFAR submission template
 
-The launcher is a dry run unless `--submit` is present. One digest-pinned image constant is used for both the CANFAR session and recorded provenance; there is no operator-supplied digest field.
+The launcher is a dry run unless `--submit` is present. CANFAR launches the versioned `base:26.10` tag, and the runner verifies that tag's live Harbor digest against the immutable campaign digest before executing; there is no operator-supplied digest field.
 
 ```sh
 bash campaigns/release_performance/launch_canfar.sh \
@@ -31,4 +31,4 @@ bash campaigns/release_performance/launch_canfar.sh \
   --candidate-sha <40_HEX_CANDIDATE_TORCHSKY_SHA>
 ```
 
-After reviewing the printed command, repeat it with `--submit`. The requested job is one headless CPU session using the digest-pinned AstroAI base image, 8 CPUs, 32 GB RAM, no GPU, one benchmark process, and no automatic partial-pair retry. The exit trap copies and byte-compares every scratch artifact and log. Missing required outputs or any persistence mismatch exits 70 and writes a failure record where possible. A failed attempt must use a new nonexisting destination and restart the complete campaign.
+After reviewing the printed command, repeat it with `--submit`. The requested job is one headless CPU session using the digest-verified AstroAI base image, 8 CPUs, 32 GB RAM, no GPU, one benchmark process, and no automatic partial-pair retry. The exit trap copies and byte-compares every scratch artifact and log. Missing required outputs or any persistence mismatch exits 70 and writes a failure record where possible. A failed attempt must use a new nonexisting destination and restart the complete campaign.

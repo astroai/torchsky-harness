@@ -33,6 +33,7 @@ def test_canfar_scripts_enforce_headless_hygiene_and_persistence() -> None:
     launcher = (CAMPAIGN / "launch_canfar.sh").read_text(encoding="utf-8")
     image_policy = (CAMPAIGN / "image.sh").read_text(encoding="utf-8")
     assert image_policy.count("sha256:") == 1
+    assert "images.canfar.net/astroai/base:26.10" in image_policy
     assert 'source "${script_root}/image.sh"' in runner
     assert 'source "${script_root}/image.sh"' in launcher
     assert 'container_image} == "${TORCHSKY_RELEASE_PERFORMANCE_IMAGE}"' in runner
@@ -56,5 +57,6 @@ def test_canfar_scripts_enforce_headless_hygiene_and_persistence() -> None:
     assert "--submit" in launcher
     assert "container_digest" in launcher
     assert "--container-digest" not in launcher
-    assert "container_digest=${image##*@}" in launcher
+    assert "container_digest=${TORCHSKY_RELEASE_PERFORMANCE_IMAGE_DIGEST}" in launcher
     assert 'create headless "${image}"' in launcher
+    assert "api/v2.0/projects/astroai/repositories/base/artifacts/26.10" in runner
