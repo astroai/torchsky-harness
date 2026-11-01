@@ -1,0 +1,397 @@
+{
+ "methods": [
+  {
+   "key": "swarp",
+   "label": "SWarp-like",
+   "cube": "swarp",
+   "resid": "swarp",
+   "cv": 6.1144561799522235,
+   "cvs": 3.6483884011752217,
+   "rob": 2.0053059204623622,
+   "robs": 1.523828873712334,
+   "best": false,
+   "phot": {
+    "pull": 2.761869171461081,
+    "dm": -19.922859150590185,
+    "scat": 37.65474875312768,
+    "cen": 1.9634042313742726,
+    "n": 318
+   }
+  },
+  {
+   "key": "drizzle",
+   "label": "Drizzle-like",
+   "cube": "drizzle",
+   "resid": "drizzle",
+   "cv": 5.881329212633086,
+   "cvs": 2.769536320960032,
+   "rob": 1.9796073761383348,
+   "robs": 1.5272902364570766,
+   "best": false,
+   "phot": {
+    "pull": 2.691671809022936,
+    "dm": -18.686005875972246,
+    "scat": 39.98696764847337,
+    "cen": 1.9170880114101707,
+    "n": 314
+   }
+  },
+  {
+   "key": "explicit_chrom",
+   "label": "Explicit model",
+   "cube": "explicit",
+   "resid": "explicit_chrom",
+   "cv": 5.596200971229476,
+   "cvs": 1.8372164706929532,
+   "rob": 1.852373537244482,
+   "robs": 1.346638180200681,
+   "best": true,
+   "phot": {
+    "pull": 2.1097478451779272,
+    "dm": -16.129822243798753,
+    "scat": 36.651014303550994,
+    "cen": 1.92579420623687,
+    "n": 305
+   }
+  },
+  {
+   "key": "implicit_chrom",
+   "label": "Implicit neural field",
+   "cube": "neural",
+   "resid": "implicit_chrom",
+   "cv": 5.661403581735802,
+   "cvs": 2.0266384391179346,
+   "rob": 1.8979840469577116,
+   "robs": 1.4731640544461222,
+   "best": false,
+   "phot": {
+    "pull": 2.1673279994344674,
+    "dm": -18.882400639718597,
+    "scat": 36.537498411373335,
+    "cen": 1.933438409321057,
+    "n": 320
+   }
+  }
+ ],
+ "chart": {
+  "labels": [
+   "SWarp-like",
+   "Drizzle-like",
+   "Explicit, Gaussian loss",
+   "Explicit, Huber loss",
+   "Explicit, one field s(\u03b1,\u03b4,\u03bb)",
+   "Implicit neural field",
+   "Implicit neural field, s(\u03b1,\u03b4,\u03bb)",
+   "SIREN, Huber"
+  ],
+  "all": [
+   6.11,
+   5.88,
+   5.41,
+   5.6,
+   5.6,
+   5.66,
+   5.66,
+   5.66
+  ],
+  "src": [
+   3.65,
+   2.77,
+   1.89,
+   1.84,
+   2.18,
+   2.03,
+   2.35,
+   2.53
+  ],
+  "pull": [
+   2.76,
+   2.69,
+   2.01,
+   2.11,
+   2.6,
+   2.17,
+   2.46,
+   1.95
+  ]
+ },
+ "variants": [
+  {
+   "label": "Drizzle-like",
+   "grid": "0.04\u2033",
+   "cv": 5.881329212633086,
+   "cvs": 2.769536320960032,
+   "rob": 1.9796073761383348,
+   "robs": 1.5272902364570766,
+   "phot": {
+    "pull": 2.691671809022936,
+    "dm": -18.686005875972246,
+    "scat": 39.98696764847337,
+    "cen": 1.9170880114101707,
+    "n": 314
+   }
+  },
+  {
+   "label": "Explicit, Huber (slides)",
+   "grid": "0.04\u2033",
+   "cv": 5.596200971229476,
+   "cvs": 1.8372164706929532,
+   "rob": 1.852373537244482,
+   "robs": 1.346638180200681,
+   "phot": {
+    "pull": 2.1097478451779272,
+    "dm": -16.129822243798753,
+    "scat": 36.651014303550994,
+    "cen": 1.92579420623687,
+    "n": 305
+   }
+  },
+  {
+   "label": "Explicit, Gaussian loss",
+   "grid": "0.04\u2033",
+   "cv": 5.406530670084786,
+   "cvs": 1.888633529593407,
+   "rob": 1.859566095147217,
+   "robs": 1.4117471593078486,
+   "phot": {
+    "pull": 2.0127541855813074,
+    "dm": -16.326361897113582,
+    "scat": 32.478566740434225,
+    "cen": 2.0355858112671563,
+    "n": 311
+   }
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), K=8, absolute spectral prior",
+   "grid": "0.04\u2033",
+   "cv": 5.873070882368334,
+   "cvs": 4.180772536300915,
+   "rob": 1.88929080948874,
+   "robs": 1.7685517045823342,
+   "phot": null
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), K=8, no spectral prior",
+   "grid": "0.04\u2033",
+   "cv": 5.627500738328798,
+   "cvs": 2.107551035334927,
+   "rob": 1.8552082758947797,
+   "robs": 1.4184703052336125,
+   "phot": null
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), K=8, relative prior (slides)",
+   "grid": "0.04\u2033",
+   "cv": 5.59647349282793,
+   "cvs": 2.182404654616316,
+   "rob": 1.8247491025566738,
+   "robs": 1.458138479208348,
+   "phot": {
+    "pull": 2.603023506970941,
+    "dm": -17.70585185632746,
+    "scat": 42.802703685483664,
+    "cen": 1.8990423279657611,
+    "n": 329
+   }
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), K=12, weak prior",
+   "grid": "0.04\u2033",
+   "cv": 5.634761974244475,
+   "cvs": 2.070089586562839,
+   "rob": 1.8638741326973114,
+   "robs": 1.4130265401519808,
+   "phot": null
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), K=12, relative prior",
+   "grid": "0.04\u2033",
+   "cv": 5.579379078332012,
+   "cvs": 1.909056642146288,
+   "rob": 1.8221843737850285,
+   "robs": 1.3385257478293904,
+   "phot": {
+    "pull": 2.138000615406379,
+    "dm": -16.09664421717562,
+    "scat": 34.78482497489965,
+    "cen": 1.8790069488691328,
+    "n": 313
+   }
+  },
+  {
+   "label": "Explicit, s(x,y,\u03bb), WCS only (no learned geometry)",
+   "grid": "0.04\u2033",
+   "cv": 5.929846556116727,
+   "cvs": 4.301090847024527,
+   "rob": 1.9412660317817836,
+   "robs": 1.885674400696046,
+   "phot": null
+  },
+  {
+   "label": "Implicit neural field, Huber",
+   "grid": "0.04\u2033",
+   "cv": 5.661403581735802,
+   "cvs": 2.0266384391179346,
+   "rob": 1.8979840469577116,
+   "robs": 1.4731640544461222,
+   "phot": {
+    "pull": 2.1673279994344674,
+    "dm": -18.882400639718597,
+    "scat": 36.537498411373335,
+    "cen": 1.933438409321057,
+    "n": 320
+   }
+  },
+  {
+   "label": "Implicit field, s(\u03b1,\u03b4,\u03bb), learned basis",
+   "grid": "0.04\u2033",
+   "cv": 5.691760022813425,
+   "cvs": 2.256622196534661,
+   "rob": 1.9043674514058153,
+   "robs": 1.5568701008560257,
+   "phot": null
+  },
+  {
+   "label": "Implicit field, s(\u03b1,\u03b4,\u03bb), fixed basis, relative prior",
+   "grid": "0.04\u2033",
+   "cv": 5.656036474610835,
+   "cvs": 2.352065360260091,
+   "rob": 1.8606970261938496,
+   "robs": 1.5349350442832026,
+   "phot": {
+    "pull": 2.460872674821624,
+    "dm": -18.62766182112653,
+    "scat": 40.31870402766687,
+    "cen": 1.7269251358714643,
+    "n": 328
+   }
+  },
+  {
+   "label": "SIREN, Huber",
+   "grid": "0.04\u2033",
+   "cv": 5.662854421187607,
+   "cvs": 2.5275992667272478,
+   "rob": 1.8427086292879147,
+   "robs": 1.4996833782043695,
+   "phot": {
+    "pull": 1.9523137792816507,
+    "dm": -20.207709101152595,
+    "scat": 36.24320937971104,
+    "cen": 1.7862229863144499,
+    "n": 326
+   }
+  },
+  {
+   "label": "Drizzle-like",
+   "grid": "0.02\u2033",
+   "cv": 6.043017813452586,
+   "cvs": 2.585493912328386,
+   "rob": 2.0369634746333523,
+   "robs": 1.5129843066687492,
+   "phot": {
+    "pull": 2.7815890624294597,
+    "dm": -20.453829564385238,
+    "scat": 42.54142664680871,
+    "cen": 2.237941678797405,
+    "n": 318
+   }
+  },
+  {
+   "label": "Explicit, Huber, TV 0.10",
+   "grid": "0.02\u2033",
+   "cv": 5.714354264971166,
+   "cvs": 1.8773700914591174,
+   "rob": 1.8404900410204765,
+   "robs": 1.3517030239911736,
+   "phot": {
+    "pull": 2.245240733882458,
+    "dm": -23.311195958930046,
+    "scat": 38.62388531768513,
+    "cen": 1.9174165296874297,
+    "n": 310
+   }
+  },
+  {
+   "label": "Explicit, Huber, TV 0.02",
+   "grid": "0.02\u2033",
+   "cv": 5.832588040816822,
+   "cvs": 2.1767746125832357,
+   "rob": 1.9151696298534904,
+   "robs": 1.4726860854002544,
+   "phot": null
+  },
+  {
+   "label": "Explicit, s(\u03b1,\u03b4,\u03bb), absolute prior",
+   "grid": "0.02\u2033",
+   "cv": 6.05033007424043,
+   "cvs": 4.588755866487879,
+   "rob": 1.900025929733633,
+   "robs": 1.8854190128253234,
+   "phot": null
+  },
+  {
+   "label": "Implicit neural field, Huber",
+   "grid": "0.02\u2033",
+   "cv": 5.950213334971288,
+   "cvs": 2.610106316997958,
+   "rob": 1.9878702591969104,
+   "robs": 1.7189238488684155,
+   "phot": null
+  }
+ ],
+ "spectral": {
+  "e3d": [
+   5.59647349282793,
+   2.182404654616316,
+   1.8247491025566738,
+   1.458138479208348
+  ],
+  "n3d": [
+   5.656036474610835,
+   2.352065360260091,
+   1.8606970261938496,
+   1.5349350442832026
+  ],
+  "band": [
+   5.596200971229476,
+   1.8372164706929532,
+   1.852373537244482,
+   1.346638180200681
+  ],
+  "drizzle": [
+   5.881329212633086,
+   2.769536320960032,
+   1.9796073761383348,
+   1.5272902364570766
+  ],
+  "run": "e3drel",
+  "phot": {
+   "e3d": {
+    "pull": 2.603023506970941,
+    "dm": -17.70585185632746,
+    "scat": 42.802703685483664,
+    "cen": 1.8990423279657611,
+    "n": 329
+   },
+   "band": {
+    "pull": 2.1097478451779272,
+    "dm": -16.129822243798753,
+    "scat": 36.651014303550994,
+    "cen": 1.92579420623687,
+    "n": 305
+   },
+   "drizzle": {
+    "pull": 2.691671809022936,
+    "dm": -18.686005875972246,
+    "scat": 39.98696764847337,
+    "cen": 1.9170880114101707,
+    "n": 314
+   }
+  }
+ },
+ "variants_caption": "\u27e8r\u00b2/\u03c3\u00b2\u27e9 on test exposures (one per band, never used for fitting or stopping); validation exposures (one per band) chose the stopping point. S/N > 5: pixels more than 5\u03c3 above sky in the SWarp-like coadd. Robust: pseudo-Huber at 3\u03c3. Flux error: NMAD of (data \u2212 prediction)/\u03c3 in 0.2\u2033 apertures; centroid: NMAD in mas. Each grid has its own coadds under the same protocol.",
+ "caption": "SMACS J0723, NIRCam F090W\u2013F444W, 0.04\u2033 grid, torchfits RGB (top: giant arc; bottom: faint lensed sources across a detector seam). On exposures never used in the fit: \u27e8r\u00b2/\u03c3\u00b2\u27e9 (1 = noise only) over all pixels and pixels with S/N > 5; flux error: NMAD of (data \u2212 prediction)/\u03c3 in 0.2\u2033 apertures.",
+ "notes": "~80 s. The same JWST exposures of SMACS J0723, six bands, the same grid, four estimators, all implemented in torchsky: a SWarp-like and a Drizzle-like coadd, and two forward models fitted directly to the detector pixels: an explicit pixel-grid sky, and an implicit neural field. Both share one PSF field across all six bands, smooth in wavelength and detector position, and use a robust Huber loss. Top row the giant arc, bottom row faint lensed sources in the cluster light, rendered with torchfits RGB at the same stretch. Notice the detector seam, blue against orange, in both coadds: it disappears when the background is part of the model. How do we score an inverse problem without ground truth? We leave exposures out: one per band to decide when to stop, and a different one per band that we only use to report. The number is the mean of residual squared over sigma squared on those unseen exposures; it is not a reduced chi-square per degree of freedom, nothing was fitted to those pixels except the same few nuisance terms for every method, registration, gain, background and stripes. One would be pure noise. Both forward models predict the unseen exposures better than the coadds: on pixels with S/N above 5 1.84 and 2.03 against 3.65 SWarp-like and 2.77 Drizzle-like; over all pixels 5.60 against 5.88. S/N above 5 means pixels more than 5 sigma above the sky in the SWarp-like coadd, the same mask for everybody. In photometric terms: the flux in 0.2 arcsec apertures on the unseen exposures, about 300 source measurements, is predicted to within 2.1 sigma (NMAD) by the explicit model, 2.7 sigma by Drizzle-like and 2.8 by SWarp-like; one would be photon noise. Centroids are predicted to about 2 mas by everybody. Caveats if asked: bright saturated stars are still the weak point of every forward model (square PSF truncation, ringing); the floor above one is model error common to all methods, dominated by F277W at about 15 for every method; the ERR arrays are right per pixel (first-difference test).",
+ "learn_notes": "~50 s. All variants under the same test protocol, coadds at the top, lower is better. Grey: all pixels, orange: pixels with S/N above 5, blue: flux error of 0.2 arcsec aperture photometry in units of the noise. The robust loss mainly helps on the bright pixels; the one-field models s(alpha, delta, lambda) tie one image per band over all pixels and beat the coadds on bright pixels, but not yet one image per band there; I come back to that. On the right, what the explicit model learns besides the sky: one PSF network evaluated from 0.9 to 4.4 microns, broadening with wavelength as diffraction says; a static distortion per detector of a few milliarcseconds on top of the WCS, plus per-exposure registration at about 4 mas; backgrounds, 1/f stripes and gains.",
+ "spectral_notes": "~60 s. So far each band had its own image. Here the sky is one continuous function of position on the sky, alpha and delta in the calibrated frame, and of wavelength: 8 smooth basis functions in log lambda. Each exposure sees it through its own filter: the SVO transmission curve, sampled at six photon-weighted wavelengths, each convolved with the PSF at that wavelength. On the left, the same lensed arc rendered at five wavelengths from one model. On the right, spectra read off the model: the brightest cluster galaxy peaks near 2 microns, the old-star bump, while the arc is redder and flat. Dots are the model's band averages, circles the drizzled values; for compact sources they differ because drizzle keeps the PSF. The spectral prior penalises curvature relative to the local brightness, so bright and faint sources are smoothed alike. In prediction of unseen exposures it ties one image per band over all pixels, 5.60 against 5.60, and beats both coadds on sources, 2.18 against 2.77 Drizzle-like; one image per band is still better on sources, 1.84, and the gap sits in F277W and F356W (4.4 and 5.4 against 2.8 and 2.5), the long-wavelength bands with nine exposures each. This is the representation that lets radio, optical and X-ray data, spectra and images, constrain the same sky."
+}

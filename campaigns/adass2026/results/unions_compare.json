@@ -1,0 +1,90 @@
+{
+ "cut_aspect": 0.35333333333333333,
+ "stats_aspect": 1.225806451612903,
+ "caption": "7 individual MegaCam exposures \u2192 weightmask (master-flat bad pixels, cosmic rays, inverse variance, sky) \u2192 torchsky Lanczos-3 weighted coadd on the official TAN grid. Photometry, r = 16.5\u201323.5: |median \u0394m| \u2264 2.1 mmag in every bin, scatter 6 mmag at r < 20. Astrometry against Gaia DR3 propagated to the epoch 2022.7: torchsky (-0.2, 2.9) mas east, north; official (0.2, 1.6) mas.",
+ "source": "UNIONS CFIS.000.229.r (tiles_DR6) vs torchsky 0.4.0 + torchfits 1.3.1 + weightmask 0.3.0; saturated cores kept as in the official stack. Outputs in vos:sfabbro/adass2026/unions_coadd_v5.",
+ "notes": "~50 s. A real-survey check of the classical path. We took the seven MegaCam exposures that make up one UNIONS tile, the individual calibrated exposures from the archive. weightmask, another of our packages, builds per-exposure masks from the master flat, flags saturation and cosmic rays, and computes an inverse variance and a sky. torchsky then coadds them with Lanczos-3 onto the official tile grid, which is how the survey's own SWarp stack is made. Against the official tile: aperture photometry agrees to a few millimagnitudes at every magnitude. Astrometry is checked against Gaia DR3, propagated to the epoch of the exposures, with windowed centroids on both images: our coadd sits 2.9 mas from Gaia, the official tile 1.6 mas. A first run was off by 29 mas east and 9 north: exactly the FK5 to ICRS frame bias. The MegaCam CCD headers still declare the old FK5 frame although the astrometry was solved against Gaia, so torchsky faithfully applied the FK5 to ICRS rotation; SWarp ignores frame keywords, so it never sees this. torchsky now warns when it does that conversion. The difference image is noise plus residual background differences. This is the boring, necessary result: the classical coadd is reproduced before we go beyond it. (If asked: the thin dark line along one column, about -0.6 sigma, is not yet diagnosed; it is not resampling ringing, a synthetic masked-column test is flat, so it is most likely partially bad pixels next to the flat-based mask. The CPU coadd took 38 min for 280 CCDs into a 10k x 10k tile; the GPU run ran out of memory on a 12 GB slice because of a full-size bookkeeping mask, now fixed in torchsky.)",
+ "pixel": {
+  "median_diff": 0.08304540067911148,
+  "robust_sigma_diff": 0.6519761085510254,
+  "robust_sigma_torchsky": 2.0405383110046387,
+  "robust_sigma_official": 2.4544882774353027
+ },
+ "photometry": [
+  {
+   "mag_lo": 16.5,
+   "mag_hi": 18,
+   "n": 214,
+   "median_dmag": -0.00011860218035949526,
+   "nmad_dmag": 0.003962905456786938
+  },
+  {
+   "mag_lo": 18,
+   "mag_hi": 19,
+   "n": 172,
+   "median_dmag": -0.0005472919954510884,
+   "nmad_dmag": 0.004300803643373929
+  },
+  {
+   "mag_lo": 19,
+   "mag_hi": 20,
+   "n": 310,
+   "median_dmag": -0.0009951905785718289,
+   "nmad_dmag": 0.005911199445323865
+  },
+  {
+   "mag_lo": 20,
+   "mag_hi": 21,
+   "n": 618,
+   "median_dmag": -0.0017881420784525708,
+   "nmad_dmag": 0.009919843526692063
+  },
+  {
+   "mag_lo": 21,
+   "mag_hi": 22,
+   "n": 1219,
+   "median_dmag": -0.002147486058082844,
+   "nmad_dmag": 0.016383186377119136
+  },
+  {
+   "mag_lo": 22,
+   "mag_hi": 23.5,
+   "n": 4724,
+   "median_dmag": -0.0008113139688082484,
+   "nmad_dmag": 0.045718986409909616
+  }
+ ],
+ "astrometry": {
+  "n": 696,
+  "median_dx": 0.18970160935054992,
+  "median_dy": 0.42293295917479556,
+  "nmad_dx": 0.9442684609133034,
+  "nmad_dy": 0.7741159599988913
+ },
+ "gaia": {
+  "value": "3 mas",
+  "label": "median offset from Gaia DR3, 748 stars (official tile: 2 mas); 1.4 mas scatter vs official",
+  "torchsky": {
+   "n": 748,
+   "median_east_mas": -0.22700877169462114,
+   "median_north_mas": 2.9281014657447892,
+   "nmad_east_mas": 7.2825088071525315,
+   "nmad_north_mas": 10.35824814616014
+  },
+  "official": {
+   "n": 746,
+   "median_east_mas": 0.21405308823619573,
+   "median_north_mas": 1.5863558154163069,
+   "nmad_east_mas": 7.408118016934008,
+   "nmad_north_mas": 10.471713890102796
+  },
+  "diff": {
+   "n": 745,
+   "median_east_mas": -0.5295792255882744,
+   "median_north_mas": 0.6661777083566796,
+   "nmad_east_mas": 1.4104122313353777,
+   "nmad_north_mas": 0.9613937836594354
+  },
+  "epoch": 2022.7319282561064
+ }
+}
