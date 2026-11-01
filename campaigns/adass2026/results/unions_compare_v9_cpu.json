@@ -1,0 +1,130 @@
+{
+ "timings": {
+  "fetch": 100.0,
+  "weightmask": {
+   "2784453p": 458.1,
+   "2784455p": 380.4,
+   "2784458p": 384.5,
+   "2785688p": 381.0,
+   "2785689p": 376.2,
+   "2785690p": 386.9,
+   "2785692p": 385.9
+  },
+  "prepare": 2900.5,
+  "coadd": 711.4
+ },
+ "tile": "CFIS.000.229.r",
+ "exposures": [
+  "2784453",
+  "2784455",
+  "2784458",
+  "2785688",
+  "2785689",
+  "2785690",
+  "2785692"
+ ],
+ "source_counts": {
+  "2784453": 5911,
+  "2784455": 9765,
+  "2784458": 13501,
+  "2785688": 15618,
+  "2785690": 4298,
+  "2785692": 778
+ },
+ "flats": {
+  "2784453": "flat.R.MP9602.22BM02.fits",
+  "2784455": "flat.R.MP9602.22BM02.fits",
+  "2784458": "flat.R.MP9602.22BM02.fits",
+  "2785688": "flat.R.MP9602.22BM02.fits",
+  "2785689": "flat.R.MP9602.22BM02.fits",
+  "2785690": "flat.R.MP9602.22BM02.fits",
+  "2785692": "flat.R.MP9602.22BM02.fits"
+ },
+ "device": "cpu",
+ "torchfits_version": "1.3.1",
+ "torch_version": "2.14.0+cpu",
+ "torchsky_version": "0.4.0",
+ "n_ccd_observations": 280,
+ "coadd_device": "cpu",
+ "common_fraction": 0.99795992,
+ "pixel": {
+  "median_diff": 0.0830453634262085,
+  "robust_sigma_diff": 0.6519766449928284,
+  "robust_sigma_torchsky": 2.0405383110046387,
+  "robust_sigma_official": 2.4544882774353027
+ },
+ "catalogue_columns": [
+  "NUMBER",
+  "X_IMAGE",
+  "Y_IMAGE",
+  "ALPHA_J2000",
+  "DELTA_J2000",
+  "MAG_AUTO",
+  "MAGERR_AUTO",
+  "MAG_BEST",
+  "MAGERR_BEST",
+  "MAG_APER",
+  "MAGERR_APER",
+  "A_WORLD",
+  "ERRA_WORLD",
+  "B_WORLD",
+  "ERRB_WORLD",
+  "THETA_J2000",
+  "ERRTHETA_J2000",
+  "ISOAREA_IMAGE",
+  "MU_MAX",
+  "FLUX_RADIUS",
+  "FLAGS"
+ ],
+ "photometry_2arcsec": [
+  {
+   "mag_lo": 16.5,
+   "mag_hi": 18,
+   "n": 214,
+   "median_dmag": -0.00011869950516882255,
+   "nmad_dmag": 0.003962727806272637
+  },
+  {
+   "mag_lo": 18,
+   "mag_hi": 19,
+   "n": 172,
+   "median_dmag": -0.0005472919954510884,
+   "nmad_dmag": 0.004300803643373929
+  },
+  {
+   "mag_lo": 19,
+   "mag_hi": 20,
+   "n": 310,
+   "median_dmag": -0.0009951905785718289,
+   "nmad_dmag": 0.005911199445323865
+  },
+  {
+   "mag_lo": 20,
+   "mag_hi": 21,
+   "n": 618,
+   "median_dmag": -0.001788183724032326,
+   "nmad_dmag": 0.009919791133958921
+  },
+  {
+   "mag_lo": 21,
+   "mag_hi": 22,
+   "n": 1219,
+   "median_dmag": -0.002147486058082844,
+   "nmad_dmag": 0.016383186377119136
+  },
+  {
+   "mag_lo": 22,
+   "mag_hi": 23.5,
+   "n": 4724,
+   "median_dmag": -0.0008113419477386953,
+   "nmad_dmag": 0.045719037449444985
+  }
+ ],
+ "astrometry_mas": {
+  "n": 696,
+  "median_dx": 0.18970098423606033,
+  "median_dy": 0.422928752484222,
+  "nmad_dx": 0.9442764262308923,
+  "nmad_dy": 0.7741144512876624
+ }
+}

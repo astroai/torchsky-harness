@@ -7,10 +7,11 @@ sha256 sums, `pip freeze` and versions in `<run>/provenance/`.
 
 Storage (not in Git): `arc:projects/ots/adass2026/` and the mirror
 `vos:sfabbro/adass2026/` (runs under `smacs_four/<RUN>`, `unions_coadd_v5/`,
-`unions_gaia_astrom_v5*/`, `bench_coadd*/`). Subject: torchsky `main` 466ef1c
-(source tarball `scripts/torchsky-src-14c9a6d.tar.gz` and earlier `9749c80`, `3bd7b79`),
-torch 2.14, torchfits 1.3.1, weightmask 0.3.0, on CANFAR `astroai/base:latest`
-(SWarp benchmark: `astroai/improc:latest`).
+`unions_gaia_astrom_v5*/`, `bench_coadd*/`, `unions_diag*/`, `unions_coadd_v8*/`).
+Subject: torchsky `main`, installed from source tarballs `scripts/torchsky-src-<commit>.tar.gz`
+(science runs 9749c80, 14c9a6d and 3bd7b79; speed runs 82522bf and df37916), torch 2.14,
+torchfits 1.3.1, weightmask 0.3.0, on CANFAR `astroai/base:latest` (SWarp benchmark:
+`astroai/improc:latest`).
 
 ## 1. SMACS J0723, NIRCam F090W–F444W (`jobs/smacs_four_v14.py`, `jobs/smacs_run.sh`)
 
@@ -66,16 +67,40 @@ ICRS when `ASTCAT` is Gaia; torchsky now emits `CelestialFrameBiasWarning`.
 
 135 NIRCam exposures (566 Mpix), six bands, 0.04″ TAN grids, wall clock including reads,
 8 CPU threads / H100 MIG 1g.12gb. SWarp gets the SIP distortion converted to TPV (sip_tpv).
+Subject torchsky main 82522bf (run `bench_coadd_82522bf`); in brackets torchsky 14c9a6d
+(run before the large-field work).
 
 | output grid | SWarp 2.41 | torchsky Lanczos CPU / GPU | STScI drizzle 3.0 | torchsky drizzle CPU / GPU |
 |---|---|---|---|---|
-| 512² | 26.8 s | 24.2 s / 5.7 s | 171 s | 124 s / 42 s |
-| 5025² | 141 s | 784 s / OOM | 242 s | 1849 s / 584 s |
+| 512² | 30.1 s | 14.3 s / 5.2 s (24.2 / 5.7) | 171 s | 71 s / 27 s (124 / 42) |
+| 5025² | 144 s | 221 s / 65 s (784 / OOM) | 245 s | 149 s / 148 s (1849 / 584) |
 
-torchsky before the SIP fix: 213 / 217 s and 250 / 48 s on the small grid. Outputs:
-torchsky drizzle = STScI drizzle to < 0.001σ; torchsky Lanczos-3 vs SWarp median 0, scatter
-0.1–0.6σ. Large output grids remain slower than SWarp (per-pixel variance propagation, SIP
-inverse per target pixel); the full-grid Lanczos run exceeds a 12 GB GPU slice.
+Outputs: torchsky drizzle = STScI drizzle to < 2e-6σ; torchsky Lanczos-3 vs SWarp median
+< 0.1σ, scatter 0.1–0.9σ; torchsky CPU vs GPU: drizzle bitwise identical, Lanczos-3 1e-7σ.
+Changes behind the speed-up (torchsky main): footprint cropping per observation, verified
+coarse-lattice target→source mapping for SIP/TPV, fused chunked separable sampler with
+shared-tap variance, memory-budget automatic tiling with host accumulators, exact
+axis-aligned drizzle overlap with a native CPU kernel, deterministic CUDA accumulation.
+torchsky before the SIP fix (9749c80): 213 / 217 s and 250 / 48 s on the small grid.
+
+UNIONS tile, CPU (`jobs/unions_diag.*`: the same 80 prepared MegaCam CCDs onto the 10k² tile,
+Lanczos-3 flux, 16 threads, cProfile):
+
+| torchsky | 2500² tiles | automatic tiles |
+|---|---|---|
+| 9749c80 (v5 baseline) | 886 s | — |
+| 82522bf | 816 s | 1878 s |
+| df37916 (source area on the tap window) | 431 s | 483 s |
+| 3a32386 (+ windowed quadrature variance) | 263 s | 294 s |
+
+The 82522bf profile showed the exact per-pixel source solid angle (flux semantics,
+spherical pixel polygons on TPV) recomputed over the whole CCD for every (tile, CCD) pair,
+1432 s of 1878 s, then the four-point quadrature variance (Python scan over sorted taps).
+Whole tile (280 CCDs, `jobs/unions_coadd_v5.*` with `--auto-tile`): 2292 s (v5, 2500² tiles)
+→ 6102 s (`unions_coadd_v6_cpu`, 364269d) → 1084 s (`v8`, df37916) → 711 s (`v9`, 3a32386);
+on an H100 MIG 1g.12gb slice 660 s (`unions_coadd_v10_gpu`, 95b5f2b, auto-tiled, no OOM).
+Pixel, photometry and astrometry statistics against the official tile are identical in all
+runs (`results/unions_compare_v9_cpu.json`, `results/unions_compare_v10_gpu.json`).
 
 ## Known deviations from harness policy
 
