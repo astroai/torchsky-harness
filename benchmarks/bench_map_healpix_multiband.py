@@ -504,7 +504,9 @@ def run_roundtrip_case(*, nside: int = NSIDE, target_size: int = 48) -> dict:
             status="FAILED",
             failure_reason="bands share no resampled target pixel",
         )
-    constants = torch.tensor([band.constant for band in BANDS], dtype=torch.float64)
+    constants = torch.tensor(
+        [band.constant for band in BANDS], dtype=torch.float64, device=cube.device
+    )
     expected = constants.view(-1, 1, 1).expand_as(cube)
     residual = (cube - expected)[:, common].abs()
     stacks = cube[:, common]

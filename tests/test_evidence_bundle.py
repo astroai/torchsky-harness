@@ -158,13 +158,17 @@ def test_undeclared_runs_at_another_subject_do_not_block_readiness(
 
 
 def test_a_declared_claim_at_another_subject_blocks_readiness(tmp_path: Path) -> None:
-    runs = _all_claims(tmp_path)
+    # Every declared claim at SUBJECT except bench_wcs, which is only present at
+    # another subject (no same-evaluation run, so selection never depends on mtime).
+    others = [
+        _run_dir(tmp_path, f"run-{index}", evaluation)
+        for index, evaluation in enumerate(sorted(CLAIMS))
+        if evaluation != "bench_wcs"
+    ]
     other = dict(SUBJECT)
     other["package_content_sha256"] = "d" * 64
     replaced = _run_dir(tmp_path, "run-other", "bench_wcs", subject=other)
-    filtered = [run for run in runs if run.name != "run-other" and "bench_wcs" not in run.name]
-    # Keep every other claim plus the replaced bench_wcs run.
-    bundle = build_bundle([*filtered, replaced])
+    bundle = build_bundle([*others, replaced])
 
     assert bundle["release_ready"] is False
     assert bundle["subject_consistent"] is False

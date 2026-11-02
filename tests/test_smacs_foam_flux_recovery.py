@@ -129,10 +129,14 @@ def test_linear_foam_recovers_independent_continuum_source_flux(
             prediction = render_spectral_power_foam_observation_exact(
                 model, observation, num_spectral_samples=5
             ).detach()
-            background = observation.image - source_image
-            flux_ratio = (prediction - background)[aperture].sum() / source_image[
-                aperture
-            ].sum()
+            # torchsky follows the model's device; compare on the prediction's device.
+            device = prediction.device
+            observed = observation.image.to(device)
+            background = observed - source_image.to(device)
+            aperture_dev = aperture.to(device)
+            flux_ratio = (prediction - background)[aperture_dev].sum() / (
+                source_image.to(device)[aperture_dev].sum()
+            )
             assert float(flux_ratio) == pytest.approx(1.0, abs=0.05)
 
         diagnostics = _refine_foam_from_observations_exact(
@@ -143,11 +147,15 @@ def test_linear_foam_recovers_independent_continuum_source_flux(
             prediction = render_spectral_power_foam_observation_exact(
                 model, observation, num_spectral_samples=5
             ).detach()
-            background = observation.image - source_image
-            flux_ratio = (prediction - background)[aperture].sum() / source_image[
-                aperture
-            ].sum()
+            # torchsky follows the model's device; compare on the prediction's device.
+            device = prediction.device
+            observed = observation.image.to(device)
+            background = observed - source_image.to(device)
+            aperture_dev = aperture.to(device)
+            flux_ratio = (prediction - background)[aperture_dev].sum() / (
+                source_image.to(device)[aperture_dev].sum()
+            )
             assert float(flux_ratio) == pytest.approx(1.0, abs=0.01)
-            assert float((prediction - observation.image).square().mean().sqrt()) < 0.002
+            assert float((prediction - observed).square().mean().sqrt()) < 0.002
     finally:
         torch.set_num_threads(previous_threads)

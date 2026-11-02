@@ -4,6 +4,8 @@ Validates torch-native WCS transforms against Astropy/WCSLIB fixture behavior
 for forward (pixel->world) and inverse (world->pixel) directions.
 """
 
+import platform
+
 import numpy as np
 import pytest
 import torch
@@ -463,13 +465,17 @@ def test_quadcube_inverse_matches_astropy(projection: str, origin: int) -> None:
 
 
 
-def test_csc_aten_cpu_is_not_the_wcslib_floor(
+def test_csc_cpu_matches_wcslib(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Batched CPU ATen Horner is not the fused/WCSLIB floor; scalar C++ is.
+    """CSC CPU (batched ATen path) agrees with WCSLIB to double-precision rounding.
 
-    CUDA/MPS CSC without autograd host-copies to ``wcs_csc_x2s``. Do not claim
-    CUDA CSC throughput; mixed Linux CPU is still 8.4 mas vs astropy.
+    torchsky 87f8c3ce rounds the CSC polynomial with uncontracted float32
+    ``a + x*b``, identically on every device. On x86-64 that is bit-for-bit what
+    WCSLIB computes (CANFAR: 2.8e-14 deg), so 1e-12 deg is the parity bound.
+    On arm64 the astropy-bundled WCSLIB is compiled with FMA contraction, so the
+    oracle itself sits one float32 ulp (~8 mas, measured 8.4e-7 deg on Apple
+    silicon) away; bound that at 3e-6 deg (1 mas = 2.78e-7 deg).
     """
     monkeypatch.setenv("TORCHSKY_WCS_FUSED", "0")
     header = _make_header("CSC", cd_scale=0.3)
@@ -481,6 +487,5 @@ def test_csc_aten_cpu_is_not_the_wcslib_floor(
     dra = _ra_wrap_delta(ra_p.numpy(), ra_a)
     ddec = dec_p.numpy() - dec_a
     max_err_deg = float(max(np.nanmax(np.abs(dra)), np.nanmax(np.abs(ddec))))
-    # 1 mas = 2.78e-7 deg. Batched CPU SIMD addcmul sits at mas, not 1e-12.
-    assert max_err_deg < 3.0e-6
-    assert max_err_deg > 1.0e-12
+    fma_oracle = platform.machine().lower() in {"arm64", "aarch64"}
+    assert max_err_deg < (3.0e-6 if fma_oracle else 1.0e-12)
