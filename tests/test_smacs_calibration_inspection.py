@@ -169,6 +169,15 @@ def test_stationary_diagnostics_only_does_not_read_exposures(tmp_path, monkeypat
                         lambda *a, **kw: {"target_values": torch.tensor([2.0])})
     monkeypatch.setattr(inspection, "_predict", lambda *a: torch.tensor([3.0]))
     monkeypatch.setattr(inspection, "_exposure_planes", lambda *a: pytest.fail("read raw exposure"))
+    # CANFAR runs the harness from a source tarball, so there is no git checkout.
+    real_run = subprocess.run
+
+    def run(command, *args, **kwargs):
+        if list(command[:2]) == ["git", "rev-parse"]:
+            return subprocess.CompletedProcess(command, 0, stdout="0" * 40 + "\n", stderr="")
+        return real_run(command, *args, **kwargs)
+
+    monkeypatch.setattr(inspection.subprocess, "run", run)
     output = tmp_path / "output"
     readme = inspection.export_inspection_bundle(manifest, report, output,
         exposure_id="a", band="F150W", diagnostics_only=True)

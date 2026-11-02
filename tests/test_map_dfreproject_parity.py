@@ -13,6 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from astropy.wcs import WCS as AstropyWCS
 
 pytest.importorskip("torchsky._cpp")
 pytest.importorskip("dfreproject")
@@ -55,8 +56,8 @@ def test_torchsky_bilinear_close_to_dfreproject_on_shifted_grid() -> None:
         -((xx - size / 2) ** 2 + (yy - size / 2) ** 2) / (2.0 * 4.0**2)
     ).astype(np.float32)
     weight = np.ones_like(blob, dtype=np.float32)
-    src_ast = dict(src_hdr)
-    tgt_ast = dict(tgt_hdr)
+    src_ast = AstropyWCS(src_hdr)
+    tgt_ast = AstropyWCS(tgt_hdr)
 
     numer = calculate_reprojection(
         (blob * weight, src_ast),

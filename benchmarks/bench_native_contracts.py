@@ -33,11 +33,11 @@ from pathlib import Path
 PROBES: dict[str, str] = {
     "empty_ring_synthesis": r"""
 import torch
-import torchsky._cpp as cpp
+from torchsky import _ops
 s = torch.empty((1, 1, 0), dtype=torch.complex128)
 st = torch.empty((0,), dtype=torch.int64)
 ln = torch.empty((0,), dtype=torch.int64)
-out = cpp._healpix_ring_fourier_synthesis_cpu(s, st, ln)
+out = _ops.spectral_ring_fourier_synthesis(s, st, ln, 0)
 assert tuple(out.shape) == (1, 0), out.shape
 assert bool(torch.isfinite(out).all())
 print("empty ring synthesis:", tuple(out.shape))

@@ -1280,6 +1280,7 @@ def test_classical_smoke_cli_exposes_joint_foam_comparison(
         "archive",
         "source_tree",
         "registry",
+        "sdist",
     }
     dirty = artifact["environment"]["git_dirty"]
     assert dirty is None or isinstance(dirty, bool)

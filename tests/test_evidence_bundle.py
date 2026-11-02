@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -224,7 +225,12 @@ def test_bundle_flags_inconsistent_subjects(tmp_path: Path) -> None:
     other = _run_dir(tmp_path, "run-other", "bench_wcs")
     record = json.loads((other / "execution.json").read_text(encoding="utf-8"))
     record["subject"] = {**SUBJECT, "package_content_sha256": "d" * 64}
-    (other / "execution.json").write_text(json.dumps(record), encoding="utf-8")
+    record_path = other / "execution.json"
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+    # The newest run per evaluation wins; coarse filesystem mtimes (scratch
+    # volumes) can tie with the original bench_wcs run, so order them explicitly.
+    newest = max(path.stat().st_mtime for path in tmp_path.rglob("execution.json")) + 10.0
+    os.utime(record_path, (newest, newest))
     bundle = build_bundle([*runs, other])
 
     assert bundle["subject_consistent"] is False

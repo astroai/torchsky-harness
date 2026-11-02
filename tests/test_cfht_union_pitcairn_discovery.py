@@ -102,7 +102,9 @@ def test_fetch_requires_scratch(tmp_path: Path) -> None:
         [
             *fixture_args(tmp_path / "manifest.json")[1:],
             "--scratch-dir",
-            str(tmp_path),
+            # Not tmp_path: CANFAR sessions put TMPDIR under /scratch, which
+            # would satisfy the very guard this test expects to trip.
+            "/var/tmp/torchsky-not-under-scratch",
             "--fetch",
         ]
     )

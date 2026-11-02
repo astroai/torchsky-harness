@@ -22,6 +22,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from astropy.wcs import WCS as AstropyWCS
 
 pytest.importorskip("torchsky._cpp")
 pytest.importorskip("reproject")
@@ -76,7 +77,9 @@ def test_torchsky_bilinear_matches_reproject_interp_on_shifted_grid() -> None:
         )
         ts_np = ts.data.detach().cpu().numpy()
 
-    rp, footprint = reproject_interp((blob, src_hdr), tgt_hdr)
+    rp, footprint = reproject_interp(
+        (blob, AstropyWCS(src_hdr)), AstropyWCS(tgt_hdr), shape_out=(size, size)
+    )
     mask = footprint > 0.5
     assert bool(mask.any())
     delta = np.abs(ts_np[mask] - rp[mask])
@@ -109,8 +112,9 @@ def test_torchsky_bicubic_reasonably_close_to_reproject_interp_on_shifted_grid()
         ts_np = ts.data.detach().cpu().numpy()
 
     rp, footprint = reproject_interp(
-        (blob, src_hdr),
-        tgt_hdr,
+        (blob, AstropyWCS(src_hdr)),
+        AstropyWCS(tgt_hdr),
+        shape_out=(size, size),
         order="bicubic",
     )
     mask = footprint > 0.5
@@ -132,12 +136,14 @@ def test_reproject_healpix_roundtrip_skipped_when_no_coverage() -> None:
     ).astype(np.float32)
 
     hp, _ = reproject_to_healpix(
-        (blob, src_hdr),
+        (blob, AstropyWCS(src_hdr)),
         "icrs",
         nside=256,
         order="bilinear",
     )
-    _arr, fp = reproject_from_healpix((hp, "icrs"), tgt_hdr, nested=False)
+    _arr, fp = reproject_from_healpix(
+        (hp, "icrs"), AstropyWCS(tgt_hdr), shape_out=(size, size), nested=False
+    )
     if float(fp.max()) < 0.5:
         pytest.skip("HEALPix round-trip produced empty footprint for this cutout")
 
@@ -155,12 +161,14 @@ def test_reproject_healpix_roundtrip_large_field() -> None:
     ).astype(np.float32)
 
     hp, _ = reproject_to_healpix(
-        (blob, src_hdr),
+        (blob, AstropyWCS(src_hdr)),
         "icrs",
         nside=512,
         order="bilinear",
     )
-    arr, fp = reproject_from_healpix((hp, "icrs"), src_hdr, nested=False)
+    arr, fp = reproject_from_healpix(
+        (hp, "icrs"), AstropyWCS(src_hdr), shape_out=(size, size), nested=False
+    )
     assert float(fp.max()) > 0.5
     mask = fp > 0.5
     delta = np.abs(arr[mask].astype(np.float64) - blob[mask].astype(np.float64))
@@ -169,8 +177,6 @@ def test_reproject_healpix_roundtrip_large_field() -> None:
 
 def test_reproject_adaptive_runs_and_is_finite_on_shifted_tan_grid() -> None:
     """``reproject_adaptive`` (distinct from bilinear interp) stays on the smoke matrix."""
-    from astropy.wcs import WCS as AstropyWCS
-
     from reproject import reproject_adaptive
 
     size = 28
@@ -182,7 +188,7 @@ def test_reproject_adaptive_runs_and_is_finite_on_shifted_tan_grid() -> None:
     ).astype(np.float32)
     out_wcs = AstropyWCS(tgt_hdr)
     arr, fp = reproject_adaptive(
-        (blob, src_hdr),
+        (blob, AstropyWCS(src_hdr)),
         out_wcs,
         shape_out=(size, size),
     )

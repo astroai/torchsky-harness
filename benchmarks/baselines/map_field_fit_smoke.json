@@ -135,7 +135,8 @@
     "min_resolution_arcsec_pix": 0.85,
     "max_resolution_arcsec_pix": 1.1,
     "min_bandwidth_angstrom": 450.0,
-    "max_bandwidth_angstrom": 600.0
+    "max_bandwidth_angstrom": 600.0,
+    "skip_time_regression": true
   },
   {
     "library": "torchsky",
@@ -273,7 +274,8 @@
     "min_resolution_arcsec_pix": 0.85,
     "max_resolution_arcsec_pix": 1.1,
     "min_bandwidth_angstrom": 450.0,
-    "max_bandwidth_angstrom": 600.0
+    "max_bandwidth_angstrom": 600.0,
+    "skip_time_regression": true
   },
   {
     "library": "torchsky",
@@ -284,7 +286,8 @@
     "criterion": "fastest_within_5pct_support_reconstruction_rmse",
     "reconstruction_rmse": 0.0013415684225037694,
     "support_reconstruction_rmse": 0.001177811878733337,
-    "fit_time_ms": 149.81362503021955
+    "fit_time_ms": 149.81362503021955,
+    "skip_time_regression": true
   },
   {
     "library": "torchsky",
@@ -295,6 +298,7 @@
     "criterion": "lowest_support_reconstruction_rmse",
     "reconstruction_rmse": 0.0013415684225037694,
     "support_reconstruction_rmse": 0.001177811878733337,
-    "fit_time_ms": 149.81362503021955
+    "fit_time_ms": 149.81362503021955,
+    "skip_time_regression": true
   }
 ]

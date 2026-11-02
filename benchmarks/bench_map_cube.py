@@ -109,7 +109,9 @@ def run_case(*, size: int, bands: int, runs: int) -> dict:
                 footprint_order=6,
             )
             timings.append((time.perf_counter() - start) * 1.0e3)
-            result_data = result.data.to(torch.float64)
+            # Path observations follow the default compute device (CUDA when present);
+            # the truth cube is built on the host, so compare on the host.
+            result_data = result.data.detach().cpu().to(torch.float64)
 
     assert result_data is not None
     residual = result_data - truth

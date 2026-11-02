@@ -142,6 +142,7 @@ def test_conservative_polygon_parity_matches_reproject_exact_data_and_support(
         kernel="conservative_polygon",
         semantics="surface_brightness",
         method="weighted_mean",
+        device="cpu",
     )
     reference_weight, reference_data = _external_reference(
         image,
@@ -185,6 +186,7 @@ def test_conservative_polygon_parity_respects_weight_and_mask_maps(
         kernel="conservative_polygon",
         semantics="surface_brightness",
         method="weighted_mean",
+        device="cpu",
     )
     source_weight = (
         torch.where(mask > 0.0, weight_map, torch.zeros_like(weight_map)) * 2.0

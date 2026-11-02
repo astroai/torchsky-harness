@@ -39,4 +39,12 @@ def test_real_sphere_benchmark_declares_claim_rows() -> None:
     required = set(CLAIMS["bench_sphere_real_map"].required_rows)
     source = BENCHMARK.read_text(encoding="utf-8")
     for name in required:
-        assert name in source
+        if name.startswith("ud_grade_"):
+            # Emitted as ``f"ud_grade_{nside}_{nside_out}"``: check the template
+            # plus the fixture nside and the loop over output nsides.
+            _, _, nside_in, nside_out = name.split("_")
+            assert 'f"ud_grade_{nside}_{nside_out}"' in source
+            assert f"nside{nside_in}" in FIXTURE.name
+            assert str(nside_out) in source.split("for nside_out in (", 1)[1].split(")", 1)[0]
+        else:
+            assert name in source

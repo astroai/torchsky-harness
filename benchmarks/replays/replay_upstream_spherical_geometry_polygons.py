@@ -695,12 +695,24 @@ def run_replay(
                 failures.append(
                     f"difficult[{i}]: final area rel err {final_rel_err:.3e} > {settings.max_difficult_area_rel_error_final:.3e}"
                 )
-            if (
-                convergence_rel is not None
-                and convergence_rel > settings.max_difficult_area_convergence_rel
-            ):
+            # The estimate counts HEALPix pixel centres, so two consecutive levels
+            # differ by at least the Poisson noise of the counts (1/sqrt(N) each).
+            # A tiny region (a few hundred pixels) cannot converge below that;
+            # accuracy is gated separately against the comparator area above.
+            conv_tol = settings.max_difficult_area_convergence_rel
+            if len(difficult_area_nsides) >= 2 and sg_area > 0.0:
+                pix_area = lambda n: 4.0 * math.pi / (12.0 * float(n) ** 2)  # noqa: E731
+                n_fin = area_by_nside[str(difficult_area_nsides[-1])] / pix_area(
+                    difficult_area_nsides[-1]
+                )
+                n_prev = area_by_nside[str(difficult_area_nsides[-2])] / pix_area(
+                    difficult_area_nsides[-2]
+                )
+                if n_fin >= 1.0 and n_prev >= 1.0:
+                    conv_tol = max(conv_tol, math.sqrt(1.0 / n_fin + 1.0 / n_prev))
+            if convergence_rel is not None and convergence_rel > conv_tol:
                 failures.append(
-                    f"difficult[{i}]: area convergence rel {convergence_rel:.3e} > {settings.max_difficult_area_convergence_rel:.3e}"
+                    f"difficult[{i}]: area convergence rel {convergence_rel:.3e} > {conv_tol:.3e}"
                 )
 
     print("Contains rows:")

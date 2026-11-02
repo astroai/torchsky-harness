@@ -92,6 +92,11 @@ def _pixi_tasks() -> dict[str, str]:
     return tasks
 
 
+# CLI pipelines that need an external catalogue release, memberships and a
+# checkpoint; torchsky's own examples/test_examples.py excludes them too.
+EXAMPLES_NOT_SMOKE = frozenset({"catalogue_photoz.py"})
+
+
 def _segments(command: str, tasks: dict[str, str], depth: int = 0) -> list[str]:
     out: list[str] = []
     for part in (p.strip() for p in command.split("&&")):
@@ -147,6 +152,11 @@ def main() -> int:
     env = dict(os.environ, PYTHONNOUSERSITE="1", TORCHSKY_HARNESS_REQUIRE_GATES="1")
     env.pop("PYTHONPATH", None)
     env["TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT"] = env.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT", "0")
+    # Without an explicit device torchsky follows its inputs and, for file-path
+    # observations, defaults to CUDA when present. CPU-semantics gates build their
+    # truth/oracle tensors on the host, so pin them to CPU in gpu mode; the CUDA
+    # variants and cuda-smoke select CUDA explicitly (an explicit device wins).
+    cpu_env = dict(env, TORCHSKY_DEVICE="cpu")
     py = shlex.quote(sys.executable)
     results: list[dict] = []
 
@@ -154,10 +164,13 @@ def main() -> int:
         workers = " -n 4" if _has_xdist() else ""
         cmd = f'{py} -m pytest tests -q{workers} -p no:cacheprovider -m "{CORRECTNESS_MARKERS}" -rfs'
         correctness_env = dict(env, TORCHSKY_HARNESS_REQUIRE_GATES="0")
-        results.append(_run("harness-nonslow", "correctness", cmd, args.out, args.timeout * 2, correctness_env))
+        cpu_correctness_env = dict(correctness_env, TORCHSKY_DEVICE="cpu")
+        results.append(_run("harness-nonslow", "correctness", cmd, args.out, args.timeout * 2, cpu_correctness_env))
         if args.mode == "gpu":
             cuda_cmd = f"{py} -m pytest tests/test_cuda_smoke.py -q -p no:cacheprovider -rfs"
             results.append(_run("cuda-smoke", "correctness", cuda_cmd, args.out, args.timeout, correctness_env))
+            cuda_correctness_env = dict(correctness_env, TORCHSKY_DEVICE="cuda")
+            results.append(_run("harness-nonslow--cuda", "correctness", cmd, args.out, args.timeout * 2, cuda_correctness_env))
     elif args.suite == "parity":
         for path in PARITY_TESTS:
             if not (ROOT / path).is_file():
@@ -165,7 +178,12 @@ def main() -> int:
                 continue
             name = Path(path).stem
             cmd = f"{py} -m pytest {path} -q -p no:cacheprovider -rfs"
-            results.append(_run(name, "parity", cmd, args.out, args.timeout, env))
+            results.append(_run(name, "parity", cmd, args.out, args.timeout, cpu_env))
+            if args.mode == "gpu":
+                # Same comparator checks with CUDA as the default device, so a GPU
+                # campaign really exercises the CUDA paths (tests must be device-aware).
+                cuda_env = dict(env, TORCHSKY_DEVICE="cuda")
+                results.append(_run(f"{name}--cuda", "parity", cmd, args.out, args.timeout, cuda_env))
     elif args.suite == "examples":
         if args.examples_dir is None or not args.examples_dir.is_dir():
             print("--examples-dir is required for the examples suite", file=sys.stderr)
@@ -174,7 +192,7 @@ def main() -> int:
         workdir.mkdir(parents=True, exist_ok=True)
         example_env = dict(env, MPLBACKEND="Agg", TORCHSKY_HARNESS_REQUIRE_GATES="0")
         for script in sorted(args.examples_dir.glob("*.py")):
-            if script.name.startswith("test_"):
+            if script.name.startswith("test_") or script.name in EXAMPLES_NOT_SMOKE:
                 continue
             # run from a scratch directory so examples cannot write into the source tree
             cmd = f"cd {shlex.quote(str(workdir))} && {py} -s {shlex.quote(str(script))}"
@@ -191,7 +209,9 @@ def main() -> int:
                 devices.append(("cuda", [s.replace("--device cpu", "--device cuda").replace(".json", "_cuda.json") for s in segments]))
             for label, segs in devices:
                 name = task if label == "cpu" else f"{task}--cuda"
-                results.append(_run(name, "performance", " && ".join(segs), args.out, args.timeout, env))
+                results.append(
+                    _run(name, "performance", " && ".join(segs), args.out, args.timeout, cpu_env if label == "cpu" else env)
+                )
 
     failed = [r for r in results if r["status"] != "pass"]
     print(f"{args.suite}: {len(results) - len(failed)}/{len(results)} passed")

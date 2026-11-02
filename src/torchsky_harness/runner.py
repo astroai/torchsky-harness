@@ -71,4 +71,12 @@ def run(name: str, args: list[str], run_dir: Path, subject_artifact: Path | None
     )
     record["logs"] = [{"path": name, "sha256": sha256(run_dir / name)} for name in ("stdout.log", "stderr.log")]
     write_record(record_path, record)
+    if code != 0:
+        # The child's streams live in run_dir; surface their tails so a failing
+        # gate log (CI, CANFAR) is diagnosable without the run directory.
+        for stream_name in ("stdout.log", "stderr.log"):
+            lines = (run_dir / stream_name).read_text(errors="replace").splitlines()[-80:]
+            if lines:
+                print(f"--- {stream_name} (last {len(lines)} lines) ---", file=sys.stderr)
+                print("\n".join(lines), file=sys.stderr)
     return code

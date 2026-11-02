@@ -104,10 +104,11 @@ def _stsci_drizzle_reference(
     iscale = (
         1.0 if value_semantics == "surface_brightness" else float(pscale_ratio) ** 2
     )
-    # Drizzle 2.2's tight-canvas scanner omits square drops whose centers lie
-    # outside the canvas. Give it a full transformed drop margin, then crop.
-    # This compares pixel overlap, not that scanner's boundary truncation.
-    padding = 0
+    # The drizzle tight-canvas scanner omits drops whose centers lie in the
+    # outer half-pixel rim of the canvas (square drops in 2.2; point drops too
+    # in 3.0). Give it a full transformed drop margin, then crop. This compares
+    # pixel overlap, not that scanner's boundary truncation.
+    padding = 1
     if kernel == "square":
         mapping = torch.as_tensor(pixmap)
         extent = sum(float(torch.diff(mapping, dim=axis).abs().max()) for axis in (0, 1))
@@ -192,6 +193,7 @@ def test_external_drizzle_parity_across_affine_cases(
         semantics=value_semantics,
         pixfrac=pixfrac,
         method="weighted_mean",
+        device="cpu",
     )
     _, reference_weight, reference_data = _stsci_drizzle_reference(
         image,
@@ -246,6 +248,7 @@ def test_external_drizzle_parity_respects_weight_and_mask_maps(
         semantics="surface_brightness",
         pixfrac=0.9,
         method="weighted_mean",
+        device="cpu",
     )
     source_weight = (
         torch.where(mask > 0.0, weight_map, torch.zeros_like(weight_map)) * 2.0
@@ -285,6 +288,7 @@ def test_external_drizzle_parity_square_support_matches_weighted_uniform_field(
         semantics="surface_brightness",
         pixfrac=1.0,
         method="weighted_mean",
+        device="cpu",
     )
     _, reference_weight, reference_data = _stsci_drizzle_reference(
         image,

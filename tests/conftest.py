@@ -56,7 +56,16 @@ import pytest  # noqa: E402
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
-    if report.skipped and _require_gates() and _gated(item.path.name) and not hasattr(report, "wasxfail"):
+    # An unconditional ``@pytest.mark.skip`` is a documented coverage gap, not a
+    # missing comparator, so it never counts as a failed release gate.
+    declared_skip = item.get_closest_marker("skip") is not None
+    if (
+        report.skipped
+        and _require_gates()
+        and _gated(item.path.name)
+        and not declared_skip
+        and not hasattr(report, "wasxfail")
+    ):
         report.outcome = "failed"
         report.longrepr = f"required release gate skipped (missing comparator?): {report.longrepr}"
 
