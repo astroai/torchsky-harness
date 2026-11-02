@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Legacy WCS-only benchmark runner (PyAST/Kapteyn) for cross-env aggregation."""
+"""Legacy WCS-only benchmark runner (PyAST) for cross-env aggregation."""
 
 from __future__ import annotations
 
@@ -21,15 +21,6 @@ try:
 except Exception:
     Ast = None
     HAS_PYAST = False
-
-try:
-    from kapteyn import wcs as kwcs  # type: ignore
-
-    HAS_KAPTEYN = True
-except Exception:
-    kwcs = None
-    HAS_KAPTEYN = False
-
 
 @dataclass(frozen=True)
 class CaseSpec:
@@ -320,21 +311,6 @@ def _time_pyast(
     return _time_median(lambda: w.tran(coords, True), runs=runs)
 
 
-def _time_kapteyn(
-    header: dict[str, Any], x: np.ndarray, y: np.ndarray, runs: int
-) -> float | None:
-    if not HAS_KAPTEYN:
-        return None
-    h = {str(k): v for k, v in header.items()}
-    h.setdefault("NAXIS", 2)
-    h.setdefault("NAXIS1", 4096)
-    h.setdefault("NAXIS2", 4096)
-    wh = kwcs.WrappedHeader(h, "")
-    proj = kwcs.Projection(wh)
-    coords = np.stack([x, y], axis=-1)
-    return _time_median(lambda: proj.toworld(coords), runs=runs)
-
-
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -381,9 +357,7 @@ def main() -> int:
             runs = _runs_for_points(n_points)
             rep_count = max(1, int(args.replicates))
             pyast_times: list[float] = []
-            kapteyn_times: list[float] = []
             pyast_err = ""
-            kapteyn_err = ""
 
             print(
                 f"[wcs-legacy] case={case_name} n={n_points} runs={runs} reps={rep_count}",
@@ -419,14 +393,6 @@ def main() -> int:
                     if not pyast_err:
                         pyast_err = f"pyast_failed: {type(exc).__name__}: {exc}"
 
-                try:
-                    kapteyn_t = _time_kapteyn(header_dict, x, y, runs=runs)
-                    if kapteyn_t is not None:
-                        kapteyn_times.append(kapteyn_t)
-                except Exception as exc:
-                    if not kapteyn_err:
-                        kapteyn_err = f"kapteyn_failed: {type(exc).__name__}: {exc}"
-
             pyast_med = float(np.median(pyast_times)) if pyast_times else None
             rows.append(
                 _row(
@@ -441,23 +407,6 @@ def main() -> int:
                         else (pyast_err or "pyast_not_available")
                     ),
                     time_s=pyast_med,
-                )
-            )
-
-            kapteyn_med = float(np.median(kapteyn_times)) if kapteyn_times else None
-            rows.append(
-                _row(
-                    case_name=case_name,
-                    projection=case.projection,
-                    n_points=n_points,
-                    library="kapteyn",
-                    status="OK" if kapteyn_med is not None else "SKIPPED",
-                    skip_reason=(
-                        ""
-                        if kapteyn_med is not None
-                        else (kapteyn_err or "kapteyn_not_available")
-                    ),
-                    time_s=kapteyn_med,
                 )
             )
 

@@ -70,7 +70,7 @@ several Pixi environments because upstream wheels and ABI pins differ.
 | Environment | Purpose | Typical comparators |
 |---|---|---|
 | `bench-all` | Main `bench_all.py` WCS/sphere domains | Astropy (`astropy.wcs`), torch, optional legacy bridge rows |
-| `bench-legacy` | Legacy WCS libraries | PyAST (`starlink.Ast`) and optional Kapteyn for legacy WCS comparison |
+| `bench-legacy` | Legacy WCS libraries | PyAST (`starlink.Ast`) for legacy WCS comparison |
 | `sphere-bench` | HEALPix and spherical geometry ecosystem | healpy, hpgeom, astropy-healpix, healsparse, spherical-geometry, mocpy, optional healpix/mhealpy/skyproj |
 | `sht-bench` | Optional HEALPix SHT peer | same as `sphere-bench`, plus **s2fft** via `pixi run sht-bench-bootstrap` (JAX is not in `sphere-bench`; healpy stays the science oracle) |
 | `map-compat` | Optical/IR stacker compatibility | reproject, dfreproject, drizzle, Montage, SWarp, casutools |
@@ -129,7 +129,7 @@ wall-time gate: shared nodes are noisy, the file is the evidence. A comparator t
 
 | area | operations | sizes | comparators |
 |---|---|---|---|
-| `wcs` | pixel to world, world to pixel (TAN, TAN-SIP) | 1e5, 1e6 | astropy.wcs, PyAST (and Kapteyn when provisioned) |
+| `wcs` | pixel to world, world to pixel (TAN, TAN-SIP) | 1e5, 1e6 | astropy.wcs, PyAST |
 | `healpix` | ang2pix, pix2ang, neighbours (nside 1024) | 1e5, 1e6 | healpy, hpgeom, astropy-healpix |
 | `catalogs` | nearest-match crossmatch | 1e5, 1e6 | astropy SkyCoord, STILTS `tmatch2`, `tskymatch2` |
 | `moc` | from_circle, union, intersection, contains (order 10) | single call; 1e5, 1e6 points | mocpy |
@@ -138,7 +138,7 @@ wall-time gate: shared nodes are noisy, the file is the evidence. A comparator t
 | `map` | bilinear and exact reprojection | 2048^2, 4096^2 | reproject, dfreproject, SWarp, Montage |
 
 Conventions: speedup is `comparator_s / torchsky_s` (above 1: torchsky faster); throughput is `size / torchsky_s`.
-PyAST and Kapteyn run in their own interpreter (`scripts/oracle/wcs_oracle.py`) and are timed inside it; STILTS and the
+PyAST runs in its own interpreter (`scripts/oracle/wcs_oracle.py`) and are timed inside it; STILTS and the
 SWarp/Montage binaries report wall time including process start and file I/O (noted per row); healpy and s2fft SHTs run
 in a child process. The parity gates `test_stilts_parity.py` add per-mode STILTS timings on the real Gaia DR3 x 2MASS cone
 through `tests/_perf_record.py` (`comparator_perf.jsonl`). `scripts/canfar/summarize.py` merges both into the
@@ -902,7 +902,7 @@ Win rate: **100%** across all 70 smart-family and 70 specialized-family comparab
 
 ### WCS
 
-Compared against **astropy.wcs** (smart family). PyAST and Kapteyn are available as legacy comparators when bridge data is present but were not included in this run. Coverage: 15 projections &times; forward/inverse &times; N = {1K, 10K, 100K, 1M, 10M}.
+Compared against **astropy.wcs** (smart family). PyAST is available as a legacy comparator when bridge data is present but were not included in this run. Coverage: 15 projections &times; forward/inverse &times; N = {1K, 10K, 100K, 1M, 10M}.
 
 **Results at N = 10M (smart family, torchsky vs astropy.wcs):**
 

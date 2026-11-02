@@ -66,7 +66,6 @@ def _oracle_versions() -> dict:
     probes = {
         "PyAST": ("TORCHSKY_HARNESS_ORACLE_PYAST_PYTHON", "import starlink.Ast as A; v=A.version(); print('starlink-pyast %d.%d.%d' % (v//1000000, v//1000%1000, v%1000))"),
         "AstroDrizzle": ("TORCHSKY_HARNESS_ORACLE_DRIZZLEPAC_PYTHON", "import drizzlepac; print('drizzlepac', drizzlepac.__version__)"),
-        "Kapteyn": ("TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON", "import kapteyn; print('kapteyn', kapteyn.__version__)"),
     }
     for name, (var, code) in probes.items():
         py = os.environ.get(var)
@@ -74,8 +73,6 @@ def _oracle_versions() -> dict:
             reason = os.environ.get(var.replace("_PYTHON", "_UNPROVISIONED"))
             if reason:
                 out[name] = f"NOT PROVISIONED: {reason}"
-            elif name == "Kapteyn":
-                out[name] = "not provisioned (no source)"
             else:
                 out[name] = "NOT PROVISIONED"
             continue
@@ -123,7 +120,7 @@ def _perf_table(rows: list[dict]) -> list[str]:
     lines = [
         "## Comparator performance",
         "",
-        "Recorded, not gated: speedup = comparator time / torchsky time (above 1: torchsky faster); throughput = size / torchsky time. STILTS wall time includes JVM start and table I/O; PyAST and Kapteyn are timed inside their oracle process. Sizes of 1 are single calls.",
+        "Recorded, not gated: speedup = comparator time / torchsky time (above 1: torchsky faster); throughput = size / torchsky time. STILTS wall time includes JVM start and table I/O; PyAST is timed inside their oracle process. Sizes of 1 are single calls.",
         "",
         "| area | operation | size | device | torchsky | throughput | comparator | comparator time | speedup |",
         "|---|---|---|---|---|---|---|---|---|",

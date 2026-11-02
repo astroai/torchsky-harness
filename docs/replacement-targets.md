@@ -36,7 +36,6 @@ Status vocabulary:
 |---|---|---|---|
 | `astropy.wcs` / WCSLIB | `torchsky.wcs.WCS` | **gated** | 38-projection release gate, real instrument headers, domain fuzz |
 | PyAST (`starlink.Ast`) | `torchsky.wcs.WCS`, `convert_celestial`, `plan` | covered (legacy env) | `bench-wcs-legacy`/`bench-wcs-ecosystem`; not a release claim; env currently lacks harness |
-| Kapteyn | `torchsky.wcs.WCS` | covered (legacy env) | legacy comparator; not a release claim; optional install |
 | `gwcs` | `torchsky.wcs.sample_gwcs*`, `gwcs_live` | unit-only | build-time sampling/live adapter tests; no harness parity |
 | `astropy.coordinates` / `astropy.time` / `astropy.units` | `torchsky.coords`, `torchsky.transforms`, `torchsky.wcs.frames` | **gated** (geometric frames) | `bench-coords-astropy-gate`: ICRS/Galactic/FK5/ecliptic <1e-6 asec; time/units remain unit-only |
 | `pyerfa` / ERFA | `torchsky.wcs.iau2006`, observed frames | covered | `bench_observed_place` compares CIRS/TETE/AltAz against ERFA; not a release claim |
@@ -141,7 +140,7 @@ WCS headers. Contract/fuzz gates cover structural/domain behaviour.
 
 Non-release coverage exists for hpgeom, astropy-healpix, healsparse, mocpy,
 spherical_geometry, drizzle, dfreproject, SWarp, Montage, s2fft, cuhpx, PyAST,
-Kapteyn, ERFA, and pandas/polars/Arrow. Everything marked **gap/unit-only** is
+ERFA, and pandas/polars/Arrow. Everything marked **gap/unit-only** is
 the next campaign list.
 
 ## Functional coverage against sections 2–4 (2026-10-21)

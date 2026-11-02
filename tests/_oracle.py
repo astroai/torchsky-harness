@@ -1,4 +1,4 @@
-"""Out-of-process comparator oracles (PyAST, Kapteyn) with NPZ exchange.
+"""Out-of-process comparator oracles (PyAST) with NPZ exchange.
 
 The legacy comparators run in a separate interpreter (``scripts/oracle/wcs_oracle.py``) so they
 need not share torchsky's Python/numpy. Interpreter lookup, per engine:
@@ -27,7 +27,7 @@ import numpy as np
 import pytest
 
 WORKER = Path(__file__).resolve().parents[1] / "scripts" / "oracle" / "wcs_oracle.py"
-_MODULE = {"pyast": "starlink.Ast", "kapteyn": "kapteyn"}
+_MODULE = {"pyast": "starlink.Ast"}
 
 
 def oracle_python(engine: str) -> str | None:

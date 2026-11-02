@@ -118,7 +118,7 @@ bench-wcs-real-headers-gate = "pixi run -e bench-all python -m torchsky_harness.
 bench-wcs-release-gate = "pixi run -e bench-all python -m torchsky_harness.cli run bench_wcs -- --cases TAN,SIN,ARC,ZEA,STG,ZPN,AZP,SZP,AIR,AIT,MOL,HPX,XPH,CEA,MER,CAR,SFL,PAR,COP,COE,COD,COO,BON,PCO,TSC,CSC,QSC,NCP,TAN_SIP,TPV,MER_OFF,CYP_OFF,AIT_OFF,HPX_OFF,SFL_OFF,XPH_OFF,BON_OFF,PAR_OFF --n-points 20000 --runs 5 --device cpu --json-out benchmark_results/release_wcs.json --max-angular-error-arcsec 3.6e-3 --max-roundtrip-sky-error-arcsec-pole-excluded 1e-3 --max-roundtrip-pole-excluded-pixel-error 1e-3 --p99-roundtrip-sky-error-arcsec 1e-2 --roundtrip-exempt-cases TSC,CSC,QSC --p99-inverse-pixel-error 1e-3"
 bench-healpix-release-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_healpix -- --nside 512 --n-points 100000 --runs 5 --device cpu --json-out benchmark_results/release_healpix.json --max-index-mismatches 0 --max-pix2ang-dra-deg 1e-10 --max-pix2ang-ddec-deg 1e-10"
 bench-healpix-advanced-release-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_healpix_advanced -- --nside 512 --n-points 100000 --runs 3 --device cpu --json-out benchmark_results/release_healpix_advanced.json --min-ratio-vs-healpy neighbors_ring=0.5,neighbors_nested=0.5,interp_weights_ring=0.5,interp_weights_nested=0.5,interp_val_ring=0.5,interp_val_nested=0.5"
-# Comparator performance (record, never gate): torchsky vs astropy.wcs/PyAST/Kapteyn, healpy/hpgeom/astropy-healpix,
+# Comparator performance (record, never gate): torchsky vs astropy.wcs/PyAST, healpy/hpgeom/astropy-healpix,
 # astropy SkyCoord/STILTS, mocpy, healsparse, healpy/s2fft, reproject/dfreproject/SWarp/Montage. Normalized JSON;
 # run_gates.py reruns it with --device cuda in gpu mode. See docs/benchmarks.md "Performance vs comparators".
 bench-comparator-perf-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs,moc,sparse,sht,map --sizes 100000,1000000 --image-sizes 2048,4096 --runs 5 --area-budget-s 45 --device cpu --json-out benchmark_results/comparator_perf.json"
@@ -200,7 +200,7 @@ certify-astrometry-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_
 certify-sphere-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns sphere-v1 --certify --json-out benchmark_results/certification/sphere-v1.json"
 certify-deblend-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns deblend-v1 --certify --json-out benchmark_results/certification/deblend-v1.json"
 run-certification-v1 = "pixi run -e test -- python -m torchsky_harness.bounded_campaigns astrometry-v1 --json-out benchmark_results/certification/astrometry-v1.json && pixi run -e test -- python -m torchsky_harness.bounded_campaigns sphere-v1 --json-out benchmark_results/certification/sphere-v1.json && pixi run -e test -- python -m torchsky_harness.bounded_campaigns deblend-v1 --json-out benchmark_results/certification/deblend-v1.json"
-# WCS suite with every in-process + legacy-bridge comparator (needs bench-legacy env + kapteyn/pyast).
+# WCS suite with every in-process + legacy-bridge comparator (needs bench-legacy env + pyast).
 bench-wcs-ecosystem = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --legacy-wcs --run-id wcs_ecosystem --output-dir benchmarks_results"
 
 # Comprehensive benchmarks (renamed from exhaustive)
@@ -399,11 +399,6 @@ pytest = ">=8.0"
 cython = "<3.0"
 # Comparator-only env (Python 3.10 for legacy Cython builds): torch 2.14 needs
 # Python >=3.11, so it is intentionally absent; the subject is not installed here.
-
-[feature.bench-legacy.pypi-dependencies]
-# Kapteyn is not pinned here: its sdist build often fails under isolated solves
-# (requires NumPy at build time). After `pixi install -e bench-legacy`, install when needed:
-#   pixi run -e bench-legacy python -m pip install kapteyn
 
 # Astrometric calibration (SCAMP + SExtractor + astropy).
 # solve-field is NOT a conda dep (no osx-arm64 build); use `pixi run solve-field`.

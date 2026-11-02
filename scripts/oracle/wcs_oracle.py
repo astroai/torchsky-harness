@@ -1,10 +1,10 @@
-"""Out-of-process WCS oracle (PyAST / Kapteyn); Python 3.6+ compatible, numpy only.
+"""Out-of-process WCS oracle (PyAST); Python 3.6+ compatible, numpy only.
 
 Runs in a SEPARATE interpreter from torchsky so the legacy comparators may use whatever
 Python/numpy they build on. Exchange is NPZ in / NPZ out; header cards arrive as 80-char card
 strings (no astropy.io.fits anywhere).
 
-    python wcs_oracle.py --engine pyast|kapteyn --in in.npz --out out.npz
+    python wcs_oracle.py --engine pyast --in in.npz --out out.npz
 
 in.npz:  cards (unicode array, no pickle), x, y (FITS 1-based pixel), lon, lat (degrees), repeat (int)
 out.npz: ra, dec (degrees, from x/y), px, py (FITS 1-based pixel, from lon/lat),
@@ -50,39 +50,14 @@ def run_pyast(cards, x, y, lon, lat, repeat):
     return ra, dec, inv[0], inv[1], t_f, t_i, "starlink-pyast %s" % _ast_version(Ast)
 
 
-def run_kapteyn(cards, x, y, lon, lat, repeat):
-    from kapteyn import wcs as kwcs
-
-    header = {}
-    for card in cards:
-        card = str(card)
-        key = card[:8].strip()
-        if card[8:10] != "= ":
-            continue
-        raw = card[10:].split("/")[0].strip() if not card[10:].strip().startswith("'") else card[10:].split("'")[1]
-        try:
-            header[key] = float(raw)
-        except ValueError:
-            header[key] = raw.strip("' ")
-    proj = kwcs.Projection(header)
-    # Kapteyn works in FITS 1-based pixels and degrees.
-    pix = np.vstack([x, y])
-    (ra, dec), t_f = _best(lambda: proj.toworld(pix.T.copy()).T, repeat)
-    world = np.vstack([lon, lat]).T.copy()
-    (px, py), t_i = _best(lambda: proj.topixel(world).T, repeat)
-    import kapteyn
-
-    return np.asarray(ra) % 360.0, np.asarray(dec), np.asarray(px), np.asarray(py), t_f, t_i, "kapteyn %s" % kapteyn.__version__
-
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--engine", choices=["pyast", "kapteyn"], required=True)
+    parser.add_argument("--engine", choices=["pyast"], required=True)
     parser.add_argument("--in", dest="inp", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
     data = np.load(args.inp, allow_pickle=False)
-    fn = run_pyast if args.engine == "pyast" else run_kapteyn
+    fn = run_pyast
     ra, dec, px, py, t_f, t_i, version = fn(
         list(data["cards"]), data["x"], data["y"], data["lon"], data["lat"], int(data["repeat"])
     )

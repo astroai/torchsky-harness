@@ -67,7 +67,6 @@ PARITY_TESTS = (
     "tests/test_wcs_parity.py",
     "tests/test_wcs_upstream_astropy.py",
     "tests/test_wcs_pyast_parity.py",
-    "tests/test_wcs_kapteyn_parity.py",
     "tests/test_healpix_parity.py",
     "tests/test_healsparse_upstream.py",
     "tests/test_sphere_moc.py",
@@ -97,10 +96,6 @@ PARITY_TESTS = (
     "tests/test_montage_projection_parity.py",
     "tests/test_stilts_parity.py",
 )
-
-# Opt-in parity gates: skipped with a reason (never failed, never required) unless the oracle env var is set.
-KAPTEYN_SKIP_REASON = "Kapteyn source not provided (conda-forge 2.3 obsolete; 3.4 tarball does not build)"
-OPT_IN_GATES = {"tests/test_wcs_kapteyn_parity.py": ("TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON", KAPTEYN_SKIP_REASON)}
 
 CORRECTNESS_MARKERS = "not performance and not benchmark and not slow and not integration"
 
@@ -202,16 +197,6 @@ def main() -> int:
                 results.append({"gate": path, "suite": "parity", "status": "fail", "returncode": 127, "seconds": 0.0, "log": "", "command": "missing test file"})
                 continue
             name = Path(path).stem
-            opt_in = OPT_IN_GATES.get(path)
-            if opt_in is not None and not os.environ.get(opt_in[0]):
-                for suffix in ("", "--cuda") if args.mode == "gpu" else ("",):
-                    row = {"gate": name + suffix, "suite": "parity", "command": "", "returncode": 77, "status": "skip",
-                           "reason": opt_in[1], "seconds": 0.0, "log": ""}
-                    with (args.out / "gates.jsonl").open("a", encoding="utf-8") as stream:
-                        stream.write(json.dumps(row) + "\n")
-                    print(f"[skip] parity/{row['gate']} {opt_in[1]}", flush=True)
-                    results.append(row)
-                continue
             cmd = f"{py} -m pytest {path} -q -p no:cacheprovider -rfs"
             results.append(_run(name, "parity", cmd, args.out, args.timeout, cpu_env))
             if args.mode == "gpu":

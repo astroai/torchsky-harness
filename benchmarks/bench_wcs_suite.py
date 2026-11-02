@@ -453,7 +453,7 @@ def run_wcs_domain(
             )
 
             if include_legacy and run_legacy_case is not None:
-                legacy_times: dict[str, list[float]] = {"pyast": [], "kapteyn": []}
+                legacy_times: dict[str, list[float]] = {"pyast": []}
                 for i_rep in range(rep_count):
                     rep_seed = _sample_seed(i_case, i_tier, i_rep)
                     try:
@@ -464,15 +464,12 @@ def run_wcs_domain(
                         leg = {}
                     if not isinstance(leg, dict):
                         leg = {}
-                    for lib_key in ("pyast", "kapteyn"):
+                    for lib_key in ("pyast",):
                         ms = leg.get(f"{lib_key}_ms")
                         t = _ok_time((float(ms) / 1000.0) if ms is not None else None)
                         if t is not None:
                             legacy_times[lib_key].append(t)
-                for lib_key, mode in (
-                    ("pyast", "specialized"),
-                    ("kapteyn", "specialized"),
-                ):
+                for lib_key, mode in (("pyast", "specialized"),):
                     t = _median(legacy_times[lib_key])
                     status = "OK" if t is not None else "SKIPPED"
                     rows.append(

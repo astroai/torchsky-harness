@@ -259,7 +259,7 @@ case "${mode}" in
     ;;
   cpu)
     # ponytail: do not call wcs-sphere-acceptance-full here. That task's WCS
-    # path auto-spawns pixi -e bench-legacy (pyast/kapteyn). The last CPU job
+    # path auto-spawns pixi -e bench-legacy (pyast). The last CPU job
     # died there after finishing native WCS, and copy_tree never ran.
     install_env bench-all
     install_env sphere-bench

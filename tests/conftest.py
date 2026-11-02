@@ -43,9 +43,6 @@ RELEASE_GATE_FILES = frozenset(
         "test_map_astrodrizzle_parity.py",  # drizzlepac (out-of-process oracle)
     }
 )
-# Kapteyn is opt-in (TORCHSKY_HARNESS_KAPTEYN_SOURCE); the campaign sets
-# TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1 only when that succeeded (otherwise the gate is skipped, not required).
-KAPTEYN_GATE_FILES = frozenset({"test_wcs_kapteyn_parity.py"})
 # SWarp / MontagePy gates exist but only the map-compat environment ships the
 # binaries; they are required there (set the variable) and optional elsewhere.
 MAP_COMPAT_GATE_FILES = frozenset(
@@ -72,8 +69,6 @@ def _gated(path_name: str) -> bool:
     tools = os.environ.get("TORCHSKY_HARNESS_REQUIRE_TOOLS") == "1"
     if path_name in EXTERNAL_TOOL_GATE_FILES:
         return tools
-    if path_name in KAPTEYN_GATE_FILES:
-        return os.environ.get("TORCHSKY_HARNESS_REQUIRE_KAPTEYN") == "1"
     return path_name in MAP_COMPAT_GATE_FILES and (
         os.environ.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT") == "1" or tools
     )

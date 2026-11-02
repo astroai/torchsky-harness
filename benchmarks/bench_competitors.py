@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optional cross-library WCS benchmark (Astropy, TorchFits, PyAST, Kapteyn)."""
+"""Optional cross-library WCS benchmark (Astropy, TorchFits, PyAST)."""
 
 from __future__ import annotations
 
@@ -23,15 +23,6 @@ try:
 except Exception:
     Ast = None
     HAS_PYAST = False
-
-try:
-    from kapteyn import wcs as kwcs  # type: ignore
-
-    HAS_KAPTEYN = True
-except Exception:
-    kwcs = None
-    HAS_KAPTEYN = False
-
 
 def _time_one(fn) -> float:
     t0 = time.perf_counter()
@@ -91,28 +82,6 @@ def _run_pyast(
         return None
 
 
-def _run_kapteyn(
-    header: dict[str, Any], x: np.ndarray, y: np.ndarray, runs: int
-) -> tuple[float, np.ndarray, np.ndarray] | None:
-    if not HAS_KAPTEYN:
-        return None
-
-    try:
-        h = {str(k): v for k, v in header.items()}
-        h.setdefault("NAXIS", 2)
-        h.setdefault("NAXIS1", 2000)
-        h.setdefault("NAXIS2", 2000)
-        wh = kwcs.WrappedHeader(h, "")
-        proj = kwcs.Projection(wh)
-        coords = np.stack([x, y], axis=-1)
-
-        dt = _time_many(lambda: proj.toworld(coords), runs=runs)
-        out = proj.toworld(coords)
-        return dt, out[:, 0], out[:, 1]
-    except Exception:
-        return None
-
-
 def run_case(
     case_name: str,
     n_points: int,
@@ -156,7 +125,6 @@ def run_case(
         "torchsky_mode": "smart",
         "astropy_mode": "smart",
         "pyast_mode": "specialized",
-        "kapteyn_mode": "specialized",
         "astropy_ms": ast_dt * 1000.0,
         "torchsky_ms": torch_dt * 1000.0,
         "torchsky_speedup": ast_dt / torch_dt,
@@ -189,25 +157,6 @@ def run_case(
         result["pyast_speedup"] = float("nan")
         result["pyast_max_angular_error_arcsec"] = float("nan")
 
-    kapteyn = _run_kapteyn(header_dict, x, y, runs=runs)
-    if kapteyn is not None:
-        kap_dt, ra_k, dec_k = kapteyn
-        valid_k = valid & np.isfinite(ra_k) & np.isfinite(dec_k)
-        result["kapteyn_ms"] = kap_dt * 1000.0
-        result["kapteyn_speedup"] = ast_dt / kap_dt
-        result["kapteyn_max_angular_error_arcsec"] = float(
-            np.max(
-                _angular_sep_deg(
-                    ra_k[valid_k], dec_k[valid_k], ra_ast[valid_k], dec_ast[valid_k]
-                )
-            )
-            * 3600.0
-        )
-    else:
-        result["kapteyn_ms"] = float("nan")
-        result["kapteyn_speedup"] = float("nan")
-        result["kapteyn_max_angular_error_arcsec"] = float("nan")
-
     # Compare only like-for-like mode families.
     smart_times = {
         "torchsky": float(result["torchsky_ms"]),
@@ -234,8 +183,6 @@ def run_case(
     specialized_times = {}
     if np.isfinite(result["pyast_ms"]):
         specialized_times["pyast"] = float(result["pyast_ms"])
-    if np.isfinite(result["kapteyn_ms"]):
-        specialized_times["kapteyn"] = float(result["kapteyn_ms"])
     if specialized_times:
         best_specialized = min(specialized_times, key=specialized_times.get)
         result["best_method_specialized"] = best_specialized
@@ -283,9 +230,7 @@ def main() -> int:
         for i, name in enumerate(names)
     ]
 
-    print(
-        f"PyAST={'yes' if HAS_PYAST else 'no'} Kapteyn={'yes' if HAS_KAPTEYN else 'no'}"
-    )
+    print(f"PyAST={'yes' if HAS_PYAST else 'no'}")
     cols = [
         "case",
         "best_method_smart",
@@ -295,7 +240,6 @@ def main() -> int:
         "torchsky_speedup",
         "torchsky_max_angular_error_arcsec",
         "pyast_ms",
-        "kapteyn_ms",
     ]
     print(" ".join(f"{c:>16s}" for c in cols))
     for r in results:
@@ -308,7 +252,6 @@ def main() -> int:
             f"{r['torchsky_speedup']:16.2f}"
             f"{r['torchsky_max_angular_error_arcsec']:16.4g}"
             f"{r['pyast_ms']:16.3f}"
-            f"{r['kapteyn_ms']:16.3f}"
         )
 
     if args.json_out is not None:

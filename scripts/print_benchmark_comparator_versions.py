@@ -64,7 +64,6 @@ def main() -> int:
         ("dfreproject", "dfreproject"),
         ("MontagePy", "MontagePy"),
         ("starlink_ast", "starlink.Ast"),
-        ("kapteyn", "kapteyn"),
         ("s2fft", "s2fft"),
         ("cuhpx", "cuhpx"),
         ("ducc0", "ducc0"),

@@ -125,16 +125,6 @@ def bench_wcs(sizes, runs, dev) -> None:
                 continue
             add("wcs", f"{case} pixel_to_world", "pyast", n, t_p2w, ora["t_forward_s"], dev.type, "PyAST time measured inside the oracle process")
             add("wcs", f"{case} world_to_pixel", "pyast", n, t_w2p, ora["t_inverse_s"], dev.type)
-            if _oracle.oracle_python("kapteyn") is not None and case == "TAN":
-                try:
-                    kap = _oracle.run_wcs_oracle("kapteyn", header, x, y, ra, dec, repeat=max(3, runs))
-                except BaseException as exc:  # noqa: BLE001
-                    why = f"oracle unavailable: {str(exc).splitlines()[0][:120]}"
-                    unavailable("wcs", f"{case} pixel_to_world", "kapteyn", n, t_p2w, dev.type, why)
-                    unavailable("wcs", f"{case} world_to_pixel", "kapteyn", n, t_w2p, dev.type, why)
-                else:
-                    add("wcs", f"{case} pixel_to_world", "kapteyn", n, t_p2w, kap["t_forward_s"], dev.type)
-                    add("wcs", f"{case} world_to_pixel", "kapteyn", n, t_w2p, kap["t_inverse_s"], dev.type)
 
 
 # ------------------------------------------------------------------------ HEALPix

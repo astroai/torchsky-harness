@@ -22,7 +22,6 @@
 #                      auto-selected when swarp, mProject and solve-field are all on PATH
 #   CATALOG_REAL_DIR   pre-staged real Gaia/2MASS catalogues (gaia.fits, twomass.fits, manifest.json); default: fetched once
 #                      into $OUT/real-catalogs by scripts/fetch_real_catalogs.py (cached; recorded in the summary)
-#   TORCHSKY_HARNESS_KAPTEYN_SOURCE  pip-installable Kapteyn source (URL/path); unset = Kapteyn gate skipped (not required)
 #   ASTROMETRY_INDEX_DIR  astrometry.net index files (default /arc/projects/uvickbos/astrometry.net/data)
 # Writes $OUT/summary.md, $OUT/summary.json, $OUT/gates.jsonl, $OUT/gates/*.log.
 set -uo pipefail
@@ -131,9 +130,8 @@ if [ -z "${TORCHSKY_HARNESS_DE_KERNEL:-}" ]; then
   else echo "kernel FAILED: de440s (ephemeris gate will fail)"; fi
 fi
 
-# Out-of-process oracles: PyAST and AstroDrizzle in their own venv (any Python/numpy they build on); Kapteyn only
-# when TORCHSKY_HARNESS_KAPTEYN_SOURCE (pip-installable URL/path) is provided: conda-forge has kapteyn 2.3 for
-# Python <= 3.6 only (obsolete) and the 3.4 tarball does not build. tests/_oracle.py runs them through
+# Out-of-process oracles: PyAST and AstroDrizzle in their own venv (any Python/numpy they build on).
+# tests/_oracle.py runs them through
 # scripts/oracle/*.py with NPZ exchange. A genuine provisioning failure exports
 # TORCHSKY_HARNESS_ORACLE_<ENGINE>_UNPROVISIONED=<reason>; its gate then fails with "NOT PROVISIONED: <reason>".
 # Note: the run venv (summary "Comparators" table) never holds these packages; the oracle versions are listed
@@ -168,15 +166,6 @@ if reason=$(provision_venv "$ORACLE_VENV" "$OUT/oracle-install.log"); then
 else
   export TORCHSKY_HARNESS_ORACLE_PYAST_UNPROVISIONED="$reason" TORCHSKY_HARNESS_ORACLE_DRIZZLEPAC_UNPROVISIONED="$reason"
   echo "oracle NOT PROVISIONED: venv-oracle: $reason"
-fi
-if [ -n "${TORCHSKY_HARNESS_KAPTEYN_SOURCE:-}" ]; then
-  KAPTEYN_VENV="$SCRATCH/venv-kapteyn"
-  if reason=$(provision_venv "$KAPTEYN_VENV" "$OUT/oracle-install.log"); then
-    oracle_install KAPTEYN "$KAPTEYN_VENV" --no-build-isolation "$TORCHSKY_HARNESS_KAPTEYN_SOURCE" -- "from kapteyn import wcs"
-    [ -n "${TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON:-}" ] && export TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1
-  else export TORCHSKY_HARNESS_ORACLE_KAPTEYN_UNPROVISIONED="$reason"; echo "oracle NOT PROVISIONED: kapteyn: $reason"; fi
-else
-  echo "oracle kapteyn: not provisioned (no source; set TORCHSKY_HARNESS_KAPTEYN_SOURCE; gate skipped, not required)"
 fi
 # Real catalogues for the STILTS gate: pre-staged ($CATALOG_REAL_DIR) or fetched once per campaign.
 if [ -z "${CATALOG_REAL_DIR:-}" ]; then

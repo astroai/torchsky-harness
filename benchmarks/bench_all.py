@@ -73,7 +73,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--legacy-wcs",
         action="store_true",
-        help="Include legacy WCS comparators (PyAST/Kapteyn) when available",
+        help="Include legacy WCS comparators (PyAST) when available",
     )
     parser.add_argument(
         "--no-legacy-wcs-bridge",
@@ -340,7 +340,7 @@ def _run_wcs_legacy_bridge(
         if not isinstance(src, dict):
             continue
         library = str(src.get("library", ""))
-        if library not in {"pyast", "kapteyn"}:
+        if library not in {"pyast"}:
             continue
 
         status = str(src.get("status", "SKIPPED"))
@@ -460,7 +460,7 @@ def main() -> int:
                     )
                 else:
                     print(
-                        f"[bench-all][wcs] legacy bridge rows={len(bridge_rows)} (pyast/kapteyn)",
+                        f"[bench-all][wcs] legacy bridge rows={len(bridge_rows)} (pyast)",
                         flush=True,
                     )
                     all_rows.extend(bridge_rows)
