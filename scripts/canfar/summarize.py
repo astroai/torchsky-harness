@@ -120,7 +120,7 @@ def _perf_table(rows: list[dict]) -> list[str]:
     lines = [
         "## Comparator performance",
         "",
-        "Recorded, not gated: speedup = comparator time / torchsky time (above 1: torchsky faster); throughput = size / torchsky time. STILTS wall time includes JVM start and table I/O; PyAST is timed inside their oracle process. Sizes of 1 are single calls.",
+        "Recorded, not gated: speedup = comparator time / torchsky time (above 1: torchsky faster); throughput = size / torchsky time. STILTS wall time includes JVM start and table I/O (one row per STILTS mode in `catalogs`: tmatch2 sky/skyerr/exact by `find` and join, tskymatch2, tmatch1 identify, tmatchn pairs/group; torchsky times are the match call only); PyAST is timed inside their oracle process. Sizes of 1 are single calls.",
         "",
         "| area | operation | size | device | torchsky | throughput | comparator | comparator time | speedup |",
         "|---|---|---|---|---|---|---|---|---|",

@@ -35,22 +35,30 @@ Performance = throughput and speedup recorded (never gated) by `benchmarks/bench
 | map | SWarp | `test_map_swarp_optional_parity.py`, `test_map_external_tools_smoke.py` | comparator_perf `map` (binary wall time), `bench-map-swarp-required` (local) | required on `improc` |
 | map | Montage (`mProject`) | `test_montage_projection_parity.py` | comparator_perf `map`, `bench-map-montage-required` (local) | required on `improc` |
 | catalogs | astropy SkyCoord matching | `test_catalog_compat.py` | `bench-catalog-release-gate`; comparator_perf `catalogs` (1e5, 1e6) | release gate |
-| catalogs | STILTS (`tmatch2`, `tskymatch2`, `tmatch1`) | `test_stilts_parity.py`: synthetic (1e5, RA wrap, pole cap) and **real Gaia DR3 x 2MASS** (`scripts/fetch_real_catalogs.py`); exact pair-set equality | `test_stilts_parity.py` records per-mode timings; comparator_perf `catalogs` (tmatch2, tskymatch2; 1e5, 1e6) | required on `improc` (`REQUIRE_TOOLS=1`) |
+| catalogs | STILTS (`tmatch2`, `tskymatch2`, `tmatch1`, `tmatchn`) | `test_stilts_parity.py`: synthetic (1e5, RA wrap, pole cap) and **real Gaia DR3 x 2MASS x AllWISE** (`scripts/fetch_real_catalogs.py`, sha256-checked against the manifest); exact row-tuple equality | `test_stilts_parity.py` records per-mode STILTS vs torchsky timings (comparator performance table, area `catalogs`); comparator_perf `catalogs` (tmatch2, tskymatch2; 1e5, 1e6) | required on `improc` (`REQUIRE_TOOLS=1`) |
 
-STILTS modes and what torchsky 0.5 provides (`tests/test_stilts_parity.py`):
+STILTS modes and torchsky equivalents (`tests/test_stilts_parity.py`). Parity means equal multisets of matched row tuples
+(`-1` = absent side); the only exclusion is a pair whose separation is within 1e-6 arcsec of its threshold, dropped from both sides together
+with the tuples that involve its rows (bounded by `max(2, 1e-5 n)`).
 
 | STILTS | torchsky | Status |
 |---|---|---|
-| `tmatch2 matcher=sky find=best1` / `best2` | `crossmatch_sky(find="best")` (left to right; swap arguments for `best2`) | pair-set equal |
-| `tmatch2 find=all` | `crossmatch_sky(find="all")` | pair-set equal |
-| `tmatch2 join=1not2 / 2not1` (and `1and2`) | rows absent from / present in the pair set | counts equal |
-| `tskymatch2` | same as `matcher=sky` | pair-set equal |
-| `tmatch2 matcher=skyerr` | per-left-row radius `err1 + err2_const` (STILTS criterion: separation <= err1 + err2) | pair-set equal (constant right error only) |
-| `tmatch1 matcher=sky action=identify` | pair graph of the self-match; groups are connected components built in the test | same partition; grouping itself is not a torchsky primitive |
-| `tmatch2 find=best` (symmetric one-to-one) | not provided by torchsky 0.5 | no equivalent |
-| `tmatchn` (multi-catalogue, pairs/group) | not provided by torchsky 0.5 | no equivalent |
-| `matcher=sky3d`, `exact`, `skyellipse`, per-right-row errors | not provided by torchsky 0.5 | no equivalent |
-| `join=all1/all2/1or2` outer tables | index sets only (no joined table output) | n/a |
+| `tmatch2 matcher=sky find=best1 / best2 / all` | `crossmatch_sky(find="best1" / "best2" / "all")` (`"best"` is a legacy alias of `best1`) | tuple-equal |
+| `tmatch2 find=best` | `crossmatch_sky(find="mutual")` (exactly `best1 & best2`); `"symmetric"` is a greedy one-to-one assignment, deliberately not STILTS | tuple-equal, every join |
+| `tmatch2 join=1and2 / 1or2 / all1 / all2 / 1not2 / 2not1` | `join_rows(result, n1, n2, join)` | tuple-equal for every find |
+| `tskymatch2` | same as `matcher=sky` | tuple-equal |
+| `tmatch2 matcher=skyerr` (separation <= err1 + err2) | `left_err_arcsec=`, `right_err_arcsec=` (per row, both sides) | tuple-equal, `find=all`, every join; real Gaia x 2MASS and 2MASS x AllWISE (errors 10x the catalogue values) |
+| `tmatch2 matcher=exact` | `crossmatch_exact` | tuple-equal for `find=all` and joins; for `best*` only matched row counts (STILTS' choice among equal scores is unspecified, torchsky takes the lowest rows) |
+| `tmatch1 matcher=sky action=identify` | `crossmatch_self(group=True)` | same partition and group sizes (ids not compared), full Gaia cone |
+| `tmatchn multimode=pairs` | `crossmatch_many(mode="pairs", reference=0)`: each reference row takes its `best1` partner per catalogue (non-exclusive), then unreferenced rows alone | tuple-equal, synthetic and real Gaia x 2MASS x AllWISE |
+| `tmatchn multimode=group` | `crossmatch_many(mode="group")` | same partition and group sizes (STILTS keeps an arbitrary member per catalogue, so representatives are not compared) |
+
+Intentional differences, deliberately not tested against STILTS:
+
+- `distance_tol` is a `|d1 - d2| <= tol` cut on top of the sky test; STILTS `sky3d` uses a Euclidean 3-d metric.
+- `skyellipse` is not provided.
+- Ranking (`best*`) always uses plain separation; STILTS `skyerr` ranks by an error-normalised score, so `find=best*` with errors is not compared.
+- `matcher=sky3d`, `1d/2d/3d` matchers are not provided.
 
 AstroDrizzle installability (checked with CPython 3.13, NumPy 2.5, macOS arm64, 2026-11):
 `starlink-pyast 4.2.0` and `drizzlepac 3.11.0` install from wheels (and drizzlepac's `cdriz` runs on 3.13).

@@ -69,3 +69,38 @@ def tmatch2(
 
 def pairs(cols: dict[str, np.ndarray]) -> set[tuple[int, int]]:
     return set(zip(cols["id_1"].astype(np.int64).tolist(), cols["id_2"].astype(np.int64).tolist()))
+
+
+def row_tuples(cols: dict[str, np.ndarray], n_tables: int = 2) -> list[tuple[int, ...]]:
+    """Rows of a STILTS match output as 0-based row-index tuples, ``-1`` where a table is absent.
+
+    Reads ``id_1..id_n`` (clashing column names get suffixes); a one-sided join (``1not2``,
+    ``2not1``) keeps a bare ``id`` column, which is placed by the caller via ``one_sided``.
+    """
+    names = [f"id_{i + 1}" for i in range(n_tables)]
+    arrs = [np.nan_to_num(cols[k], nan=-1.0).astype(np.int64) for k in names]
+    return list(zip(*(a.tolist() for a in arrs)))
+
+
+def one_sided(cols: dict[str, np.ndarray], side: int) -> list[tuple[int, int]]:
+    """Rows of a ``1not2`` (side 1) or ``2not1`` (side 2) output as ``(left, right)`` tuples."""
+    ids = cols["id"].astype(np.int64).tolist()
+    return [(i, -1) for i in ids] if side == 1 else [(-1, i) for i in ids]
+
+
+def tmatchn(
+    paths: list[Path], out: Path, *, radius: float, multimode: str, iref: int = 1, join: str = "always",
+) -> tuple[dict[str, np.ndarray], float]:  # fmt: skip
+    """``tmatchn matcher=sky`` over FITS tables that carry ``ra``/``dec``/``id`` columns."""
+    args = ["tmatchn", f"nin={len(paths)}", "matcher=sky", f"params={radius}", f"multimode={multimode}"]
+    if multimode == "pairs":
+        args.append(f"iref={iref}")
+    for i, path in enumerate(paths, 1):
+        args += [f"in{i}={path}", f"ifmt{i}=fits", f"values{i}=ra dec", f"join{i}={join}"]
+    return run_stilts(args, out)
+
+
+def tmatch1_identify(path: Path, out: Path, *, radius: float) -> tuple[dict[str, np.ndarray], float]:
+    """``tmatch1 matcher=sky action=identify``: adds ``GroupID`` / ``GroupSize`` (blank for ungrouped rows)."""
+    args = ["tmatch1", f"in={path}", "ifmt=fits", "matcher=sky", f"params={radius}", "values=ra dec", "action=identify"]
+    return run_stilts(args, out)

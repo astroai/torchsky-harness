@@ -1,11 +1,16 @@
 #!/usr/bin/env python
-"""Fetch two real catalogues of one field for the STILTS crossmatch gate.
+"""Fetch three real catalogues of one field for the STILTS crossmatch gate.
 
-Gaia DR3 (ESA archive TAP) and 2MASS point sources (IRSA TAP ``fp_psc``) in one cone, queried
-over plain HTTP TAP (``requests`` only), written as FITS binary tables with ``torchfits`` plus a
-``manifest.json`` (queries, service URLs, row counts, sha256, UTC time). The fetch is cached: an
-existing manifest in ``--out`` is reused unchanged. ``CATALOG_REAL_DIR`` may point at a pre-staged
-directory with the same layout (``gaia.fits``, ``twomass.fits``, ``manifest.json``).
+Gaia DR3 (ESA archive TAP), 2MASS point sources (IRSA TAP ``fp_psc``) and the AllWISE source
+catalogue (IRSA TAP ``allwise_p3as_psd``) in one cone, queried over plain HTTP TAP (``requests``
+only), written as FITS binary tables with ``torchfits`` plus a ``manifest.json`` (queries, service
+URLs, row counts, columns, sha256, UTC time). Each table carries ``ra``, ``dec``, a 0-based ``id``
+and the catalogue's positional errors (Gaia ``ra_error``/``dec_error`` in mas, 2MASS ``err_maj`` in
+arcsec, AllWISE ``sigra``/``sigdec`` in arcsec; missing values are NaN). The fetch is cached per
+table: a table whose manifest entry, file, sha256 and column list all match is reused, anything
+else is fetched again (and each fetch is checked against ``COUNT(*)``). ``CATALOG_REAL_DIR`` may
+point at a pre-staged directory with the same layout (``gaia.fits``, ``twomass.fits``,
+``allwise.fits``, ``manifest.json``).
 
     python scripts/fetch_real_catalogs.py --out "$OUT/real-catalogs"
 
@@ -97,16 +102,16 @@ def tap_count(url: str, query: str) -> int:
     return int(tap_csv(url, count_query)[0]["n"])
 
 
-def write_table(path: Path, rows: list[dict], id_key: str, ra_key: str, dec_key: str) -> int:
-    keep = [r for r in rows if r[ra_key] not in ("", None) and r[dec_key] not in ("", None)]
-    ra = np.array([float(r[ra_key]) for r in keep], dtype=np.float64)
-    dec = np.array([float(r[dec_key]) for r in keep], dtype=np.float64)
-    ident = np.arange(len(keep), dtype=np.int64)
-    torchfits.table.write(
-        str(path),
-        {"ra": torch.from_numpy(ra), "dec": torch.from_numpy(dec), "id": torch.from_numpy(ident)},
-        overwrite=True,
-    )
+def write_table(path: Path, rows: list[dict], extra: tuple[str, ...]) -> int:
+    keep = [r for r in rows if r["ra"] not in ("", None) and r["dec"] not in ("", None)]
+
+    def col(key: str) -> torch.Tensor:
+        vals = [float(r[key]) if r[key] not in ("", None) else np.nan for r in keep]
+        return torch.from_numpy(np.array(vals, dtype=np.float64))
+
+    data = {"ra": col("ra"), "dec": col("dec"), "id": torch.arange(len(keep), dtype=torch.int64)}
+    data.update({k: col(k) for k in extra})
+    torchfits.table.write(str(path), data, overwrite=True)
     return len(keep)
 
 
@@ -119,29 +124,31 @@ def main() -> int:
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     manifest_path = args.out / "manifest.json"
+    manifest: dict = {}
     if manifest_path.is_file():
-        print(f"cached: {manifest_path}")
-        return 0
+        manifest = json.loads(manifest_path.read_text())
+    field = {"ra": args.ra, "dec": args.dec, "radius_deg": args.radius}
+    if manifest.get("field", field) != field:
+        manifest = {}
+    manifest.setdefault("field", field)
+    manifest.setdefault("tables", {})
+    manifest.setdefault("fetched_utc", dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"))
 
-    cone = f"1=CONTAINS(POINT('ICRS',{{ra}},{{dec}}),CIRCLE('ICRS',{args.ra},{args.dec},{args.radius}))"
-    queries = {
-        "gaia": (
-            GAIA_TAP,
-            "SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE " + cone.format(ra="ra", dec="dec"),
-            "source_id",
-        ),
-        "twomass": (
-            IRSA_TAP,
-            "SELECT designation, ra, dec FROM fp_psc WHERE " + cone.format(ra="ra", dec="dec"),
-            "designation",
-        ),
+    cone = f"1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',{args.ra},{args.dec},{args.radius}))"
+    # name -> (service, table, error columns)
+    sources = {
+        "gaia": (GAIA_TAP, "gaiadr3.gaia_source", ("ra_error", "dec_error")),
+        "twomass": (IRSA_TAP, "fp_psc", ("err_maj",)),
+        "allwise": (IRSA_TAP, "allwise_p3as_psd", ("sigra", "sigdec")),
     }
-    manifest: dict = {
-        "field": {"ra": args.ra, "dec": args.dec, "radius_deg": args.radius},
-        "fetched_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-        "tables": {},
-    }
-    for name, (url, query, id_key) in queries.items():
+    for name, (url, table, extra) in sources.items():
+        query = f"SELECT ra, dec, {', '.join(extra)} FROM {table} WHERE {cone}"
+        path = args.out / f"{name}.fits"
+        entry = manifest["tables"].get(name)
+        columns = ["ra", "dec", "id", *extra]
+        if entry and path.is_file() and entry.get("sha256") == sha256(path) and entry.get("columns") == columns:
+            print(f"cached: {name} ({entry['rows']} rows)")
+            continue
         try:
             expected = tap_count(url, query)
             rows = tap_csv(url, query, maxrec=expected + 1000)
@@ -151,16 +158,17 @@ def main() -> int:
         if expected != len(rows):
             print(f"{name}: fetched {len(rows)} rows but COUNT(*) is {expected} (truncated)", file=sys.stderr)
             return 1
-        path = args.out / f"{name}.fits"
-        n = write_table(path, rows, id_key, "ra", "dec")
+        n = write_table(path, rows, extra)
         manifest["tables"][name] = {
             "service": url,
             "query": query,
             "rows": n,
+            "columns": columns,
             "file": path.name,
             "sha256": sha256(path),
         }
         print(f"{name}: {n} rows from {url}")
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return 0
 
