@@ -98,7 +98,7 @@ def test_s2fft_layout_matches_upstream_helper() -> None:
 @pytest.mark.parametrize("nside", [8, 16])
 def test_s2fft_scalar_roundtrip_vs_torchsky(nside: int) -> None:
     pytest.importorskip("s2fft")
-    lmax = nside
+    lmax = 2 * nside - 1  # s2fft native HEALPix transforms require L >= 2*nside
     L = lmax + 1
     rng = np.random.default_rng(21 + nside)
     npix = hp.nside2npix(nside)
@@ -129,12 +129,20 @@ def test_s2fft_scalar_roundtrip_vs_torchsky(nside: int) -> None:
 @pytest.mark.parametrize("nside", [8, 16])
 def test_s2fft_spin_roundtrip_vs_torchsky(nside: int) -> None:
     pytest.importorskip("s2fft")
-    lmax = nside
+    lmax = 2 * nside - 1
     L = lmax + 1
     spin = 2
     rng = np.random.default_rng(33 + nside)
-    npix = hp.nside2npix(nside)
-    qu = rng.normal(size=(2, npix)).astype(np.float64)
+    # Band-limited input (lmax_in = nside // 2): the peers' HEALPix quadratures differ near Nyquist,
+    # so a white-noise map would compare the two approximations of the projection, not the transforms.
+    lmax_in = nside // 2
+    alm_e = torch.from_numpy(rng.normal(size=alm_size(lmax_in)) + 1j * rng.normal(size=alm_size(lmax_in)))
+    alm_b = torch.from_numpy(rng.normal(size=alm_size(lmax_in)) + 1j * rng.normal(size=alm_size(lmax_in)))
+    for ell in range(lmax_in + 1):  # m = 0 coefficients are real
+        for a in (alm_e, alm_b):
+            a[alm_index(ell, 0, lmax_in)] = a[alm_index(ell, 0, lmax_in)].real.item()
+    qu_t = alm2map_spin((alm_e, alm_b), nside=nside, spin=spin, lmax=lmax_in)
+    qu = qu_t.detach().cpu().numpy().astype(np.float64)
     f = qu[0] + 1j * qu[1]
 
     flm = _s2fft_native("forward", f, L=L, nside=nside, spin=spin, reality=False)
@@ -144,9 +152,13 @@ def test_s2fft_spin_roundtrip_vs_torchsky(nside: int) -> None:
     ae, ab = map2alm_spin(torch.from_numpy(qu), spin=spin, nside=nside, lmax=lmax)
     qu_ts = alm2map_spin((ae, ab), nside=nside, spin=spin, lmax=lmax)
     rec_ts = qu_ts[0].detach().cpu().numpy() + 1j * qu_ts[1].detach().cpu().numpy()
-    denom = max(float(np.linalg.norm(rec_ts)), 1e-12)
-    rel = float(np.linalg.norm(rec - rec_ts) / denom)
-    assert rel < _S2FFT_VS_TORCHSKY_ATOL
+    norm_in = float(np.linalg.norm(f))
+    # torchsky's own round trip of a band-limited spin field is accurate (~1e-2 at nside 8);
+    # s2fft's non-iterative HEALPix spin quadrature is not (measured 0.15 at nside 8, lmax_in = 4,
+    # numpy and jax paths alike), so the peer is bounded by that measured behaviour, not by 5e-2.
+    assert float(np.linalg.norm(rec_ts - f)) / norm_in < 2.0e-2
+    assert float(np.linalg.norm(rec - f)) / norm_in < 0.25
+    assert float(np.linalg.norm(rec - rec_ts)) / norm_in < 0.25
 
 
 def test_s2fft_vs_healpy_residual_is_allowed() -> None:
@@ -154,7 +166,7 @@ def test_s2fft_vs_healpy_residual_is_allowed() -> None:
     pytest.importorskip("s2fft")
     healpy = pytest.importorskip("healpy")
     nside = 8
-    lmax = 8
+    lmax = 15  # s2fft native HEALPix transforms require L >= 2*nside (nside=8)
     L = lmax + 1
     rng = np.random.default_rng(41)
     m_np = rng.normal(size=hp.nside2npix(nside)).astype(np.float64)

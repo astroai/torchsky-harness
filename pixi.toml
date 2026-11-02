@@ -52,6 +52,9 @@ ci-local-heavy = "pixi run -e bench-all -- python -c \"import healpy, hpgeom, he
 
 # Bounded parity suites against astropy / dust_extinction / speclite / synphot.
 # TORCHSKY_HARNESS_REQUIRE_GATES=1 turns a missing comparator into a failure.
+parity-extras-tests = { cmd = "pytest tests/test_erfa_observed_place_parity.py tests/test_gwcs_live_parity.py tests/test_wcs_optional_extras_parity.py tests/test_multiorder_interchange_parity.py tests/test_specutils_parity.py tests/test_torch_harmonics_parity.py tests/test_sphere_s2fft.py -q -p no:cacheprovider", env = { TORCHSKY_HARNESS_REQUIRE_GATES = "1" } }
+# External binaries (improc image / map-compat env): SWarp, Montage, WCSTools, SCAMP, SExtractor, PSFEx, solve-field.
+external-tools-tests = { cmd = "pytest tests/test_external_tools_required.py tests/test_wcstools_parity.py tests/test_montage_projection_parity.py tests/test_map_swarp_optional_parity.py -q -p no:cacheprovider", env = { TORCHSKY_HARNESS_REQUIRE_TOOLS = "1", TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT = "1" } }
 parity-spectral-tests = { cmd = "pytest tests/test_cosmology_astropy_parity.py tests/test_extinction_parity.py tests/test_spectrophotometry_parity.py tests/test_redshift_units_parity.py tests/test_transforms_correctness.py -q -p no:cacheprovider", env = { TORCHSKY_HARNESS_REQUIRE_GATES = "1" } }
 
 # Core benchmarks (essential)
@@ -284,6 +287,27 @@ dust_extinction = ">=1.5"
 speclite = ">=0.20"
 synphot = ">=1.4"
 pytest-xdist = ">=3.0"
+
+# Comparators for the claims-vs-gates parity suites (gwcs, sgp4, jplephem, mhealpy, cdshealpix,
+# specutils, torch-harmonics, s2fft). Pins mirror scripts/canfar/run_campaign.sh. The DE440s kernel
+# is downloaded on first use (or set TORCHSKY_HARNESS_DE_KERNEL).
+[feature.parity-extras.dependencies]
+astropy = ">=6.0"
+scipy = ">=1.11"
+pyerfa = "*"
+healpy = ">=1.19.0,<2"
+
+[feature.parity-extras.pypi-dependencies]
+gwcs = "==1.0.3"
+sgp4 = "==2.27"
+jplephem = "==2.24"
+mhealpy = "==0.3.7"
+cdshealpix = "==0.9.0"
+specutils = "==2.4.0"
+torch-harmonics = "==0.8.0"
+s2fft = "==1.5.0"
+jax = "<0.8"
+jaxlib = "<0.8"
 
 [feature.sphere-bench.dependencies]
 healpy = ">=1.19.0,<2"
@@ -577,6 +601,7 @@ smacs = { features = ["prod", "test", "smacs"], solve-group = "smacs" }
 parity-spectral = { features = ["prod", "parity-spectral"], solve-group = "parity-spectral" }
 svo-bootstrap = { features = ["prod", "svo-bootstrap"], solve-group = "default" }
 bench-all = { features = ["prod", "bench", "sphere-bench"], solve-group = "default" }
+parity-extras = { features = ["prod", "parity-extras"], solve-group = "parity-extras" }
 map-compat = { features = ["prod", "bench", "sphere-bench", "map-compat"], solve-group = "map-compat" }
 map-compat-cuda = { features = ["cuda", "map-compat"], no-default-feature = true, solve-group = "map-compat-cuda" }
 bench-legacy = { features = ["bench-legacy"], no-default-feature = true, solve-group = "bench-legacy" }

@@ -78,6 +78,18 @@ PARITY_TESTS = (
     "tests/test_map_dfreproject_parity.py",
     "tests/test_map_swarp_optional_parity.py",
     "tests/test_map_external_tools_smoke.py",
+    # Comparator packages added to close the claims-vs-gates audit (docs/coverage-matrix.md).
+    "tests/test_erfa_observed_place_parity.py",
+    "tests/test_gwcs_live_parity.py",
+    "tests/test_wcs_optional_extras_parity.py",
+    "tests/test_multiorder_interchange_parity.py",
+    "tests/test_specutils_parity.py",
+    "tests/test_torch_harmonics_parity.py",
+    "tests/test_sphere_s2fft.py",
+    # External binaries (improc image): required when TORCHSKY_HARNESS_REQUIRE_TOOLS=1.
+    "tests/test_external_tools_required.py",
+    "tests/test_wcstools_parity.py",
+    "tests/test_montage_projection_parity.py",
 )
 
 CORRECTNESS_MARKERS = "not performance and not benchmark and not slow and not integration"
@@ -154,6 +166,7 @@ def main() -> int:
     env = dict(os.environ, PYTHONNOUSERSITE="1", TORCHSKY_HARNESS_REQUIRE_GATES="1")
     env.pop("PYTHONPATH", None)
     env["TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT"] = env.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT", "0")
+    env["TORCHSKY_HARNESS_REQUIRE_TOOLS"] = env.get("TORCHSKY_HARNESS_REQUIRE_TOOLS", "0")
     # Without an explicit device torchsky follows its inputs and, for file-path
     # observations, defaults to CUDA when present. CPU-semantics gates build their
     # truth/oracle tensors on the host, so pin them to CPU in gpu mode; the CUDA

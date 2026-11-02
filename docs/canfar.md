@@ -20,7 +20,11 @@ path) is recorded.
 | `TSKY_COMMIT` | subject commit to record (a tarball carries none) |
 | `TORCH_VERSION`, `TORCHFITS_SPEC` | defaults `2.14.0`, `torchfits==1.3.1` |
 | `GATE_TIMEOUT` | per-gate timeout, seconds (default 3600) |
-| `REQUIRE_MAP_COMPAT` | `1` makes the SWarp/Montage gates required (default `0`: optional) |
+| `REQUIRE_MAP_COMPAT` | `1` makes the SWarp/Montage gates required (default `0`: optional; `1` under `improc`) |
+| `REQUIRE_TOOLS` | `1` makes the external-binary gates required: SWarp, SCAMP, SExtractor, PSFEx, solve-field, Montage, WCSTools (default `0`; `1` under `improc`) |
+| `IMAGE_PROFILE` | `improc` for the `astroai/improc` image; auto-selected when `swarp`, `mProject` and `solve-field` are on `PATH` |
+| `ASTROMETRY_INDEX_DIR` | astrometry.net index files (default `/arc/projects/uvickbos/astrometry.net/data`) |
+| `TORCHSKY_HARNESS_DE_KERNEL` | DE440s SPK for the ephemeris gate (default: downloaded from NAIF into `$SCRATCH`) |
 
 ## Launch
 
@@ -41,6 +45,22 @@ canfar create headless images.canfar.net/astroai/base:latest --cores 8 --memory 
   -e SUITES=correctness,parity,performance,examples \
   -- bash /arc/projects/ots/harness-inputs/run_campaign.sh
 ```
+
+`improc` profile (SWarp 2.41, SCAMP, SExtractor, PSFEx, solve-field 0.97, Montage and WCSTools
+are on the image, so their gates are required and fail rather than skip; CPU only):
+
+```sh
+canfar create headless images.canfar.net/astroai/improc:latest --cpu 8 --memory 32 \
+  -e TSKY_SRC=/arc/projects/ots/harness-inputs/torchsky-src.tar.gz \
+  -e HARNESS_SRC=/arc/projects/ots/harness-inputs/torchsky-harness-src.tar.gz \
+  -e TSKY_COMMIT=<sha> -e RUN=campaign-improc-001 -e MODE=cpu -e IMAGE_PROFILE=improc \
+  -- bash /arc/projects/ots/harness-inputs/run_campaign.sh
+```
+
+Python comparators still go into the campaign venv (the system Python's packages are not used).
+Binary gates (`test_external_tools_required.py`, `test_wcstools_parity.py`,
+`test_montage_projection_parity.py`, `test_map_swarp_optional_parity.py`) were written without
+the binaries available locally; the first improc run is their first execution.
 
 GPU campaign:
 
@@ -68,4 +88,7 @@ A comparator that failed to install is reported in the summary as `NOT INSTALLED
 gated tests fail rather than skip.
 
 The script exits non-zero if any gate failed. Comparator binaries that are not on PyPI
-(SWarp) are optional; MontagePy is installed from PyPI.
+(SWarp, SCAMP, solve-field, Montage, WCSTools) come from the `improc` image and are optional
+elsewhere; MontagePy is installed from PyPI. Comparator versions added by the claims audit are
+pinned in `run_campaign.sh` (gwcs 1.0.3, sgp4 2.27, jplephem 2.24, mhealpy 0.3.7, cdshealpix
+0.9.0, specutils 2.4.0, torch-harmonics 0.8.0, s2fft 1.5.0 with jax<0.8).

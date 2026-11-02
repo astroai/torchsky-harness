@@ -110,7 +110,8 @@ def _wcs_cases(device: torch.device) -> list[dict[str, object]]:
     import torchsky
 
     header = _tan_header((4096, 4096), cdelt=0.0002777778)
-    wcs = torchsky.WCS(header)
+    # Measure the intended configuration: WCS parameters on the device under test.
+    wcs = torchsky.WCS(header).to(device)
     cases: list[dict[str, object]] = []
     for n in (10_000, 200_000):
         x = torch.linspace(1500.0, 2500.0, n, dtype=torch.float64, device=device)

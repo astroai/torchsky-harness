@@ -15,7 +15,12 @@
 #   TORCHFITS_SPEC     torchfits requirement (default torchfits==1.3.1)
 #   TSKY_COMMIT        subject git commit to record (tarballs carry none)
 #   GATE_TIMEOUT       per-gate timeout in seconds (default 3600)
-#   REQUIRE_MAP_COMPAT 1 to make SWarp/Montage gates required (default 0)
+#   REQUIRE_MAP_COMPAT 1 to make SWarp/Montage gates required (default 0; 1 under IMAGE_PROFILE=improc)
+#   REQUIRE_TOOLS      1 to require the external binaries (SWarp, SCAMP, SExtractor, PSFEx, solve-field,
+#                      Montage, WCSTools) and the astrometry index dir (default 0; 1 under improc)
+#   IMAGE_PROFILE      "improc" for images.canfar.net/astroai/improc:latest (ships those binaries);
+#                      auto-selected when swarp, mProject and solve-field are all on PATH
+#   ASTROMETRY_INDEX_DIR  astrometry.net index files (default /arc/projects/uvickbos/astrometry.net/data)
 # Writes $OUT/summary.md, $OUT/summary.json, $OUT/gates.jsonl, $OUT/gates/*.log.
 set -uo pipefail
 
@@ -40,7 +45,19 @@ echo "campaign $RUN mode=$MODE suites=$SUITES start=$(date -u +%FT%TZ)"
 export PIP_CACHE_DIR="$SCRATCH/pip-cache" TMPDIR="$SCRATCH/tmp" PYTHONNOUSERSITE=1
 mkdir -p "$PIP_CACHE_DIR" "$TMPDIR"
 unset PYTHONPATH
+if [ -z "${IMAGE_PROFILE:-}" ] && command -v swarp >/dev/null 2>&1 && command -v mProject >/dev/null 2>&1 \
+   && command -v solve-field >/dev/null 2>&1; then
+  IMAGE_PROFILE=improc
+fi
+IMAGE_PROFILE=${IMAGE_PROFILE:-base}
+if [ "$IMAGE_PROFILE" = improc ]; then
+  REQUIRE_MAP_COMPAT=${REQUIRE_MAP_COMPAT:-1}
+  REQUIRE_TOOLS=${REQUIRE_TOOLS:-1}
+  export ASTROMETRY_INDEX_DIR=${ASTROMETRY_INDEX_DIR:-/arc/projects/uvickbos/astrometry.net/data}
+fi
+echo "image profile: $IMAGE_PROFILE"
 export TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT=${REQUIRE_MAP_COMPAT:-0}
+export TORCHSKY_HARNESS_REQUIRE_TOOLS=${REQUIRE_TOOLS:-0}
 
 # Pick the newest interpreter >= 3.12.
 PYTHON_BIN=""
@@ -86,15 +103,30 @@ TORCH_INDEX=cpu; [ "$MODE" = gpu ] && TORCH_INDEX=cu130
   pytest pytest-xdist pytest-benchmark matplotlib setuptools wheel tomli || exit 6
 # Comparators: install one by one so a single failure is recorded, not fatal.
 : > "$OUT/comparator-install.log"
+# Unpinned: long-standing parity comparators. Pinned (==): comparators added with the claims-vs-gates
+# audit, versions as verified locally (see docs/coverage-matrix.md).
 for pkg in healpy hpgeom astropy-healpix mocpy spherical-geometry healsparse reproject drizzle dfreproject \
-           dust_extinction speclite synphot pyerfa MontagePy; do
+           dust_extinction speclite synphot pyerfa MontagePy \
+           gwcs==1.0.3 sgp4==2.27 jplephem==2.24 mhealpy==0.3.7 cdshealpix==0.9.0 specutils==2.4.0 \
+           torch-harmonics==0.8.0 's2fft==1.5.0' 'jax<0.8' 'jaxlib<0.8'; do  # jax>=0.12 breaks s2fft 1.5.0 HEALPix FFT
   if "$RUN_VENV/bin/pip" install -q "$pkg" >> "$OUT/comparator-install.log" 2>&1; then
     echo "comparator ok: $pkg"
   else
     echo "comparator FAILED: $pkg (see comparator-install.log)"
   fi
 done
-command -v swarp >/dev/null 2>&1 && echo "comparator ok: SWarp ($(command -v swarp))" || echo "comparator absent: SWarp (optional)"
+# torch-harmonics must not replace the pinned torch wheel.
+"$RUN_VENV/bin/pip" install -q --no-deps "torch==$TORCH_VERSION" --index-url "https://download.pytorch.org/whl/$TORCH_INDEX" >> "$OUT/comparator-install.log" 2>&1 || true
+for tool in swarp scamp source-extractor psfex solve-field mProject mProjExec mAdd xy2sky sky2xy; do
+  if command -v "$tool" >/dev/null 2>&1; then echo "binary ok: $tool ($(command -v "$tool"))"
+  else echo "binary absent: $tool ($([ "${REQUIRE_TOOLS:-0}" = 1 ] && echo REQUIRED || echo optional))"; fi
+done
+# DE440s kernel for the ephemeris parity gate (fail-soft here; the gate fails closed if it is missing).
+if [ -z "${TORCHSKY_HARNESS_DE_KERNEL:-}" ]; then
+  if curl -fsSL --retry 3 -o "$SCRATCH/de440s.bsp" https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp; then
+    export TORCHSKY_HARNESS_DE_KERNEL="$SCRATCH/de440s.bsp"; echo "kernel ok: de440s"
+  else echo "kernel FAILED: de440s (ephemeris gate will fail)"; fi
+fi
 
 "$RUN_VENV/bin/pip" install -q --no-deps --force-reinstall "$WHEEL" || { echo "subject install failed" >&2; exit 7; }
 "$RUN_VENV/bin/pip" install -q --no-deps --no-build-isolation -e "$HARNESS_DIR" || { echo "harness install failed" >&2; exit 7; }

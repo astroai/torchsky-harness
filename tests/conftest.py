@@ -32,11 +32,28 @@ RELEASE_GATE_FILES = frozenset(
         "test_spectrophotometry_parity.py",  # speclite, synphot
         "test_redshift_units_parity.py",  # astropy.units
         "test_transforms_correctness.py",  # astropy.visualization
+        "test_erfa_observed_place_parity.py",  # pyerfa
+        "test_gwcs_live_parity.py",  # gwcs
+        "test_wcs_optional_extras_parity.py",  # sgp4, jplephem, DE440s kernel
+        "test_multiorder_interchange_parity.py",  # mhealpy, cdshealpix
+        "test_specutils_parity.py",  # specutils
+        "test_torch_harmonics_parity.py",  # torch-harmonics
+        "test_sphere_s2fft.py",  # s2fft
     }
 )
 # SWarp / MontagePy gates exist but only the map-compat environment ships the
 # binaries; they are required there (set the variable) and optional elsewhere.
-MAP_COMPAT_GATE_FILES = frozenset({"test_map_swarp_optional_parity.py", "test_map_external_tools_smoke.py"})
+MAP_COMPAT_GATE_FILES = frozenset(
+    {
+        "test_map_swarp_optional_parity.py",
+        "test_map_external_tools_smoke.py",
+        "test_montage_projection_parity.py",
+        "test_wcstools_parity.py",
+    }
+)
+# External-binary presence gates (SWarp, SCAMP, SExtractor, PSFEx, solve-field, Montage, WCSTools):
+# required when TORCHSKY_HARNESS_REQUIRE_TOOLS=1 (IMAGE_PROFILE=improc in run_campaign.sh).
+EXTERNAL_TOOL_GATE_FILES = frozenset({"test_external_tools_required.py"})
 
 
 def _require_gates() -> bool:
@@ -46,7 +63,12 @@ def _require_gates() -> bool:
 def _gated(path_name: str) -> bool:
     if path_name in RELEASE_GATE_FILES:
         return True
-    return path_name in MAP_COMPAT_GATE_FILES and os.environ.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT") == "1"
+    tools = os.environ.get("TORCHSKY_HARNESS_REQUIRE_TOOLS") == "1"
+    if path_name in EXTERNAL_TOOL_GATE_FILES:
+        return tools
+    return path_name in MAP_COMPAT_GATE_FILES and (
+        os.environ.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT") == "1" or tools
+    )
 
 
 import pytest  # noqa: E402
