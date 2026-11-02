@@ -78,9 +78,9 @@ BUILD_VENV="$SCRATCH/venv-build"; RUN_VENV="$SCRATCH/venv-run"
 "$BUILD_VENV/bin/pip" wheel -q --no-build-isolation --no-deps -w "$WHEELS" "$SRC_DIR" || { echo "subject wheel build failed" >&2; exit 7; }
 WHEEL=$(ls "$WHEELS"/torchsky-*.whl | head -n1)
 
-# 2. Run venv: torch (cpu or cu126) + comparators + subject + harness.
+# 2. Run venv: torch (cpu or cu130) + comparators + subject + harness.
 "$PYTHON_BIN" -m venv "$RUN_VENV"
-TORCH_INDEX=cpu; [ "$MODE" = gpu ] && TORCH_INDEX=cu126
+TORCH_INDEX=cpu; [ "$MODE" = gpu ] && TORCH_INDEX=cu130
 "$RUN_VENV/bin/pip" install -q "torch==$TORCH_VERSION" --index-url "https://download.pytorch.org/whl/$TORCH_INDEX" || exit 6
 "$RUN_VENV/bin/pip" install -q numpy scipy astropy "$TORCHFITS_SPEC" pyarrow polars pandas requests psutil \
   pytest pytest-xdist pytest-benchmark matplotlib setuptools wheel tomli || exit 6

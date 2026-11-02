@@ -14,7 +14,7 @@ path) is recorded.
 | `TSKY_SRC` | torchsky source tarball on `/arc` (required) |
 | `HARNESS_SRC` | torchsky-harness source tarball on `/arc` (required) |
 | `RUN` | output directory name (default `harness_<UTC timestamp>`) |
-| `MODE` | `cpu` or `gpu` (default `cpu`); `gpu` installs the `cu126` torch wheel and adds CUDA passes |
+| `MODE` | `cpu` or `gpu` (default `cpu`); `gpu` installs the `cu130` torch wheel (CUDA 13, the supported lane) and adds CUDA passes |
 | `SUITES` | comma list of `correctness`, `parity`, `performance`, `examples` (default all) |
 | `TORCHSKY_ARC_ROOT` | durable root (default `/arc/projects/ots`); output goes to `$TORCHSKY_ARC_ROOT/harness-campaigns/$RUN` unless `OUT` is set |
 | `TSKY_COMMIT` | subject commit to record (a tarball carries none) |
