@@ -40,6 +40,7 @@ PERFORMANCE_TASKS = (
     "bench-spin-matrix-release-gate",
     "bench-sphere-real-map-gate",
     "bench-catalog-release-gate",
+    "bench-docs-reference-gate",
     "bench-map-real-cutout-gate",
     "bench-map-cube-gate",
     "bench-map-ifu-gate",
