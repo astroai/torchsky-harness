@@ -80,7 +80,8 @@ def test_sky2xy_matches_torchsky(name: str, tmp_path: Path) -> None:
     wcs = WCS(header)
     ra, dec = (to_np(v) for v in wcs.pixel_to_world(f64(xy[:, 0]), f64(xy[:, 1]), origin=1))
     for i in range(len(xy)):
-        out = xt.run([exe, "-d", str(path), f"{ra[i]:.9f}", f"{dec[i]:.9f}"]).stdout
+        # sky2xy takes decimal degrees with an explicit frame; -n sets output decimals.
+        out = xt.run([exe, "-n", "6", str(path), f"{ra[i]:.9f}", f"{dec[i]:.9f}", "ICRS"]).stdout
         tail = out.split("->")[-1] if "->" in out else out
         vals = [float(v) for v in xt.FLOAT.findall(tail)]
         assert len(vals) >= 2, f"unparsable sky2xy output: {out!r}"
