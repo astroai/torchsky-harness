@@ -27,6 +27,7 @@ TOOL_NAMES = {
     "mAdd": ("mAdd",),
     "xy2sky": ("xy2sky",),
     "sky2xy": ("sky2xy",),
+    "stilts": ("stilts",),
 }
 
 
@@ -59,3 +60,15 @@ def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
 
 
 FLOAT = re.compile(r"[-+]?\d+\.?\d*(?:[eE][-+]?\d+)?")
+
+
+def stilts_command() -> list[str] | None:
+    """Command prefix that runs STILTS: the ``stilts`` launcher, else ``java -jar $TORCHSKY_HARNESS_STILTS_JAR``."""
+    exe = find("stilts")
+    if exe:
+        return [exe]
+    jar = os.environ.get("TORCHSKY_HARNESS_STILTS_JAR")
+    java = os.environ.get("TORCHSKY_HARNESS_JAVA") or shutil.which("java")
+    if jar and java and Path(jar).is_file():
+        return [java, "-jar", jar]
+    return None

@@ -36,3 +36,12 @@ def test_swarp_version_is_recorded() -> None:
     path = xt.need("swarp")
     banner = (xt.run([path, "-v"]).stdout or "").strip()
     assert "SWarp" in banner or "swarp" in banner.lower()
+
+
+def test_stilts_runs_and_reports_version() -> None:
+    cmd = xt.stilts_command()
+    if cmd is None:
+        pytest.skip("stilts not on PATH (improc: /usr/local/bin/stilts)")
+    proc = xt.run([*cmd, "-version"])
+    text = proc.stdout + proc.stderr
+    assert "STILTS version" in text, f"unexpected stilts -version output: {text[:200]!r}"

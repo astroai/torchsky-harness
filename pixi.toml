@@ -118,6 +118,16 @@ bench-wcs-real-headers-gate = "pixi run -e bench-all python -m torchsky_harness.
 bench-wcs-release-gate = "pixi run -e bench-all python -m torchsky_harness.cli run bench_wcs -- --cases TAN,SIN,ARC,ZEA,STG,ZPN,AZP,SZP,AIR,AIT,MOL,HPX,XPH,CEA,MER,CAR,SFL,PAR,COP,COE,COD,COO,BON,PCO,TSC,CSC,QSC,NCP,TAN_SIP,TPV,MER_OFF,CYP_OFF,AIT_OFF,HPX_OFF,SFL_OFF,XPH_OFF,BON_OFF,PAR_OFF --n-points 20000 --runs 5 --device cpu --json-out benchmark_results/release_wcs.json --max-angular-error-arcsec 3.6e-3 --max-roundtrip-sky-error-arcsec-pole-excluded 1e-3 --max-roundtrip-pole-excluded-pixel-error 1e-3 --p99-roundtrip-sky-error-arcsec 1e-2 --roundtrip-exempt-cases TSC,CSC,QSC --p99-inverse-pixel-error 1e-3"
 bench-healpix-release-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_healpix -- --nside 512 --n-points 100000 --runs 5 --device cpu --json-out benchmark_results/release_healpix.json --max-index-mismatches 0 --max-pix2ang-dra-deg 1e-10 --max-pix2ang-ddec-deg 1e-10"
 bench-healpix-advanced-release-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_healpix_advanced -- --nside 512 --n-points 100000 --runs 3 --device cpu --json-out benchmark_results/release_healpix_advanced.json --min-ratio-vs-healpy neighbors_ring=0.5,neighbors_nested=0.5,interp_weights_ring=0.5,interp_weights_nested=0.5,interp_val_ring=0.5,interp_val_nested=0.5"
+# Comparator performance (record, never gate): torchsky vs astropy.wcs/PyAST/Kapteyn, healpy/hpgeom/astropy-healpix,
+# astropy SkyCoord/STILTS, mocpy, healsparse, healpy/s2fft, reproject/dfreproject/SWarp/Montage. Normalized JSON;
+# run_gates.py reruns it with --device cuda in gpu mode. See docs/benchmarks.md "Performance vs comparators".
+bench-comparator-perf-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs,moc,sparse,sht,map --sizes 100000,1000000 --image-sizes 2048,4096 --runs 5 --device cpu --json-out benchmark_results/comparator_perf.json"
+bench-comparator-perf-quick = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs --sizes 100000 --runs 3 --device cpu --json-out benchmark_results/comparator_perf_quick.json"
+# Out-of-process oracles (PyAST, drizzlepac) and the real-data STILTS gate, for local use.
+test-comparator-oracles = "pixi run -e oracle -- pytest tests/test_wcs_pyast_parity.py tests/test_map_astrodrizzle_parity.py -q -p no:cacheprovider"
+fetch-real-catalogs = "pixi run -e test python scripts/fetch_real_catalogs.py --out benchmark_results/real-catalogs"
+fetch-stilts = "curl -fsSL -o benchmark_results/stilts.jar https://www.star.bris.ac.uk/~mbt/stilts/stilts.jar"
+test-stilts-parity = "CATALOG_REAL_DIR=benchmark_results/real-catalogs TORCHSKY_HARNESS_STILTS_JAR=benchmark_results/stilts.jar pixi run -e stilts -- pytest tests/test_stilts_parity.py -q -p no:cacheprovider"
 bench-docs-reference-gate = "pixi run -e test python -m torchsky_harness.cli run bench_docs_reference -- --device cpu --json-out benchmark_results/reference_benchmarks.json"
 bench-catalog-release-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_catalog_compat -- --n-left 20000 --runs 3 --json-out benchmark_results/release_catalog_compat.json"
 bench-map-compat-gate = "pixi run -e sphere-bench python -m torchsky_harness.scripts.run_local_sphere_bench benchmarks/bench_map_compat.py --size 32 --n-obs 2 --runs 1 --cases real_astropy_sip_fixture,real_astropy_sip_shifted_wcs,real_astropy_sip_mef,real_astropy_sip_mef_shifted_wcs --torchsky-kernels bilinear --reproject-kernels bilinear --drizzle-kernels point --swarp-kernels bilinear --json-out benchmark_results/map_compat_gate.json --baseline-json benchmarks/baselines/map_compat_real_smoke.json"
@@ -587,8 +597,31 @@ nanobind = ">=2.10.2"
 scarlet2 = "==0.5.1"
 torchfits = "==1.3.1"
 
+# PyAST + AstroDrizzle run as out-of-process oracles (tests/_oracle.py); they need not share torchsky's
+# toolchain. On CANFAR run_campaign.sh builds dedicated venvs and exports TORCHSKY_HARNESS_ORACLE_*_PYTHON.
+[feature.oracle.pypi-dependencies]
+starlink-pyast = "==4.2.0"
+drizzlepac = "==3.11.0"
+drizzle = "==2.2.0"
+
+# Kapteyn 2.3 only builds on old toolchains (Python <= 3.6 conda-forge build, linux-64): its own oracle env.
+[feature.oracle-kapteyn]
+platforms = ["linux-64"]
+
+[feature.oracle-kapteyn.dependencies]
+python = "3.6.*"
+kapteyn = "2.3.*"
+numpy = "<1.20"
+
+# STILTS is Java: openjdk here, stilts.jar via `pixi run fetch-stilts` (the improc image ships /usr/local/bin/stilts).
+[feature.stilts.dependencies]
+openjdk = ">=17"
+
 # Environment definitions
 [environments]
+oracle = { features = ["prod", "test", "oracle"], solve-group = "oracle" }
+oracle-kapteyn = { features = ["oracle-kapteyn"], no-default-feature = true, solve-group = "oracle-kapteyn" }
+stilts = { features = ["prod", "test", "stilts"], solve-group = "stilts" }
 default = { features = ["prod"], solve-group = "default" }
 test = { features = ["prod", "test"], solve-group = "default" }
 bench = { features = ["prod", "bench"], solve-group = "default" }

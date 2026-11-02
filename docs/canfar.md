@@ -23,6 +23,7 @@ path) is recorded.
 | `REQUIRE_MAP_COMPAT` | `1` makes the SWarp/Montage gates required (default `0`: optional; `1` under `improc`) |
 | `REQUIRE_TOOLS` | `1` makes the external-binary gates required: SWarp, SCAMP, SExtractor, PSFEx, solve-field, Montage, WCSTools (default `0`; `1` under `improc`) |
 | `IMAGE_PROFILE` | `improc` for the `astroai/improc` image; auto-selected when `swarp`, `mProject` and `solve-field` are on `PATH` |
+| `CATALOG_REAL_DIR` | pre-staged real catalogues for the STILTS gate (`gaia.fits`, `twomass.fits`, `manifest.json`); default: Gaia DR3 and 2MASS cone fetched once per campaign by `scripts/fetch_real_catalogs.py` into `$OUT/real-catalogs` (queries, row counts, sha256 in the summary); a failed fetch makes the real-data gate fail under `REQUIRE_TOOLS` |
 | `ASTROMETRY_INDEX_DIR` | astrometry.net index files (default `/arc/projects/uvickbos/astrometry.net/data`) |
 | `TORCHSKY_HARNESS_DE_KERNEL` | DE440s SPK for the ephemeris gate (default: downloaded from NAIF into `$SCRATCH`) |
 
@@ -57,7 +58,8 @@ canfar create headless images.canfar.net/astroai/improc:latest --cpu 8 --memory 
   -- bash /arc/projects/ots/harness-inputs/run_campaign.sh
 ```
 
-Python comparators still go into the campaign venv (the system Python's packages are not used).
+PyAST and AstroDrizzle (`drizzlepac`) are installed into a separate `venv-oracle`, Kapteyn into a micromamba Python 3.6 environment, and are run out-of-process (`tests/_oracle.py`, NPZ exchange); their interpreters are exported as `TORCHSKY_HARNESS_ORACLE_{PYAST,DRIZZLEPAC,KAPTEYN}_PYTHON` and the summary reports `NOT PROVISIONED` for any that failed. STILTS is `/usr/local/bin/stilts` on `improc` (any `java -jar $TORCHSKY_HARNESS_STILTS_JAR` locally).
+Other Python comparators still go into the campaign venv (the system Python's packages are not used).
 Binary gates (`test_external_tools_required.py`, `test_wcstools_parity.py`,
 `test_montage_projection_parity.py`, `test_map_swarp_optional_parity.py`) were written without
 the binaries available locally; the first improc run is their first execution.
@@ -84,6 +86,7 @@ canfar create headless images.canfar.net/astroai/base:latest --gpu 1 \
 `$OUT/summary.md` and `summary.json` (pass/fail per gate, subject identity, comparator
 versions, timings, GPU info), `gates.jsonl`, `gates/<gate>.log` (raw logs),
 `benchmark_results/` (JSON), `pip-freeze.txt`, `comparator-install.log`, `session.log`.
+The summary also carries the oracle/STILTS versions, the real-catalogue manifest and a "Comparator performance" table (see `docs/benchmarks.md`, "Performance vs comparators").
 A comparator that failed to install is reported in the summary as `NOT INSTALLED` and its
 gated tests fail rather than skip.
 

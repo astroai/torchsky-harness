@@ -39,8 +39,13 @@ RELEASE_GATE_FILES = frozenset(
         "test_specutils_parity.py",  # specutils
         "test_torch_harmonics_parity.py",  # torch-harmonics
         "test_sphere_s2fft.py",  # s2fft
+        "test_wcs_pyast_parity.py",  # starlink-pyast (out-of-process oracle)
+        "test_map_astrodrizzle_parity.py",  # drizzlepac (out-of-process oracle)
     }
 )
+# Kapteyn needs a dedicated conda-forge Python 3.6 environment; the campaign provisions it and sets
+# TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1 only when that succeeded (the summary reports it otherwise).
+KAPTEYN_GATE_FILES = frozenset({"test_wcs_kapteyn_parity.py"})
 # SWarp / MontagePy gates exist but only the map-compat environment ships the
 # binaries; they are required there (set the variable) and optional elsewhere.
 MAP_COMPAT_GATE_FILES = frozenset(
@@ -53,7 +58,8 @@ MAP_COMPAT_GATE_FILES = frozenset(
 )
 # External-binary presence gates (SWarp, SCAMP, SExtractor, PSFEx, solve-field, Montage, WCSTools):
 # required when TORCHSKY_HARNESS_REQUIRE_TOOLS=1 (IMAGE_PROFILE=improc in run_campaign.sh).
-EXTERNAL_TOOL_GATE_FILES = frozenset({"test_external_tools_required.py"})
+# STILTS (Java, /usr/local/bin/stilts on improc) and the real Gaia x 2MASS catalogues it needs are part of it.
+EXTERNAL_TOOL_GATE_FILES = frozenset({"test_external_tools_required.py", "test_stilts_parity.py"})
 
 
 def _require_gates() -> bool:
@@ -66,6 +72,8 @@ def _gated(path_name: str) -> bool:
     tools = os.environ.get("TORCHSKY_HARNESS_REQUIRE_TOOLS") == "1"
     if path_name in EXTERNAL_TOOL_GATE_FILES:
         return tools
+    if path_name in KAPTEYN_GATE_FILES:
+        return os.environ.get("TORCHSKY_HARNESS_REQUIRE_KAPTEYN") == "1"
     return path_name in MAP_COMPAT_GATE_FILES and (
         os.environ.get("TORCHSKY_HARNESS_REQUIRE_MAP_COMPAT") == "1" or tools
     )

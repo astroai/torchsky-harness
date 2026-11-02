@@ -5,6 +5,69 @@ release gate. "Gate" means `TORCHSKY_HARNESS_REQUIRE_GATES=1` makes a missing co
 failure (`tests/conftest.py`, `RELEASE_GATE_FILES`); the CANFAR campaign sets it. Exhaustive
 domain gates are listed in [releases/0.1.0/gate-matrix.md](releases/0.1.0/gate-matrix.md).
 
+## torchsky 0.5 comparator map
+
+Every torchsky primitive area against the full comparator map ("own API, compared in the harness").
+Parity = bounded deterministic gate listed in `scripts/canfar/run_gates.py` (`PARITY_TESTS`);
+Performance = throughput and speedup recorded (never gated) by `benchmarks/bench_comparator_perf.py`
+(`bench-comparator-perf-gate`, JSON `benchmark_results/comparator_perf*.json`, summary table
+"Comparator performance") or an older gate named below. "Oracle" = out-of-process comparator
+(`tests/_oracle.py`, NPZ exchange, own interpreter).
+
+| Area | Comparator | Parity gate | Performance | Status |
+|---|---|---|---|---|
+| wcs | astropy.wcs / WCSLIB | `test_wcs_parity.py`, `test_wcs_upstream_astropy.py`, `test_wcs_sip.py`, `test_wcs_tpv.py` (+ `bench-wcs-release-gate`, `bench-wcs-real-headers-gate`) | `bench-wcs-release-gate`; comparator_perf `wcs` (TAN, TAN-SIP; 1e5, 1e6) | release gate |
+| wcs | PyAST (starlink-pyast) | `test_wcs_pyast_parity.py` (TAN, TAN pole, SIN, ARC, ZEA, STG, CAR, CAR wrap, AIT, MOL, HPX, CEA, MER, SFL, ZPN, AZP, TAN-SIP, TPV; 1e-4 mas, SIP/TPV 1e-3 mas; 1e-6 px) | comparator_perf `wcs` (PyAST timed inside its oracle) | release gate, Oracle (own venv) |
+| wcs | Kapteyn (WCSLIB 4.24) | `test_wcs_kapteyn_parity.py` (same cases minus SIP/TPV) | comparator_perf `wcs` | Oracle in a conda-forge Python 3.6 env; gated when provisioned (`TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1`). Not verified locally (no osx-arm64 build; sdist does not build on 3.13/NumPy 2, see below) |
+| wcs | WCSTools (extra C implementation) | `test_wcstools_parity.py` | - | required on `improc` |
+| coords | astropy.coordinates | `test_wcs_frames.py`, `bench_coords_astropy` (`bench-coords-astropy-gate`) | `bench-coords-astropy-gate` | release gate |
+| coords | ERFA (pyerfa) | `test_erfa_observed_place_parity.py` | `bench-observed-place` (local task, not a campaign gate) | release gate |
+| sphere | healpy | `test_healpix_parity.py`, `test_sphere_compat.py`, `test_synalm_parity.py` | `bench-healpix-release-gate`, `bench-healpix-advanced-release-gate`; comparator_perf `healpix` (ang2pix, pix2ang, neighbours) | release gate |
+| sphere | hpgeom | `test_healpix_parity.py` | `bench-healpix-release-gate`; comparator_perf `healpix` | release gate |
+| sphere | astropy-healpix | `test_healpix_parity.py` | comparator_perf `healpix` | release gate |
+| sphere | healsparse | `test_healsparse_upstream.py` | comparator_perf `sparse` (get_values, ud_grade) | release gate |
+| sphere | mocpy | `test_sphere_moc.py` | comparator_perf `moc` (from_circle, union, intersection, contains) | release gate |
+| sphere | spherical_geometry | `test_sphere_polygons.py`, `test_sphere_exact_regions.py` | `sphere-bench-polygons` (local task, not a campaign gate) | release gate |
+| sphere | s2fft (and healpy SHT) | `test_sphere_s2fft.py`, `test_synalm_parity.py`; healpy SHT in `bench-spin-matrix-release-gate` | comparator_perf `sht` (map2alm, alm2map vs healpy and s2fft), `bench-spin-matrix-release-gate` | release gate |
+| map | reproject | `test_map_conservative_external_parity.py`, `test_map_reproject_fft_parity.py` | `bench-map-compat-gate`; comparator_perf `map` (2048, 4096 bilinear and exact) | release gate |
+| map | drizzle (STScI package) | `test_map_drizzle_external_parity.py` | `bench-map-drizzle-required` (local) | release gate |
+| map | AstroDrizzle (drizzlepac `do_driz`/`cdriz.tdriz`) | `test_map_astrodrizzle_parity.py` (square/point, pixfrac 0.7/1.0, shift/rotate/rescale; 1e-4 abs). The `drizzle` package gate covers the same algorithm re-implemented by STScI; this gate ties torchsky to the original C kernel. AstroDrizzle scales output by the pixel-area ratio (flux conserving), the test divides it out | `bench_map_compat` lists a `drizzlepac` label (local) | release gate, Oracle (own venv) |
+| map | dfreproject | `test_map_dfreproject_parity.py` | comparator_perf `map` | release gate |
+| map | SWarp | `test_map_swarp_optional_parity.py`, `test_map_external_tools_smoke.py` | comparator_perf `map` (binary wall time), `bench-map-swarp-required` (local) | required on `improc` |
+| map | Montage (`mProject`) | `test_montage_projection_parity.py` | comparator_perf `map`, `bench-map-montage-required` (local) | required on `improc` |
+| catalogs | astropy SkyCoord matching | `test_catalog_compat.py` | `bench-catalog-release-gate`; comparator_perf `catalogs` (1e5, 1e6) | release gate |
+| catalogs | STILTS (`tmatch2`, `tskymatch2`, `tmatch1`) | `test_stilts_parity.py`: synthetic (1e5, RA wrap, pole cap) and **real Gaia DR3 x 2MASS** (`scripts/fetch_real_catalogs.py`); exact pair-set equality | `test_stilts_parity.py` records per-mode timings; comparator_perf `catalogs` (tmatch2, tskymatch2; 1e5, 1e6) | required on `improc` (`REQUIRE_TOOLS=1`) |
+
+STILTS modes and what torchsky 0.5 provides (`tests/test_stilts_parity.py`):
+
+| STILTS | torchsky | Status |
+|---|---|---|
+| `tmatch2 matcher=sky find=best1` / `best2` | `crossmatch_sky(find="best")` (left to right; swap arguments for `best2`) | pair-set equal |
+| `tmatch2 find=all` | `crossmatch_sky(find="all")` | pair-set equal |
+| `tmatch2 join=1not2 / 2not1` (and `1and2`) | rows absent from / present in the pair set | counts equal |
+| `tskymatch2` | same as `matcher=sky` | pair-set equal |
+| `tmatch2 matcher=skyerr` | per-left-row radius `err1 + err2_const` (STILTS criterion: separation <= err1 + err2) | pair-set equal (constant right error only) |
+| `tmatch1 matcher=sky action=identify` | pair graph of the self-match; groups are connected components built in the test | same partition; grouping itself is not a torchsky primitive |
+| `tmatch2 find=best` (symmetric one-to-one) | not provided by torchsky 0.5 | no equivalent |
+| `tmatchn` (multi-catalogue, pairs/group) | not provided by torchsky 0.5 | no equivalent |
+| `matcher=sky3d`, `exact`, `skyellipse`, per-right-row errors | not provided by torchsky 0.5 | no equivalent |
+| `join=all1/all2/1or2` outer tables | index sets only (no joined table output) | n/a |
+
+Kapteyn and AstroDrizzle installability (checked with CPython 3.13, NumPy 2.5, macOS arm64, 2026-11):
+`starlink-pyast 4.2.0` and `drizzlepac 3.11.0` install from wheels (and drizzlepac's `cdriz` runs on 3.13).
+`kapteyn 2.3.1` (PyPI sdist) does **not** build on 3.13 / NumPy 2: its `setup.py` replaces the package version
+by the compiler banner on macOS, the shipped Cython output targets Python < 3.7, regenerating needs Cython < 3
+(NumPy 2 `.pxd` headers need Cython >= 3, Cython 3 breaks the `/` semantics) and the C sources use `NPY_OWNDATA`,
+`->flags` and `->base`, removed in NumPy 2. conda-forge ships `kapteyn 2.3` only for Python <= 3.6
+(linux-64/osx-64). The campaign therefore builds Kapteyn in a micromamba Python 3.6 environment
+(pixi: `oracle-kapteyn`, linux-64) used as an out-of-process oracle; if that provisioning fails the summary reports
+it as NOT PROVISIONED. Not verified locally.
+
+Deferred to 0.6/0.7 (global solvers): SCAMP-like global astrometric/photometric fits and solve-field pipelines.
+Only the presence gates (`test_external_tools_required.py`) remain.
+
+## Earlier coverage rows
+
 | Domain | Comparator | Evidence | Status |
 |---|---|---|---|
 | WCS projections, SIP/TPV, real headers | astropy.wcs | `tests/test_wcs_*.py`, `bench_wcs*` | release gate |
@@ -35,7 +98,7 @@ domain gates are listed in [releases/0.1.0/gate-matrix.md](releases/0.1.0/gate-m
 | Scene model | none | `torchsky.scene` | **experimental, not gated**: no comparator implements the same contract; exercised through the map/field gates |
 | Quality / mask contract | none | `torchsky.quality` | **experimental, not gated**: a torchsky-defined convention, not a comparator-defined one; subject unit tests only |
 | Spectral cube readers | specutils | not covered | **not gated**: only rebin/Doppler are compared (above) |
-| Astrometric calibration vs peers | SCAMP, solve-field (astrometry.net) | binaries only (`test_external_tools_required.py`) | **solution comparison not implemented**: needs real-sky star data (the packaged MegaPipe fixture is synthetic); `campaigns/phase0` manifests remain manifests |
+| Astrometric calibration vs peers | SCAMP, solve-field (astrometry.net) | binaries only (`test_external_tools_required.py`) | **deferred to 0.6/0.7 (global solvers)**: presence gates only; `campaigns/phase0` manifests remain manifests |
 | Deblending peers, TweakReg | Tractor, scarlet, tweakwcs/jwst | `campaigns/phase0` manifests | manifests only; torchsky makes no parity claim for these |
 | SExtractor / PSFEx | source-extractor, psfex | binary presence only | torchsky makes no photometry/PSF parity claim; no comparison suite |
 | astroquery SVO filter profiles | astroquery.svo_fps | `tests/test_svo_passband_bootstrap.py` (offline bootstrap) | live SVO query not gated (network) |

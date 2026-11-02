@@ -119,6 +119,36 @@ should rank first on throughput while staying within parity tolerances. Rows
 where a comparator is skipped or has different semantics are not counted as
 losses; expand coverage carefully so skips shrink over time.
 
+## Performance vs comparators
+
+`benchmarks/bench_comparator_perf.py` (Pixi: `bench-comparator-perf-gate`; a campaign `performance` gate, rerun with
+`--device cuda` in `MODE=gpu`) records, for each torchsky primitive, its time and throughput next to every comparator in
+the map, in one normalized JSON (`benchmark_results/comparator_perf.json`, `comparator_perf_cuda.json`). Nothing here is a
+wall-time gate: shared nodes are noisy, the file is the evidence. A comparator that is missing is a row marked
+`unavailable` with the reason.
+
+| area | operations | sizes | comparators |
+|---|---|---|---|
+| `wcs` | pixel to world, world to pixel (TAN, TAN-SIP) | 1e5, 1e6 | astropy.wcs, PyAST (and Kapteyn when provisioned) |
+| `healpix` | ang2pix, pix2ang, neighbours (nside 1024) | 1e5, 1e6 | healpy, hpgeom, astropy-healpix |
+| `catalogs` | nearest-match crossmatch | 1e5, 1e6 | astropy SkyCoord, STILTS `tmatch2`, `tskymatch2` |
+| `moc` | from_circle, union, intersection, contains (order 10) | single call; 1e5, 1e6 points | mocpy |
+| `sparse` | get_values, ud_grade | 1e5, 1e6; 20k covered pixels | healsparse |
+| `sht` | map2alm, alm2map (nside 256/512, lmax 512) | 786k, 3.1M pixels | healpy, s2fft |
+| `map` | bilinear and exact reprojection | 2048^2, 4096^2 | reproject, dfreproject, SWarp, Montage |
+
+Conventions: speedup is `comparator_s / torchsky_s` (above 1: torchsky faster); throughput is `size / torchsky_s`.
+PyAST and Kapteyn run in their own interpreter (`scripts/oracle/wcs_oracle.py`) and are timed inside it; STILTS and the
+SWarp/Montage binaries report wall time including process start and file I/O (noted per row); healpy and s2fft SHTs run
+in a child process. The parity gates `test_stilts_parity.py` add per-mode STILTS timings on the real Gaia DR3 x 2MASS cone
+through `tests/_perf_record.py` (`comparator_perf.jsonl`). `scripts/canfar/summarize.py` merges both into the
+"Comparator performance" table of every campaign `summary.md` (and `summary.json`, key `comparator_performance`).
+Known limit seen while writing it: `map2alm` at `nside >= 512` with `lmax > 512` takes torchsky's dense-basis fallback and
+fails (`basis-based fallback requires ... GB`), so the SHT rows use lmax 512.
+
+Local use: `pixi run bench-comparator-perf-quick`; the oracles with `pixi run test-comparator-oracles`
+(env `oracle`); STILTS with `pixi run fetch-stilts fetch-real-catalogs test-stilts-parity` (env `stilts`, Java).
+
 ## CI: map compat gate
 
 Reusable map truth metrics and benchmark artifact/report helpers are exposed by

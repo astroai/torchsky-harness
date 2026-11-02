@@ -20,6 +20,8 @@
 #                      Montage, WCSTools) and the astrometry index dir (default 0; 1 under improc)
 #   IMAGE_PROFILE      "improc" for images.canfar.net/astroai/improc:latest (ships those binaries);
 #                      auto-selected when swarp, mProject and solve-field are all on PATH
+#   CATALOG_REAL_DIR   pre-staged real Gaia/2MASS catalogues (gaia.fits, twomass.fits, manifest.json); default: fetched once
+#                      into $OUT/real-catalogs by scripts/fetch_real_catalogs.py (cached; recorded in the summary)
 #   ASTROMETRY_INDEX_DIR  astrometry.net index files (default /arc/projects/uvickbos/astrometry.net/data)
 # Writes $OUT/summary.md, $OUT/summary.json, $OUT/gates.jsonl, $OUT/gates/*.log.
 set -uo pipefail
@@ -117,7 +119,7 @@ for pkg in healpy hpgeom astropy-healpix mocpy spherical-geometry healsparse rep
 done
 # torch-harmonics must not replace the pinned torch wheel.
 "$RUN_VENV/bin/pip" install -q --no-deps "torch==$TORCH_VERSION" --index-url "https://download.pytorch.org/whl/$TORCH_INDEX" >> "$OUT/comparator-install.log" 2>&1 || true
-for tool in swarp scamp source-extractor psfex solve-field mProject mProjExec mAdd xy2sky sky2xy; do
+for tool in swarp scamp source-extractor psfex solve-field mProject mProjExec mAdd xy2sky sky2xy stilts; do
   if command -v "$tool" >/dev/null 2>&1; then echo "binary ok: $tool ($(command -v "$tool"))"
   else echo "binary absent: $tool ($([ "${REQUIRE_TOOLS:-0}" = 1 ] && echo REQUIRED || echo optional))"; fi
 done
@@ -127,6 +129,38 @@ if [ -z "${TORCHSKY_HARNESS_DE_KERNEL:-}" ]; then
     export TORCHSKY_HARNESS_DE_KERNEL="$SCRATCH/de440s.bsp"; echo "kernel ok: de440s"
   else echo "kernel FAILED: de440s (ephemeris gate will fail)"; fi
 fi
+
+# Out-of-process oracles: PyAST and AstroDrizzle in their own venv (any Python/numpy they build on), Kapteyn
+# in a conda-forge Python 3.6 environment (its sources do not build on 3.13/NumPy 2). tests/_oracle.py runs them
+# through scripts/oracle/*.py with NPZ exchange; a failed provisioning is recorded and the gate fails closed.
+: > "$OUT/oracle-install.log"
+ORACLE_VENV="$SCRATCH/venv-oracle"
+if "$PYTHON_BIN" -m venv "$ORACLE_VENV" >> "$OUT/oracle-install.log" 2>&1 \
+   && "$ORACLE_VENV/bin/pip" install -q numpy astropy "starlink-pyast==4.2.0" "drizzlepac==3.11.0" >> "$OUT/oracle-install.log" 2>&1; then
+  if "$ORACLE_VENV/bin/python" -c "import starlink.Ast"; then
+    export TORCHSKY_HARNESS_ORACLE_PYAST_PYTHON="$ORACLE_VENV/bin/python"; echo "oracle ok: pyast"
+  else echo "oracle FAILED: pyast (see oracle-install.log)"; fi
+  if "$ORACLE_VENV/bin/python" -c "import drizzlepac.cdriz"; then
+    export TORCHSKY_HARNESS_ORACLE_DRIZZLEPAC_PYTHON="$ORACLE_VENV/bin/python"; echo "oracle ok: drizzlepac"
+  else echo "oracle FAILED: drizzlepac (see oracle-install.log)"; fi
+else echo "oracle FAILED: venv-oracle (see oracle-install.log)"; fi
+MAMBA="$SCRATCH/micromamba"
+if [ ! -x "$MAMBA/bin/micromamba" ]; then
+  mkdir -p "$MAMBA" && curl -fsSL --retry 3 https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xj -C "$MAMBA" bin/micromamba >> "$OUT/oracle-install.log" 2>&1
+fi
+if [ -x "$MAMBA/bin/micromamba" ] \
+   && MAMBA_ROOT_PREFIX="$MAMBA/root" "$MAMBA/bin/micromamba" create -y -q -p "$SCRATCH/env-kapteyn" -c conda-forge \
+        "python=3.6" "kapteyn=2.3" "numpy<1.20" >> "$OUT/oracle-install.log" 2>&1 \
+   && "$SCRATCH/env-kapteyn/bin/python" -c "from kapteyn import wcs"; then
+  export TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON="$SCRATCH/env-kapteyn/bin/python" TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1
+  echo "oracle ok: kapteyn (conda-forge py3.6)"
+else echo "oracle FAILED: kapteyn (see oracle-install.log; its gate and perf rows are reported as not provisioned)"; fi
+# Real catalogues for the STILTS gate: pre-staged ($CATALOG_REAL_DIR) or fetched once per campaign.
+if [ -z "${CATALOG_REAL_DIR:-}" ]; then
+  if "$RUN_VENV/bin/python" "$HARNESS_DIR/scripts/fetch_real_catalogs.py" --out "$OUT/real-catalogs" >> "$OUT/oracle-install.log" 2>&1; then
+    export CATALOG_REAL_DIR="$OUT/real-catalogs"; echo "real catalogues ok: $CATALOG_REAL_DIR"
+  else echo "real catalogues FAILED to fetch (the STILTS real-data gate fails closed under REQUIRE_TOOLS)"; fi
+else echo "real catalogues pre-staged: $CATALOG_REAL_DIR"; fi
 
 "$RUN_VENV/bin/pip" install -q --no-deps --force-reinstall "$WHEEL" || { echo "subject install failed" >&2; exit 7; }
 "$RUN_VENV/bin/pip" install -q --no-deps --no-build-isolation -e "$HARNESS_DIR" || { echo "harness install failed" >&2; exit 7; }

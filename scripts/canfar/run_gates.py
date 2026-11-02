@@ -53,6 +53,8 @@ PERFORMANCE_TASKS = (
     "bench-map-multifield-gate",
     "bench-map-field-fit-gate",
     "bench-map-compat-gate",
+    # Torchsky vs every comparator in the map (record, never gate): wcs, healpix, catalogs, moc, sparse, sht, map.
+    "bench-comparator-perf-gate",
 )
 
 # Gated comparator-parity test files (see tests/conftest.py RELEASE_GATE_FILES).
@@ -64,6 +66,8 @@ PARITY_TESTS = (
     "tests/test_transforms_correctness.py",
     "tests/test_wcs_parity.py",
     "tests/test_wcs_upstream_astropy.py",
+    "tests/test_wcs_pyast_parity.py",
+    "tests/test_wcs_kapteyn_parity.py",
     "tests/test_healpix_parity.py",
     "tests/test_healsparse_upstream.py",
     "tests/test_sphere_moc.py",
@@ -76,6 +80,7 @@ PARITY_TESTS = (
     "tests/test_map_drizzle_external_parity.py",
     "tests/test_map_reproject_fft_parity.py",
     "tests/test_map_dfreproject_parity.py",
+    "tests/test_map_astrodrizzle_parity.py",
     "tests/test_map_swarp_optional_parity.py",
     "tests/test_map_external_tools_smoke.py",
     # Comparator packages added to close the claims-vs-gates audit (docs/coverage-matrix.md).
@@ -90,6 +95,7 @@ PARITY_TESTS = (
     "tests/test_external_tools_required.py",
     "tests/test_wcstools_parity.py",
     "tests/test_montage_projection_parity.py",
+    "tests/test_stilts_parity.py",
 )
 
 CORRECTNESS_MARKERS = "not performance and not benchmark and not slow and not integration"
