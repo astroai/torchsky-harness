@@ -42,3 +42,12 @@ retired. Semantics were not changed.
 - `torchsky.wcs.frames`: `ARCSEC_TO_RAD`
 - `torchsky.wcs.iau2006`: `cirs_matrix`, `npb_matrix`
 - `torchsky.wcs.temporal`: `SECONDS_PER_DAY`, `TAI_MINUS_GPS_SECONDS`, `TemporalWCS`, `convert_time_scale`
+
+## Update for torchsky e65a08f2 (0.5 API cleanup)
+
+Now public: `torchsky.map.coadd_image_plane`, `torchsky.map.ImageObservation`,
+`torchsky.wcs.TemporalWCS`, `torchsky.wcs.DomainSpec`; field rendering through
+`torchsky.field.render(..., target=...)`. Made private: `map.field.gauss_newton`
+(now `_gauss_newton`, white-box import in the SMACS joint-fit benchmark),
+`sphere.chord_radius` (the catalog-scale contract computes the chord directly).
+The frozen `campaigns/adass2026/jobs` keep their original imports.

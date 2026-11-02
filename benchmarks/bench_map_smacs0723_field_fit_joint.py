@@ -190,7 +190,7 @@ def _refine_neural_scene_pcg(
     seed: int = 101,
 ) -> FieldFitResult:
     """Refine neural parameters against training detector pixels with fixed operators."""
-    from torchsky.map.field.gauss_newton import gauss_newton_pcg_step
+    from torchsky.map.field._gauss_newton import gauss_newton_pcg_step  # white-box: private solver
     from torchsky.map.field.observation_ops import observation_support_mask
     from torchsky.map.field.training import (
         _compute_full_observation_losses,

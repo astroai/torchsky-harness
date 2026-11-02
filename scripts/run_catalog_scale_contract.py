@@ -21,7 +21,7 @@ import numpy as np
 import torch
 
 from torchsky.catalogs import crossmatch_sky
-from torchsky.sphere import chord_radius, lonlat_to_unit_xyz
+from torchsky.sphere import lonlat_to_unit_xyz
 
 
 def _peak_rss_bytes() -> int:
@@ -63,7 +63,7 @@ def _ckdtree_pairs(left_ra, left_dec, right_ra, right_dec, radius_arcsec: float,
 
     left = _unit_xyz(left_ra, left_dec)
     right = _unit_xyz(right_ra, right_dec)
-    chord = float(chord_radius(math.radians(radius_arcsec / 3600.0)))
+    chord = 2.0 * math.sin(0.5 * math.radians(radius_arcsec / 3600.0))  # chord of the cap
     tree = cKDTree(right)
     if find == "best":
         dist, idx = tree.query(left, k=1, workers=-1)
