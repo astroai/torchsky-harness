@@ -22,8 +22,8 @@ import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa
 import torchsky  # noqa: E402
 from torchsky import WCS  # noqa: E402
 from torchsky.map import stack_product
-from torchsky.map.observation import ImageObservation
-from torchsky.map.product import plan_map_product
+from torchsky.scene import ImageObservation
+from torchsky.map import plan_product as plan_map_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 from torchsky.map.operators import (  # noqa: E402
     headers_equivalent_for_direct_copy,

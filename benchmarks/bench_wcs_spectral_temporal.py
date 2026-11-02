@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 from torchsky_harness.benchmarks.bench_wcs import _resolve_device, _sync  # noqa: E402
-from torchsky.wcs.core import WCS as TorchWCS  # noqa: E402
+from torchsky import WCS as TorchWCS
 from torchsky.wcs.temporal import (
     SECONDS_PER_DAY,
     TAI_MINUS_GPS_SECONDS,

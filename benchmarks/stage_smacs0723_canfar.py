@@ -15,8 +15,9 @@ from urllib.request import urlopen
 OBSERVATION_GROUPS = ("02101", "02103", "02105")
 DETECTORS = ("nrcb1", "nrcb2", "nrcb3", "nrcb4", "nrcblong")
 MAST_DOWNLOAD = "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/"
-DEFAULT_ALIGNED_SOURCE = Path(
-    "/arc/projects/ots/jwst_smacs0723/results/wcs_aware_multiband_inr/"
+ARC_ROOT = Path(os.environ.get("TORCHSKY_ARC_ROOT", "/arc/projects/ots"))
+DEFAULT_ALIGNED_SOURCE = ARC_ROOT / (
+    "jwst_smacs0723/results/wcs_aware_multiband_inr/"
     "official_no_psf_whitened_l2_batch100_400_tweakreg_rshift_8plus3_run2/"
     "alignment/tweakreg_rshift"
 )
@@ -176,12 +177,12 @@ def main() -> int:
     parser.add_argument(
         "--root",
         type=Path,
-        default=Path("/arc/projects/ots/torchsky-data/jwst_smacs0723"),
+        default=ARC_ROOT / "torchsky-data" / "jwst_smacs0723",
     )
     parser.add_argument(
         "--crf-source",
         type=Path,
-        default=Path("/arc/projects/ots/jwst_smacs0723"),
+        default=ARC_ROOT / "jwst_smacs0723",
     )
     parser.add_argument(
         "--aligned-source",

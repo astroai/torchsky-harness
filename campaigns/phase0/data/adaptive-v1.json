@@ -1,0 +1,16 @@
+[
+  {
+    "identity_type": "data",
+    "id": "adaptive-reprojection-matrix-v1",
+    "role": "bounded synthetic adaptive reprojection matrix",
+    "uri": "file:campaigns/phase0/matrices/adaptive-reprojection-v1.json",
+    "sha256": "dfe7e9ea35b0279c8e2d5a9a40f4cf64d09aac0e3fd6469a6662c9508ee2751e"
+  },
+  {
+    "identity_type": "data",
+    "id": "cfht-megapipe-g-cutout-256-v1",
+    "role": "current real CFHT MegaPipe g-band cutout",
+    "uri": "file:benchmarks/fixtures/real_map/cfht_g_cutout_256.npz",
+    "sha256": "eb264ffcc45ca3a20255464ef5051770cfba346f7054f542b75aeef377ce07b8"
+  }
+]

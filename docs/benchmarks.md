@@ -1071,7 +1071,7 @@ These are the **code defaults** when the environment variable is unset (see `tor
 | `TORCHSKY_SCALAR_ALM2MAP_RECURRENCE_CPP` | `1` | Scalar `alm2map` recurrence backend. |
 | `TORCHSKY_SPIN_RING_AUTO_MIN_BYTES` | `0` | Minimum map size (bytes) before auto-selecting some ring fast paths; replays often set `32 MiB`. |
 
-Phase 0 benchmark procedure for WCS + sphere: [`benchmarks/PHASE0_WCS_SPHERE.md`](../benchmarks/PHASE0_WCS_SPHERE.md). Pixi: `pixi run wcs-sphere-phase0` (benches only) or `pixi run wcs-sphere-acceptance` (benches + full WCS/sphere pytest + spin matrix report).
+Phase 0 benchmark procedure for WCS + sphere: [`benchmarks/PHASE0_WCS_SPHERE.md`](../benchmarks/PHASE0_WCS_SPHERE.md). Pixi: `pixi run wcs-sphere-acceptance` (benches + full WCS/sphere pytest + spin matrix report).
 
 ## Optimization History
 

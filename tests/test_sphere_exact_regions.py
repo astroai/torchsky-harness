@@ -2,13 +2,8 @@ import numpy as np
 import pytest
 import torch
 
-from torchsky.sphere.geom import (
-    SphericalCap,
-    SphericalPolygon,
-    _numpy_sg_contains_lonlat_bulk,
-    _region_to_sg,
-    to_exact_region,
-)
+from torchsky.sphere.geom import _numpy_sg_contains_lonlat_bulk, _region_to_sg
+from torchsky.sphere import SphericalCap, SphericalPolygon, to_exact_region
 
 try:
     from spherical_geometry.polygon import SphericalPolygon as SGP  # type: ignore

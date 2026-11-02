@@ -9,7 +9,7 @@ import pytest
 import torch
 from astropy.wcs import WCS as AstropyWCS
 
-from torchsky.wcs.core import WCS as TorchWCS
+from torchsky import WCS as TorchWCS
 
 
 def _make_header(

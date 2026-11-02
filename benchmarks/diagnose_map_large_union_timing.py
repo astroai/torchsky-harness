@@ -23,7 +23,7 @@ from torchsky.map import image_plane_projection as image_plane_projection_mod  #
 from torchsky.map import windowing as image_grid_mod  # noqa: E402
 import torchsky.map.operators.resampling as resampling_mod  # noqa: E402
 from torchsky import WCS  # noqa: E402
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 from torchsky.map.operators import (  # noqa: E402
     headers_equivalent_for_direct_copy,
     normalized_header_for_shape,

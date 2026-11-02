@@ -15,8 +15,8 @@ from typing import Any, Callable  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
-from torchsky.sphere.core import pairwise_angular_distance, sample_multiband_healpix  # noqa: E402
-from torchsky.sphere.geom import query_ellipse  # noqa: E402
+from torchsky.sphere import pairwise_angular_distance, sample_multiband_healpix
+from torchsky.sphere import query_ellipse
 from torchsky_harness.benchmarks._random_sampling import (  # noqa: E402
     RandomSamplingCase,
     benchmark_random_sampling_case,
@@ -91,8 +91,8 @@ def _append_moc_rows(
     sampling_profile: str,
     seed: int,
 ) -> None:
-    from torchsky.sphere.moc import BMOC as TorchBMOC
-    from torchsky.sphere.moc import MOC as TorchMOC
+    from torchsky.sphere import BMOC as TorchBMOC
+    from torchsky.sphere import MOC as TorchMOC
 
     try:
         import astropy.units as u
@@ -238,7 +238,7 @@ def _append_moc_rows(
             mixed_orders=True,
         )
     if sample_counts:
-        from torchsky.sphere.moc import nest2uniq
+        from torchsky.sphere import nest2uniq
 
         full_uniq = nest2uniq(
             1, torch.arange(12, dtype=torch.int64, device=lon_t.device)
@@ -284,7 +284,7 @@ def _append_moc_rows(
 def _mixed_order_uniq(
     n_cells: int, *, max_order: int, device: torch.device | None = None
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    from torchsky.sphere.moc import nest2uniq
+    from torchsky.sphere import nest2uniq
 
     counts = [n_cells // 3, n_cells // 3, n_cells - 2 * (n_cells // 3)]
     largest = max(counts)

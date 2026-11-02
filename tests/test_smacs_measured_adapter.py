@@ -9,7 +9,7 @@ import torch
 
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit import _scaled_field_observation, _training_intensity_scale
 from torchsky_harness.benchmarks.bench_map_smacs0723_real import _field_observation_kwargs_for_band, _sci_header
-from torchsky.map.field.types import FieldObservation
+from torchsky.scene import FieldObservation
 from torchsky.map.field.bandpass import bandpass_quadrature
 
 

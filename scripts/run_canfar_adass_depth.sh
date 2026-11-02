@@ -5,9 +5,9 @@ mode=${1:?usage: run_canfar_adass_depth.sh MODE RUN_ID}
 run_id=${2:?usage: run_canfar_adass_depth.sh MODE RUN_ID}
 commit=${TORCHSKY_HARNESS_COMMIT:?set TORCHSKY_HARNESS_COMMIT to an exact pushed SHA}
 container_image=${CONTAINER_IMAGE:-images.canfar.net/astroai/improc:latest}
-artifact_root=${ARTIFACT_ROOT:-/arc/projects/ots/torchsky-runs/${run_id}}
+artifact_root=${ARTIFACT_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/${run_id}}
 source_root=${SOURCE_ROOT:-/scratch/${run_id}-src}
-data_root=${TORCHSKY_DATA_ROOT:-/arc/projects/ots/torchsky-data}
+data_root=${TORCHSKY_DATA_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-data}
 dry_run=${DRY_RUN:-0}
 
 if [[ "${dry_run}" != "1" ]]; then
@@ -333,7 +333,7 @@ fi
 
 case "${mode}" in
   passband-bootstrap)
-    passband_output_dir=${PASSBAND_OUTPUT_DIR:-/arc/projects/ots/jwst_smacs0723/data/calibration/svo}
+    passband_output_dir=${PASSBAND_OUTPUT_DIR:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/jwst_smacs0723/data/calibration/svo}
     passband_bands=${PASSBAND_BANDS:-F090W,F150W,F200W,F277W,F356W,F444W}
     passband_cache_dir=${PASSBAND_CACHE_DIR:-${artifact_root}/svo-cache}
     run pixi_run svo-bootstrap \
@@ -482,7 +482,7 @@ case "${mode}" in
       exact_observation_batch_size=${FOAM_EXACT_OBSERVATION_BATCH_SIZE:-auto}
       exact_max_iterations=${FOAM_EXACT_MAX_ITERATIONS:-50}
       exact_preconditioner=${FOAM_EXACT_PRECONDITIONER:-auto}
-      validation_root=${FOAM_VALIDATION_ROOT:-/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940}
+      validation_root=${FOAM_VALIDATION_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-validation-32e0940}
       target_header_path=${validation_root}/validation-000/common-support-r9-f0p99.fits
       IFS=',' read -r -a validation_batches <<< \
         "${FOAM_VALIDATION_BATCHES:-blank,validation-000,validation-001,validation-002}"
@@ -542,9 +542,9 @@ case "${mode}" in
     done
     ;;
   foam-score)
-    foam_blank_root=${FOAM_BLANK_ROOT:-/arc/projects/ots/torchsky-runs/20260802-smacs-foam-psfinit-g512-e935868}
-    foam_injection_root=${FOAM_INJECTION_ROOT:-/arc/projects/ots/torchsky-runs/20260802-smacs-foam-g512-injections-1d055cf}
-    validation_root=${FOAM_VALIDATION_ROOT:-/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940}
+    foam_blank_root=${FOAM_BLANK_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260802-smacs-foam-psfinit-g512-e935868}
+    foam_injection_root=${FOAM_INJECTION_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260802-smacs-foam-g512-injections-1d055cf}
+    validation_root=${FOAM_VALIDATION_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-validation-32e0940}
     pixi_run sphere-bench \
       python "${source_root}/scripts/run_local_sphere_bench.py" \
       "${source_root}/benchmarks/score_smacs0723_foam.py" \
@@ -556,7 +556,7 @@ case "${mode}" in
   field-score)
     score_input_root=${SCORE_INPUT_ROOT:?set SCORE_INPUT_ROOT to a run root containing <module>/<psf_mode>/<model> products}
     score_methods=${SCORE_METHODS:?set SCORE_METHODS to a CSV of psf_mode/model_kind pairs, e.g. fitted_gaussian/spectral_power_foam,learned_lowrank/spectral_power_foam}
-    score_validation_root=${SCORE_VALIDATION_ROOT:-/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940}
+    score_validation_root=${SCORE_VALIDATION_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-validation-32e0940}
     score_out_dir=${SCORE_OUT_DIR:-${artifact_root}/model-selection}
     pixi_run sphere-bench \
       python "${source_root}/scripts/run_local_sphere_bench.py" \
@@ -570,7 +570,7 @@ case "${mode}" in
   native-band)
     IFS=',' read -r -a native_band_list <<< "${SMACS_BAND:-${FOAM_BANDS:-F090W,F150W,F200W,F277W,F356W,F444W}}"
     methods=torchsky_bilinear,torchsky_drizzle_square_pf0p800,torchsky_drizzle_square_pf1p000
-    validation_root=${FOAM_VALIDATION_ROOT:-/arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940}
+    validation_root=${FOAM_VALIDATION_ROOT:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-validation-32e0940}
     IFS=',' read -r -a native_batches <<< \
       "${NATIVE_VALIDATION_BATCHES:-blank,validation-000,validation-001,validation-002}"
     for module in "${modules[@]+${modules[@]}}"; do
@@ -742,16 +742,16 @@ case "${mode}" in
   native-score)
     native_input_root_pattern=${NATIVE_INPUT_ROOT_PATTERN-}
     if [[ -z "${native_input_root_pattern}" ]]; then
-      native_input_root_pattern='/arc/projects/ots/torchsky-runs/20260729-smacs-native-validation-d8fece0-{band}'
+      native_input_root_pattern="${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-native-validation-d8fece0-{band}"
     fi
     pixi_run map-compat \
       python "${source_root}/scripts/run_local_sphere_bench.py" \
       "${source_root}/benchmarks/score_smacs0723_native_classical.py" \
       --input-root-pattern "${native_input_root_pattern}" \
       --validation-root \
-        /arc/projects/ots/torchsky-runs/20260729-smacs-validation-32e0940 \
+        ${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-validation-32e0940 \
       --effective-psf-root \
-        /arc/projects/ots/torchsky-runs/20260729-smacs-torchsky-drizzle-aa0aa21/effective_psfs \
+        ${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/20260729-smacs-torchsky-drizzle-aa0aa21/effective_psfs \
       --out-dir "${artifact_root}/score"
     ;;
   full)

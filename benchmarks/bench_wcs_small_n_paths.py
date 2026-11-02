@@ -44,7 +44,7 @@ from torchsky_harness.benchmarks.bench_wcs import (  # noqa: E402
     _sample_pixels,
     _time_many,
 )
-from torchsky.wcs.core import WCS as TorchWCS  # noqa: E402
+from torchsky import WCS as TorchWCS
 
 
 def _median_ms(fn: Any, *, runs: int, device: torch.device) -> float:

@@ -48,24 +48,26 @@ from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _reg
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _set_foam_geometry_trainable  # noqa: E402
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _source_metric_mask  # noqa: E402
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _write_export_products  # noqa: E402
-from torchsky.map.field import (  # noqa: E402
-    FieldDomain,
-    FieldObservation,
+from torchsky.map.field import (
     SpectralPowerFoam,
     SpectralPowerFoamField,
-    make_field_model,
-    make_tangent_plane_header,
     render_spectral_power_foam_observation_exact,
 )
-from torchsky.map.field import ForwardContext
-from torchsky.map.operators import (  # noqa: E402
+from torchsky.field import (
+    Domain as FieldDomain,
+    model as make_field_model,
+    make_tangent_plane_header,
+)
+from torchsky.scene import FieldObservation
+from torchsky.field import ForwardContext
+from torchsky.map.operators import (
     LearnedBackgroundOp,
     LearnedPSFOp,
-    ObservationOperatorBundle,
     StructuredDetectorNoise,
     StructuredNoiseOp,
     field_observation_operator_bundle,
 )
+from torchsky.scene import ObservationOperatorBundle
 from torchsky.map.operators import (  # noqa: E402
     ConditionedBackgroundField,
     SpatioSpectralTemporalEncoder,

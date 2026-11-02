@@ -51,15 +51,14 @@ def main() -> int:
     args = parser.parse_args()
 
     import healpy as hp
-    from astropy.io import fits
+    import torchfits
     from astropy.wcs import WCS
 
     t0 = time.perf_counter()
-    with fits.open(args.mosaic, memmap=True) as hdul:
-        hdu = hdul[0]
-        data = hdu.data[:: args.stride, :: args.stride].astype(np.float32)
-        header = hdu.header.copy()
-    wcs = WCS(header, relax=True)
+    full, header = torchfits.read(str(args.mosaic), hdu=0, return_header=True)
+    data = full.numpy()[:: args.stride, :: args.stride].astype(np.float32)
+    del full
+    wcs = WCS(dict(header), relax=True)
     ny, nx = data.shape
     yy, xx = np.mgrid[0:ny, 0:nx]
     ra, dec = wcs.all_pix2world(

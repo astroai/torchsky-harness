@@ -9,6 +9,9 @@ owns FITS/table I/O implementations and their correctness/performance gates.
 - Evaluate an explicitly installed subject; never inject a torchsky checkout into
   sys.path, load individual implementation files, or silently build the harness
   as if it were torchsky. Record the subject identity and actual import path.
+  Install the subject with `pixi run -e <env> install-subject <checkout|sdist|wheel>`
+  (non-editable; writes the identity record); CANFAR campaigns use
+  `scripts/canfar/run_campaign.sh` (see `docs/canfar.md`).
 - Use public torchfits APIs at FITS boundaries. Astropy metadata/WCS and other
   ecosystem packages are reference comparators, not production backends.
 - Preserve required gates, tolerances, fixtures, licenses and historical evidence.

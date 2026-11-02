@@ -11,9 +11,10 @@ import pytest
 import torch
 
 from _map_field_fixtures import Scene, _foam, _header, observation
-from torchsky.map.field import FieldObservation
-from torchsky.map.field import ForwardContext
-from torchsky.map.operators import LearnedBackgroundOp, ObservationOperatorBundle
+from torchsky.scene import FieldObservation
+from torchsky.field import ForwardContext
+from torchsky.map.operators import LearnedBackgroundOp
+from torchsky.scene import ObservationOperatorBundle
 
 import torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint as joint
 from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _training_calibration_exposure_paths
@@ -97,7 +98,7 @@ def test_exact_refinement_rejects_conditioned_operators_before_reading_data(oper
 
 
 def test_joint_inr_configuration_runs_with_psf_and_pixel_integration():
-    from torchsky.map.field.training import fit_field_model
+    from torchsky.field import fit as fit_field_model
 
     kwargs = joint._joint_real_fit_kwargs(
         "spectral_basis_field", crop_size=9, steps=1, num_observations=1,
@@ -267,8 +268,8 @@ def test_plain_report_leads_with_validation_and_labels_missing_scores():
 
 @pytest.mark.parametrize("unfrozen,refined", [(False, False), (True, False), (False, True)])
 def test_joint_artifact_replays_fitted_foam_and_records_resume_limits(tmp_path, unfrozen, refined):
-    from torchsky.map.field import load_field_artifact
-    from torchsky.map.field.types import FieldFitResult
+    from torchsky.field import load_artifact as load_field_artifact
+    from torchsky.field import FitResult as FieldFitResult
 
     model = _foam()
     ra = torch.tensor([11.999, 12.001], dtype=torch.float64)
@@ -325,7 +326,7 @@ def test_joint_artifact_replays_fitted_foam_and_records_resume_limits(tmp_path, 
 
 
 def test_joint_artifact_explicitly_skips_per_exposure_wrapper(tmp_path):
-    from torchsky.map.field.types import FieldFitResult
+    from torchsky.field import FitResult as FieldFitResult
 
     result = FieldFitResult(
         model=joint._PerExposureScalarBias(_foam(), 2), loss_history=(1.,), final_loss=1.,

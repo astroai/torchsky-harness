@@ -1,0 +1,65 @@
+[
+  {
+    "identity_type": "data",
+    "id": "astrometry-v1-matrix",
+    "role": "frozen bounded astrometry certification matrix",
+    "uri": "file:campaigns/phase0/matrices/astrometry-v1.json",
+    "sha256": "e57a6c1b11bf7f17da820a6ec4fda941ff43e4c53175b0cb5320f57594106da5"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-megapipe-v1",
+    "role": "reusable bounded MegaPipe-shaped centroid fixture and held-out split contract",
+    "uri": "file:benchmarks/fixtures/certification/astrometry_megapipe_v1.json",
+    "sha256": "817cf5c957f7952308a78e1d84fa8d4b82ee77fc81c304989dd0c9631c3aaef9"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-scamp-v1",
+    "role": "SCAMP supplied-centroid external result manifest",
+    "uri": "file:campaigns/phase0/external/astrometry-scamp-v1.json",
+    "sha256": "db61ec9791249eabe0644312e5c8d3702cfcfc9789b56b26817e58a58a351d0e"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-tweakreg-v1",
+    "role": "TweakReg supplied-centroid external result manifest",
+    "uri": "file:campaigns/phase0/external/astrometry-tweakreg-v1.json",
+    "sha256": "8984b7512301497646765888f8e4394e59ea9d07fa76d7131787b95788df67e0"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-net-v1",
+    "role": "astrometry.net supplied-centroid external result and index contract",
+    "uri": "file:campaigns/phase0/external/astrometry-net-v1.json",
+    "sha256": "eb9175caf9ff2d896bbfbd46baf8b8e823ab17eddeab3e62f81558f25cdec264"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-des-v1",
+    "role": "DES external data identity stub",
+    "uri": "file:campaigns/phase0/external/astrometry-des-v1.json",
+    "sha256": "97daa7afd7b7087548159e1021f5055232526506fd23d998c04d9a9b2b581d40"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-lsst-v1",
+    "role": "LSST external data identity stub",
+    "uri": "file:campaigns/phase0/external/astrometry-lsst-v1.json",
+    "sha256": "188e128a56df87127a32b97b40930e40a3caf396952fd4a88710366757aa29db"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-gbdes-v1",
+    "role": "gbdes external comparison identity stub",
+    "uri": "file:campaigns/phase0/external/astrometry-gbdes-v1.json",
+    "sha256": "6f096c5e83c445e4ee89feff1d4e2e7f059f1311dd98f21b6fa76cf723d15a7f"
+  },
+  {
+    "identity_type": "data",
+    "id": "astrometry-turbo-gp-v1",
+    "role": "TURBO-GP external comparison identity stub",
+    "uri": "file:campaigns/phase0/external/astrometry-turbo-gp-v1.json",
+    "sha256": "9c745123410125a126333e690bdbd8d5c408fdaa28a6f0da1c17c2bcb768992f"
+  }
+]

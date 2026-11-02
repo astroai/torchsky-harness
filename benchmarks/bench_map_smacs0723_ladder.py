@@ -35,7 +35,7 @@ DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_ladder.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_ladder.md"
 
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _time_many(fn, runs: int) -> float:

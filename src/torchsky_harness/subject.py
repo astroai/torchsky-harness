@@ -84,11 +84,18 @@ def identify_subject() -> dict:
             digest.update(str(path.relative_to(package_path.parent)).encode())
             digest.update(bytes.fromhex(sha256(path)))
     direct_url = distribution.read_text("direct_url.json")
+    record_path = Path(sys.prefix) / "torchsky-subject-install.json"
+    install_record = json.loads(record_path.read_text()) if record_path.is_file() else None
     return {
+        "install_record": install_record,
         "distribution": "torchsky", "version": distribution.version,
         "import_path": str(package_path), "package_content_sha256": digest.hexdigest(),
         "direct_url": json.loads(direct_url) if direct_url else None,
-        "source": source_identity(json.loads(direct_url) if direct_url else None),
+        "source": (
+            {k: v for k, v in install_record.items() if k not in {"import_path", "version"}}
+            if install_record
+            else source_identity(json.loads(direct_url) if direct_url else None)
+        ),
         "python": sys.version,
         "platform": platform.platform(),
     }

@@ -20,8 +20,8 @@ import torchfits
 ROOT = Path(__file__).resolve().parents[1]
 from torchsky_harness.benchmarks import bench_map_compat  # noqa: E402
 
-from torchsky.map.observation import ImageObservation  # noqa: E402
-from torchsky.map.product import plan_map_product, stack_product  # noqa: E402
+from torchsky.scene import ImageObservation  # noqa: E402
+from torchsky.map import plan_product as plan_map_product, stack_product  # noqa: E402
 
 DATA_DIR = ROOT / "data" / "cfht" / "MegaPipe.028.181" / "g"
 

@@ -23,7 +23,7 @@ SRC = ROOT / "src"
 
 import torchsky  # noqa: E402
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 from torchsky.map.operators.execution import (  # noqa: E402
     overlap_background_scratch_bytes,
 )

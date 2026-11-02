@@ -3,7 +3,7 @@ import pytest
 import torch
 from astropy.wcs import WCS as AstropyWCS
 
-from torchsky.wcs.core import WCS
+from torchsky import WCS
 
 
 CYLINDRICAL = ("CEA", "CAR", "MER", "CYP")

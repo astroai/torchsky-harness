@@ -3,10 +3,7 @@ import numpy as np
 import pytest
 import torch
 from torchsky.sphere import healpix as hp
-from torchsky.sphere.moc import (
-    MOC,
-    nest2uniq,
-)
+from torchsky.sphere import MOC, nest2uniq
 
 
 

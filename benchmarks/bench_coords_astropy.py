@@ -40,7 +40,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     import torchsky
-    from torchsky.wcs.frames import convert_celestial
+    from torchsky.wcs import convert_celestial
 
     rng = np.random.default_rng(args.seed)
     ra = rng.uniform(0.0, 360.0, args.n_points)

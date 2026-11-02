@@ -4,10 +4,7 @@ import numpy as np
 import torch
 import pytest
 
-from torchsky.sphere.geom import (
-    SphericalPolygon,
-    spherical_polygon_contains,
-)
+from torchsky.sphere import SphericalPolygon, spherical_polygon_contains
 
 try:
     from spherical_geometry.polygon import SphericalPolygon as SGP  # type: ignore

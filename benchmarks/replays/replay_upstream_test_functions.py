@@ -19,8 +19,15 @@ import healpy as hp  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
-from torchsky.sphere.healpix import (  # noqa: E402
+from torchsky.sphere.healpix import (
     ang2vec as tf_ang2vec,
+    ang2pix_nested as tf_ang2pix_nested,
+    ang2pix_ring as tf_ang2pix_ring,
+    pix2ang_nested as tf_pix2ang_nested,
+    pix2ang_ring as tf_pix2ang_ring,
+    vec2ang as tf_vec2ang,
+)
+from torchsky.sphere import (
     boundaries as tf_boundaries,
     get_interp_val as tf_get_interp_val,
     get_interp_weights as tf_get_interp_weights,
@@ -29,14 +36,9 @@ from torchsky.sphere.healpix import (  # noqa: E402
     nside2resol as tf_nside2resol,
     npix2nside as tf_npix2nside,
     order2nside as tf_order2nside,
-    ang2pix_nested as tf_ang2pix_nested,
-    ang2pix_ring as tf_ang2pix_ring,
     nest2ring as tf_nest2ring,
     pix2vec as tf_pix2vec,
-    pix2ang_nested as tf_pix2ang_nested,
-    pix2ang_ring as tf_pix2ang_ring,
     ring2nest as tf_ring2nest,
-    vec2ang as tf_vec2ang,
     vec2pix as tf_vec2pix,
 )
 

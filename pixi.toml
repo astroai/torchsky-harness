@@ -1,7 +1,8 @@
 [workspace]
 channels = ["conda-forge"]
 platforms = [
-    "osx-arm64",
+    # torchfits 1.3.1 ships macosx_14_0 arm64 wheels.
+    { name = "osx-arm64-14", platform = "osx-arm64", macos = "14.0" },
     "linux-64",
     { name = "linux-64-cuda", platform = "linux-64", cuda = "13.0" },
 ]
@@ -19,13 +20,12 @@ scikit-build-core = ">=1.0.0"
 cmake = ">=3.21"
 ninja = ">=1.10"
 nanobind = ">=2.10.2"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 twine = ">=5.0"
 
 [tasks]
 # Development tasks
-dev = "pip install -e . --no-deps --no-build-isolation"
 build = "python -m pip wheel . --no-deps --no-build-isolation --wheel-dir dist"
 # Full tests need the `test` env (astropy/pyarrow/polars/…); see AGENTS.md.
 test = "pixi run -e test -- pytest tests -q"
@@ -36,6 +36,9 @@ lint = "ruff check . && ruff format ."
 preflight-push = "ruff check . && python -m compileall -q src benchmarks scripts tests"
 preflight = { depends-on = ["preflight-push"] }
 harness = "python -m torchsky_harness.cli"
+# Install the subject under evaluation (non-editable): pixi run -e test install-subject ../torchsky
+install-harness = "pip install -e . --no-deps --no-build-isolation"
+install-subject = { cmd = "python scripts/install_subject.py", depends-on = ["install-harness"] }
 # Release evidence bundle: newest established run per declared release claim.
 evidence-bundle = "pixi run -e test python -m torchsky_harness.cli evidence --runs-dir runs --json-out benchmark_results/evidence_bundle.json --markdown-out benchmark_results/evidence_bundle.md --fail-on-missing"
 performance-readiness = "pixi run -e test python -m torchsky_harness.cli performance --root . --json-out benchmark_results/release_performance_readiness.json"
@@ -47,8 +50,11 @@ ci-local = "pixi run preflight && pixi run test"
 ci-local-heavy = "pixi run -e bench-all -- python -c \"import healpy, hpgeom, healsparse; import astropy_healpix; import spherical_geometry; import mocpy\""
 
 
+# Bounded parity suites against astropy / dust_extinction / speclite / synphot.
+# TORCHSKY_HARNESS_REQUIRE_GATES=1 turns a missing comparator into a failure.
+parity-spectral-tests = { cmd = "pytest tests/test_cosmology_astropy_parity.py tests/test_extinction_parity.py tests/test_spectrophotometry_parity.py tests/test_redshift_units_parity.py tests/test_transforms_correctness.py -q -p no:cacheprovider", env = { TORCHSKY_HARNESS_REQUIRE_GATES = "1" } }
+
 # Core benchmarks (essential)
-bench = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --scope all"
 bench-wcs = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only"
 bench-sphere = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --sphere-only"
 bench-map-image-plane = "pixi run -e sphere-bench python -m torchsky_harness.scripts.run_local_sphere_bench benchmarks/bench_map_image_plane.py --json-out benchmark_results/map_image_plane.json"
@@ -127,9 +133,9 @@ bootstrap-map-compat-montage = "pixi run -e map-compat python -m torchsky_harnes
 bootstrap-map-compat-casutools = "pixi run -e map-compat python -m torchsky_harness.scripts.bootstrap_map_compat_tools --tool casutools"
 bench-wcs-legacy = "pixi run -e bench-legacy python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --legacy-wcs"
 # Plan §4: Phase 0 quick benches + full WCS/sphere pytest + spin matrix smoke.
-wcs-sphere-acceptance = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --quick --run-id acceptance_wcs --output-dir benchmarks_results && pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --sphere-only --quick --run-id acceptance_sphere --output-dir benchmarks_results && pixi run -e bench-all pytest tests/test_wcs_*.py tests/test_sphere_*.py tests/test_healsparse_upstream.py tests/test_healpix_*.py tests/test_spectral.py -q --tb=line && pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set default --runs 2 --json-out benchmarks_results/acceptance_spin_matrix.json"
+wcs-sphere-acceptance = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --quick --run-id acceptance_wcs --output-dir benchmarks_results && pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --sphere-only --quick --run-id acceptance_sphere --output-dir benchmarks_results && pixi run -e bench-all pytest tests/test_wcs_*.py tests/test_sphere_*.py tests/test_healsparse_upstream.py tests/test_healpix_*.py -q --tb=line && pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set default --runs 2 --json-out benchmarks_results/acceptance_spin_matrix.json"
 # Full (not --quick) WCS+sphere orchestrator + the same pytest glob. For CANFAR/Linux.
-wcs-sphere-acceptance-full = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --no-gpu --no-legacy-wcs-bridge --run-id acceptance_wcs_full --output-dir benchmarks_results && pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --sphere-only --no-gpu --run-id acceptance_sphere_full --output-dir benchmarks_results && pixi run -e bench-all pytest tests/test_wcs_*.py tests/test_sphere_*.py tests/test_healsparse_upstream.py tests/test_healpix_*.py tests/test_spectral.py -q --tb=line && pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set default --runs 2 --json-out benchmarks_results/acceptance_spin_matrix.json"
+wcs-sphere-acceptance-full = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --wcs-only --no-gpu --no-legacy-wcs-bridge --run-id acceptance_wcs_full --output-dir benchmarks_results && pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --sphere-only --no-gpu --run-id acceptance_sphere_full --output-dir benchmarks_results && pixi run -e bench-all pytest tests/test_wcs_*.py tests/test_sphere_*.py tests/test_healsparse_upstream.py tests/test_healpix_*.py -q --tb=line && pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set default --runs 2 --json-out benchmarks_results/acceptance_spin_matrix.json"
 canfar-wcs-sphere = "bash scripts/launch_canfar_wcs_sphere.sh"
 canfar-wcs-sphere-cpu = "bash scripts/launch_canfar_wcs_sphere.sh cpu"
 canfar-wcs-sphere-cuda = "bash scripts/launch_canfar_wcs_sphere.sh cuda"
@@ -188,7 +194,6 @@ bench-all = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all 
 bench-all-keep = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile user --scope all --keep-temp"
 bench-all-force = "pixi run -e bench-all python -m torchsky_harness.cli run bench_all -- --profile lab --scope all"
 bench-transforms = "pixi run -e bench python -m torchsky_harness.cli run bench_transforms --"
-bench-focused = "pixi run -e bench python -m torchsky_harness.cli run bench_transforms --"
 
 # Pytest-based benchmarking
 bench-pytest = "pixi run -e bench -- pytest benchmarks/ --benchmark-only"
@@ -202,7 +207,6 @@ sphere-bench-bootstrap-harmonics = "pixi run -e sphere-bench python -m torchsky_
 sht-bench-bootstrap = "pixi run -e sht-bench python -m torchsky_harness.scripts.bootstrap_sphere_bench --installer pip --with-s2fft"
 sht-bench-spectral = "pixi run -e sht-bench python -m torchsky_harness.cli run bench_sphere_spectral -- --nside 32 --lmax 32 --runs 5 --json-out benchmark_results/sphere_spectral_s2fft.json"
 sphere-upstream-sync = "pixi run -e sphere-bench python -m torchsky_harness.scripts.sync_upstream_sphere_sources --prefer-sdist --include healpy,astropy-healpix,healpix,mhealpy,spherical-geometry --output-dir benchmark_results/upstream_fixtures"
-sphere-upstream-spin-matrix-gate-extended = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set extended --runs 5 --seed 123 --json-out benchmark_results/upstream_replay_healpy_spin_matrix.json --raw-json-out benchmark_results/upstream_replay_healpy_spin_extended_raw.json --baseline-json benchmarks/baselines/spin_matrix_extended_baseline.json --max-regression-frac 0.20"
 sphere-upstream-spin-matrix = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set extended --runs 5 --json-out benchmark_results/upstream_replay_healpy_spin_matrix.json --raw-json-out benchmark_results/upstream_replay_healpy_spin_extended_raw.json"
 sphere-upstream-spin-matrix-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_spin_matrix -- --case-set extended --runs 5 --seed 123 --json-out benchmark_results/upstream_replay_healpy_spin_matrix.json --raw-json-out benchmark_results/upstream_replay_healpy_spin_extended_raw.json --baseline-json benchmarks/baselines/spin_matrix_extended_baseline.json --max-regression-frac 0.20"
 sphere-bench-geometry = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_sphere_geometry -- --nside 1024 --n-points 200000 --runs 5 --device auto --sample-profile mixed --json-out benchmark_results/sphere_geometry.json --csv-out benchmark_results/sphere_geometry.csv"
@@ -234,13 +238,14 @@ sphere-bench-pipeline = "pixi run -e sphere-bench python -m torchsky_harness.cli
 sphere-bench-pipeline-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_pipeline_table_sphere -- --n-rows 1000000 --runs 3 --nside 256 --min-read-ratio-filtered-vs-torch 0.2 --min-pipeline-ratio-filtered-vs-no-pushdown 0.7 --min-pipeline-ratio-torch-vs-no-pushdown 0.7 --json-out benchmark_results/pipeline_table_sphere.json"
 
 [feature.prod]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.prod.dependencies]
 python = "==3.13.14"
+pyarrow = ">=25"
 
 [feature.prod.pypi-dependencies]
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 canfar = "*"
 vos = "*"
 
@@ -249,7 +254,7 @@ vos = "*"
 astropy = ">=5.0"
 pandas = ">=2.2"
 polars = ">=1.0"
-pyarrow = ">=14.0"
+pyarrow = ">=25"
 pyright = ">=1.1.350"
 pytest-xdist = ">=3.0"
 requests = ">=2.28"
@@ -268,6 +273,16 @@ reproject = ">=0.14"
 [feature.bench.pypi-dependencies]
 drizzle = "==2.2.0"
 dfreproject = "==1.3.1"
+
+# Comparators for the bounded cosmology / extinction / spectrophotometry /
+# redshift / transforms parity suites (all on conda-forge).
+[feature.parity-spectral.dependencies]
+astropy = ">=6.0"
+scipy = ">=1.11"
+dust_extinction = ">=1.5"
+speclite = ">=0.20"
+synphot = ">=1.4"
+pytest-xdist = ">=3.0"
 
 [feature.sphere-bench.dependencies]
 healpy = ">=1.19.0,<2"
@@ -301,8 +316,8 @@ nanobind = ">=2.10.2"
 mpmath = ">=1.1,<1.4"
 
 [feature.cuda.pypi-dependencies]
-torchfits = "==1.0.0"
-torch = "==2.13.0"
+torchfits = "==1.3.1"
+torch = "==2.14.0"
 
 [feature.smacs.dependencies]
 pillow = ">=10"
@@ -318,6 +333,7 @@ astroquery = ">=0.4.6"
 
 [feature.map-compat.dependencies]
 python = "==3.13.14"
+pyarrow = ">=25"
 cmake = ">=3.21"
 ninja = ">=1.10"
 scikit-build-core = ">=1.0.0"
@@ -344,9 +360,10 @@ pandas = "*"
 psutil = "*"
 astropy = "*"
 starlink-ast = "*"
+pytest = ">=8.0"
 cython = "<3.0"
-# Add torch for torchsky
-pytorch = ">=2.13"
+# Comparator-only env (Python 3.10 for legacy Cython builds): torch 2.14 needs
+# Python >=3.11, so it is intentionally absent; the subject is not installed here.
 
 [feature.bench-legacy.pypi-dependencies]
 # Kapteyn is not pinned here: its sdist build often fails under isolated solves
@@ -362,7 +379,7 @@ astropy = ">=5.0"
 numpy = ">=1.20"
 
 [feature.phase0-wcs]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-wcs.dependencies]
 python = "3.13.*"
@@ -398,14 +415,14 @@ wheel = ">=0.45"
 astrometry = "==0.97"
 
 [feature.phase0-astrometry-portable]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-astrometry-portable.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 scikit-build-core = ">=1.0.0"
 cmake = ">=3.21"
@@ -415,17 +432,17 @@ astromatic-scamp = "==2.15.0"
 
 [feature.phase0-astrometry-portable.pypi-dependencies]
 drizzlepac = "==3.11.0"
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-sparse-sphere]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-sparse-sphere.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 scikit-build-core = ">=1.0.0"
 cmake = ">=3.21"
@@ -436,7 +453,7 @@ healsparse = "==1.15.0"
 mocpy = "==0.20.0"
 
 [feature.phase0-sparse-sphere.pypi-dependencies]
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-harmonics]
 platforms = ["linux-64"]
@@ -446,24 +463,25 @@ python = "3.11.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
-torch-harmonics = "==0.9.3"
+pytorch = "2.14.*"
 ducc0 = "==0.42.0"
 pixell = "==0.32.7"
 namaster = "==3.0.1"
 
+# conda-forge torch-harmonics 0.9.3 builds still target pytorch 2.13; the PyPI wheel needs torch>=2.14.
 [feature.phase0-harmonics.pypi-dependencies]
 s2fft = ">=1,<2"
+torch-harmonics = "==0.9.3"
 
 [feature.phase0-harmonics-portable]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-harmonics-portable.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 scikit-build-core = ">=1.0.0"
 cmake = ">=3.21"
@@ -475,26 +493,26 @@ namaster = "==3.0.1"
 
 [feature.phase0-harmonics-portable.pypi-dependencies]
 s2fft = ">=1,<2"
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-drizzle]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-drizzle.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 
 [feature.phase0-drizzle.pypi-dependencies]
 drizzlepac = "==3.11.0"
 stcal = ">=1,<2"
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-adaptive]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-adaptive.dependencies]
 python = "3.13.*"
@@ -503,37 +521,37 @@ setuptools = ">=77"
 wheel = ">=0.45"
 astropy = "==8.0.2"
 reproject = "==0.21.0"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 
 [feature.phase0-adaptive.pypi-dependencies]
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-jwst-ifu]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-jwst-ifu.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 
 [feature.phase0-jwst-ifu.pypi-dependencies]
 jwst = "==3.0.0"
 crds = ">=13,<14"
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 [feature.phase0-photometry]
-platforms = ["osx-arm64", "linux-64"]
+platforms = ["osx-arm64-14", "linux-64"]
 
 [feature.phase0-photometry.dependencies]
 python = "3.13.*"
 pip = ">=24"
 setuptools = ">=77"
 wheel = ">=0.45"
-pytorch = "==2.13.0"
+pytorch = "2.14.*"
 numpy = ">=1.20"
 scikit-build-core = ">=1.0.0"
 cmake = ">=3.21"
@@ -542,7 +560,7 @@ nanobind = ">=2.10.2"
 
 [feature.phase0-photometry.pypi-dependencies]
 scarlet2 = "==0.5.1"
-torchfits = "==1.0.0"
+torchfits = "==1.3.1"
 
 # Environment definitions
 [environments]
@@ -555,11 +573,12 @@ sht-bench = { features = ["prod", "test", "sphere-bench"], solve-group = "defaul
 cuda-bench = { features = ["cuda"], no-default-feature = true, solve-group = "cuda" }
 smacs-cuda = { features = ["cuda", "smacs"], no-default-feature = true, solve-group = "smacs-cuda" }
 smacs = { features = ["prod", "test", "smacs"], solve-group = "smacs" }
+parity-spectral = { features = ["prod", "parity-spectral"], solve-group = "parity-spectral" }
 svo-bootstrap = { features = ["prod", "svo-bootstrap"], solve-group = "default" }
 bench-all = { features = ["prod", "bench", "sphere-bench"], solve-group = "default" }
 map-compat = { features = ["prod", "bench", "sphere-bench", "map-compat"], solve-group = "map-compat" }
 map-compat-cuda = { features = ["cuda", "map-compat"], no-default-feature = true, solve-group = "map-compat-cuda" }
-bench-legacy = { features = ["bench-legacy"], solve-group = "bench-legacy" }
+bench-legacy = { features = ["bench-legacy"], no-default-feature = true, solve-group = "bench-legacy" }
 astrometry = { features = ["prod", "astrometry"], solve-group = "default" }
 phase0-wcs = { features = ["phase0-wcs"], no-default-feature = true, solve-group = "phase0-wcs" }
 phase0-astrometry = { features = ["phase0-astrometry"], no-default-feature = true, solve-group = "phase0-astrometry" }

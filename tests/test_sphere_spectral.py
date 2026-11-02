@@ -6,7 +6,7 @@ import torch
 
 from torchsky._native import cpp as _native_cpp
 from torchsky.sphere import healpix as hp
-from torchsky.sphere.spectral import (
+from torchsky.sphere import (
     alm2map,
     alm2cl,
     alm2map_der1,

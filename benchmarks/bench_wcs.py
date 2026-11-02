@@ -22,7 +22,7 @@ from astropy.wcs import WCS as AstropyWCS
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
-from torchsky.wcs.core import WCS as TorchWCS  # noqa: E402
+from torchsky import WCS as TorchWCS
 
 
 @dataclass(frozen=True)

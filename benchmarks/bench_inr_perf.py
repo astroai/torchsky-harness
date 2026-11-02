@@ -35,16 +35,16 @@ BENCHMARKS = ROOT
 
 from torchsky import WCS  # noqa: E402
 from torchsky.device import default_compute_device  # noqa: E402
-from torchsky.map.field import (
-    FieldObservation,
-    estimate_field_domain,
-    fit_field_model,
-    make_field_model,
-    render_field_observation,
+from torchsky.map.field import render_field_observation
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    model as make_field_model,
 )
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
-from torchsky.map.field.types import FieldModelKind  # noqa: E402
+from torchsky.scene import ImageObservation
+from torchsky.field import FieldModelKind
 
 try:
     import torchsky_harness.benchmarks.bench_map_compat as _map_compat  # noqa: E402

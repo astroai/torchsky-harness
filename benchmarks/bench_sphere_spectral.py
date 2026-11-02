@@ -17,12 +17,7 @@ from pathlib import Path  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
-from torchsky.sphere.spectral import (  # noqa: E402
-    alm2map_spin,
-    alm_index,
-    alm_size,
-    map2alm_spin,
-)
+from torchsky.sphere import alm2map_spin, alm_index, alm_size, map2alm_spin
 from torchsky.sphere import healpix as hp  # noqa: E402
 
 

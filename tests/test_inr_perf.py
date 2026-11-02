@@ -38,6 +38,8 @@ _ACCELERATOR_SMOKE_SPEC = replace(
 # ── Throughput benchmark tests ────────────────────────────────────────
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     "case_name",
     [c.name for c in _inr_perf.DEFAULT_PERF_CASES],
@@ -64,6 +66,8 @@ def test_inr_training_reduces_loss(case_name: str) -> None:
     assert tp.num_params > 0, f"num_params {tp.num_params} must be positive"
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 def test_inr_throughput_device_independent() -> None:
     """Training throughput on CPU should be measurable and finite."""
     spec = _inr_perf.DEFAULT_PERF_CASES[0]
@@ -76,6 +80,8 @@ def test_inr_throughput_device_independent() -> None:
     assert tp.total_pixels_processed > 0
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 def test_inr_render_and_coadd_quality() -> None:
     """The deterministic fast case must clear INR and native-coadd quality floors."""
     spec = _inr_perf.DEFAULT_PERF_CASES[0]
@@ -125,7 +131,7 @@ def test_inr_render_and_coadd_quality() -> None:
 
 def test_default_perf_cases_cover_recommended_models() -> None:
     """Default benchmark cases must cover the three recommended model kinds."""
-    from torchsky.map.field.registry import RECOMMENDED_FIELD_MODEL_KINDS
+    from torchsky.field import RECOMMENDED_FIELD_MODEL_KINDS
 
     covered = {c.model_kind for c in _inr_perf.DEFAULT_PERF_CASES}
     for recommended in RECOMMENDED_FIELD_MODEL_KINDS:
@@ -173,6 +179,8 @@ def test_inr_perf_exports_public_api() -> None:
 # ── SWarp coadd parity test ───────────────────────────────────────────
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.skipif(
     _inr_perf._map_compat is None or _inr_perf._map_compat._find_swarp_binary() is None,
     reason="SWarp binary not installed or not on PATH",
@@ -226,6 +234,8 @@ def test_inr_swarp_parity() -> None:
 # ── GPU smoke tests (skip when CUDA unavailable) ──────────────────────
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
 def test_inr_training_throughput_cuda() -> None:
     """INR training on CUDA should be measurable and produce correct metrics."""
@@ -237,6 +247,8 @@ def test_inr_training_throughput_cuda() -> None:
     assert tp.final_loss < tp.initial_loss
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
 def test_inr_render_quality_cuda() -> None:
     """INR render on CUDA should produce valid quality metrics."""
@@ -256,6 +268,8 @@ def _mps_available() -> bool:
     return hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.skipif(not _mps_available(), reason="MPS not available")
 def test_inr_training_throughput_mps() -> None:
     """INR training on MPS should be measurable and produce correct metrics."""
@@ -267,6 +281,8 @@ def test_inr_training_throughput_mps() -> None:
     assert tp.final_loss < tp.initial_loss
 
 
+@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.skipif(not _mps_available(), reason="MPS not available")
 def test_inr_render_quality_mps() -> None:
     """INR render on MPS should produce valid quality metrics."""

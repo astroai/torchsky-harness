@@ -1,0 +1,51 @@
+[
+  {
+    "identity_type": "data",
+    "id": "deblend-v1-matrix",
+    "role": "frozen bounded deblend certification matrix",
+    "uri": "file:campaigns/phase0/matrices/deblend-v1.json",
+    "sha256": "95e1e3d5335dab332c62a1752035aba395266fca1b98b711d2fd1bcea1976044"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-crowded-v1",
+    "role": "deterministic crowded fixed-template supplied-source fixture",
+    "uri": "file:benchmarks/fixtures/certification/deblend_crowded_v1.json",
+    "sha256": "70cc1ae3b2993929efbe751e4b3b1a9d15094640ecd9e5a0be365525bb4b0557"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-tractor-v1",
+    "role": "Tractor supplied-source external result manifest",
+    "uri": "file:campaigns/phase0/external/deblend-tractor-v1.json",
+    "sha256": "60693cc876de0c956a2bba1a0b4b183223e3f5cee0f9f856f2f10baba417befa"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-scarlet-v1",
+    "role": "SCARLET supplied-source external result manifest",
+    "uri": "file:campaigns/phase0/external/deblend-scarlet-v1.json",
+    "sha256": "6c1293c9a6e36afee91cbde2627e2597d3be00554b01427f85e4f381866c36f5"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-tphot-v1",
+    "role": "T-PHOT supplied-source external result manifest",
+    "uri": "file:campaigns/phase0/external/deblend-tphot-v1.json",
+    "sha256": "3728c9bbd397d91e83b6ab6ba58e85d93f19bfe4898716d03a869b3bc2f5475d"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-smacs-v1",
+    "role": "SMACS0723 external data identity stub",
+    "uri": "file:campaigns/phase0/external/deblend-smacs-v1.json",
+    "sha256": "1c6aaac3b562ee8cf1ed86ca55c860923eda9e8c7dfbd5156076df3d8343a09b"
+  },
+  {
+    "identity_type": "data",
+    "id": "deblend-cosmos-v1",
+    "role": "COSMOS external data identity stub",
+    "uri": "file:campaigns/phase0/external/deblend-cosmos-v1.json",
+    "sha256": "0edafcb3d32f7479e315f81fa4a448f698d3f330ad8a1d98e0864f066ecc448f"
+  }
+]

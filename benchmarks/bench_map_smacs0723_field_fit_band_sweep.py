@@ -41,9 +41,14 @@ DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_field_fit_band_sweep.
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_field_fit_band_sweep.md"
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
-from torchsky.map.field import FieldObservation, estimate_field_domain, make_field_model, render_field_observation
+from torchsky.map.field import render_field_observation
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    model as make_field_model,
+)
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _parse_csv(value: str) -> list[str]:

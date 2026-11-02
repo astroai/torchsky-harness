@@ -28,7 +28,7 @@ paths, so this is a full evidence refresh, not a partial gate rerun.
 ## 1. Build and record the wheel
 
 ```bash
-cd /Users/fabbros/src/astroai/torchsky
+cd $TORCHSKY_ROOT
 rm -rf /tmp/torchsky-rework /tmp/wheels-rework && mkdir -p /tmp/wheels-rework
 git archive HEAD | tar -x -C /tmp/torchsky-rework
 CMAKE_PREFIX_PATH=$PWD/.pixi/envs/default \
@@ -43,7 +43,7 @@ The wheel is the subject artifact. Record its sha256; the harness also records
 ## 2. Install the subject in every gate environment
 
 ```bash
-cd /Users/fabbros/src/astroai/torchsky-harness
+cd $HARNESS_ROOT
 WHEEL=$(ls /tmp/wheels-rework/*.whl)
 for env in test bench-all sphere-bench map-compat; do
   pixi run -e "$env" -- python -m pip install --force-reinstall --no-deps "$WHEEL"
@@ -63,7 +63,7 @@ For `map-compat`, also install the comparator stack if the env lacks it
 ## 3. Subject-side sanity before the gates
 
 ```bash
-cd /Users/fabbros/src/astroai/torchsky
+cd $TORCHSKY_ROOT
 pixi run -e test -- pytest -n auto -m "not performance" -q
 pixi run examples
 pixi run typecheck
@@ -147,7 +147,7 @@ before trusting the scientific gates. Use subprocess isolation and timeouts.
 If CANFAR credentials and network are available:
 
 ```bash
-cd /Users/fabbros/src/astroai/torchsky-harness
+cd $HARNESS_ROOT
 # dry-run the launch script first; flags are revision-pinned
 bash scripts/launch_canfar_wcs_sphere.sh gpu-validate
 bash scripts/launch_canfar_wcs_sphere.sh cuda
@@ -161,7 +161,7 @@ is reported, not claimed as a win.
 ## 7. Bundle and docs
 
 ```bash
-cd /Users/fabbros/src/astroai/torchsky-harness
+cd $HARNESS_ROOT
 pixi run release-readiness
 ```
 

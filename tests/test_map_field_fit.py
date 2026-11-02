@@ -6,7 +6,7 @@ import pytest
 import torch
 
 from torchsky.map import stack_product
-from torchsky.map.product import plan_map_product
+from torchsky.map import plan_product as plan_map_product
 
 
 from torchsky_harness.benchmarks import bench_map_field_fit as _field_fit_bench

@@ -888,7 +888,7 @@ These are the intended end-state CLI contracts; check the boxes only after the
 profile exists and `--help` confirms them.
 
 ```bash
-cd /Users/fabbros/src/sfabbro/torchsky
+cd $TORCHSKY_ROOT
 
 pixi run -e test -- pytest tests/test_multiband_depth_benchmark.py -q
 

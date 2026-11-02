@@ -40,7 +40,7 @@ BENCH_DIR = Path(__file__).resolve().parents[1]
 from torchsky_harness.benchmarks.bench_map_smacs0723_real import _discover_exposure_paths  # noqa: E402
 from torchsky.map import TargetRenderSpec
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 from torchsky.map.operators import bind_image_plane_target_operator  # noqa: E402
 
 JWST_DO_NOT_USE = np.uint64(1)

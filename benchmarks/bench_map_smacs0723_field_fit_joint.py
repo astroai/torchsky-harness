@@ -70,25 +70,25 @@ DEFAULT_EXPORT_DIR = DATA / "benchmark_results" / "smacs0723_field_fit_joint_exp
 import torchsky  # noqa: E402
 from torchsky.map.field.core import ExplicitSpectralGridField  # noqa: E402
 from torchsky.map.field import (
-    FieldObservation,
-    ForwardContext,
-    estimate_field_domain,
-    fit_field_model,
-    fit_structured_noise_crossfit,
-    make_field_model,
     render_field_observation,
     render_spectral_power_foam_observation_exact,
 )
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    ForwardContext,
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    fit_noise_crossfit as fit_structured_noise_crossfit,
+    model as make_field_model,
+)
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
-from torchsky.map.field import (  # noqa: E402
-    FieldFitResult,
+from torchsky.scene import ImageObservation
+from torchsky.map.field import (
     IRLSConfig,
     LinearBandGridField,
     adapt_stationary_calibrated_band_observation,
     bind_linear_band_grid_observations_to_operator_set,
     prepare_linear_band_grid_observation_data,
-    save_field_artifact,
     solve_joint_multiband_grid_cg,
     solve_linear_band_grid_cg,
     solve_linear_band_grid_lsqr,
@@ -97,6 +97,10 @@ from torchsky.map.field import (  # noqa: E402
     solve_spectral_cell_coefficients,
     solve_spectral_power_pixel_affine_least_squares,
     spectral_basis_whitening_transform,
+)
+from torchsky.field import (
+    FitResult as FieldFitResult,
+    save_artifact as save_field_artifact,
 )
 from torchsky.map.field.bandpass import bandpass_quadrature  # noqa: E402
 from torchsky.map.field.forwarding import type_method_accepts_kwarg  # noqa: E402
@@ -108,13 +112,12 @@ from torchsky.map.operators import (  # noqa: E402
 )
 from torchsky.map.operators.psf import gaussian_kernel1d, psf_support_radius  # noqa: E402
 from torchsky.calibration_evidence import calibration_exposure_id, load_operator_calibration_split  # noqa: E402
-from torchsky.map.operators import (  # noqa: E402
+from torchsky.map.operators import (
     ConditionedBackgroundField,
     LearnedBackgroundOp,
     LearnedPSFOp,
     LowRankChromaticPSF,
     AdaptiveSpatioSpectralTemporalEncoder,
-    ObservationOperatorBundle,
     StructuredDetectorNoise,
     StructuredNoiseOp,
     VAR_FLAT,
@@ -124,13 +127,10 @@ from torchsky.map.operators import (  # noqa: E402
     field_observation_operator_bundle,
     profile_amplifier_row_offsets,
 )
-from torchsky.map.field.types import PSFSpec  # noqa: E402
-from torchsky.map.product import (  # noqa: E402
-    BandpassSpec,
-    ProductResult,
-    ProductSpec,
-    render_field_product,
-)
+from torchsky.scene import ObservationOperatorBundle
+from torchsky.field import PSFSpec
+from torchsky.map.product import render_field_product
+from torchsky.map import BandpassSpec, ProductResult, ProductSpec
 from torchsky.spectrophotometry import Passband  # noqa: E402
 
 
@@ -541,7 +541,7 @@ def _save_joint_field_artifact(
         },
         calibration_manifest=calibration_audit,
         operator_manifest={
-            "contexts": [asdict(context) for context in contexts],
+            "contexts": [asdict(context) if context is not None else None for context in contexts],
             "frozen_calibration": calibration_audit,
             "live_operator_objects_serialized": False,
         },

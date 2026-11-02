@@ -1,6 +1,20 @@
-name: Harness infrastructure
+name: Harness
+'on':
+  push: null
+  pull_request: null
+  workflow_dispatch:
+    inputs:
+      subject_repo:
+        description: "torchsky repository holding the subject (owner/name)"
+        default: astroai/torchsky
+      subject_sha:
+        description: "Exact torchsky commit SHA to evaluate (required for the subject job)"
+        required: false
+        default: ""
+
 jobs:
   smoke:
+    # Subject-free infrastructure contracts; always runs.
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -11,13 +25,60 @@ jobs:
     - run: pixi run -e test -- python -m pip install -e . --no-deps --no-build-isolation
     - run: pixi run preflight
     - name: Infrastructure contracts without a scientific subject
-      run: pixi run -e test -- pytest tests/test_runner.py tests/test_run_local_sphere_bench.py tests/test_docs_links.py -q
+      run: pixi run -e test -- pytest tests/test_runner.py tests/test_run_local_sphere_bench.py tests/test_docs_links.py tests/test_subject_source.py -q
     - name: Build pure-Python harness wheel
       run: pixi run build
     - uses: actions/upload-artifact@v4
       with:
         name: torchsky-harness-wheel
         path: dist/*.whl
-'on':
-  push: null
-  pull_request: null
+
+  subject-suite:
+    # Evaluates an explicitly pinned torchsky commit. torchsky lives in a different
+    # (private) repository than this one, so the default GITHUB_TOKEN cannot read
+    # it: set the repository secret SUBJECT_READ_TOKEN (read access to the subject repo)
+    # and dispatch with `subject_sha`. Without them this job reports a notice and
+    # passes without running; the subject-free `smoke` job stays the only blocker.
+    runs-on: ubuntu-latest
+    needs: smoke
+    env:
+      SUBJECT_READ_TOKEN: ${{ secrets.SUBJECT_READ_TOKEN }}
+      SUBJECT_REPO: ${{ inputs.subject_repo || 'astroai/torchsky' }}
+      SUBJECT_SHA: ${{ inputs.subject_sha || vars.TORCHSKY_SUBJECT_SHA }}
+    steps:
+    - name: Check subject access
+      id: gate
+      run: |
+        if [ -z "$SUBJECT_READ_TOKEN" ] || [ -z "$SUBJECT_SHA" ]; then
+          echo "::notice::subject-suite skipped: set secret SUBJECT_READ_TOKEN and a subject SHA (dispatch input or repo variable TORCHSKY_SUBJECT_SHA)"
+          echo "run=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "run=true" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: actions/checkout@v4
+      if: steps.gate.outputs.run == 'true'
+    - uses: actions/checkout@v4
+      if: steps.gate.outputs.run == 'true'
+      with:
+        repository: ${{ env.SUBJECT_REPO }}
+        ref: ${{ env.SUBJECT_SHA }}
+        token: ${{ secrets.SUBJECT_READ_TOKEN }}
+        path: subject
+    - uses: prefix-dev/setup-pixi@v0.8.0
+      if: steps.gate.outputs.run == 'true'
+      with:
+        pixi-version: latest
+    - name: Install pinned subject (non-editable) and harness
+      if: steps.gate.outputs.run == 'true'
+      run: |
+        pixi install --frozen -e test
+        test "$(git -C subject rev-parse HEAD)" = "$SUBJECT_SHA"
+        pixi run -e test install-subject subject
+    - name: Non-slow suite against the installed subject
+      if: steps.gate.outputs.run == 'true'
+      run: >
+        pixi run -e test -- pytest tests -q -n auto -p no:cacheprovider
+        -m "not performance and not benchmark and not slow and not integration"
+    - name: Subject identity
+      if: steps.gate.outputs.run == 'true'
+      run: pixi run -e test -- python -c "import json; from torchsky_harness.subject import identify_subject as i; d=i(); d.pop('package_content_sha256'); print(json.dumps(d, indent=2))"

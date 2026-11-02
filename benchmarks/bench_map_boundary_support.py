@@ -18,7 +18,7 @@ import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 from torchsky.map import coadd as coadd_image_plane
 from torchsky.map import image_plane_projection as image_plane_projection_mod  # noqa: E402
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 import torchsky.map.operators.resampling as resampling_mod  # noqa: E402
 from torchsky.map.operators import validate_image_plane_2d  # noqa: E402
 

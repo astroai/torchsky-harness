@@ -28,7 +28,7 @@ pytest.importorskip("reproject")
 import torchfits  # noqa: E402
 
 from torchsky.map import coadd as coadd_image_plane, plan as plan_image_plane_target
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _tan_header(

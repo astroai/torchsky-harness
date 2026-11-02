@@ -22,11 +22,10 @@ except ImportError as exc:  # pragma: no cover
 from torchsky.sphere.healpix import (
     ang2pix_nested,
     ang2pix_ring,
-    nest2ring,
     pix2ang_nested,
     pix2ang_ring,
-    ring2nest,
 )
+from torchsky.sphere import nest2ring, ring2nest
 
 
 def _healpy_provenance() -> dict[str, Any] | None:

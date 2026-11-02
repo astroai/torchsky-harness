@@ -17,7 +17,7 @@ from torchsky_harness.benchmarks.sht_peer_layout import (  # noqa: E402
     s2fft_alm_to_packed,
 )
 from torchsky.sphere import healpix as hp  # noqa: E402
-from torchsky.sphere.spectral import (  # noqa: E402
+from torchsky.sphere import (
     alm2map,
     alm2map_spin,
     alm_index,

@@ -12,7 +12,7 @@ from astropy.wcs import WCS
 import torch
 
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 pytest.importorskip("torchsky._cpp")
 

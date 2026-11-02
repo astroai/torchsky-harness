@@ -13,7 +13,7 @@ import numpy as np
 import torch
 from astropy.wcs import WCS as AstropyWCS
 
-from torchsky.wcs.core import WCS as TorchWCS  # noqa: E402
+from torchsky import WCS as TorchWCS
 from torchsky_harness.benchmarks.bench_wcs import CASES, _make_header, _sample_pixels  # noqa: E402
 
 try:

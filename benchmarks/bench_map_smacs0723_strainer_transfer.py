@@ -53,15 +53,17 @@ DEFAULT_REFERENCE_PATH = DATA / "updec_webb" / "F277Wb_UPDC-v2_iter0_i2d.fits.fz
 DEFAULT_EXPOSURE_DIR = DATA / "jwst_smacs0723"
 
 from torchsky.map.field import (
-    FieldObservation,
-    estimate_field_domain,
-    fit_field_model,
-    make_field_model,
     pretrain_strainer_trunk_synthetic,
     render_field_observation,
 )
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    model as make_field_model,
+)
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _skip_payload(reason: str) -> dict[str, Any]:

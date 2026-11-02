@@ -17,12 +17,12 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
-from torchsky.map.operators import ObservationOperatorBundle  # noqa: E402
+from torchsky.scene import ObservationOperatorBundle
 from torchsky.map.solvers import (  # noqa: E402
     BoundObservationOperator,
     BoundObservationOperatorSet,
 )
-from torchsky.map.target import TargetRenderSpec  # noqa: E402
+from torchsky.map import TargetRenderSpec
 
 
 def _max_rss_mb() -> float:

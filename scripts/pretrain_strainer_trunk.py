@@ -19,11 +19,10 @@ import torch
 def main() -> int:
 
     from torchsky.map.field import (
-        FieldDomain,
-        make_field_model,
         pretrain_strainer_trunk_synthetic,
         save_strainer_trunk_checkpoint,
     )
+    from torchsky.field import Domain as FieldDomain, model as make_field_model
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True, help="Output .pt path")

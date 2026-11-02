@@ -12,7 +12,7 @@ import torch
 
 from torchsky import WCS
 from torchsky.sphere import healpix as hp
-from torchsky.sphere.spectral import alm2map, map2alm
+from torchsky.sphere import alm2map, map2alm
 
 pytestmark = pytest.mark.skipif(
     not torch.cuda.is_available(), reason="CUDA device not available"

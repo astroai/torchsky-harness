@@ -15,7 +15,7 @@ from typing import Any, Callable  # noqa: E402
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
-from torchsky.sphere.sparse import SparseHealpixMap  # noqa: E402
+from torchsky.sphere import SparseHealpixMap
 from torchsky.sphere import healpix as hp  # noqa: E402
 from torchsky_harness.benchmarks._random_sampling import (  # noqa: E402
     RandomSamplingCase,

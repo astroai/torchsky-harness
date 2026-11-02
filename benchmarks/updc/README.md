@@ -6,9 +6,9 @@ torchsky-native primitives, and score native-pixel field reconstruction
 against classical Drizzle products.
 
 Pipeline overview and glossary:
-`docs/projects/wcs-aware-smacs0723-pipeline.md`.
+`docs/wcs-aware-smacs0723-pipeline.md`.
 Background: `docs/projects/hyperspectral-fusion.md` (UPDC context).
-Run log: `docs/projects/adass_updec_depth_week.md`.
+Run log: `docs/adass_updec_depth_week.md`.
 
 ## Run order
 
@@ -73,7 +73,7 @@ Run log: `docs/projects/adass_updec_depth_week.md`.
 | `benchmarks/stage_smacs0723_canfar.py` | CANFAR staging |
 | `scripts/run_canfar_adass_depth.sh` | Orchestration incl. new `mosaic` mode |
 | `docs/projects/hyperspectral-fusion.md` | UPDC background |
-| `docs/projects/adass_updec_depth_week.md` | Run log |
+| `docs/adass_updec_depth_week.md` | Run log |
 
 ## Gate checklist (docs/formulation_map.tex §gates)
 

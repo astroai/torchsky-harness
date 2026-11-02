@@ -21,11 +21,14 @@ from torchsky.map import stack_product
 from torchsky.map.field import (
     SkyEncoderMLPField,
     SpectralBasisField,
-    estimate_field_domain,
-    fit_field_model,
     render_field_observation,
 )
-from torchsky.map.product import plan_map_product, render_field_product
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+)
+from torchsky.map.product import render_field_product
+from torchsky.map import plan_product as plan_map_product
 
 
 def _masked_rmse(values: torch.Tensor, mask: torch.Tensor) -> float:

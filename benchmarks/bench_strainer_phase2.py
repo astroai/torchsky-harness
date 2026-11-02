@@ -17,14 +17,16 @@ import torch
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 
 from torchsky.map.field import (
-    FieldDomain,
-    FieldObservation,
-    estimate_field_domain,
-    fit_field_model,
-    make_field_model,
     pretrain_strainer_trunk_synthetic,
     render_field_observation,
 )
+from torchsky.field import (
+    Domain as FieldDomain,
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    model as make_field_model,
+)
+from torchsky.scene import FieldObservation
 
 
 def _tan_header(

@@ -36,7 +36,7 @@ DEFAULT_JSON_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.json"
 DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_reproduce_smoke.md"
 
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 try:  # noqa: E402
     from astropy.wcs import WCS  # type: ignore

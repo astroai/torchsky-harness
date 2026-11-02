@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # In-container CANFAR runner for torchsky WCS + sphere tests, healpy parity, and benches.
-# Writes /arc/projects/ots/torchsky-runs/<run_id>/ and copies the same tree to
+# Writes ${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/<run_id>/ and copies the same tree to
 # vos:sfabbro/torchsky-runs/<run_id>/.
 set -euo pipefail
 
@@ -8,7 +8,7 @@ mode=${1:?usage: run_canfar_wcs_sphere.sh MODE RUN_ID}
 run_id=${2:?usage: run_canfar_wcs_sphere.sh MODE RUN_ID}
 commit=${TORCHSKY_HARNESS_COMMIT:?set TORCHSKY_HARNESS_COMMIT to an exact pushed SHA}
 container_image=${CONTAINER_IMAGE:-images.canfar.net/astroai/notebook:latest}
-artifact_root=/arc/projects/ots/torchsky-runs/${run_id}
+artifact_root=${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/${run_id}
 source_root=${TORCHSKY_SOURCE_ROOT:-/scratch/${run_id}-src}
 vos_dest=${TORCHSKY_VOS_DEST:-vos:sfabbro/torchsky-runs/${run_id}}
 

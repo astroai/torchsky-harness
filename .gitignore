@@ -11,7 +11,7 @@ benchmark_results*/
 benchmarks_results*/
 runs/
 *.log
-data/
+/data/
 .DS_Store
 .local-artifacts/
 
@@ -20,4 +20,6 @@ data/
 .dsh/
 .freebuff/
 docs/agent-tooling.md
-campaigns/cosmos/
+
+# Large campaign outputs live on /arc (see campaigns/smacs0723/external-outputs.json)
+campaigns/smacs0723/history/20261011/smacs-metrics-expansion-20261011/coverage-existing.json

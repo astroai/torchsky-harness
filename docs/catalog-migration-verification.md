@@ -56,7 +56,7 @@ Ran against the already materialized torchsky test environment, with the
 harness installed editable:
 
 ```text
-pixi run --manifest-path /Users/fabbros/src/astroai/torchsky/pixi.toml --frozen --no-install -e test -- pytest /private/tmp/torchsky-harness-20261011/tests/test_catalog_compat.py /private/tmp/torchsky-harness-20261011/tests/test_real_data_validation.py /private/tmp/torchsky-harness-20261011/tests/test_bootstrap_map_compat_tools.py -q --tb=short
+pixi run --manifest-path $TORCHSKY_ROOT/pixi.toml --frozen --no-install -e test -- pytest /private/tmp/torchsky-harness-20261011/tests/test_catalog_compat.py /private/tmp/torchsky-harness-20261011/tests/test_real_data_validation.py /private/tmp/torchsky-harness-20261011/tests/test_bootstrap_map_compat_tools.py -q --tb=short
 9 passed in 2.81s
 ```
 
@@ -69,7 +69,7 @@ selected catalog and spherical reduction result. The normal gate thresholds
 and default retry settings remain in the benchmark.
 
 ```text
-pixi run --manifest-path /Users/fabbros/src/astroai/torchsky/pixi.toml --frozen --no-install -e test -- python -m torchsky_harness.benchmarks.bench_pipeline_table_sphere --table-path /private/tmp/torchsky-harness-pipeline-smoke.fits --json-out /private/tmp/torchsky-harness-pipeline-smoke.json --n-rows 10000 --runs 1 --nside 8 --min-read-ratio-filtered-vs-torch 0 --min-pipeline-ratio-filtered-vs-no-pushdown 0 --min-pipeline-ratio-torch-vs-no-pushdown 0 --retry-borderline-frac 0
+pixi run --manifest-path $TORCHSKY_ROOT/pixi.toml --frozen --no-install -e test -- python -m torchsky_harness.benchmarks.bench_pipeline_table_sphere --table-path /private/tmp/torchsky-harness-pipeline-smoke.fits --json-out /private/tmp/torchsky-harness-pipeline-smoke.json --n-rows 10000 --runs 1 --nside 8 --min-read-ratio-filtered-vs-torch 0 --min-pipeline-ratio-filtered-vs-no-pushdown 0 --min-pipeline-ratio-torch-vs-no-pushdown 0 --retry-borderline-frac 0
 ```
 
 Ruff passed for the touched catalog/common modules and migrated helper tests.

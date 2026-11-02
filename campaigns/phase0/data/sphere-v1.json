@@ -1,0 +1,51 @@
+[
+  {
+    "identity_type": "data",
+    "id": "sphere-v1-matrix",
+    "role": "frozen bounded sphere certification matrix",
+    "uri": "file:campaigns/phase0/matrices/sphere-v1.json",
+    "sha256": "ffa732726512e913b4861fb3ce6e5c05ca7c76cf2db2248199e8ab6dd3c52f91"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-v1-fixture",
+    "role": "analytic low-L and Monte Carlo fixture contract",
+    "uri": "file:benchmarks/fixtures/certification/sphere_v1.json",
+    "sha256": "4ee40e9b7e09eee712c460280228d2b395b0690d5717777a5b836e66f86b05e9"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-torch-harmonics-v1",
+    "role": "torch-harmonics CAR scalar and spin result manifest",
+    "uri": "file:campaigns/phase0/external/sphere-torch-harmonics-v1.json",
+    "sha256": "e046a2dc9cf5dd1ece91c35305f177388eb86a5467bdd3fba09450eb7468a3d1"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-ducc0-v1",
+    "role": "ducc0 CAR scalar and spin result manifest",
+    "uri": "file:campaigns/phase0/external/sphere-ducc0-v1.json",
+    "sha256": "4d65c5d077725e7b98ebec2aeab9eb8e8fd15aa17f4b7dfeadba3a830f88747b"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-s2fft-v1",
+    "role": "s2fft CAR scalar and spin result manifest",
+    "uri": "file:campaigns/phase0/external/sphere-s2fft-v1.json",
+    "sha256": "bfe1e531998ed1278877e8b4fca66678cdeeee5164b734cb88c4d6b03d1020ff"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-pixell-v1",
+    "role": "pixell CAR scalar and spin result manifest",
+    "uri": "file:campaigns/phase0/external/sphere-pixell-v1.json",
+    "sha256": "24c9c0c8445182f7d18b8b5d9f6f6126789862739d5d02dd0ed9aa13f555bf0e"
+  },
+  {
+    "identity_type": "data",
+    "id": "sphere-namaster-v1",
+    "role": "NaMaster pseudo-Cl and pure E/B result manifest",
+    "uri": "file:campaigns/phase0/external/sphere-namaster-v1.json",
+    "sha256": "5d6ed8f30056bb77e9a12c3595a1a40a0a8da05d06e8cb0b2b167eb060f4808d"
+  }
+]

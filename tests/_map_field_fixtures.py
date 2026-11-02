@@ -5,13 +5,9 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from torchsky.map.field import (
-    FieldDomain,
-    FieldObservation,
-    PSFSpec,
-    SpectralPowerFoamField,
-    make_field_model,
-)
+from torchsky.map.field import SpectralPowerFoamField
+from torchsky.field import Domain as FieldDomain, PSFSpec, model as make_field_model
+from torchsky.scene import FieldObservation
 
 
 def _header() -> dict[str, object]:

@@ -17,7 +17,7 @@ BENCHMARKS = ROOT / "benchmarks"
 
 import torchsky_harness.benchmarks.bench_map_projection_mosaic_suite as projection_suite  # noqa: E402
 from torchsky.map import stack_product
-from torchsky.map.product import plan_map_product
+from torchsky.map import plan_product as plan_map_product
 
 
 def _support_mask(weight: torch.Tensor) -> torch.Tensor:

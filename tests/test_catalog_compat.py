@@ -56,7 +56,13 @@ def _astropy_crossmatch(
 
 
 def _catalog_fixture_dir() -> Path:
-    return Path(__file__).resolve().parent / "data" / "upstream_astropy_catalogs"
+    return (
+        Path(__file__).resolve().parents[1]
+        / "src"
+        / "torchsky_harness"
+        / "fixtures"
+        / "upstream_astropy_catalogs"
+    )
 
 
 def _load_real_catalog(

@@ -94,7 +94,7 @@ def main() -> int:
         from astropy.wcs import WCS
         from reproject import reproject_interp
         from torchsky.map import resample
-        from torchsky.map.observation import ImageObservation
+        from torchsky.scene import ImageObservation
     except ImportError as exc:  # pragma: no cover - benchmark environment
         raise SystemExit(f"bench_map_real_cutout requires map dependencies: {exc}")
 

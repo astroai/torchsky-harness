@@ -7,7 +7,7 @@ set -euo pipefail
 run_id=${1:?usage: run_canfar_cuhpx_sht_spike.sh RUN_ID}
 commit=${TORCHSKY_HARNESS_COMMIT:?set TORCHSKY_HARNESS_COMMIT to an exact pushed SHA}
 container_image=${CONTAINER_IMAGE:-images.canfar.net/astroai/notebook:latest}
-artifact_root=/arc/projects/ots/torchsky-runs/${run_id}
+artifact_root=${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/${run_id}
 source_root=/scratch/${run_id}-src
 
 case "${container_image}" in

@@ -48,27 +48,25 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    from astropy.io import fits
+    import torchfits
 
     t0 = time.perf_counter()
-    with fits.open(args.mosaic, memmap=True) as hdul:
-        hdu = hdul[0]
-        header = hdu.header
-        ny, nx = hdu.data.shape
-        cy, cx = ny // 2, nx // 2
-        half = args.size // 2
-        image = hdu.data[cy - half : cy + half, cx - half : cx + half].astype(
-            np.float32
-        )
-        wcs_header = {
-            key: header[key]
-            for key in WCS_KEYS
-            if key in header and not isinstance(header[key], fits.card.Undefined)
-        }
-        wcs_header["NAXIS1"] = int(args.size)
-        wcs_header["NAXIS2"] = int(args.size)
-        wcs_header["CRPIX1"] = float(header["CRPIX1"]) - cx + half
-        wcs_header["CRPIX2"] = float(header["CRPIX2"]) - cy + half
+    path = str(args.mosaic)
+    _, shape = torchfits.read_shape(path, hdu=0)
+    ny, nx = (int(v) for v in shape[-2:])
+    cy, cx = ny // 2, nx // 2
+    half = args.size // 2
+    image = (
+        torchfits.read_subset(path, 0, cx - half, cy - half, cx + half, cy + half)
+        .numpy()
+        .astype(np.float32)
+    )
+    header = dict(torchfits.read_header(path, hdu=0))
+    wcs_header = {key: header[key] for key in WCS_KEYS if key in header}
+    wcs_header["NAXIS1"] = int(args.size)
+    wcs_header["NAXIS2"] = int(args.size)
+    wcs_header["CRPIX1"] = float(header["CRPIX1"]) - cx + half
+    wcs_header["CRPIX2"] = float(header["CRPIX2"]) - cy + half
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(

@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from torchsky.sphere.spectral import alm_index, alm_size
+from torchsky.sphere import alm_index, alm_size
 
 
 def lmax_to_s2fft_L(lmax: int) -> int:

@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 from torchsky.instrument import NIRCAM_UPDEC_BANDS, nircam_imaging_band  # noqa: E402
 from torchsky.map import coadd_cube as coadd_image_plane_cube  # noqa: E402
-from torchsky.map.observation import ImageObservation  # noqa: E402
+from torchsky.scene import ImageObservation  # noqa: E402
 
 FILTER_BANDPASS_ANGSTROM: dict[str, tuple[float, float, float]] = {}
 for _band in NIRCAM_UPDEC_BANDS:

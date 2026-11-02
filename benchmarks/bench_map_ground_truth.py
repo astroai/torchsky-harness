@@ -24,9 +24,14 @@ import torchsky  # noqa: E402
 from torchsky import WCS  # noqa: E402
 from torchsky.sphere import healpix as hp  # noqa: E402
 from torchsky.map import BandpassSpec, ProductSpec, stack_product
-from torchsky.map.field import FieldObservation, estimate_field_domain, fit_field_model, make_field_model
-from torchsky.map.observation import ImageObservation
-from torchsky.map.product import plan_map_product
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    model as make_field_model,
+)
+from torchsky.scene import ImageObservation
+from torchsky.map import plan_product as plan_map_product
 from torchsky_harness.metrics import (  # noqa: E402
     check_map_benchmark_regressions,
     evaluate_map_product,
@@ -36,16 +41,16 @@ from torchsky.map import image_plane_projection as image_plane_projection_mod  #
 from torchsky.map import windowing as image_grid_mod  # noqa: E402
 from torchsky.map.operators import pixel_area_sr_map  # noqa: E402
 from torchsky.map.product import render_scene_product  # noqa: E402
-from torchsky.map.target import TargetRenderSpec  # noqa: E402
-from torchsky.map.operators import (  # noqa: E402
+from torchsky.map import TargetRenderSpec
+from torchsky.map.operators import (
     headers_equivalent_for_direct_copy,
-    ObservationOperatorBundle,
     make_minimal_learned_operator_scaffold,
     spherical_spectral_operator_bundle,
     swap_bundle_operator_families,
     validate_image_plane_2d,
 )
-from torchsky.map.scenes import DiscreteTargetImage, HealpixMapScene  # noqa: E402
+from torchsky.scene import ObservationOperatorBundle
+from torchsky.scene import DiscreteTargetImage, HealpixMapScene
 from torchsky.map.solvers import (  # noqa: E402
     build_solver_hooks,
     build_spherical_harmonic_solver_hooks,

@@ -1,0 +1,16 @@
+[
+  {
+    "identity_type": "data",
+    "id": "drizzle-dq-cr-variance-fixtures-v1",
+    "role": "DQ, cosmic-ray, variance, context, and blot fixtures",
+    "uri": "file:campaigns/phase0/matrices/drizzle-dq-v1.json",
+    "sha256": "774adfe078a22a3acfc1d53690ef7ee2dca45badf7f59425a955f9be57a5ab4c"
+  },
+  {
+    "identity_type": "data",
+    "id": "hst-wfc3-ir-sample-ipppssoot-v1",
+    "role": "bounded real HST WFC3/IR Torchsky-vs-AstroDrizzle input",
+    "uri": "file:benchmarks/fixtures/real_wcs/sample_ipppssoot_flt.fits",
+    "sha256": "b872fb943a12ea9c7e7f16e83e6b6398e4dce824f6acfd9ec0ee18fa41838eee"
+  }
+]

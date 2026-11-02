@@ -158,7 +158,7 @@ def compare_catalogs(
     radius_arcsec: float,
     reference_snr: np.ndarray | None = None,
 ) -> dict[str, Any]:
-    from torchsky.catalogs.core import crossmatch_sky
+    from torchsky.catalogs import crossmatch_sky
 
     result = crossmatch_sky(
         torch.as_tensor(candidate_ra, dtype=torch.float64),

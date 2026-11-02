@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from astropy.wcs import WCS as AstropyWCS
 
-from torchsky.wcs.core import WCS
+from torchsky import WCS
 
 
 def _tpv_header() -> dict:

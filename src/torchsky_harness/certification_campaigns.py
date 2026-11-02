@@ -578,7 +578,7 @@ def _run_external_asset_identity(case: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _car_geometry(lmax: int) -> Any:
-    from torchsky.sphere.sht import CARGeometry
+    from torchsky.sphere import CARGeometry
 
     nlat = 2 * lmax + 1
     nlon = 4 * lmax + 1
@@ -613,7 +613,7 @@ def _random_alm(lmax: int, *, leading: tuple[int, ...] = (), seed: int = 13) -> 
 
 def _run_sphere_internal(case: Mapping[str, Any]) -> dict[str, Any]:
     import torch
-    from torchsky.sphere.sht import analyze, synthesize
+    from torchsky.sphere import analyze, synthesize
 
     lmax = int(case["parameters"]["lmax"])
     geometry = _car_geometry(lmax)
@@ -721,7 +721,7 @@ def _run_mhealpy_parity(case: Mapping[str, Any]) -> dict[str, Any]:
 def _run_healsparse_parity(case: Mapping[str, Any]) -> dict[str, Any]:
     import healsparse
     import torch
-    from torchsky.sphere.sparse import SparseHealpixMap
+    from torchsky.sphere import SparseHealpixMap
 
     parameters = case["parameters"]
     nside = int(parameters["nside"])
@@ -775,7 +775,7 @@ def _run_sphere_peer_product(case: Mapping[str, Any]) -> dict[str, Any]:
 def _run_pseudocl(case: Mapping[str, Any]) -> dict[str, Any]:
     import torch
     from torchsky.sphere import alm_index
-    from torchsky.sphere.pseudocl import (
+    from torchsky.sphere import (
         ApodizedMask,
         BandpowerBinning,
         ModeCouplingWorkspace,
@@ -783,7 +783,7 @@ def _run_pseudocl(case: Mapping[str, Any]) -> dict[str, Any]:
         coupled_spectra,
         pure_alms,
     )
-    from torchsky.sphere.sht import synthesize
+    from torchsky.sphere import synthesize
 
     parameters = case["parameters"]
     lmax = int(parameters["lmax"])
@@ -867,7 +867,8 @@ def _deblend_header(size: int) -> dict[str, Any]:
 def _run_deblend_synthetic(case: Mapping[str, Any]) -> dict[str, Any]:
     import torch
     from torchsky.catalogs import fit_forced_photometry
-    from torchsky.map.field import FieldObservation, PSFSpec
+    from torchsky.scene import FieldObservation
+    from torchsky.field import PSFSpec
     from torchsky.scene import SourceCatalogScene
     from torchsky.wcs import WCS
 

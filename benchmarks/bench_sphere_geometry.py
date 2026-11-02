@@ -18,11 +18,10 @@ import torch
 from torchsky.sphere.healpix import (
     ang2pix_nested as tf_ang2pix_nested,
     ang2pix_ring as tf_ang2pix_ring,
-    nest2ring as tf_nest2ring,
     pix2ang_nested as tf_pix2ang_nested,
     pix2ang_ring as tf_pix2ang_ring,
-    ring2nest as tf_ring2nest,
 )
+from torchsky.sphere import nest2ring as tf_nest2ring, ring2nest as tf_ring2nest
 
 
 IndexFn = Callable[[np.ndarray, np.ndarray], np.ndarray]

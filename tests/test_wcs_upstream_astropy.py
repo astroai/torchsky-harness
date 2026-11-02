@@ -7,7 +7,7 @@ from astropy.utils.data import get_pkg_data_contents
 from astropy.wcs import WCS as AstropyWCS
 
 from torchfits.header_parser import fast_parse_header
-from torchsky.wcs.core import WCS as TorchWCS
+from torchsky import WCS as TorchWCS
 
 
 FIXTURE_CASES: dict[str, np.ndarray] = {

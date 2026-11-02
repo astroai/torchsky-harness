@@ -19,8 +19,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
 from torchsky.map import stack_product
-from torchsky.map.field import SkyEncoderMLPField, SpectralBasisField, estimate_field_domain, fit_field_model
-from torchsky.map.product import plan_map_product, render_field_product
+from torchsky.map.field import SkyEncoderMLPField, SpectralBasisField
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+)
+from torchsky.map.product import render_field_product
+from torchsky.map import plan_product as plan_map_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 import torchsky_harness.benchmarks.bench_map_field_fit as field_bench  # noqa: E402

@@ -24,27 +24,30 @@ SRC = ROOT / "src"
 import torchsky  # noqa: E402
 from torchsky.map import ProductResult, UncertaintyProduct, stack_product
 from torchsky.map.field import (
-    FieldDomain,
-    FieldObservation,
     LearnedSpectralBasisField,
     SineImplicitField,
     SkyEncoderBandpassField,
     SkyEncoderMLPField,
     SkyEncoderResMLPField,
     SpectralBasisField,
-    estimate_field_domain,
-    field_image_quality_metrics,
-    fit_field_model,
-    make_field_model,
     render_field_cube,
     render_field_observation,
     render_field_observation_distribution,
+)
+from torchsky.field import (
+    Domain as FieldDomain,
+    estimate_domain as estimate_field_domain,
+    metrics as field_image_quality_metrics,
+    fit as fit_field_model,
+    model as make_field_model,
     spectral_data_budget,
     suggest_num_spectral_samples,
     suggest_spectral_model_capacity,
 )
-from torchsky.map.observation import ImageObservation
-from torchsky.map.product import estimate_map_inverse_variance, plan_map_product, render_field_product
+from torchsky.scene import FieldObservation
+from torchsky.scene import ImageObservation
+from torchsky.map.product import estimate_map_inverse_variance, render_field_product
+from torchsky.map import plan_product as plan_map_product
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,
     evaluate_map_frontier_regions,
@@ -52,10 +55,8 @@ from torchsky_harness.metrics import (
     evaluate_map_uncertainty,
     write_map_benchmark_artifacts,
 )
-from torchsky.map.field import (  # noqa: E402
-    FIELD_MODEL_KINDS,
-    SpectralPowerFoamField,
-)
+from torchsky.map.field import SpectralPowerFoamField
+from torchsky.field import FIELD_MODEL_KINDS
 from torchsky.map.field.core import ExplicitSpectralGridField  # noqa: E402
 from torchsky.map.field.frequency_adaptive import BaconField, SASNetField  # noqa: E402
 from torchsky.map.operators.psf import gaussian_support_radius  # noqa: E402

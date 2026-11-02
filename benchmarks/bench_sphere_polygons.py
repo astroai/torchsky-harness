@@ -16,9 +16,9 @@ import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
 import torchsky.sphere.geom as geom  # noqa: E402
-from torchsky.sphere.geom import (  # noqa: E402
+from torchsky.sphere.geom import _numpy_sg_contains_lonlat_bulk
+from torchsky.sphere import (
     SphericalPolygon,
-    _numpy_sg_contains_lonlat_bulk,
     query_polygon_general,
     spherical_polygon_contains,
     spherical_polygons_intersect,

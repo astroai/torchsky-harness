@@ -33,7 +33,7 @@ from torchsky_harness.benchmarks.config import DEFAULT_OUTPUT_DIR  # noqa: E402
 
 from torchsky.map import MapResult
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _gaussian_source(

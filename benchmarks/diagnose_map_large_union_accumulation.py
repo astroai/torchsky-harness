@@ -20,7 +20,7 @@ import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa
 import torchsky_harness.benchmarks.bench_map_compat as compat_bench  # noqa: E402
 from torchsky.map import MapResult
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def _is_tpv(header: dict[str, object]) -> bool:

@@ -1,0 +1,23 @@
+[
+  {
+    "identity_type": "data",
+    "id": "jwst-ifu-calibrated-fixtures-v1",
+    "role": "calibrated IFU exposures and reference cube products",
+    "uri": "file:campaigns/phase0/matrices/physical-ifu-v1.json",
+    "sha256": "c55907a7b5efa8e233512b621fa6ec0415fc3683ee43e8974f197b27f2fb6e5e"
+  },
+  {
+    "identity_type": "data",
+    "id": "nirspec-external-association-manifest-v1",
+    "role": "external NIRSpec association with pinned CRDS identity",
+    "uri": "file:campaigns/phase0/external/nirspec-association-v1.json",
+    "sha256": "3f0581ee05ab56d09fe6ba10508261ba4c1d7a36905705cca4990540ce545146"
+  },
+  {
+    "identity_type": "data",
+    "id": "miri-external-association-manifest-v1",
+    "role": "external MIRI association with pinned CRDS identity",
+    "uri": "file:campaigns/phase0/external/miri-association-v1.json",
+    "sha256": "a70ef88269eab528cbe6ec99070e06d84858003fd8a0c17f2727f2b64dde5782"
+  }
+]

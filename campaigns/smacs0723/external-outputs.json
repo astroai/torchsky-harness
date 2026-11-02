@@ -1,0 +1,14 @@
+{
+  "description": "Large SMACS 0723 campaign outputs kept out of Git. Fetch with campaigns/smacs0723/fetch_frozen_artifact.py or copy from the CANFAR path, then verify the sha256 before use.",
+  "outputs": [
+    {
+      "snapshot_path": "history/20261011/smacs-metrics-expansion-20261011/coverage-existing.json",
+      "sha256": "56bc9c8b20be2c94bfb3afbad4596507f79f6d080c914f505926db13bf65419e",
+      "size_bytes": 8004707,
+      "original_path": "benchmarks_results/smacs-metrics-expansion-20261011/coverage-existing.json",
+      "arc_path": "${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/smacs-metrics-expansion-20261011/coverage-existing.json",
+      "arc_status": "uploaded 2026-11-02; sha256 verified before upload",
+      "companion": "history/20261011/smacs-metrics-expansion-20261011/coverage-existing.md (tracked)"
+    }
+  ]
+}

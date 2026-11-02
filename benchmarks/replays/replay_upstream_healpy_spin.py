@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from torchsky.sphere.spectral import alm2map_spin, map2alm_spin  # noqa: E402
+from torchsky.sphere import alm2map_spin, map2alm_spin
 from torchsky.sphere import healpix as hp  # noqa: E402
 
 DEFAULT_CASES = (

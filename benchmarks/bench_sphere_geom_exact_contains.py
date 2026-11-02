@@ -38,9 +38,9 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 
-from torchsky.sphere.geom import (  # noqa: E402
+from torchsky.sphere.geom import _numpy_sg_contains_lonlat_bulk
+from torchsky.sphere import (
     SphericalPolygon,
-    _numpy_sg_contains_lonlat_bulk,
     spherical_polygon_contains,
     to_exact_region,
 )

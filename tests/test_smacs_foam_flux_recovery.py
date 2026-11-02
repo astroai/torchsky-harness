@@ -16,14 +16,16 @@ from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import (  #
     _regular_foam_model_kwargs,
     _set_foam_geometry_trainable,
 )
-from torchsky.map.field import (  # noqa: E402
-    FieldDomain,
-    FieldObservation,
+from torchsky.map.field import (
     SpectralPowerFoamField,
-    fit_field_model,
-    make_tangent_plane_header,
     render_spectral_power_foam_observation_exact,
 )
+from torchsky.field import (
+    Domain as FieldDomain,
+    fit as fit_field_model,
+    make_tangent_plane_header,
+)
+from torchsky.scene import FieldObservation
 from torchsky.map.operators import apply_psf_spec  # noqa: E402
 
 

@@ -5,8 +5,16 @@ from pathlib import Path
 
 def evaluations() -> dict[str, str]:
     root = Path(import_module("torchsky_harness.benchmarks").__file__).parent
-    excluded = {"__init__", "config", "mpl_config", "bench_contract", "sht_peer_layout"}
-    return {p.stem: "torchsky_harness.benchmarks." + p.stem for p in sorted(root.glob("*.py")) if p.stem not in excluded}
+    # Evaluations are the ``bench_*`` entry points plus the two campaign runners
+    # below. Diagnostics (``diagnose_*``), scorers (``score_*``), fitters, stagers,
+    # probes and shared helpers are tools, not evaluations, and are not listed.
+    helpers = {"bench_contract"}
+    runners = {"run_ground_truth_competitive_large_union", "aggregate_ground_truth_competitive_large_union"}
+    return {
+        p.stem: "torchsky_harness.benchmarks." + p.stem
+        for p in sorted(root.glob("*.py"))
+        if (p.stem.startswith("bench_") and p.stem not in helpers) or p.stem in runners
+    }
 
 
 def domain(name: str) -> str:

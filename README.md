@@ -7,9 +7,19 @@ packages. Production code and bounded regressions remain in torchsky.
 
 ## Run
 
-Install the chosen torchsky wheel into the desired Pixi environment, then
-`pixi run dev` to install this pure-Python harness. The harness never builds its
-own checkout as if it were torchsky. A source build must be selected explicitly.
+Install the subject explicitly, then the harness (both non-editable for the
+subject, editable for the pure-Python harness). The subject can be a checkout, an
+sdist, or a wheel; it is built with `--no-build-isolation --no-deps` from the
+environment's own toolchain, and its identity (version, git revision, dirty flag,
+archive sha256, import path) is recorded in every report:
+
+```sh
+pixi run -e test install-subject ../torchsky
+pixi run -e test install-subject dist/torchsky-0.5.0rc1.tar.gz   # or a .whl
+```
+
+The harness never builds its own checkout as if it were torchsky and never puts a
+torchsky checkout on `sys.path`. CANFAR campaigns: see `docs/canfar.md`.
 
 ```sh
 pixi run harness list --domain map

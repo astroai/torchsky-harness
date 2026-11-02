@@ -1,6 +1,7 @@
 import torchfits
 """Software checks only; these fixtures provide no scientific evidence."""
 
+import inspect
 import json
 import sys
 import subprocess
@@ -43,8 +44,10 @@ def test_neural_pcg_cli_rejects_a_grid_only_request() -> None:
 def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_path: Path) -> None:
     from dataclasses import replace
 
-    from torchsky.map.field import FieldObservation, ForwardContext, render_field_observation
-    from torchsky.map.observation import ImageObservation
+    from torchsky.map.field import render_field_observation
+    from torchsky.scene import FieldObservation
+    from torchsky.field import ForwardContext
+    from torchsky.scene import ImageObservation
     from torchsky.map.operators import LearnedBackgroundOp, field_observation_operator_bundle
 
     from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import _ZeroScene, _export_native_training_view
@@ -147,14 +150,14 @@ def test_native_training_view_preserves_detector_background_weight_and_mask(tmp_
 def test_neural_pcg_refines_native_detector_likelihood(
     model_kind: str, calibrated: bool
 ) -> None:
-    from torchsky.map.field import (
-        FieldDomain,
-        FieldObservation,
+    from torchsky.map.field import render_field_observation
+    from torchsky.field import (
+        Domain as FieldDomain,
         ForwardContext,
-        fit_field_model,
-        make_field_model,
-        render_field_observation,
+        fit as fit_field_model,
+        model as make_field_model,
     )
+    from torchsky.scene import FieldObservation
     from torchsky.map.operators import field_observation_operator_bundle
 
     from torchsky_harness.benchmarks.bench_map_smacs0723_field_fit_joint import (
@@ -224,7 +227,13 @@ def test_neural_pcg_refines_native_detector_likelihood(
         psf_sigma_pix=0.6,
         background_offset=0.2,
     )
-    context = ForwardContext(extra={"split": "train"})
+    # The subject fails closed when a ForwardContext reaches a model whose
+    # ``forward`` cannot consume it, so only context-aware models receive one.
+    forward_parameters = inspect.signature(type(model).forward).parameters
+    accepts_context = "forward_context" in forward_parameters or any(
+        p.kind is inspect.Parameter.VAR_KEYWORD for p in forward_parameters.values()
+    )
+    context = ForwardContext(extra={"split": "train"}) if accepts_context else None
     bundle = field_observation_operator_bundle(observation)
     if calibrated:
         from torchsky.map.operators import (
@@ -285,7 +294,7 @@ def test_neural_pcg_refines_native_detector_likelihood(
         "loss_reduction": "global",
         "num_spectral_samples": 1,
         "spatial_sampling": "gauss_legendre_2x2",
-        "observation_forward_contexts": (context,),
+        **({"observation_forward_contexts": (context,)} if context is not None else {}),
         "observation_operator_bundles": (bundle,),
     }
     fitted = fit_field_model(

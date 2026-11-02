@@ -4,7 +4,7 @@
 #
 # Jobs clone TORCHSKY_COMMIT from GitHub (must already be pushed), run
 # scripts/run_canfar_wcs_sphere.sh from that clone, write
-# /arc/projects/ots/torchsky-runs/<run_id>/, and copy artifacts to
+# ${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/torchsky-runs/<run_id>/, and copy artifacts to
 # vos:sfabbro/torchsky-runs/<run_id>/ (plus a gist fallback).
 # suite: parallel spectral, sphere, sparse, spin, geometry, and cuHPX jobs.
 # sht: spectral + sparse + spin only.
@@ -303,7 +303,7 @@ launch_depth() {
     --env "SCENE_INITIALIZATION=${SCENE_INITIALIZATION:-common_product}"
     --env "SCENE_INITIALIZATION_STEPS=${SCENE_INITIALIZATION_STEPS:-32}"
     --env "SCENE_INITIALIZATION_LR=${SCENE_INITIALIZATION_LR:-0.05}"
-    --env "PASSBAND_OUTPUT_DIR=${PASSBAND_OUTPUT_DIR:-/arc/projects/ots/jwst_smacs0723/data/calibration/svo}"
+    --env "PASSBAND_OUTPUT_DIR=${PASSBAND_OUTPUT_DIR:-${TORCHSKY_ARC_ROOT:-/arc/projects/ots}/jwst_smacs0723/data/calibration/svo}"
     --env "PASSBAND_BANDS=${PASSBAND_BANDS:-F090W,F150W,F200W,F277W,F356W,F444W}"
     --env "PASSBAND_CACHE_DIR=${PASSBAND_CACHE_DIR:-}"
     --env "PSF_MODEL=${PSF_MODEL:-fitted_gaussian}"

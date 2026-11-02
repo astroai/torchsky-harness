@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from torchsky.sphere.spectral import alm2map, map2alm
+from torchsky.sphere import alm2map, map2alm
 from torchsky.sphere import healpix as hp
 
 

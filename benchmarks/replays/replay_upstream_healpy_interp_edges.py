@@ -15,7 +15,7 @@ import numpy as np
 import torch
 
 from torchsky_harness.benchmarks.config import DEFAULT_OUTPUT_DIR  # noqa: E402
-from torchsky.sphere.healpix import get_interp_val, get_interp_weights  # noqa: E402
+from torchsky.sphere import get_interp_val, get_interp_weights
 
 
 @dataclass

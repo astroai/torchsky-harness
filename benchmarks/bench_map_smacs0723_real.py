@@ -44,7 +44,7 @@ DEFAULT_MARKDOWN_OUT = DATA / "benchmark_results" / "smacs0723_real_smoke.md"
 import torchsky  # noqa: E402
 from torchsky.instrument import NIRCAM_UPDEC_BANDS, nircam_imaging_band  # noqa: E402
 from torchsky.map import coadd as coadd_image_plane
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 SMACS0723_BAND_SPECS: dict[str, dict[str, Any]] = {}

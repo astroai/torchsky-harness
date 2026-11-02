@@ -25,15 +25,16 @@ import torchsky_harness.benchmarks.bench_map_field_fit as field_fit_bench  # noq
 import torchsky_harness.benchmarks.bench_map_ground_truth as truth_bench  # noqa: E402
 import torchsky_harness.benchmarks.bench_map_image_plane as image_plane_bench  # noqa: E402
 from torchsky.map import stack_product
-from torchsky.map.field import (
-    FieldObservation,
-    estimate_field_domain,
-    fit_field_model,
-    make_field_model,
-    render_field_cube,
+from torchsky.map.field import render_field_cube
+from torchsky.scene import FieldObservation
+from torchsky.field import (
+    estimate_domain as estimate_field_domain,
+    fit as fit_field_model,
+    model as make_field_model,
 )
-from torchsky.map.observation import ImageObservation
-from torchsky.map.product import plan_map_product, render_field_product
+from torchsky.scene import ImageObservation
+from torchsky.map.product import render_field_product
+from torchsky.map import plan_product as plan_map_product
 from torchsky_harness.metrics import evaluate_map_product  # noqa: E402
 
 

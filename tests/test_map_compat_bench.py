@@ -19,7 +19,7 @@ import torchsky_harness.benchmarks.bench_map_tan_sip_suite as tan_sip_suite  # n
 import torchsky_harness.benchmarks.run_ground_truth_competitive_large_union as competitive_runner  # noqa: E402
 
 from torchsky.map import coadd, plan as plan_image_plane_target
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 
 
 def test_plan_image_plane_target_matches_montage_style_template(tmp_path) -> None:
@@ -1153,28 +1153,30 @@ def _tan_header_for_adapters() -> dict:
     }
 
 
-def test_astropy_header_adapter_builds_a_real_header() -> None:
-    astropy = pytest.importorskip("astropy")
-    adapted = bench_map_compat._as_astropy_header(_tan_header_for_adapters())
+def test_astropy_wcs_adapter_builds_a_wcs_from_a_plain_dict() -> None:
+    pytest.importorskip("astropy")
+    from astropy.wcs import WCS
 
-    assert isinstance(adapted, astropy.io.fits.Header)
-    assert adapted["CTYPE1"] == "RA---TAN"
-    assert adapted["CRVAL1"] == 150.0
+    adapted = bench_map_compat._as_astropy_wcs(_tan_header_for_adapters())
+
+    assert isinstance(adapted, WCS)
+    assert list(adapted.wcs.ctype) == ["RA---TAN", "DEC--TAN"]
+    assert adapted.wcs.crval[0] == 150.0
 
 
 
 pytestmark = pytest.mark.slow
-def test_astropy_header_adapter_accepts_reproject() -> None:
+def test_astropy_wcs_adapter_accepts_reproject() -> None:
     pytest.importorskip("astropy")
     reproject = pytest.importorskip("reproject")
     header = _tan_header_for_adapters()
-    adapted = bench_map_compat._as_astropy_header(header)
+    adapted = bench_map_compat._as_astropy_wcs(header)
     data = np.ones((8, 8), dtype=np.float32)
     shifted = dict(header)
     shifted["CRVAL1"] = 150.002
     projected, _ = reproject.reproject_interp(
         (data, adapted),
-        bench_map_compat._as_astropy_header(shifted),
+        bench_map_compat._as_astropy_wcs(shifted),
         shape_out=(8, 8),
     )
     assert np.isfinite(projected).any()

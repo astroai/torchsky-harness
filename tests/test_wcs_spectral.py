@@ -5,10 +5,7 @@ import astropy.units as u
 from astropy.wcs import WCS as AstropyWCS
 
 import torchsky
-from torchsky.wcs.spectral import (
-    frequency_to_spectral,
-    spectral_to_frequency,
-)
+from torchsky.wcs import frequency_to_spectral, spectral_to_frequency
 
 
 def _wave_1d_header() -> dict[str, float | int | str]:

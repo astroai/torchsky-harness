@@ -15,10 +15,10 @@ from pathlib import Path
 import torch
 
 from torchsky.map.likelihood import GaussianLikelihoodFactor, GaussianLikelihoodSystem
-from torchsky.map.operators import ObservationOperatorBundle
-from torchsky.map.scenes import DiscreteTargetImage
+from torchsky.scene import ObservationOperatorBundle
+from torchsky.scene import DiscreteTargetImage
 from torchsky.map.solvers import BoundObservationOperator
-from torchsky.map.target import TargetRenderSpec
+from torchsky.map import TargetRenderSpec
 from torchsky_harness.metrics import (
     check_map_benchmark_regressions,
     write_map_benchmark_artifacts,

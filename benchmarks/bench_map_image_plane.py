@@ -31,7 +31,7 @@ from torchsky.map import (
     plan as plan_image_plane_target,
     plan_cube as plan_image_plane_cube_target_from_header,
 )
-from torchsky.map.observation import ImageObservation
+from torchsky.scene import ImageObservation
 from torchsky_harness.subject import git_identity, identify_subject
 
 try:  # noqa: E402

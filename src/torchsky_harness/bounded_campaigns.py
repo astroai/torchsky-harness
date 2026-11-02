@@ -334,7 +334,7 @@ def _run_torchsky_hst_product(
 
     try:
         from torchsky.map import coadd
-        from torchsky.map.observation import ImageObservation
+        from torchsky.scene import ImageObservation
     except Exception as exc:
         raise UnavailableEvidence(f"installed Torchsky subject unavailable: {exc}") from exc
 
@@ -537,7 +537,7 @@ def _run_ifu_synthetic(case: Mapping[str, Any]) -> dict[str, Any]:
     import torch
     from torchsky.map import CubeTarget, DQPolicy, IFUObservation, coadd_cube
     from torchsky.wcs import WCS
-    from torchsky.wcs.gwcs_sampling import IFUSliceWCS
+    from torchsky.wcs import IFUSliceWCS
 
     parameters = case["parameters"]
     count = int(parameters["spectral_bins"])
