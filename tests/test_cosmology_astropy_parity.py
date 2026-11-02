@@ -99,13 +99,6 @@ def test_distance_modulus_is_consistent_with_luminosity_distance() -> None:
     torch.testing.assert_close(mu, 5.0 * torch.log10(dl * 1.0e6 / 10.0), rtol=0.0, atol=1e-12)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "python-float H0/Om0 are routed through torch.as_tensor (float32) before "
-        "being cast to float64, costing ~6e-8 relative accuracy (subject finding)"
-    ),
-)
 def test_python_float_parameters_keep_float64_precision() -> None:
     reference = astropy_cosmology.FlatLambdaCDM(H0, OM0, Tcmb0=0).comoving_distance(Z).value
     result = tc.comoving_distance(torch.tensor(Z, dtype=torch.float64), H0=H0, om0=OM0)

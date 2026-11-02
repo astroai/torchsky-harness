@@ -69,10 +69,6 @@ def test_zscale_lower_limit_matches_astropy_zscale_interval() -> None:
     assert lo == pytest.approx(float(lo_ref), rel=1e-9)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="ZScale upper limit is ~7% below astropy's IRAF z2 on a 900-pixel image (subject finding)",
-)
 def test_zscale_upper_limit_matches_astropy_zscale_interval() -> None:
     image = _zscale_image()
     _, hi_ref = visualization.ZScaleInterval(contrast=0.25, max_reject=0.5).get_limits(image)
@@ -94,10 +90,6 @@ def test_minmax_normalize_and_robust_scale_oracles() -> None:
     np.testing.assert_allclose(tt.RobustScale()(_t(odd)).numpy(), (odd - med) / (q3 - q1), atol=1e-4)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="RobustScale centres on the lower median for even sample counts (np.median averages); subject finding",
-)
 def test_robust_scale_centre_is_the_conventional_median_for_even_counts() -> None:
     x = _image(5)  # 4096 samples
     out = tt.RobustScale(scale=False)(_t(x)).numpy()

@@ -145,14 +145,13 @@ def _bilinear(image: torch.Tensor, x: torch.Tensor, y: torch.Tensor) -> torch.Te
     )
 
 
-def _pixel_footprint_sr(band: Band) -> float:
-    """Analytic solid angle of the TAN frame bounded by the outer pixel edges.
+def _pixel_centre_footprint_sr(band: Band) -> float:
+    """Analytic solid angle of the TAN frame bounded by the outermost pixel centres.
 
-    The subject's HEALPix coadd covers every cell overlapped by the image
-    (box-overlap semantics), so the reference is the full-pixel footprint rather
-    than the footprint of the outermost pixel centres.
+    ``coadd_healpix`` samples bilinearly at HEALPix cell centres, which is only
+    defined between the outermost image pixel centres, so that is the footprint.
     """
-    extent_rad = math.radians(band.size * band.cdelt_deg)
+    extent_rad = math.radians((band.size - 1) * band.cdelt_deg)
     return extent_rad * extent_rad * math.cos(math.radians(CRVAL[1]))
 
 
@@ -281,7 +280,7 @@ def run_flat_multiscale_case(*, nside: int = NSIDE) -> dict:
         covered_area = float(pixels.numel()) * pixel_area
         max_area_error = max(
             max_area_error,
-            _relative_error(covered_area, _pixel_footprint_sr(band)),
+            _relative_error(covered_area, _pixel_centre_footprint_sr(band)),
         )
 
     pixel_sets = [maps[band.name][0] for band in BANDS]
