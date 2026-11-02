@@ -37,13 +37,14 @@
     "skip_time_regression": true,
     "per_kernel_max_relative_error": {
       "nearest": 0.0,
-      "drizzle": 7.629394644936838e-07,
+      "drizzle": 2.002715973503655e-06,
       "linear": 7.629394644936838e-07
     },
-    "max_relative_error": 7.629394644936838e-07,
-    "reconstruction_rmse": 3.814697322468419e-06,
-    "signal_to_residual_db": 122.35019839632378,
-    "total_flux_relative_error": 7.629394644936838e-07
+    "max_relative_error": 2.002715973503655e-06,
+    "reconstruction_rmse": 1.0013579867518274e-05,
+    "signal_to_residual_db": 113.96761276536695,
+    "total_flux_relative_error": 2.002715973503655e-06,
+    "baseline_note": "torchsky 39c0a919: IFU drizzle footprint follows the detector->cube Jacobian, so more taps are summed in the float32 cube accumulator; float64 accumulation gives rmse 1.9e-14 (pure float32 rounding, not a regression)."
   },
   {
     "case": "ifu_regular_axis_spectrum_interpolation",
