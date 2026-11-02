@@ -94,7 +94,9 @@ def main() -> int:
 
     passed = sum(r["status"] == "pass" for r in rows)
     lines = [f"# Harness campaign `{args.run}` ({args.mode})", ""]
-    lines += [f"**{passed}/{len(rows)} gates passed**", ""]
+    skipped = sum(r["status"] == "skip" for r in rows)
+    failed = sum(r["status"] == "fail" for r in rows)
+    lines += [f"**{passed}/{len(rows)} gates passed, {skipped} skipped (opt-in data), {failed} failed**", ""]
     lines += ["## Subject", ""]
     record = subject.get("install_record") or {}
     lines += [

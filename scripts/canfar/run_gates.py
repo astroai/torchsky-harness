@@ -129,7 +129,8 @@ def _run(name: str, suite: str, command: str, out: Path, timeout: int, env: dict
         "suite": suite,
         "command": command,
         "returncode": returncode,
-        "status": "pass" if returncode == 0 else "fail",
+        # Exit 77 (automake convention) marks an opt-in example skipped for missing data.
+        "status": "pass" if returncode == 0 else ("skip" if (suite == "examples" and returncode == 77) else "fail"),
         "seconds": round(time.time() - started, 2),
         "log": str(log),
     }
@@ -213,7 +214,7 @@ def main() -> int:
                     _run(name, "performance", " && ".join(segs), args.out, args.timeout, cpu_env if label == "cpu" else env)
                 )
 
-    failed = [r for r in results if r["status"] != "pass"]
+    failed = [r for r in results if r["status"] == "fail"]
     print(f"{args.suite}: {len(results) - len(failed)}/{len(results)} passed")
     return 1 if failed else 0
 
