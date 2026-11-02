@@ -37,6 +37,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tests"))
 
 ROWS: list[dict[str, Any]] = []
+DEADLINE: float | None = None  # per-area wall-time budget (monotonic); the bench records, never gates
+
+
+class BudgetExceeded(Exception):
+    """The area's time budget ran out: remaining cases are recorded as truncated."""
 
 
 def _sync(dev: torch.device) -> None:
@@ -47,6 +52,8 @@ def _sync(dev: torch.device) -> None:
 
 
 def best_of(fn: Callable[[], Any], runs: int, dev: torch.device | None = None) -> float:
+    if DEADLINE is not None and time.monotonic() > DEADLINE:
+        raise BudgetExceeded
     fn()  # warm-up (JIT, caches, allocator)
     samples = []
     for _ in range(runs):
@@ -109,13 +116,25 @@ def bench_wcs(sizes, runs, dev) -> None:
                 unavailable("wcs", f"{case} pixel_to_world", "pyast", n, t_p2w, dev.type, "no PyAST oracle interpreter")
                 unavailable("wcs", f"{case} world_to_pixel", "pyast", n, t_w2p, dev.type, "no PyAST oracle interpreter")
                 continue
-            ora = _oracle.run_wcs_oracle("pyast", header, x, y, ra, dec, repeat=max(3, runs))
+            try:
+                ora = _oracle.run_wcs_oracle("pyast", header, x, y, ra, dec, repeat=max(3, runs))
+            except BaseException as exc:  # noqa: BLE001 - pytest.skip raises Skipped (BaseException)
+                why = f"oracle unavailable: {str(exc).splitlines()[0][:120]}"
+                unavailable("wcs", f"{case} pixel_to_world", "pyast", n, t_p2w, dev.type, why)
+                unavailable("wcs", f"{case} world_to_pixel", "pyast", n, t_w2p, dev.type, why)
+                continue
             add("wcs", f"{case} pixel_to_world", "pyast", n, t_p2w, ora["t_forward_s"], dev.type, "PyAST time measured inside the oracle process")
             add("wcs", f"{case} world_to_pixel", "pyast", n, t_w2p, ora["t_inverse_s"], dev.type)
             if _oracle.oracle_python("kapteyn") is not None and case == "TAN":
-                kap = _oracle.run_wcs_oracle("kapteyn", header, x, y, ra, dec, repeat=max(3, runs))
-                add("wcs", f"{case} pixel_to_world", "kapteyn", n, t_p2w, kap["t_forward_s"], dev.type)
-                add("wcs", f"{case} world_to_pixel", "kapteyn", n, t_w2p, kap["t_inverse_s"], dev.type)
+                try:
+                    kap = _oracle.run_wcs_oracle("kapteyn", header, x, y, ra, dec, repeat=max(3, runs))
+                except BaseException as exc:  # noqa: BLE001
+                    why = f"oracle unavailable: {str(exc).splitlines()[0][:120]}"
+                    unavailable("wcs", f"{case} pixel_to_world", "kapteyn", n, t_p2w, dev.type, why)
+                    unavailable("wcs", f"{case} world_to_pixel", "kapteyn", n, t_w2p, dev.type, why)
+                else:
+                    add("wcs", f"{case} pixel_to_world", "kapteyn", n, t_p2w, kap["t_forward_s"], dev.type)
+                    add("wcs", f"{case} world_to_pixel", "kapteyn", n, t_w2p, kap["t_inverse_s"], dev.type)
 
 
 # ------------------------------------------------------------------------ HEALPix
@@ -287,10 +306,16 @@ def _sht_peer(lib: str, nside: int, lmax: int, runs: int) -> dict[str, float]:
     return out
 
 
+def _past_budget() -> None:
+    if DEADLINE is not None and time.monotonic() > DEADLINE:
+        raise BudgetExceeded
+
+
 def _peer_times(lib: str, nside: int, lmax: int, runs: int) -> tuple[dict[str, float] | None, str]:
+    _past_budget()
     done = subprocess.run(
         [sys.executable, str(Path(__file__).resolve()), "--sht-peer", lib, "--nside", str(nside), "--lmax", str(lmax), "--runs", str(runs)],
-        capture_output=True, text=True, timeout=3600, check=False,
+        capture_output=True, text=True, timeout=300, check=False,
     )  # fmt: skip
     if done.returncode != 0:
         return None, f"{lib} child exited {done.returncode}: {done.stderr.strip()[-120:]}"
@@ -386,6 +411,7 @@ def bench_map(sizes, runs, dev) -> None:
 
 def _time_binary(exe: str, img: np.ndarray, src_h: dict, dst_h: dict, n: int, label: str) -> float | None:
     """Wall time of SWarp / Montage ``mProject`` on files written with torchfits."""
+    _past_budget()
     import torchfits
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -402,7 +428,7 @@ def _time_binary(exe: str, img: np.ndarray, src_h: dict, dst_h: dict, n: int, la
             cmd = [exe, str(tmp / "in.fits"), "-c", "/dev/null", "-IMAGEOUT_NAME", str(tmp / "out.fits"), "-WEIGHTOUT_NAME", str(tmp / "w.fits"),
                    "-RESAMPLING_TYPE", "BILINEAR", "-SUBTRACT_BACKGROUND", "N", "-WRITE_XML", "N", "-CENTER_TYPE", "MANUAL", "-IMAGE_SIZE", f"{n},{n}"]  # fmt: skip
         t0 = time.perf_counter()
-        done = subprocess.run(cmd, capture_output=True, text=True, timeout=1800, cwd=tmp, check=False)
+        done = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=tmp, check=False)
         return time.perf_counter() - t0 if done.returncode == 0 else None
 
 
@@ -421,6 +447,7 @@ def main() -> int:
     parser.add_argument("--sizes", default="100000,1000000", help="point/row counts for wcs, healpix, catalogs, moc, sparse")
     parser.add_argument("--image-sizes", default="2048,4096", help="square image edge lengths for the map area")
     parser.add_argument("--runs", type=int, default=5)
+    parser.add_argument("--area-budget-s", type=float, default=45.0, help="per-area wall-time budget; later cases are recorded as truncated")
     parser.add_argument("--device", default="cpu", help="cpu or cuda (areas without device support run on cpu)")
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
@@ -429,7 +456,7 @@ def main() -> int:
         return 0
     if args.json_out is None:
         parser.error("--json-out is required")
-    global IMAGE_SIZES
+    global IMAGE_SIZES, DEADLINE
     IMAGE_SIZES = tuple(int(v) for v in args.image_sizes.split(","))
     dev = torch.device(args.device)
     sizes = [int(s) for s in args.sizes.split(",")]
@@ -438,8 +465,12 @@ def main() -> int:
     for area in args.areas.split(","):
         fn = AREAS[area]
         d = torch.device("cpu") if area in cpu_only else dev
+        DEADLINE = time.monotonic() + args.area_budget_s
         try:
             fn(sizes, args.runs, d)
+        except BudgetExceeded:
+            ROWS.append({"area": area, "operation": "truncated", "comparator": "-", "size": 0, "device": d.type, "status": f"truncated: area budget {args.area_budget_s:g}s reached"})
+            print(f"[{area}] truncated at the {args.area_budget_s:g}s area budget", file=sys.stderr, flush=True)
         except Exception as exc:  # noqa: BLE001
             failures += 1
             print(f"[{area}] FAILED: {exc!r}", file=sys.stderr, flush=True)

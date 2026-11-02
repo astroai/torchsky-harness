@@ -22,6 +22,7 @@
 #                      auto-selected when swarp, mProject and solve-field are all on PATH
 #   CATALOG_REAL_DIR   pre-staged real Gaia/2MASS catalogues (gaia.fits, twomass.fits, manifest.json); default: fetched once
 #                      into $OUT/real-catalogs by scripts/fetch_real_catalogs.py (cached; recorded in the summary)
+#   TORCHSKY_HARNESS_KAPTEYN_SOURCE  pip-installable Kapteyn source (URL/path); unset = Kapteyn gate skipped (not required)
 #   ASTROMETRY_INDEX_DIR  astrometry.net index files (default /arc/projects/uvickbos/astrometry.net/data)
 # Writes $OUT/summary.md, $OUT/summary.json, $OUT/gates.jsonl, $OUT/gates/*.log.
 set -uo pipefail
@@ -130,31 +131,53 @@ if [ -z "${TORCHSKY_HARNESS_DE_KERNEL:-}" ]; then
   else echo "kernel FAILED: de440s (ephemeris gate will fail)"; fi
 fi
 
-# Out-of-process oracles: PyAST and AstroDrizzle in their own venv (any Python/numpy they build on), Kapteyn
-# in a conda-forge Python 3.6 environment (its sources do not build on 3.13/NumPy 2). tests/_oracle.py runs them
-# through scripts/oracle/*.py with NPZ exchange; a failed provisioning is recorded and the gate fails closed.
+# Out-of-process oracles: PyAST and AstroDrizzle in their own venv (any Python/numpy they build on); Kapteyn only
+# when TORCHSKY_HARNESS_KAPTEYN_SOURCE (pip-installable URL/path) is provided: conda-forge has kapteyn 2.3 for
+# Python <= 3.6 only (obsolete) and the 3.4 tarball does not build. tests/_oracle.py runs them through
+# scripts/oracle/*.py with NPZ exchange. A genuine provisioning failure exports
+# TORCHSKY_HARNESS_ORACLE_<ENGINE>_UNPROVISIONED=<reason>; its gate then fails with "NOT PROVISIONED: <reason>".
+# Note: the run venv (summary "Comparators" table) never holds these packages; the oracle versions are listed
+# under "Out-of-process oracles".
 : > "$OUT/oracle-install.log"
+echo "oracle interpreter: $("$PYTHON_BIN" -c 'import sys; print(sys.executable, sys.version.split()[0])')"
+provision_venv() { # provision_venv <venv> <log> : create a venv from $PYTHON_BIN with pip; prints reason on failure
+  "$PYTHON_BIN" -m venv "$1" >> "$2" 2>&1 || { echo "venv creation failed with $PYTHON_BIN (python3-venv missing?)"; return 1; }
+  "$1/bin/python" -m pip --version >> "$2" 2>&1 || "$1/bin/python" -m ensurepip --upgrade >> "$2" 2>&1 \
+    || { echo "no pip in the oracle venv"; return 1; }
+  "$1/bin/python" -m pip install -q --upgrade pip setuptools wheel numpy astropy >> "$2" 2>&1 \
+    || { echo "pip could not install numpy/astropy (index unreachable?)"; return 1; }
+}
+oracle_install() { # oracle_install <ENGINE> <venv> <pip requirement...> -- <import check>
+  local engine=$1 venv=$2; shift 2
+  local reqs=() check=""
+  while [ $# -gt 0 ]; do [ "$1" = "--" ] && { check=$2; break; }; reqs+=("$1"); shift; done
+  if "$venv/bin/python" -m pip install -q "${reqs[@]}" >> "$OUT/oracle-install.log" 2>&1; then
+    if "$venv/bin/python" -c "$check" >> "$OUT/oracle-install.log" 2>&1; then
+      export "TORCHSKY_HARNESS_ORACLE_${engine}_PYTHON=$venv/bin/python"; echo "oracle ok: $engine ($("$venv/bin/python" -V))"
+      return 0
+    fi
+    reason="installed ${reqs[*]} but '$check' fails"
+  else reason="pip install ${reqs[*]} failed: $(tail -n 1 "$OUT/oracle-install.log" | cut -c1-160)"; fi
+  export "TORCHSKY_HARNESS_ORACLE_${engine}_UNPROVISIONED=$reason"
+  echo "oracle NOT PROVISIONED: $engine: $reason (see oracle-install.log)"
+}
 ORACLE_VENV="$SCRATCH/venv-oracle"
-if "$PYTHON_BIN" -m venv "$ORACLE_VENV" >> "$OUT/oracle-install.log" 2>&1 \
-   && "$ORACLE_VENV/bin/pip" install -q numpy astropy "starlink-pyast==4.2.0" "drizzlepac==3.11.0" >> "$OUT/oracle-install.log" 2>&1; then
-  if "$ORACLE_VENV/bin/python" -c "import starlink.Ast"; then
-    export TORCHSKY_HARNESS_ORACLE_PYAST_PYTHON="$ORACLE_VENV/bin/python"; echo "oracle ok: pyast"
-  else echo "oracle FAILED: pyast (see oracle-install.log)"; fi
-  if "$ORACLE_VENV/bin/python" -c "import drizzlepac.cdriz"; then
-    export TORCHSKY_HARNESS_ORACLE_DRIZZLEPAC_PYTHON="$ORACLE_VENV/bin/python"; echo "oracle ok: drizzlepac"
-  else echo "oracle FAILED: drizzlepac (see oracle-install.log)"; fi
-else echo "oracle FAILED: venv-oracle (see oracle-install.log)"; fi
-MAMBA="$SCRATCH/micromamba"
-if [ ! -x "$MAMBA/bin/micromamba" ]; then
-  mkdir -p "$MAMBA" && curl -fsSL --retry 3 https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xj -C "$MAMBA" bin/micromamba >> "$OUT/oracle-install.log" 2>&1
+if reason=$(provision_venv "$ORACLE_VENV" "$OUT/oracle-install.log"); then
+  oracle_install PYAST "$ORACLE_VENV" "starlink-pyast==4.2.0" -- "import starlink.Ast"
+  oracle_install DRIZZLEPAC "$ORACLE_VENV" "drizzlepac==3.11.0" -- "import drizzlepac.cdriz"
+else
+  export TORCHSKY_HARNESS_ORACLE_PYAST_UNPROVISIONED="$reason" TORCHSKY_HARNESS_ORACLE_DRIZZLEPAC_UNPROVISIONED="$reason"
+  echo "oracle NOT PROVISIONED: venv-oracle: $reason"
 fi
-if [ -x "$MAMBA/bin/micromamba" ] \
-   && MAMBA_ROOT_PREFIX="$MAMBA/root" "$MAMBA/bin/micromamba" create -y -q -p "$SCRATCH/env-kapteyn" -c conda-forge \
-        "python=3.6" "kapteyn=2.3" "numpy<1.20" >> "$OUT/oracle-install.log" 2>&1 \
-   && "$SCRATCH/env-kapteyn/bin/python" -c "from kapteyn import wcs"; then
-  export TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON="$SCRATCH/env-kapteyn/bin/python" TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1
-  echo "oracle ok: kapteyn (conda-forge py3.6)"
-else echo "oracle FAILED: kapteyn (see oracle-install.log; its gate and perf rows are reported as not provisioned)"; fi
+if [ -n "${TORCHSKY_HARNESS_KAPTEYN_SOURCE:-}" ]; then
+  KAPTEYN_VENV="$SCRATCH/venv-kapteyn"
+  if reason=$(provision_venv "$KAPTEYN_VENV" "$OUT/oracle-install.log"); then
+    oracle_install KAPTEYN "$KAPTEYN_VENV" --no-build-isolation "$TORCHSKY_HARNESS_KAPTEYN_SOURCE" -- "from kapteyn import wcs"
+    [ -n "${TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON:-}" ] && export TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1
+  else export TORCHSKY_HARNESS_ORACLE_KAPTEYN_UNPROVISIONED="$reason"; echo "oracle NOT PROVISIONED: kapteyn: $reason"; fi
+else
+  echo "oracle kapteyn: not provisioned (no source; set TORCHSKY_HARNESS_KAPTEYN_SOURCE; gate skipped, not required)"
+fi
 # Real catalogues for the STILTS gate: pre-staged ($CATALOG_REAL_DIR) or fetched once per campaign.
 if [ -z "${CATALOG_REAL_DIR:-}" ]; then
   if "$RUN_VENV/bin/python" "$HARNESS_DIR/scripts/fetch_real_catalogs.py" --out "$OUT/real-catalogs" >> "$OUT/oracle-install.log" 2>&1; then

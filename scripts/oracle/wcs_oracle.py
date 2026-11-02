@@ -6,7 +6,7 @@ strings (no astropy.io.fits anywhere).
 
     python wcs_oracle.py --engine pyast|kapteyn --in in.npz --out out.npz
 
-in.npz:  cards (object array of str), x, y (FITS 1-based pixel), lon, lat (degrees), repeat (int)
+in.npz:  cards (unicode array, no pickle), x, y (FITS 1-based pixel), lon, lat (degrees), repeat (int)
 out.npz: ra, dec (degrees, from x/y), px, py (FITS 1-based pixel, from lon/lat),
          t_forward_s, t_inverse_s (best of ``repeat`` calls, comparator-only wall time),
          version (str)
@@ -81,7 +81,7 @@ def main():
     parser.add_argument("--in", dest="inp", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
-    data = np.load(args.inp, allow_pickle=True)
+    data = np.load(args.inp, allow_pickle=False)
     fn = run_pyast if args.engine == "pyast" else run_kapteyn
     ra, dec, px, py, t_f, t_i, version = fn(
         list(data["cards"]), data["x"], data["y"], data["lon"], data["lat"], int(data["repeat"])

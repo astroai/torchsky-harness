@@ -121,7 +121,7 @@ bench-healpix-advanced-release-gate = "pixi run -e sphere-bench python -m torchs
 # Comparator performance (record, never gate): torchsky vs astropy.wcs/PyAST/Kapteyn, healpy/hpgeom/astropy-healpix,
 # astropy SkyCoord/STILTS, mocpy, healsparse, healpy/s2fft, reproject/dfreproject/SWarp/Montage. Normalized JSON;
 # run_gates.py reruns it with --device cuda in gpu mode. See docs/benchmarks.md "Performance vs comparators".
-bench-comparator-perf-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs,moc,sparse,sht,map --sizes 100000,1000000 --image-sizes 2048,4096 --runs 5 --device cpu --json-out benchmark_results/comparator_perf.json"
+bench-comparator-perf-gate = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs,moc,sparse,sht,map --sizes 100000,1000000 --image-sizes 2048,4096 --runs 5 --area-budget-s 45 --device cpu --json-out benchmark_results/comparator_perf.json"
 bench-comparator-perf-quick = "pixi run -e sphere-bench python -m torchsky_harness.cli run bench_comparator_perf -- --areas wcs,healpix,catalogs --sizes 100000 --runs 3 --device cpu --json-out benchmark_results/comparator_perf_quick.json"
 # Out-of-process oracles (PyAST, drizzlepac) and the real-data STILTS gate, for local use.
 test-comparator-oracles = "pixi run -e oracle -- pytest tests/test_wcs_pyast_parity.py tests/test_map_astrodrizzle_parity.py -q -p no:cacheprovider"
@@ -604,15 +604,6 @@ starlink-pyast = "==4.2.0"
 drizzlepac = "==3.11.0"
 drizzle = "==2.2.0"
 
-# Kapteyn 2.3 only builds on old toolchains (Python <= 3.6 conda-forge build, linux-64): its own oracle env.
-[feature.oracle-kapteyn]
-platforms = ["linux-64"]
-
-[feature.oracle-kapteyn.dependencies]
-python = "3.6.*"
-kapteyn = "2.3.*"
-numpy = "<1.20"
-
 # STILTS is Java: openjdk here, stilts.jar via `pixi run fetch-stilts` (the improc image ships /usr/local/bin/stilts).
 [feature.stilts.dependencies]
 openjdk = ">=17"
@@ -620,7 +611,6 @@ openjdk = ">=17"
 # Environment definitions
 [environments]
 oracle = { features = ["prod", "test", "oracle"], solve-group = "oracle" }
-oracle-kapteyn = { features = ["oracle-kapteyn"], no-default-feature = true, solve-group = "oracle-kapteyn" }
 stilts = { features = ["prod", "test", "stilts"], solve-group = "stilts" }
 default = { features = ["prod"], solve-group = "default" }
 test = { features = ["prod", "test"], solve-group = "default" }

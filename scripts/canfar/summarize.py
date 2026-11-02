@@ -46,10 +46,15 @@ COMPARATORS = (
 )
 
 
+_OUT_OF_PROCESS = {"starlink-pyast": "PyAST", "drizzlepac": "AstroDrizzle"}
+
+
 def _version(name: str) -> str:
     try:
         return metadata.version(name)
     except metadata.PackageNotFoundError:
+        if name in _OUT_OF_PROCESS:
+            return f"not in the run venv (out-of-process oracle: see {_OUT_OF_PROCESS[name]} below)"
         return "NOT INSTALLED"
 
 
@@ -66,7 +71,13 @@ def _oracle_versions() -> dict:
     for name, (var, code) in probes.items():
         py = os.environ.get(var)
         if not py:
-            out[name] = "NOT PROVISIONED"
+            reason = os.environ.get(var.replace("_PYTHON", "_UNPROVISIONED"))
+            if reason:
+                out[name] = f"NOT PROVISIONED: {reason}"
+            elif name == "Kapteyn":
+                out[name] = "not provisioned (no source)"
+            else:
+                out[name] = "NOT PROVISIONED"
             continue
         try:
             out[name] = subprocess.run([py, "-c", code], capture_output=True, text=True, timeout=120).stdout.strip() or "NOT PROVISIONED"
@@ -120,8 +131,8 @@ def _perf_table(rows: list[dict]) -> list[str]:
     if not rows:
         return lines[:-2] + ["No comparator performance rows were produced (the `bench-comparator-perf-gate` gate failed or was not run).", ""]
     for r in sorted(rows, key=lambda r: (r.get("area", ""), r.get("operation", ""), r.get("size", 0), r.get("device", ""), r.get("comparator", ""))):
-        if r.get("operation") == "error":
-            lines.append(f"| {r.get('area')} | ERROR | - | {r.get('device')} | - | - | - | {r.get('status')} | - |")
+        if r.get("operation") in {"error", "truncated"}:
+            lines.append(f"| {r.get('area')} | {str(r.get('operation')).upper()} | - | {r.get('device')} | - | - | - | {r.get('status')} | - |")
             continue
         thr = r.get("throughput_per_s")
         sp = r.get("speedup")
@@ -206,7 +217,7 @@ def main() -> int:
     lines = [f"# Harness campaign `{args.run}` ({args.mode})", ""]
     skipped = sum(r["status"] == "skip" for r in rows)
     failed = sum(r["status"] == "fail" for r in rows)
-    lines += [f"**{passed}/{len(rows)} gates passed, {skipped} skipped (opt-in data), {failed} failed**", ""]
+    lines += [f"**{passed}/{len(rows)} gates passed, {skipped} skipped (opt-in data or oracle), {failed} failed**", ""]
     lines += ["## Subject", ""]
     record = subject.get("install_record") or {}
     lines += [
@@ -220,7 +231,8 @@ def main() -> int:
         "|---|---|---|---|",
     ]
     for row in rows:
-        lines.append(f"| {row['suite']} | `{row['gate']}` | {row['status']} (rc={row['returncode']}) | {row['seconds']} |")
+        note = f" - {row['reason']}" if row.get("reason") else ""
+        lines.append(f"| {row['suite']} | `{row['gate']}` | {row['status']} (rc={row['returncode']}){note} | {row['seconds']} |")
     lines += ["", "## Comparators", "", "| package | version |", "|---|---|"]
     lines += [f"| {name} | {version} |" for name, version in comparators.items()]
     lines += ["", "## Out-of-process oracles and binaries", "", "| comparator | version |", "|---|---|"]

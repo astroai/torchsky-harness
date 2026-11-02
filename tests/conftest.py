@@ -43,8 +43,8 @@ RELEASE_GATE_FILES = frozenset(
         "test_map_astrodrizzle_parity.py",  # drizzlepac (out-of-process oracle)
     }
 )
-# Kapteyn needs a dedicated conda-forge Python 3.6 environment; the campaign provisions it and sets
-# TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1 only when that succeeded (the summary reports it otherwise).
+# Kapteyn is opt-in (TORCHSKY_HARNESS_KAPTEYN_SOURCE); the campaign sets
+# TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1 only when that succeeded (otherwise the gate is skipped, not required).
 KAPTEYN_GATE_FILES = frozenset({"test_wcs_kapteyn_parity.py"})
 # SWarp / MontagePy gates exist but only the map-compat environment ships the
 # binaries; they are required there (set the variable) and optional elsewhere.

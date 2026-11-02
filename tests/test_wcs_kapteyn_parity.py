@@ -1,8 +1,9 @@
 """Bounded parity of ``torchsky.wcs.WCS`` against Kapteyn (WCSLIB 4.24 under ``kapteyn.wcs``).
 
 Kapteyn runs out-of-process in its own interpreter (``scripts/oracle/wcs_oracle.py``): the
-``kapteyn`` 2.3.x sources do not build on CPython 3.13 / NumPy 2, so the campaign provisions a
-dedicated conda-forge environment (``run_campaign.sh``, ``TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON``).
+``kapteyn`` 2.3.x / 3.4 sources do not build on CPython 3.13 / NumPy 2 and conda-forge only has 2.3 for
+Python <= 3.6, so this gate is opt-in: ``run_campaign.sh`` provisions it when
+``TORCHSKY_HARNESS_KAPTEYN_SOURCE`` is set (``TORCHSKY_HARNESS_ORACLE_KAPTEYN_PYTHON``); else it skips.
 Same cases and tolerances as the PyAST gate minus SIP/TPV (WCSLIB 4.24 has neither). WCSLIB is
 float64 analytic projections: 1e-4 mas on the sky, 1e-6 px on the inverse.
 """

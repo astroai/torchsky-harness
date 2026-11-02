@@ -18,7 +18,7 @@ Performance = throughput and speedup recorded (never gated) by `benchmarks/bench
 |---|---|---|---|---|
 | wcs | astropy.wcs / WCSLIB | `test_wcs_parity.py`, `test_wcs_upstream_astropy.py`, `test_wcs_sip.py`, `test_wcs_tpv.py` (+ `bench-wcs-release-gate`, `bench-wcs-real-headers-gate`) | `bench-wcs-release-gate`; comparator_perf `wcs` (TAN, TAN-SIP; 1e5, 1e6) | release gate |
 | wcs | PyAST (starlink-pyast) | `test_wcs_pyast_parity.py` (TAN, TAN pole, SIN, ARC, ZEA, STG, CAR, CAR wrap, AIT, MOL, HPX, CEA, MER, SFL, ZPN, AZP, TAN-SIP, TPV; 1e-4 mas, SIP/TPV 1e-3 mas; 1e-6 px) | comparator_perf `wcs` (PyAST timed inside its oracle) | release gate, Oracle (own venv) |
-| wcs | Kapteyn (WCSLIB 4.24) | `test_wcs_kapteyn_parity.py` (same cases minus SIP/TPV) | comparator_perf `wcs` | Oracle in a conda-forge Python 3.6 env; gated when provisioned (`TORCHSKY_HARNESS_REQUIRE_KAPTEYN=1`). Not verified locally (no osx-arm64 build; sdist does not build on 3.13/NumPy 2, see below) |
+| wcs | Kapteyn (WCSLIB 4.24) | `test_wcs_kapteyn_parity.py` (same cases minus SIP/TPV) | comparator_perf `wcs` | Opt-in oracle: runs only when `TORCHSKY_HARNESS_KAPTEYN_SOURCE` (pip-installable source) is provided; otherwise skipped and not a required gate (no buildable source, see below) |
 | wcs | WCSTools (extra C implementation) | `test_wcstools_parity.py` | - | required on `improc` |
 | coords | astropy.coordinates | `test_wcs_frames.py`, `bench_coords_astropy` (`bench-coords-astropy-gate`) | `bench-coords-astropy-gate` | release gate |
 | coords | ERFA (pyerfa) | `test_erfa_observed_place_parity.py` | `bench-observed-place` (local task, not a campaign gate) | release gate |
@@ -59,9 +59,7 @@ Kapteyn and AstroDrizzle installability (checked with CPython 3.13, NumPy 2.5, m
 by the compiler banner on macOS, the shipped Cython output targets Python < 3.7, regenerating needs Cython < 3
 (NumPy 2 `.pxd` headers need Cython >= 3, Cython 3 breaks the `/` semantics) and the C sources use `NPY_OWNDATA`,
 `->flags` and `->base`, removed in NumPy 2. conda-forge ships `kapteyn 2.3` only for Python <= 3.6
-(linux-64/osx-64). The campaign therefore builds Kapteyn in a micromamba Python 3.6 environment
-(pixi: `oracle-kapteyn`, linux-64) used as an out-of-process oracle; if that provisioning fails the summary reports
-it as NOT PROVISIONED. Not verified locally.
+(linux-64/osx-64) and the official 3.4 tarball does not build on CPython 3.10-3.13. The campaign therefore provisions Kapteyn only when `TORCHSKY_HARNESS_KAPTEYN_SOURCE` points at a buildable source (the oracle script `scripts/oracle/wcs_oracle.py` is kept for that); the summary reports "not provisioned (no source)" otherwise.
 
 Deferred to 0.6/0.7 (global solvers): SCAMP-like global astrometric/photometric fits and solve-field pipelines.
 Only the presence gates (`test_external_tools_required.py`) remain.

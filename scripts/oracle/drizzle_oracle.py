@@ -44,7 +44,7 @@ def main():
     parser.add_argument("--in", dest="inp", required=True)
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
-    data = np.load(args.inp, allow_pickle=True)
+    data = np.load(args.inp, allow_pickle=False)
     from drizzlepac import __version__, adrizzle
 
     src, dst = _wcs(list(data["src_cards"])), _wcs(list(data["dst_cards"]))
