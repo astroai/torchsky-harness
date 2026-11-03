@@ -39,6 +39,7 @@ RELEASE_GATE_FILES = frozenset(
         "test_specutils_parity.py",  # specutils
         "test_torch_harmonics_parity.py",  # torch-harmonics
         "test_sphere_s2fft.py",  # s2fft
+        "test_pixwin_parity.py",  # healpy + healpy-data pixel-window tables (download)
         "test_wcs_pyast_parity.py",  # starlink-pyast (out-of-process oracle)
         "test_map_astrodrizzle_parity.py",  # drizzlepac (out-of-process oracle)
     }

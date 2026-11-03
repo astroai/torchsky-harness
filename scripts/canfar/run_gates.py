@@ -68,6 +68,7 @@ PARITY_TESTS = (
     "tests/test_wcs_upstream_astropy.py",
     "tests/test_wcs_pyast_parity.py",
     "tests/test_healpix_parity.py",
+    "tests/test_pixwin_parity.py",
     "tests/test_healsparse_upstream.py",
     "tests/test_sphere_moc.py",
     "tests/test_sphere_polygons.py",

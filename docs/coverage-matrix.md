@@ -22,6 +22,7 @@ Performance = throughput and speedup recorded (never gated) by `benchmarks/bench
 | coords | astropy.coordinates | `test_wcs_frames.py`, `bench_coords_astropy` (`bench-coords-astropy-gate`) | `bench-coords-astropy-gate` | release gate |
 | coords | ERFA (pyerfa) | `test_erfa_observed_place_parity.py` | `bench-observed-place` (local task, not a campaign gate) | release gate |
 | sphere | healpy | `test_healpix_parity.py`, `test_sphere_compat.py`, `test_synalm_parity.py` | `bench-healpix-release-gate`, `bench-healpix-advanced-release-gate`; comparator_perf `healpix` (ang2pix, pix2ang, neighbours) | release gate |
+| sphere | healpy `pixwin` tables + independent reference (`tests/_pixwin_reference.py`) | `test_pixwin_parity.py`: T vs healpy 1e-11 for nside 2-128 (`l <= 4 nside`); P vs healpy within the documented frame term; T vs the independent reference 1e-11 for nside 256 (`l <= 256`; `l <= 767` slow), 512 (`l <= 128`), 1024/2048 (`l <= 64`, slow); healpy deviation recorded (see "pixwin" below) | - | release gate (healpy-data download) |
 | sphere | hpgeom | `test_healpix_parity.py` | `bench-healpix-release-gate`; comparator_perf `healpix` | release gate |
 | sphere | astropy-healpix | `test_healpix_parity.py` | comparator_perf `healpix` | release gate |
 | sphere | healsparse | `test_healsparse_upstream.py` | comparator_perf `sparse` (get_values, ud_grade) | release gate |
@@ -36,6 +37,40 @@ Performance = throughput and speedup recorded (never gated) by `benchmarks/bench
 | map | Montage (`mProject`) | `test_montage_projection_parity.py` | comparator_perf `map`, `bench-map-montage-required` (local) | required on `improc` |
 | catalogs | astropy SkyCoord matching | `test_catalog_compat.py` | `bench-catalog-release-gate`; comparator_perf `catalogs` (1e5, 1e6) | release gate |
 | catalogs | STILTS (`tmatch2`, `tskymatch2`, `tmatch1`, `tmatchn`) | `test_stilts_parity.py`: synthetic (1e5, RA wrap, pole cap) and **real Gaia DR3 x 2MASS x AllWISE** (`scripts/fetch_real_catalogs.py`, sha256-checked against the manifest); exact row-tuple equality | `test_stilts_parity.py` records per-mode STILTS vs torchsky timings (comparator performance table, area `catalogs`); comparator_perf `catalogs` (tmatch2, tskymatch2; 1e5, 1e6) | required on `improc` (`REQUIRE_TOOLS=1`) |
+
+### pixwin
+
+`torchsky.sphere.pixwin` computes the T and P windows from the pixel shapes for any nside. healpy
+reads the HEALPix tables, which HEALPix documents as exact only for `nside <= 128`; above that T is
+extrapolated from nside 128 with a top-hat scaling and P is T times a low-`l` factor
+([HEALPix docs](https://healpix.sourceforge.io/html/intro_Pixel_window_functions.htm)). The gate
+therefore uses healpy only where its tables are exact, and an independent reference elsewhere:
+`tests/_pixwin_reference.py` integrates `int_p Y_lm^*` exactly in azimuth and with Gauss-Legendre in
+the ring coordinate for every pixel class (NumPy only; cost `O(lmax^2 nside^2)`, hence the bounded
+`lmax`). The reference matches the exact healpy tables to 1e-11 for nside 2-64 (`l <= 4 nside`).
+
+| nside | `l` checked vs reference | torchsky vs reference | healpy vs reference | healpy vs torchsky, T / P, `l <= 4 nside` | test time (reference) |
+|---|---|---|---|---|---|
+| 2-128 | `4 nside` (healpy exact) | < 1.4e-13 (via healpy) | < 1.3e-13 | T < 1.3e-13; P ~0.94e-6 (8/nside)^4 (frame term) | < 1 s |
+| 256 | 256 / 767 (slow) | 1.2e-14 / 2.8e-14 | 2.4e-6 / 7.3e-6 | 7.3e-6 / 7.0e-6 | 8 s / 68 s |
+| 512 | 128 | 1.6e-14 | 1.3e-6 | 1.06e-5 / 1.03e-5 | 7 s |
+| 1024 | 64 (slow) | 1.3e-14 | 1.3e-6 | 1.21e-5 / 1.20e-5 | 7 s |
+| 2048 | 64 (slow) | 2.7e-14 | 1.3e-6 | 1.28e-5 / 1.28e-5 | 26 s |
+
+Known discrepancy (informational, not a torchsky defect): the healpy tables for nside >= 256 are high
+by a smooth `~4e-6 (l/nside)^2` relative term plus irregular low-`l` errors (nside 256, `l = 1`: +4.0e-7,
+confirmed with a healpy-only boundary-integral check of `w_1`). Rows are appended to
+`benchmark_results/pixwin_healpy_deviation.jsonl`; the test bounds them at 2e-5 so a change in the
+tables is noticed. Draft upstream report: [healpix-pixwin-upstream-issue.md](healpix-pixwin-upstream-issue.md).
+
+P frame term: torchsky parallel-transports the polarization frame between the two points of each pair
+(kernel `d^l_22`); the HEALPix exact tables differ by ~0.94e-6 (8/nside)^4 (2.4e-4 at nside 2, 1.4e-11
+at 128), bounded in the gate by 1.2e-6 (8/nside)^4 + 1e-11. No independent P reference exists for
+nside >= 256: a single-pixel frame differs from pairwise transport by `O(Omega^2)` (estimated ~1e-10 at nside 256),
+above the 1e-11 target, so P there is covered only by the informational healpy comparison.
+
+Runtime: the reference times above are on one core; torchsky computes the nside 1024/2048 moments once
+(about 17 s / 60 s) and caches them under `~/.cache/torchsky/pixwin`. Non-slow cases take about 20 s in total.
 
 STILTS modes and torchsky equivalents (`tests/test_stilts_parity.py`). Parity means equal multisets of matched row tuples
 (`-1` = absent side); the only exclusion is a pair whose separation is within 1e-6 arcsec of its threshold, dropped from both sides together
