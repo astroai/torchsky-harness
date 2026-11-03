@@ -192,10 +192,13 @@ def test_pixwin_matches_healpy() -> None:
         atol=1e-12,
         rtol=0.0,
     )
+    # healpy's polarization window is the temperature window times a scaling
+    # factor, not the exact window torchsky computes; the difference is
+    # bounded by ~1.2e-6 (8/nside)^4 (see tests/test_pixwin_parity.py).
     torch.testing.assert_close(
         got_p,
         torch.from_numpy(exp_p.astype(float)).to(torch.float64),
-        atol=1e-12,
+        atol=1.2e-6 * (8 / nside) ** 4 + 1e-11,
         rtol=0.0,
     )
 
